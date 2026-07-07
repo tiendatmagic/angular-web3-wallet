@@ -5,11 +5,9 @@
   @if (successMessage()) {
     <div class="toast-animate pointer-events-auto relative flex items-start gap-3 bg-white/95 dark:bg-slate-900/95 text-slate-800 dark:text-slate-200 px-4 py-3.5 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-800/80 backdrop-blur-md overflow-hidden w-full group transition-all duration-300">
       
-      <!-- Icon Check SVG tròn xanh -->
+      <!-- Icon Check tròn xanh dùng app-icon -->
       <div class="flex-shrink-0 w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-md shadow-emerald-500/20">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-3.5 h-3.5">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-        </svg>
+        <app-icon name="check" class="w-3.5 h-3.5" strokeWidth="3" />
       </div>
 
       <!-- Nội dung -->
@@ -19,13 +17,11 @@
         </p>
       </div>
 
-      <!-- Nút đóng -->
+      <!-- Nút đóng dùng app-icon -->
       <button 
         (click)="toastService.successMessage.set(null)"
         class="absolute top-3.5 right-3.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors p-0.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-        </svg>
+        <app-icon name="close" class="w-3.5 h-3.5" strokeWidth="2.5" />
       </button>
 
       <!-- Thanh tiến trình tự chạy lùi -->
@@ -39,11 +35,9 @@
   @if (errorMessage()) {
     <div class="toast-animate pointer-events-auto relative flex items-start gap-3 bg-white/95 dark:bg-slate-900/95 text-slate-800 dark:text-slate-200 px-4 py-3.5 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-800/80 backdrop-blur-md overflow-hidden w-full group transition-all duration-300">
       
-      <!-- Icon Close SVG tròn đỏ -->
+      <!-- Icon Close tròn đỏ dùng app-icon -->
       <div class="flex-shrink-0 w-6 h-6 rounded-full bg-rose-500 text-white flex items-center justify-center shadow-md shadow-rose-500/20">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-3.5 h-3.5">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-        </svg>
+        <app-icon name="close" class="w-3.5 h-3.5" strokeWidth="3" />
       </div>
 
       <!-- Nội dung -->
@@ -53,13 +47,11 @@
         </p>
       </div>
 
-      <!-- Nút đóng -->
+      <!-- Nút đóng dùng app-icon -->
       <button 
         (click)="toastService.errorMessage.set(null)"
         class="absolute top-3.5 right-3.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors p-0.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-        </svg>
+        <app-icon name="close" class="w-3.5 h-3.5" strokeWidth="2.5" />
       </button>
 
       <!-- Thanh tiến trình tự chạy lùi -->

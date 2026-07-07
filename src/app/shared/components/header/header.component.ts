@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { Web3Service } from '@core/services/web3.service';
 import { ThemeService } from '@core/services/theme.service';
 import { ToastService } from '@core/services/toast.service';
+import { IconComponent } from '@shared/components/icon/icon.component';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, IconComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })

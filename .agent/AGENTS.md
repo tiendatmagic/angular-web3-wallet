@@ -3,15 +3,16 @@
 ## Ngày 08/07/2026
 
 ### Yêu cầu: Xây dựng khung dự án Angular Web3 bằng Tailwind CSS v4, Ethers.js v6 và Reown AppKit
-- **Nội dung yêu cầu:** Cài đặt và cấu hình Tailwind v4, tích hợp Ethers v6 + Reown AppKit làm khung sườn cho nhiều dự án Web3, xây dựng giao diện Header Menu ProofRandom responsive theo thiết kế mẫu, hỗ trợ chuyển đổi mạng, kết nối ví và tách biệt môi trường cấu hình linh hoạt.
+- **Nội dung yêu cầu:** Cài đặt và cấu hình Tailwind v4, tích hợp Ethers v6 + Reown AppKit làm khung sườn cho nhiều dự án Web3, xây dựng giao diện Header Menu ProofRandom responsive theo thiết kế mẫu, hỗ trợ chuyển đổi mạng, kết nối ví và tách biệt môi trường cấu hình linh hoạt. Khắc phục lỗi hiển thị theme sáng/tối không đồng bộ và thay thế toàn bộ alert bằng toastfy.
 - **Giải pháp:**
   - **Tổ chức cấu trúc:** Cấu hình Path Aliases (`@core/*`, `@shared/*`, `@features/*`, `@environments/*`) trong `tsconfig.json` tuân thủ nghiêm ngặt `ARCHITECTURE.md`.
   - **Quản lý Môi trường:** Tạo thư mục `src/environments/` chứa các tệp `environment.ts` và `environment.development.ts`, cấu hình `fileReplacements` trong `angular.json` để tự động swap khi chạy dev/production. Đọc `projectId` động từ environment.
-  - **Tailwind v4:** Cài đặt thông qua PostCSS plugin, cấu hình styles toàn cục `styles.scss` với `@import "tailwindcss"`, Google Fonts `Quicksand`, màu accent thương hiệu (Hồng/Tím neon) và cap bo góc tối đa 15px theo `design.md`.
-  - **Logic Web3:** Xây dựng `Web3Service` sử dụng Ethers v6 `BrowserProvider` kết hợp với Reown AppKit, quản lý trạng thái tài khoản/mạng bằng signals, cung cấp các helper functions `connect()`, `disconnect()`, `switchNetwork()`, `getSigner()`, `getProvider()`.
-  - **Header Component:** Thiết kế giao diện Header responsive, hiển thị logo SVG dynamic, badge mạng lưới thay đổi linh hoạt và nút ví custom hiển thị địa chỉ rút gọn + số dư kèm dropdown.
-  - **Vá lỗi và Build:** Cấu hình `"ignoreDeprecations": "6.0"` trong `tsconfig.json` để tắt lỗi deprecate `baseUrl` của TypeScript, nâng giới hạn budget trong `angular.json` lên 5MB để bundle Web3 an toàn và sửa lỗi thiếu hàm copyAddress.
-- **Kết quả:** Biên dịch thành công 100% không còn lỗi. Ứng dụng chạy mượt mà, sẵn sàng phục vụ làm khung sườn cho nhiều DApp Web3.
+  - **Tailwind v4 & Sửa lỗi Dark Mode:** Cài đặt thông qua PostCSS plugin, cấu hình styles toàn cục `styles.scss` với `@import "tailwindcss"`. Sửa lỗi Tailwind v4 không nhận diện class `.dark` bằng cách khai báo `@variant dark (&:where(.dark, .dark *));`. Cấu hình phông `Quicksand`, màu accent thương hiệu (Hồng/Tím neon) và cap bo góc tối đa 15px theo `design.md`.
+  - **Theme Switcher:** Xây dựng `ThemeService` dùng chung để quản lý theme (`light`, `dark`, `auto`) sử dụng signals, lưu cache `localStorage` và lắng nghe media query hệ thống. Tích hợp bộ nút chuyển đổi theme 3 vị trí (Pill theme switcher) dạng icons trực quan trên Header.
+  - **Đồng bộ AppKit Theme:** Thiết lập một `effect` trong `Web3Service` tự động lắng nghe sự thay đổi của `isDarkMode` từ `ThemeService` và gọi cập nhật theme trực tiếp vào WalletConnect modal (`modal.setThemeMode(...)`) ở runtime.
+  - **Hệ thống Toast thay thế Alert:** Tạo `ToastService` và component `app-toast` standalone hiển thị góc màn hình với hiệu ứng trượt trơn tru và thanh tiến trình tự co lại. Thay thế hoàn toàn các lệnh `alert` hệ thống trong `header.component.ts` và `app.ts` bằng Toast.
+  - **Vá lỗi và Build:** Cấu hình `"ignoreDeprecations": "6.0"` trong `tsconfig.json`, nâng giới hạn budget trong `angular.json` lên 5MB để bundle Web3 an toàn và sửa lỗi thiếu hàm copyAddress.
+- **Kết quả:** Biên dịch thành công 100% không còn lỗi. Theme đồng bộ hoàn hảo, hệ thống Toast mượt mà, sẵn sàng phục vụ làm khung sườn cho nhiều DApp Web3.
 
 
 ## Ngày 02/07/2026

@@ -1,15 +1,40 @@
-<header class="w-full bg-white/90 dark:bg-slate-950/90 backdrop-blur-md border-b border-slate-200/50 dark:border-slate-900/50 sticky top-0 z-50 transition-all-300">
+<header
+  class="w-full bg-white/90 dark:bg-slate-950/90 backdrop-blur-md border-b border-slate-200/50 dark:border-slate-900/50 sticky top-0 z-50 transition-all-300"
+>
   <div class="max-w-[1530px] mx-auto w-full px-4 sm:px-6 h-20 flex items-center justify-between">
-
-    <!-- PHẦN BÊN TRÁI: LOGO & THƯƠNG HIỆU -->
-    <div class="flex items-center gap-3 cursor-pointer select-none" (click)="web3Service.updateBalanceAndNetwork()">
+    <!-- PHẦN BÊN TRÁI: LOGO & THƯƠNG HIỆU (RESPONSIVE) -->
+    <div
+      class="flex items-center gap-2 sm:gap-3 cursor-pointer select-none"
+      (click)="web3Service.updateBalanceAndNetwork()"
+    >
       <!-- Logo ProofRandom SVG Tinh Xảo -->
-      <div class="relative w-11 h-11 flex items-center justify-center rounded-full bg-purple-50 dark:bg-purple-950/20 p-1.5 border border-purple-500/20 group">
-        <div class="absolute inset-0 bg-gradient-to-tr from-primary/20 to-secondary/20 rounded-full blur-sm group-hover:blur-md transition-all"></div>
-        <svg class="w-full h-full text-purple-600 dark:text-purple-400 relative z-10 animate-[spin_20s_linear_infinite] hover:animate-[spin_5s_linear_infinite] transition-all" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="50" cy="50" r="40" stroke="currentColor" stroke-width="6" stroke-dasharray="10 6" />
+      <div
+        class="relative w-9 h-9 sm:w-11 sm:h-11 flex items-center justify-center rounded-full bg-purple-50 dark:bg-purple-950/20 p-1 sm:p-1.5 border border-purple-500/20 group"
+      >
+        <div
+          class="absolute inset-0 bg-gradient-to-tr from-primary/20 to-secondary/20 rounded-full blur-sm group-hover:blur-md transition-all"
+        ></div>
+        <svg
+          class="w-full h-full text-purple-600 dark:text-purple-400 relative z-10 animate-[spin_20s_linear_infinite] hover:animate-[spin_5s_linear_infinite] transition-all"
+          viewBox="0 0 100 100"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            cx="50"
+            cy="50"
+            r="40"
+            stroke="currentColor"
+            stroke-width="6"
+            stroke-dasharray="10 6"
+          />
           <circle cx="50" cy="50" r="25" stroke="currentColor" stroke-width="4" />
-          <path d="M50 10V25M50 75V90M10 50H25M75 50H90" stroke="currentColor" stroke-width="6" stroke-linecap="round" />
+          <path
+            d="M50 10V25M50 75V90M10 50H25M75 50H90"
+            stroke="currentColor"
+            stroke-width="6"
+            stroke-linecap="round"
+          />
           <circle cx="50" cy="50" r="8" fill="url(#logo-grad)" />
           <defs>
             <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -20,20 +45,28 @@
         </svg>
       </div>
 
-      <!-- Tên thương hiệu -->
+      <!-- Tên thương hiệu thu nhỏ size trên Mobile -->
       <div class="flex flex-col">
-        <span class="text-xl sm:text-2xl font-black bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent tracking-tight">
+        <span
+          class="text-base sm:text-2xl font-black bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent tracking-tight"
+        >
           Angular Web3
         </span>
-        <span class="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] -mt-1 select-none">
-          Angular Web3
+        <span
+          class="hidden sm:inline-block text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] -mt-1 select-none"
+        >
+          Proof of Random
         </span>
       </div>
     </div>
 
-    <!-- PHẦN Ở GIỮA: TRẠNG THÁI MẠNG LƯỚI -->
-    <div class="hidden md:flex items-center gap-2 bg-slate-50 dark:bg-slate-900/40 px-4 py-2 rounded-xl border border-slate-100 dark:border-slate-900/60">
-      <span class="text-[11px] font-extrabold text-slate-400 dark:text-slate-500 uppercase tracking-widest">
+    <!-- PHẦN Ở GIỮA: TRẠNG THÁI MẠNG LƯỚI (CHỈ HIỂN THỊ DESKTOP) -->
+    <div
+      class="hidden md:flex items-center gap-2 bg-slate-50 dark:bg-slate-900/40 px-4 py-2 rounded-xl border border-slate-200/50 dark:border-slate-800/50"
+    >
+      <span
+        class="text-[11px] font-extrabold text-slate-400 dark:text-slate-500 uppercase tracking-widest"
+      >
         Mạng lưới hoạt động:
       </span>
 
@@ -47,11 +80,13 @@
           [class.bg-red-500\/10]="web3Service.isWrongChain()"
           [class.text-red-500]="web3Service.isWrongChain()"
           [class.border-red-500\/20]="web3Service.isWrongChain()"
-          class="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border transition-all hover:scale-[1.03] active:scale-95 cursor-pointer">
+          class="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border transition-all hover:scale-[1.03] active:scale-95 cursor-pointer"
+        >
           <span
             [class.bg-pink-500]="!web3Service.isWrongChain()"
             [class.bg-red-500]="web3Service.isWrongChain()"
-            class="w-1.5 h-1.5 rounded-full inline-block"></span>
+            class="w-1.5 h-1.5 rounded-full inline-block"
+          ></span>
           {{ web3Service.isWrongChain() ? 'Sai mạng lưới' : web3Service.networkName() }}
         </button>
       } @else {
@@ -60,10 +95,11 @@
     </div>
 
     <!-- PHẦN BÊN PHẢI: SWITCH THEME, QUẢ ĐỊA CẦU NGÔN NGỮ & NÚT VÍ -->
-    <div class="flex items-center gap-3">
-
-      <!-- Nút chuyển đổi giao diện (Theme Switcher 3 vị trí) -->
-      <div class="flex items-center bg-slate-50 dark:bg-slate-900 p-1 rounded-xl border border-slate-200/50 dark:border-slate-800/50">
+    <div class="flex items-center gap-2 sm:gap-3">
+      <!-- Nút chuyển đổi giao diện (ẨN TRÊN MOBILE - HIỆN TRÊN DESKTOP) -->
+      <div
+        class="hidden md:flex items-center bg-slate-50 dark:bg-slate-900 p-1 rounded-xl border border-slate-200/50 dark:border-slate-800/50"
+      >
         <!-- Chế độ Sáng (Light) -->
         <button
           (click)="themeService.setThemeMode('light')"
@@ -72,10 +108,9 @@
           [class.text-amber-500]="themeService.themeMode() === 'light'"
           [class.shadow-sm]="themeService.themeMode() === 'light'"
           class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-all cursor-pointer flex items-center justify-center"
-          title="Giao diện sáng">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m0 13.5V21M4.93 4.93l1.58 1.58m10.98 10.98l1.58 1.58m-18 4.93h2.25m13.5 0H21M4.93 19.07l1.58-1.58m10.98-10.98l1.58-1.58M12 6.75a5.25 5.25 0 100 10.5 5.25 5.25 0 000-10.5z" />
-          </svg>
+          title="Giao diện sáng"
+        >
+          <app-icon name="sun" class="w-4 h-4" />
         </button>
 
         <!-- Chế độ Tối (Dark) -->
@@ -87,10 +122,9 @@
           [class.dark:text-indigo-400]="themeService.themeMode() === 'dark'"
           [class.shadow-sm]="themeService.themeMode() === 'dark'"
           class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-all cursor-pointer flex items-center justify-center"
-          title="Giao diện tối">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
-          </svg>
+          title="Giao diện tối"
+        >
+          <app-icon name="moon" class="w-4 h-4" />
         </button>
 
         <!-- Chế độ Tự động (Auto) -->
@@ -102,93 +136,118 @@
           [class.dark:text-purple-400]="themeService.themeMode() === 'auto'"
           [class.shadow-sm]="themeService.themeMode() === 'auto'"
           class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-all cursor-pointer flex items-center justify-center"
-          title="Tự động theo hệ thống">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25M12 3v3.5m-9.75 0h19.5" />
-          </svg>
+          title="Tự động theo hệ thống"
+        >
+          <app-icon name="auto" class="w-4 h-4" />
         </button>
       </div>
 
-      <!-- Nút Ngôn ngữ (Quả địa cầu) -->
-      <div class="relative">
+      <!-- Nút Ngôn ngữ (ẨN TRÊN MOBILE - HIỆN TRÊN DESKTOP) -->
+      <div class="hidden md:relative md:block">
         <button
           (click)="toggleLangDropdown($event)"
-          class="p-2.5 rounded-xl border border-slate-200/60 dark:border-slate-800/60 text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-900 transition-all cursor-pointer flex items-center justify-center">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9s2.015-9 4.5-9m0 0a9.003 9.003 0 018.716 2.253M12 3a9.003 9.003 0 00-8.716 2.253M12 3v18M3 12h18" />
-          </svg>
+          class="p-2.5 rounded-xl border border-slate-200/60 dark:border-slate-800/60 text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-900 transition-all cursor-pointer flex items-center justify-center"
+        >
+          <app-icon name="globe" class="w-5 h-5" />
         </button>
 
         <!-- Dropdown ngôn ngữ -->
         @if (showLangDropdown()) {
-          <div class="absolute right-0 mt-2 w-32 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 rounded-xl shadow-lg z-50 overflow-hidden py-1 animate-in fade-in slide-in-from-top-1 duration-150">
+          <div
+            class="absolute right-0 mt-2 w-32 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 rounded-xl shadow-lg z-50 overflow-hidden py-1 animate-in fade-in slide-in-from-top-1 duration-150"
+          >
+            <!-- Mục Tiếng Việt -->
             <button
               (click)="selectLang('VI')"
               [class.bg-purple-50]="currentLang() === 'VI'"
-              [class.dark:bg-purple-950\/30]="currentLang() === 'VI'"
+              [class.dark:bg-purple-950]="currentLang() === 'VI'"
               [class.text-purple-600]="currentLang() === 'VI'"
-              class="w-full text-left px-4 py-2 text-sm font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all flex items-center justify-between">
+              [class.dark:text-purple-400]="currentLang() === 'VI'"
+              [class.text-slate-700]="currentLang() !== 'VI'"
+              [class.dark:text-slate-300]="currentLang() !== 'VI'"
+              class="w-full text-left px-4 py-2.5 text-sm font-bold hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-all flex items-center justify-between cursor-pointer"
+            >
               Tiếng Việt
               @if (currentLang() === 'VI') {
-                <span class="w-1.5 h-1.5 rounded-full bg-purple-600"></span>
+                <span class="w-1.5 h-1.5 rounded-full bg-purple-600 dark:bg-purple-400"></span>
               }
             </button>
+
+            <!-- Mục English -->
             <button
               (click)="selectLang('EN')"
               [class.bg-purple-50]="currentLang() === 'EN'"
-              [class.dark:bg-purple-950\/30]="currentLang() === 'EN'"
+              [class.dark:bg-purple-950]="currentLang() === 'EN'"
               [class.text-purple-600]="currentLang() === 'EN'"
-              class="w-full text-left px-4 py-2 text-sm font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all flex items-center justify-between">
+              [class.dark:text-purple-400]="currentLang() === 'EN'"
+              [class.text-slate-700]="currentLang() !== 'EN'"
+              [class.dark:text-slate-300]="currentLang() !== 'EN'"
+              class="w-full text-left px-4 py-2.5 text-sm font-bold hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-all flex items-center justify-between cursor-pointer"
+            >
               English
               @if (currentLang() === 'EN') {
-                <span class="w-1.5 h-1.5 rounded-full bg-purple-600"></span>
+                <span class="w-1.5 h-1.5 rounded-full bg-purple-600 dark:bg-purple-400"></span>
               }
             </button>
           </div>
         }
       </div>
 
-      <!-- Nút ví Web3 (Connect / Account details) -->
+      <!-- Nút ví Web3 (Connect / Account details - LUÔN HIỆN NHƯNG RÚT GỌN TRÊN MOBILE) -->
       @if (web3Service.isConnected()) {
-
         <!-- TRẠNG THÁI ĐÃ KẾT NỐI -->
         <div class="relative">
           <button
             (click)="toggleDropdown($event)"
-            class="flex items-center gap-3 border border-pink-500/25 bg-pink-500/5 hover:bg-pink-500/10 transition-all duration-300 rounded-full pl-3.5 pr-4 py-1.5 group cursor-pointer shadow-sm hover:shadow-pink-500/10">
-
+            class="flex items-center gap-2 sm:gap-3 border border-pink-500/25 bg-pink-500/5 hover:bg-pink-500/10 transition-all duration-300 rounded-full pl-3 pr-3.5 sm:pl-3.5 sm:pr-4 py-1.5 group cursor-pointer shadow-sm hover:shadow-pink-500/10"
+          >
             <!-- Chấm xanh lá cây connected -->
-            <span class="relative flex h-2.5 w-2.5">
-              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span class="relative flex h-2.5 w-2.5 flex-shrink-0">
+              <span
+                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"
+              ></span>
               <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
             </span>
 
-            <!-- Thông tin Ví: Address & Số dư -->
+            <!-- Thông tin Ví: Address & Số dư (Ẩn số dư trên mobile nhỏ) -->
             <div class="flex flex-col text-left select-none leading-tight">
-              <span class="font-mono text-[13px] font-extrabold text-slate-700 dark:text-slate-200">
+              <span
+                class="font-mono text-xs sm:text-[13px] font-extrabold text-slate-700 dark:text-slate-200"
+              >
                 {{ shortenedAddress() }}
               </span>
-              <span class="text-[10px] font-black text-pink-500 tracking-wider">
+              <span
+                class="hidden sm:inline-block text-[10px] font-black text-pink-500 tracking-wider"
+              >
                 {{ web3Service.balance() }} ETH
               </span>
             </div>
 
-            <!-- Icon Mũi tên Dropdown màu hồng -->
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5 text-pink-500 group-hover:translate-y-0.5 transition-transform">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-            </svg>
+            <!-- Icon Dropdown -->
+            <app-icon
+              name="chevron-down"
+              class="w-3 h-3 sm:w-3.5 sm:h-3.5 text-pink-500 group-hover:translate-y-0.5 transition-transform flex-shrink-0"
+              strokeWidth="2.5"
+            />
           </button>
 
-          <!-- Custom Dropdown Menu -->
+          <!-- Dropdown ví -->
           @if (showDropdown()) {
-            <div class="absolute right-0 mt-2.5 w-56 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 rounded-2xl shadow-xl z-50 overflow-hidden py-2 animate-in fade-in slide-in-from-top-2 duration-200">
-
+            <div
+              class="absolute right-0 mt-2.5 w-52 sm:w-56 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 rounded-2xl shadow-xl z-50 overflow-hidden py-2 animate-in fade-in slide-in-from-top-2 duration-200"
+            >
               <!-- Tiêu đề / Wallet Details -->
-              <div class="px-4 py-2 border-b border-slate-100 dark:border-slate-800/50 mb-1 select-none">
-                <span class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">
+              <div
+                class="px-4 py-2 border-b border-slate-100 dark:border-slate-800/50 mb-1 select-none"
+              >
+                <span
+                  class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest"
+                >
                   Ví của bạn (EVM)
                 </span>
-                <p class="font-mono text-xs text-slate-600 dark:text-slate-400 break-all mt-0.5 font-bold">
+                <p
+                  class="font-mono text-xs text-slate-600 dark:text-slate-400 break-all mt-0.5 font-bold"
+                >
                   {{ web3Service.address() }}
                 </p>
               </div>
@@ -196,83 +255,74 @@
               <!-- Sao chép Địa chỉ ví -->
               <button
                 (click)="copyAddress($event)"
-                class="w-full text-left px-4 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-all flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-slate-400">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376A8.965 8.965 0 0012 12.75c-.497 0-.982.04-1.455.12l-.179.032m-3.078 0A8.975 8.975 0 004.5 16.5c0 .497.04.982.12 1.455l.032.179m-1.144-1.144l1.144-1.144m0 0a8.966 8.966 0 011.834-2.825m1.202-1.026a8.96 8.96 0 012.283-1.023m0 0l-2.283 1.023m0 0A8.98 8.98 0 0012 12.75v-2.25" />
-                  <rect x="9" y="3" width="10" height="12" rx="2" stroke="currentColor" stroke-width="2"/>
-                </svg>
+                class="w-full text-left px-4 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-all flex items-center gap-2 cursor-pointer"
+              >
+                <app-icon name="copy" class="w-4 h-4 text-slate-400" />
                 Sao chép địa chỉ ví
               </button>
 
               <!-- Mở Network Modal -->
               <button
                 (click)="web3Service.openNetworkModal()"
-                class="w-full text-left px-4 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-all flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-slate-400">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
-                </svg>
+                class="w-full text-left px-4 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-all flex items-center gap-2 cursor-pointer"
+              >
+                <app-icon name="link-chain" class="w-4 h-4 text-slate-400" />
                 Chuyển đổi mạng lưới
               </button>
 
               <!-- Xem trên Blockchain Explorer -->
               <button
                 (click)="viewOnExplorer($event)"
-                class="w-full text-left px-4 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-all flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-slate-400">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-                </svg>
+                class="w-full text-left px-4 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-all flex items-center gap-2 cursor-pointer"
+              >
+                <app-icon name="external-link" class="w-4 h-4 text-slate-400" />
                 Xem trên Explorer
               </button>
 
               <!-- Ngắt kết nối -->
               <button
                 (click)="disconnectWallet($event)"
-                class="w-full text-left px-4 py-2.5 text-xs font-bold text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 transition-all flex items-center gap-2 border-t border-slate-100 dark:border-slate-800/50 mt-1">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
-                </svg>
+                class="w-full text-left px-4 py-2.5 text-xs font-bold text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 transition-all flex items-center gap-2 border-t border-slate-100 dark:border-slate-800/50 mt-1 cursor-pointer"
+              >
+                <app-icon name="logout" class="w-4 h-4" />
                 Ngắt kết nối ví
               </button>
-
             </div>
           }
         </div>
-
       } @else {
-
         <!-- TRẠNG THÁI CHƯA KẾT NỐI -->
         <button
           (click)="web3Service.connect()"
-          class="bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 text-white font-extrabold px-6 py-2.5 rounded-xl shadow-md shadow-purple-500/20 hover:shadow-lg hover:shadow-purple-500/30 hover:scale-[1.02] active:scale-95 transition-all duration-300 cursor-pointer flex items-center gap-2 text-xs sm:text-sm">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15.91 11.672a.375.375 0 010 .656l-5.603 3.113a.375.375 0 01-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112z" />
-          </svg>
-          Kết nối ví
+          class="bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 text-white font-extrabold px-4 sm:px-6 py-2 sm:py-2.5 rounded-xl shadow-md shadow-purple-500/20 hover:shadow-lg hover:shadow-purple-500/30 hover:scale-[1.02] active:scale-95 transition-all duration-300 cursor-pointer flex items-center gap-1.5 sm:gap-2 text-xs"
+        >
+          <app-icon name="wallet" class="w-4 h-4 flex-shrink-0" strokeWidth="2.5" />
+          <span class="hidden xs:inline">Kết nối ví</span>
+          <span class="xs:hidden">Kết nối</span>
         </button>
-
       }
 
       <!-- Nút Mobile Menu Toggle (Chỉ hiển thị trên thiết bị di động nhỏ) -->
       <button
-        (click)="showMobileMenu.update(v => !v)"
-        class="flex md:hidden p-2.5 rounded-xl border border-slate-200/60 dark:border-slate-800/60 text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 cursor-pointer">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-        </svg>
+        (click)="showMobileMenu.update((v) => !v)"
+        class="flex md:hidden p-2 rounded-xl border border-slate-200/60 dark:border-slate-800/60 text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 cursor-pointer"
+      >
+        <app-icon name="hamburger" class="w-5 h-5" />
       </button>
-
     </div>
   </div>
 
-  <!-- MENU MOBILE DROPDOWN (Khi mở menu trên mobile) -->
+  <!-- MENU MOBILE DROPDOWN - CHỨA CẤU HÌNH THEME, NGÔN NGỮ, MẠNG LƯỚI CHO DI ĐỘNG -->
   @if (showMobileMenu()) {
-    <div class="md:hidden border-t border-slate-200/50 dark:border-slate-900/50 bg-white dark:bg-slate-950 px-4 py-4 space-y-4 animate-in slide-in-from-top duration-200">
-
-      <!-- Thông tin Mạng lưới trên Mobile -->
-      <div class="flex flex-col gap-1.5">
-        <span class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">
-          Mạng lưới hoạt động:
+    <div
+      class="md:hidden border-t border-slate-200/50 dark:border-slate-900/50 bg-white dark:bg-slate-950 px-5 py-6 space-y-6 animate-in slide-in-from-top duration-200 shadow-xl relative z-40"
+    >
+      <!-- Mạng lưới hoạt động -->
+      <div class="flex flex-col gap-2">
+        <span
+          class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest"
+        >
+          Mạng lưới hoạt động
         </span>
         @if (web3Service.isConnected()) {
           <button
@@ -283,18 +333,106 @@
             [class.bg-red-500\/10]="web3Service.isWrongChain()"
             [class.text-red-500]="web3Service.isWrongChain()"
             [class.border-red-500\/20]="web3Service.isWrongChain()"
-            class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold border w-full justify-center">
+            class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold border w-full justify-center cursor-pointer"
+          >
             <span
               [class.bg-pink-500]="!web3Service.isWrongChain()"
               [class.bg-red-500]="web3Service.isWrongChain()"
-              class="w-1.5 h-1.5 rounded-full inline-block"></span>
-            {{ web3Service.isWrongChain() ? 'Sai mạng lưới' : web3Service.networkName() }}
+              class="w-1.5 h-1.5 rounded-full inline-block"
+            ></span>
+            {{
+              web3Service.isWrongChain()
+                ? 'Mạng không hỗ trợ (Đổi mạng)'
+                : web3Service.networkName()
+            }}
           </button>
         } @else {
-          <span class="text-xs font-bold text-slate-400 italic">Chưa kết nối ví</span>
+          <span class="text-xs font-bold text-slate-400 dark:text-slate-500 italic"
+            >Chưa kết nối ví</span
+          >
         }
       </div>
 
+      <!-- Chọn giao diện (Theme Switcher di động dạng rộng) -->
+      <div class="flex flex-col gap-2">
+        <span
+          class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest"
+        >
+          Giao diện ứng dụng
+        </span>
+        <div
+          class="grid grid-cols-3 bg-slate-50 dark:bg-slate-900 p-1 rounded-xl border border-slate-200/50 dark:border-slate-800/50"
+        >
+          <button
+            (click)="themeService.setThemeMode('light')"
+            [class.bg-white]="themeService.themeMode() === 'light'"
+            [class.dark:bg-slate-800]="themeService.themeMode() === 'light'"
+            [class.text-amber-500]="themeService.themeMode() === 'light'"
+            [class.shadow-sm]="themeService.themeMode() === 'light'"
+            class="py-2.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-all cursor-pointer flex items-center justify-center gap-2 text-xs font-bold"
+          >
+            <app-icon name="sun" class="w-4 h-4" />
+            Sáng
+          </button>
+          <button
+            (click)="themeService.setThemeMode('dark')"
+            [class.bg-white]="themeService.themeMode() === 'dark'"
+            [class.dark:bg-slate-800]="themeService.themeMode() === 'dark'"
+            [class.text-indigo-500]="themeService.themeMode() === 'dark'"
+            [class.dark:text-indigo-400]="themeService.themeMode() === 'dark'"
+            [class.shadow-sm]="themeService.themeMode() === 'dark'"
+            class="py-2.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-all cursor-pointer flex items-center justify-center gap-2 text-xs font-bold"
+          >
+            <app-icon name="moon" class="w-4 h-4" />
+            Tối
+          </button>
+          <button
+            (click)="themeService.setThemeMode('auto')"
+            [class.bg-white]="themeService.themeMode() === 'auto'"
+            [class.dark:bg-slate-800]="themeService.themeMode() === 'auto'"
+            [class.text-purple-500]="themeService.themeMode() === 'auto'"
+            [class.dark:text-purple-400]="themeService.themeMode() === 'auto'"
+            [class.shadow-sm]="themeService.themeMode() === 'auto'"
+            class="py-2.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-all cursor-pointer flex items-center justify-center gap-2 text-xs font-bold"
+          >
+            <app-icon name="auto" class="w-4 h-4" />
+            Hệ thống
+          </button>
+        </div>
+      </div>
+
+      <!-- Chọn ngôn ngữ di động -->
+      <div class="flex flex-col gap-2">
+        <span
+          class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest"
+        >
+          Ngôn ngữ / Language
+        </span>
+        <div
+          class="grid grid-cols-2 bg-slate-50 dark:bg-slate-900 p-1 rounded-xl border border-slate-200/50 dark:border-slate-800/50"
+        >
+          <button
+            (click)="selectLang('VI')"
+            [class.bg-white]="currentLang() === 'VI'"
+            [class.dark:bg-slate-800]="currentLang() === 'VI'"
+            [class.text-purple-600]="currentLang() === 'VI'"
+            [class.dark:text-purple-400]="currentLang() === 'VI'"
+            class="py-2.5 rounded-lg text-slate-400 transition-all flex items-center justify-center gap-1.5 text-xs font-bold cursor-pointer"
+          >
+            Tiếng Việt
+          </button>
+          <button
+            (click)="selectLang('EN')"
+            [class.bg-white]="currentLang() === 'EN'"
+            [class.dark:bg-slate-800]="currentLang() === 'EN'"
+            [class.text-purple-600]="currentLang() === 'EN'"
+            [class.dark:text-purple-400]="currentLang() === 'EN'"
+            class="py-2.5 rounded-lg text-slate-400 transition-all flex items-center justify-center gap-1.5 text-xs font-bold cursor-pointer"
+          >
+            English
+          </button>
+        </div>
+      </div>
     </div>
   }
 </header>
