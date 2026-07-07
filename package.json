@@ -17,7 +17,13 @@
     "@angular/forms": "^22.0.0",
     "@angular/platform-browser": "^22.0.0",
     "@angular/router": "^22.0.0",
+    "@reown/appkit": "^1.8.22",
+    "@reown/appkit-adapter-ethers": "^1.8.22",
+    "@tailwindcss/postcss": "^4.3.2",
+    "ethers": "^6.17.0",
+    "postcss": "^8.5.16",
     "rxjs": "~7.8.0",
+    "tailwindcss": "^4.3.2",
     "tslib": "^2.3.0"
   },
   "devDependencies": {

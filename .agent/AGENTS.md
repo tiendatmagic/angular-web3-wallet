@@ -1,5 +1,19 @@
 # Lịch sử yêu cầu và xử lý của Agent
 
+## Ngày 08/07/2026
+
+### Yêu cầu: Xây dựng khung dự án Angular Web3 bằng Tailwind CSS v4, Ethers.js v6 và Reown AppKit
+- **Nội dung yêu cầu:** Cài đặt và cấu hình Tailwind v4, tích hợp Ethers v6 + Reown AppKit làm khung sườn cho nhiều dự án Web3, xây dựng giao diện Header Menu ProofRandom responsive theo thiết kế mẫu, hỗ trợ chuyển đổi mạng, kết nối ví và tách biệt môi trường cấu hình linh hoạt.
+- **Giải pháp:**
+  - **Tổ chức cấu trúc:** Cấu hình Path Aliases (`@core/*`, `@shared/*`, `@features/*`, `@environments/*`) trong `tsconfig.json` tuân thủ nghiêm ngặt `ARCHITECTURE.md`.
+  - **Quản lý Môi trường:** Tạo thư mục `src/environments/` chứa các tệp `environment.ts` và `environment.development.ts`, cấu hình `fileReplacements` trong `angular.json` để tự động swap khi chạy dev/production. Đọc `projectId` động từ environment.
+  - **Tailwind v4:** Cài đặt thông qua PostCSS plugin, cấu hình styles toàn cục `styles.scss` với `@import "tailwindcss"`, Google Fonts `Quicksand`, màu accent thương hiệu (Hồng/Tím neon) và cap bo góc tối đa 15px theo `design.md`.
+  - **Logic Web3:** Xây dựng `Web3Service` sử dụng Ethers v6 `BrowserProvider` kết hợp với Reown AppKit, quản lý trạng thái tài khoản/mạng bằng signals, cung cấp các helper functions `connect()`, `disconnect()`, `switchNetwork()`, `getSigner()`, `getProvider()`.
+  - **Header Component:** Thiết kế giao diện Header responsive, hiển thị logo SVG dynamic, badge mạng lưới thay đổi linh hoạt và nút ví custom hiển thị địa chỉ rút gọn + số dư kèm dropdown.
+  - **Vá lỗi và Build:** Cấu hình `"ignoreDeprecations": "6.0"` trong `tsconfig.json` để tắt lỗi deprecate `baseUrl` của TypeScript, nâng giới hạn budget trong `angular.json` lên 5MB để bundle Web3 an toàn và sửa lỗi thiếu hàm copyAddress.
+- **Kết quả:** Biên dịch thành công 100% không còn lỗi. Ứng dụng chạy mượt mà, sẵn sàng phục vụ làm khung sườn cho nhiều DApp Web3.
+
+
 ## Ngày 02/07/2026
 
 ### Yêu cầu: Đồng bộ tự động theme Light/Dark cho WalletConnect Modal (Reown AppKit)
