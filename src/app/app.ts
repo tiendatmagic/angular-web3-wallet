@@ -1,7 +1,9 @@
 import { Component, signal, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { HeaderComponent } from '@shared/components/header/header.component';
 import { ToastComponent } from '@shared/components/toast/toast.component';
+import { IconComponent } from '@shared/components/icon/icon.component';
 import { Web3Service } from '@core/services/web3.service';
 import { ToastService } from '@core/services/toast.service';
 import { parseEther } from 'ethers';
@@ -9,7 +11,7 @@ import { parseEther } from 'ethers';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [HeaderComponent, ToastComponent, FormsModule],
+  imports: [CommonModule, HeaderComponent, ToastComponent, FormsModule, IconComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

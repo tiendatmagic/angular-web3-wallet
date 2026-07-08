@@ -2,30 +2,25 @@
 <app-header></app-header>
 
 <!-- MAIN CONTAINER -->
-<main class="max-w-[1530px] mx-auto w-full px-4 sm:px-6 py-8 md:py-12 space-y-8">
+<main class="max-w-[1530px] mx-auto w-full px-4 sm:px-6 py-6 md:py-10 space-y-6 md:space-y-8">
 
   <!-- BANNER CHƯA KẾT NỐI VÍ -->
   @if (!web3Service.isConnected()) {
     <div class="bg-white/60 dark:bg-slate-900/60 backdrop-blur-md border border-slate-200/50 dark:border-slate-800/50 rounded-2xl p-8 md:p-12 text-center max-w-2xl mx-auto shadow-xl transition-all duration-300">
       <div class="w-16 h-16 bg-purple-50 dark:bg-purple-950/30 rounded-full flex items-center justify-center mx-auto mb-6 text-purple-600 dark:text-purple-400 border border-purple-500/20">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
-        </svg>
+        <app-icon name="blockchain" class="w-8 h-8" strokeWidth="1.5" />
       </div>
       <h2 class="text-2xl md:text-3xl font-black text-slate-800 dark:text-white mb-4">
         Khung ứng dụng Web3 cao cấp
       </h2>
       <p class="text-slate-500 dark:text-slate-400 text-sm sm:text-base mb-8 max-w-md mx-auto leading-relaxed">
-        Để bắt đầu trải nghiệm các tính năng tương tác blockchain (Xem số dư, gửi giao dịch và ký tin nhắn), vui lòng nhấp vào nút bên dưới để liên kết ví của bạn.
+        Để bắt đầu trải nghiệm các tính năng tương tác blockchain, vui lòng kết nối ví của bạn.
       </p>
-      <button 
+      <button
         (click)="web3Service.connect()"
-        class="bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 text-white font-extrabold px-8 py-3.5 rounded-xl shadow-lg shadow-purple-500/25 hover:shadow-purple-500/35 hover:scale-[1.02] active:scale-95 transition-all duration-300 cursor-pointer inline-flex items-center gap-2 text-sm sm:text-base">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          <path stroke-linecap="round" stroke-linejoin="round" d="M15.91 11.672a.375.375 0 010 .656l-5.603 3.113a.375.375 0 01-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112z" />
-        </svg>
+        class="bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 text-white font-extrabold px-8 py-3.5 rounded-xl shadow-lg shadow-purple-500/25 hover:shadow-purple-500/35 hover:scale-[1.02] active:scale-95 transition-all duration-300 cursor-pointer inline-flex items-center gap-2 text-sm sm:text-base"
+      >
+        <app-icon name="wallet" class="w-5 h-5" strokeWidth="2" />
         Kết nối ví của bạn
       </button>
     </div>
@@ -33,49 +28,48 @@
 
   <!-- DASHBOARD HOẠT ĐỘNG KHI ĐÃ KẾT NỐI -->
   @if (web3Service.isConnected()) {
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-      
-      <!-- CỘT TRÁI: THÔNG TIN CHI TIẾT VÍ & MẠNG LƯỚI (4/12 cột) -->
-      <div class="lg:col-span-5 space-y-6">
-        
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 items-start">
+
+      <!-- CỘT TRÁI: THÔNG TIN CHI TIẾT VÍ & MẠNG LƯỚI (5/12 cột) -->
+      <div class="lg:col-span-5 space-y-5 md:space-y-6">
+
         <!-- CARD TRẠNG THÁI VÍ -->
-        <div class="bg-white/60 dark:bg-slate-900/60 backdrop-blur-md border border-slate-200/50 dark:border-slate-800/50 rounded-2xl p-6 shadow-md transition-all duration-300">
+        <div class="bg-white/60 dark:bg-slate-900/60 backdrop-blur-md border border-slate-200/50 dark:border-slate-800/50 rounded-2xl p-5 md:p-6 shadow-md transition-all duration-300">
           <h3 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4">
             Trạng thái tài khoản
           </h3>
-          
+
           <div class="space-y-4">
             <!-- Số dư lớn -->
-            <div class="flex flex-col py-2">
+            <div class="flex flex-col py-1">
               <span class="text-xs font-bold text-slate-400 dark:text-slate-500">Số dư hiện tại</span>
-              <span class="text-3xl sm:text-4xl font-black text-transparent bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text">
+              <span class="text-3xl sm:text-4xl font-black text-transparent bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text mt-0.5">
                 {{ web3Service.balance() }} ETH
               </span>
             </div>
 
-            <!-- Địa chỉ ví -->
+            <!-- Địa chỉ ví - sửa responsive: dùng min-w-0 + truncate cho địa chỉ ngắn gọn, flex-shrink-0 cho nút -->
             <div class="flex flex-col gap-1">
               <span class="text-xs font-bold text-slate-400 dark:text-slate-500">Địa chỉ ví của bạn</span>
-              <div class="flex items-center justify-between bg-slate-50 dark:bg-slate-950/40 border border-slate-200/30 dark:border-slate-800/30 rounded-xl px-3 py-2.5">
-                <span class="font-mono text-xs font-bold text-slate-600 dark:text-slate-300 break-all pr-2">
+              <div class="flex items-center gap-2 bg-slate-50 dark:bg-slate-950/40 border border-slate-200/30 dark:border-slate-800/30 rounded-xl px-3 py-2.5">
+                <span class="font-mono text-xs font-bold text-slate-600 dark:text-slate-300 min-w-0 flex-1 truncate">
                   {{ web3Service.address() }}
                 </span>
-                <button 
+                <button
                   (click)="copyAddress($event)"
                   class="p-1.5 text-slate-400 hover:text-purple-600 dark:hover:text-purple-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all cursor-pointer flex-shrink-0"
-                  title="Sao chép địa chỉ">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376A8.965 8.965 0 0012 12.75c-.497 0-.982.04-1.455.12l-.179.032m-3.078 0A8.975 8.975 0 004.5 16.5c0 .497.04.982.12 1.455l.032.179m-1.144-1.144l1.144-1.144m0 0a8.966 8.966 0 011.834-2.825m1.202-1.026a8.96 8.96 0 012.283-1.023m0 0l-2.283 1.023m0 0A8.98 8.98 0 0012 12.75v-2.25" />
-                  </svg>
+                  title="Sao chép địa chỉ"
+                >
+                  <app-icon name="copy" class="w-4 h-4" />
                 </button>
               </div>
             </div>
 
-            <!-- Tên mạng lưới -->
+            <!-- Tên mạng lưới & Chain ID -->
             <div class="grid grid-cols-2 gap-4 border-t border-slate-100 dark:border-slate-800/40 pt-4">
               <div class="flex flex-col">
                 <span class="text-[10px] font-bold text-slate-400 uppercase">Mạng kết nối</span>
-                <span class="text-sm font-extrabold text-slate-700 dark:text-slate-200">
+                <span class="text-sm font-extrabold text-slate-700 dark:text-slate-200 truncate">
                   {{ web3Service.networkName() }}
                 </span>
               </div>
@@ -90,39 +84,39 @@
         </div>
 
         <!-- CARD CHUYỂN MẠNG NHANH -->
-        <div class="bg-white/60 dark:bg-slate-900/60 backdrop-blur-md border border-slate-200/50 dark:border-slate-800/50 rounded-2xl p-6 shadow-md transition-all duration-300">
+        <div class="bg-white/60 dark:bg-slate-900/60 backdrop-blur-md border border-slate-200/50 dark:border-slate-800/50 rounded-2xl p-5 md:p-6 shadow-md transition-all duration-300">
           <h3 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4">
             Chuyển nhanh mạng lưới
           </h3>
 
           <!-- Nhắc nhở nếu sai mạng -->
           @if (web3Service.isWrongChain()) {
-            <div class="bg-red-500/10 border border-red-500/25 rounded-xl p-3 mb-4 text-xs font-bold text-red-500 flex items-start gap-2 animate-pulse">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 mt-0.5 flex-shrink-0">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-              </svg>
-              <span>Bạn đang ở mạng không được hỗ trợ. Vui lòng chuyển sang một trong các mạng dưới đây.</span>
+            <div class="bg-red-500/10 border border-red-500/25 rounded-xl p-3 mb-4 text-xs font-bold text-red-500 flex items-start gap-2">
+              <app-icon name="warning" class="w-4 h-4 mt-0.5 flex-shrink-0" />
+              <span>Bạn đang ở mạng không được hỗ trợ. Vui lòng chuyển sang mạng dưới đây.</span>
             </div>
           }
 
           <div class="flex flex-col gap-2">
             @for (chain of web3Service.supportedChains; track chain.id) {
-              <button 
+              <button
                 (click)="web3Service.switchNetwork(chain.id)"
                 [class.border-purple-500\/40]="web3Service.chainId() === chain.id"
                 [class.bg-purple-500\/5]="web3Service.chainId() === chain.id"
                 [class.text-purple-600]="web3Service.chainId() === chain.id"
                 [class.dark:text-purple-400]="web3Service.chainId() === chain.id"
-                class="flex items-center justify-between border border-slate-200/50 dark:border-slate-800/50 rounded-xl px-4 py-3 hover:bg-slate-50 dark:hover:bg-slate-800/40 text-sm font-bold text-slate-700 dark:text-slate-300 transition-all cursor-pointer">
-                <span class="flex items-center gap-2">
-                  <span 
+                class="flex items-center justify-between border border-slate-200/50 dark:border-slate-800/50 rounded-xl px-4 py-3 hover:bg-slate-50 dark:hover:bg-slate-800/40 text-sm font-bold text-slate-700 dark:text-slate-300 transition-all cursor-pointer"
+              >
+                <span class="flex items-center gap-2 min-w-0">
+                  <span
                     [class.bg-emerald-500]="web3Service.chainId() === chain.id"
                     [class.bg-slate-300]="web3Service.chainId() !== chain.id"
                     [class.dark:bg-slate-700]="web3Service.chainId() !== chain.id"
-                    class="w-1.5 h-1.5 rounded-full inline-block"></span>
-                  {{ chain.name }}
+                    class="w-1.5 h-1.5 rounded-full inline-block flex-shrink-0"
+                  ></span>
+                  <span class="truncate">{{ chain.name }}</span>
                 </span>
-                <span class="text-xs font-mono font-bold text-slate-400">ID: {{ chain.id }}</span>
+                <span class="text-xs font-mono font-bold text-slate-400 flex-shrink-0 ml-2">ID: {{ chain.id }}</span>
               </button>
             }
           </div>
@@ -131,56 +125,57 @@
       </div>
 
       <!-- CỘT PHẢI: FORM GỬI TIỀN & FORM KÝ TIN NHẮN (7/12 cột) -->
-      <div class="lg:col-span-7 space-y-6">
-        
+      <div class="lg:col-span-7 space-y-5 md:space-y-6">
+
         <!-- CARD 1: GỬI GIAO DỊCH (TRANSFER ETH) -->
-        <div class="bg-white/60 dark:bg-slate-900/60 backdrop-blur-md border border-slate-200/50 dark:border-slate-800/50 rounded-2xl p-6 shadow-md transition-all duration-300">
-          <div class="flex items-center gap-2 mb-4">
-            <div class="p-2 bg-pink-500/10 text-pink-500 rounded-xl border border-pink-500/15">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
-              </svg>
+        <div class="bg-white/60 dark:bg-slate-900/60 backdrop-blur-md border border-slate-200/50 dark:border-slate-800/50 rounded-2xl p-5 md:p-6 shadow-md transition-all duration-300">
+          <div class="flex items-center gap-2.5 mb-4">
+            <div class="p-2 bg-pink-500/10 text-pink-500 rounded-xl border border-pink-500/15 flex-shrink-0">
+              <app-icon name="send" class="w-5 h-5" />
             </div>
-            <h3 class="text-lg font-extrabold text-slate-800 dark:text-white">
+            <h3 class="text-base md:text-lg font-extrabold text-slate-800 dark:text-white">
               Gửi giao dịch Demo (Transfer ETH)
             </h3>
           </div>
-          
-          <p class="text-xs text-slate-400 dark:text-slate-500 mb-6 leading-relaxed">
-            Bạn có thể thử nghiệm gửi ETH tới một ví khác. Giao dịch này sẽ sử dụng Signer từ ví đã kết nối để thực thi trực tiếp trên mạng lưới hiện tại của bạn.
+
+          <p class="text-xs text-slate-400 dark:text-slate-500 mb-5 leading-relaxed">
+            Thử nghiệm gửi ETH tới một ví khác. Giao dịch này sẽ sử dụng Signer từ ví đã kết nối để thực thi trực tiếp trên mạng lưới hiện tại.
           </p>
 
           <div class="space-y-4">
             <!-- Địa chỉ nhận -->
             <div class="flex flex-col gap-1.5">
               <label class="text-xs font-bold text-slate-500 dark:text-slate-400">Địa chỉ nhận (To Address)</label>
-              <input 
+              <input
                 type="text"
                 [(ngModel)]="toAddress"
                 placeholder="0x..."
-                class="w-full py-2.5 px-4 rounded-xl text-sm bg-slate-50 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 focus:border-purple-500 focus:ring-1 focus:ring-purple-500/20 outline-none transition-all font-semibold" />
+                class="w-full py-2.5 px-4 rounded-xl text-sm bg-slate-50 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 focus:border-purple-500 focus:ring-1 focus:ring-purple-500/20 outline-none transition-all font-semibold"
+              />
             </div>
 
             <!-- Số lượng -->
             <div class="flex flex-col gap-1.5">
               <label class="text-xs font-bold text-slate-500 dark:text-slate-400">Số lượng (ETH)</label>
               <div class="relative">
-                <input 
+                <input
                   type="number"
                   [(ngModel)]="amount"
                   placeholder="0.01"
                   step="0.001"
                   min="0"
-                  class="w-full py-2.5 pl-4 pr-16 rounded-xl text-sm bg-slate-50 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 focus:border-purple-500 focus:ring-1 focus:ring-purple-500/20 outline-none transition-all font-semibold" />
+                  class="w-full py-2.5 pl-4 pr-16 rounded-xl text-sm bg-slate-50 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 focus:border-purple-500 focus:ring-1 focus:ring-purple-500/20 outline-none transition-all font-semibold"
+                />
                 <span class="absolute right-4 top-2.5 text-xs font-black text-slate-400 uppercase select-none">ETH</span>
               </div>
             </div>
 
             <!-- Nút gửi giao dịch -->
-            <button 
+            <button
               (click)="sendTransaction()"
               [disabled]="txLoading() || !toAddress() || !amount()"
-              class="w-full bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 text-white font-extrabold py-3 rounded-xl shadow-md shadow-purple-500/10 hover:shadow-lg hover:shadow-purple-500/20 hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 disabled:pointer-events-none transition-all duration-300 cursor-pointer flex items-center justify-center gap-2 text-sm">
+              class="w-full bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 text-white font-extrabold py-3 rounded-xl shadow-md shadow-purple-500/10 hover:shadow-lg hover:shadow-purple-500/20 hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 disabled:pointer-events-none transition-all duration-300 cursor-pointer flex items-center justify-center gap-2 text-sm"
+            >
               @if (txLoading()) {
                 <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -188,6 +183,7 @@
                 </svg>
                 <span>Đang xử lý giao dịch...</span>
               } @else {
+                <app-icon name="arrow-up-right" class="w-4 h-4" strokeWidth="2.5" />
                 <span>Xác nhận gửi ETH</span>
               }
             </button>
@@ -195,14 +191,19 @@
             <!-- Kết quả giao dịch -->
             @if (txHash()) {
               <div class="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-4 text-xs space-y-1">
-                <p class="font-extrabold text-emerald-600 dark:text-emerald-400">Giao dịch đã được gửi!</p>
-                <div class="flex items-center justify-between font-mono mt-1">
-                  <span class="break-all text-slate-500 dark:text-slate-400 pr-2">Tx Hash: {{ txHash() }}</span>
-                  <a 
+                <p class="font-extrabold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
+                  <app-icon name="check-circle" class="w-4 h-4" />
+                  Giao dịch đã được gửi!
+                </p>
+                <div class="flex items-center gap-2 font-mono mt-2 bg-white/50 dark:bg-slate-950/40 rounded-lg p-2.5">
+                  <span class="text-slate-500 dark:text-slate-400 min-w-0 flex-1 truncate">{{ txHash() }}</span>
+                  <a
                     [href]="web3Service.chainId() === 421614 ? 'https://sepolia.arbiscan.io/tx/' + txHash() : 'https://sepolia.etherscan.io/tx/' + txHash()"
                     target="_blank"
-                    class="text-purple-600 dark:text-purple-400 hover:underline font-bold flex-shrink-0">
-                    Xem chi tiết
+                    class="text-purple-600 dark:text-purple-400 hover:underline font-bold flex-shrink-0 flex items-center gap-1"
+                  >
+                    <app-icon name="external-link" class="w-3.5 h-3.5" />
+                    Xem
                   </a>
                 </div>
               </div>
@@ -211,47 +212,45 @@
             <!-- Lỗi giao dịch -->
             @if (txError()) {
               <div class="bg-red-500/10 border border-red-500/25 rounded-xl p-4 text-xs font-bold text-red-500 flex items-start gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 mt-0.5 flex-shrink-0">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-                </svg>
-                <span class="break-all">Lỗi: {{ txError() }}</span>
+                <app-icon name="warning" class="w-4 h-4 mt-0.5 flex-shrink-0" />
+                <span class="break-words min-w-0">Lỗi: {{ txError() }}</span>
               </div>
             }
           </div>
         </div>
 
         <!-- CARD 2: KÝ TIN NHẮN (SIGN MESSAGE) -->
-        <div class="bg-white/60 dark:bg-slate-900/60 backdrop-blur-md border border-slate-200/50 dark:border-slate-800/50 rounded-2xl p-6 shadow-md transition-all duration-300">
-          <div class="flex items-center gap-2 mb-4">
-            <div class="p-2 bg-purple-500/10 text-purple-500 rounded-xl border border-purple-500/15">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
-              </svg>
+        <div class="bg-white/60 dark:bg-slate-900/60 backdrop-blur-md border border-slate-200/50 dark:border-slate-800/50 rounded-2xl p-5 md:p-6 shadow-md transition-all duration-300">
+          <div class="flex items-center gap-2.5 mb-4">
+            <div class="p-2 bg-purple-500/10 text-purple-500 rounded-xl border border-purple-500/15 flex-shrink-0">
+              <app-icon name="pen" class="w-5 h-5" />
             </div>
-            <h3 class="text-lg font-extrabold text-slate-800 dark:text-white">
+            <h3 class="text-base md:text-lg font-extrabold text-slate-800 dark:text-white">
               Demo ký tin nhắn bảo mật (Sign Message)
             </h3>
           </div>
-          
-          <p class="text-xs text-slate-400 dark:text-slate-500 mb-6 leading-relaxed">
+
+          <p class="text-xs text-slate-400 dark:text-slate-500 mb-5 leading-relaxed">
             Kiểm tra chức năng xác thực người dùng bằng cách ký một tin nhắn văn bản thông qua khóa cá nhân của ví mà không tốn phí Gas.
           </p>
 
           <div class="space-y-4">
             <!-- Nội dung tin nhắn -->
             <div class="flex flex-col gap-1.5">
-              <label class="text-xs font-bold text-slate-505 dark:text-slate-400">Nội dung tin nhắn cần ký</label>
-              <textarea 
+              <label class="text-xs font-bold text-slate-500 dark:text-slate-400">Nội dung tin nhắn cần ký</label>
+              <textarea
                 rows="3"
                 [(ngModel)]="messageToSign"
-                class="w-full py-2.5 px-4 rounded-xl text-sm bg-slate-50 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 focus:border-purple-500 focus:ring-1 focus:ring-purple-500/20 outline-none transition-all font-semibold resize-none"></textarea>
+                class="w-full py-2.5 px-4 rounded-xl text-sm bg-slate-50 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 focus:border-purple-500 focus:ring-1 focus:ring-purple-500/20 outline-none transition-all font-semibold resize-none"
+              ></textarea>
             </div>
 
             <!-- Nút ký -->
-            <button 
+            <button
               (click)="signMessage()"
               [disabled]="signLoading() || !messageToSign()"
-              class="w-full bg-[var(--dynamic-primary)]/10 text-[var(--dynamic-primary)] hover:bg-[var(--dynamic-primary)]/15 border border-[var(--dynamic-primary)]/15 font-extrabold py-3 rounded-xl hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 disabled:pointer-events-none transition-all duration-300 cursor-pointer flex items-center justify-center gap-2 text-sm">
+              class="w-full bg-[var(--dynamic-primary)]/10 text-[var(--dynamic-primary)] hover:bg-[var(--dynamic-primary)]/15 border border-[var(--dynamic-primary)]/15 font-extrabold py-3 rounded-xl hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 disabled:pointer-events-none transition-all duration-300 cursor-pointer flex items-center justify-center gap-2 text-sm"
+            >
               @if (signLoading()) {
                 <svg class="animate-spin h-5 w-5 text-purple-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -259,6 +258,7 @@
                 </svg>
                 <span>Đang ký tin nhắn...</span>
               } @else {
+                <app-icon name="shield-check" class="w-4 h-4" />
                 <span>Ký nhận tin nhắn</span>
               }
             </button>
@@ -266,18 +266,20 @@
             <!-- Kết quả chữ ký -->
             @if (signature()) {
               <div class="bg-purple-500/10 border border-purple-500/20 rounded-xl p-4 text-xs space-y-2">
-                <p class="font-extrabold text-purple-600 dark:text-purple-400">Đã ký tin nhắn thành công!</p>
-                <div class="flex items-start justify-between gap-3 bg-white/50 dark:bg-slate-950/40 p-2.5 rounded-lg border border-purple-500/5">
-                  <span class="break-all font-mono text-[11px] text-slate-500 dark:text-slate-400 select-all leading-relaxed">
+                <p class="font-extrabold text-purple-600 dark:text-purple-400 flex items-center gap-1.5">
+                  <app-icon name="check-circle" class="w-4 h-4" />
+                  Đã ký tin nhắn thành công!
+                </p>
+                <div class="flex items-start justify-between gap-2 bg-white/50 dark:bg-slate-950/40 p-2.5 rounded-lg border border-purple-500/5">
+                  <span class="break-all font-mono text-[11px] text-slate-500 dark:text-slate-400 select-all leading-relaxed min-w-0 flex-1">
                     {{ signature() }}
                   </span>
-                  <button 
+                  <button
                     (click)="copySignature()"
-                    class="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-500 hover:text-purple-600 dark:hover:text-purple-400 flex-shrink-0 cursor-pointer transition-all"
-                    title="Sao chép chữ ký">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 7.5V6.108c0-1.135.845-2.098 1.976-2.192.373-.03.748-.057 1.123-.08M15.75 18H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08M15.75 18.75v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5A3.375 3.375 0 006.375 7.5H5.25m11.9-3.664A2.251 2.251 0 0015 2.25h-1.5a2.251 2.251 0 00-2.15 1.586m5.8 0c.065.21.1.433.1.664v.75h-6V4.5c0-.231.035-.454.1-.664M6.75 7.5H4.875c-.621 0-1.125.504-1.125 1.125v12c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V16.5a9 9 0 00-9-9z" />
-                    </svg>
+                    class="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-500 hover:text-purple-600 dark:hover:text-purple-400 flex-shrink-0 cursor-pointer transition-all mt-0.5"
+                    title="Sao chép chữ ký"
+                  >
+                    <app-icon name="copy" class="w-4 h-4" />
                   </button>
                 </div>
               </div>
@@ -286,10 +288,8 @@
             <!-- Lỗi ký tin nhắn -->
             @if (signError()) {
               <div class="bg-red-500/10 border border-red-500/25 rounded-xl p-4 text-xs font-bold text-red-500 flex items-start gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 mt-0.5 flex-shrink-0">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-                </svg>
-                <span class="break-all">Lỗi: {{ signError() }}</span>
+                <app-icon name="warning" class="w-4 h-4 mt-0.5 flex-shrink-0" />
+                <span class="break-words min-w-0">Lỗi: {{ signError() }}</span>
               </div>
             }
           </div>
