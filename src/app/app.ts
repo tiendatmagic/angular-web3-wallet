@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { HeaderComponent } from '@shared/components/header/header.component';
 import { ToastComponent } from '@shared/components/toast/toast.component';
 import { IconComponent } from '@shared/components/icon/icon.component';
+import { BadgeComponent } from '@shared/components/badge/badge.component';
+import { ButtonComponent } from '@shared/components/button/button.component';
 import { Web3Service } from '@core/services/web3.service';
 import { ToastService } from '@core/services/toast.service';
 import { parseEther } from 'ethers';
@@ -11,7 +13,7 @@ import { parseEther } from 'ethers';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, HeaderComponent, ToastComponent, FormsModule, IconComponent],
+  imports: [CommonModule, FormsModule, HeaderComponent, ToastComponent, IconComponent, BadgeComponent, ButtonComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
