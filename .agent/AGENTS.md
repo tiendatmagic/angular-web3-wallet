@@ -1823,3 +1823,4 @@
   - **Frontend (Angular):**
     - CÃ¡ÂºÂ­p nhÃ¡ÂºÂ­t [tax.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/tax/tax.component.ts): Khai bÃƒÂ¡o cÃ¡Â»Â isOpeningDetail vÃƒÂ  chÃ¡ÂºÂ·n sÃ¡Â»Â± kiÃ¡Â»â€¡n mÃ¡Â»Å¸ modal chÃ¡Â»â€œng chÃƒÂ©o khi ngÃ†Â°Ã¡Â»Âi dÃƒÂ¹ng double click hoÃ¡ÂºÂ·c click spam nhiÃ¡Â»Âu lÃ¡ÂºÂ§n liÃƒÂªn tiÃ¡ÂºÂ¿p trÃƒÂªn mÃ¡Â»â„¢t dÃƒÂ²ng log. CÃ¡Â»Â sÃ¡ÂºÂ½ tÃ¡Â»Â± giÃ¡ÂºÂ£i phÃƒÂ³ng sau khi Ã„â€˜ÃƒÂ³ng modal hoÃ¡ÂºÂ·c tÃ¡Â»Â± reset sau 1 giÃƒÂ¢y.
 - **KÃ¡ÂºÂ¿t quÃ¡ÂºÂ£:** Build frontend thÃƒÂ nh cÃƒÂ´ng 100%. ChÃ¡ÂºÂ¡y script PowerShell kiÃ¡Â»Æ’m thÃ¡Â»Â­ 35 requests liÃƒÂªn tÃ¡Â»Â¥c lÃƒÂªn API: 30 requests Ã„â€˜Ã¡ÂºÂ§u thÃƒÂ nh cÃƒÂ´ng 200, tÃ¡Â»Â« request 31 trÃ¡Â»Å¸ Ã„â€˜i bÃ¡Â»â€¹ block 429 vÃƒÂ  tÃ¡Â»Â± mÃ¡Â»Å¸ khÃƒÂ³a sau 10 giÃƒÂ¢y.
+
