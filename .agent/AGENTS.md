@@ -53,6 +53,15 @@
   2. Việc không chỉ định rõ `chainId` trong transaction request có thể khiến ví di động không khớp được với session hiện tại trong trường hợp session chưa kịp cập nhật hoặc có sự lệch chain giữa DApp và ví.
 - **Giải pháp:** Cập nhật [home.component.ts](file:///d:/git/angular-web3-wallet/src/app/home.component.ts), điền mặc định thuộc tính `data: '0x'` và truyền tường minh `chainId: Number(this.web3Service.chainId())` vào đối tượng `txRequest` trước khi gọi `signer.sendTransaction(txRequest)`.
 
+### Yêu cầu: Loại bỏ toast kết nối ví khi reload và căn giữa toast trên mobile
+- **Nội dung yêu cầu:**
+  1. Loại bỏ thông báo toast "Kết nối ví thành công" hiển thị dư thừa khi người dùng reload trang (F5) mà ví đã kết nối từ trước.
+  2. Căn chỉnh lại hiển thị toast trên thiết bị di động (mobile): hiển thị ở phía dưới nhưng căn giữa chiều ngang thay vì lệch góc phải.
+- **Giải pháp:**
+  - Cập nhật [web3.service.ts](file:///d:/git/angular-web3-wallet/src/app/core/services/web3.service.ts): Xóa bỏ hẳn lệnh `this.toastService.showToast('Kết nối ví thành công!', 'success')` trong hàm `subscribeAccount`.
+  - Cập nhật [toast.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/toast/toast.component.html): Thay thế định vị class của wrapper thành `fixed bottom-5 left-1/2 -translate-x-1/2 sm:left-auto sm:right-5 sm:translate-x-0` để tự động căn giữa ngang trên mobile và trở về góc phải dưới trên desktop.
+
+
 
 
 

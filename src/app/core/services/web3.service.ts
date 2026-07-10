@@ -98,9 +98,6 @@ export class Web3Service {
 
       if (accountState.isConnected && accountState.address) {
         await this.updateBalanceAndNetwork();
-        if (!prevConnected) {
-          this.toastService.showToast('Kết nối ví thành công!', 'success');
-        }
       } else {
         this.balance.set('0.0000');
         this.chainId.set(null);
