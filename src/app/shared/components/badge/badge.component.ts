@@ -1,9 +1,9 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-badge, [app-badge]',
-  standalone: true,
+  
   imports: [CommonModule],
   template: `<ng-content></ng-content>`,
   host: {

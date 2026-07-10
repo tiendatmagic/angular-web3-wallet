@@ -5,7 +5,7 @@ import { CardComponent } from '@shared/components/card/card.component';
 
 @Component({
   selector: 'app-about',
-  standalone: true,
+  
   imports: [CommonModule, IconComponent, CardComponent],
   templateUrl: './about.component.html'
 })

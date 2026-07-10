@@ -23,7 +23,7 @@ import { debounceTime } from 'rxjs/operators';
  */
 @Component({
   selector: 'app-custom-search-input',
-  standalone: true,
+  
   imports: [CommonModule, FormsModule, IconComponent],
   templateUrl: './custom-search-input.component.html',
   providers: [
@@ -33,7 +33,7 @@ import { debounceTime } from 'rxjs/operators';
       multi: true,
     },
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  
   styles: [
     `
       :host {

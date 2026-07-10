@@ -1,9 +1,9 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'button[app-button], a[app-button]',
-  standalone: true,
+  
   imports: [CommonModule],
   template: `
     @if (loading) {

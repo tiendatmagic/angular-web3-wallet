@@ -1,9 +1,9 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-skeleton-loader',
-  standalone: true,
+  
   imports: [CommonModule],
   changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './skeleton-loader.component.html',

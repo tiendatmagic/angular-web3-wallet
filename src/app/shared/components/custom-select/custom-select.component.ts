@@ -28,10 +28,13 @@ export interface SelectOption {
  */
 @Component({
   selector: 'app-custom-select',
-  standalone: true,
+  host: {
+    '(document:click)': 'onClickOutside($event)'
+  },
+  
   imports: [CommonModule, FormsModule, IconComponent],
   templateUrl: './custom-select.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -68,7 +71,6 @@ export class CustomSelectComponent implements ControlValueAccessor {
   public readonly searchQuery = signal<string>('');
 
   /** Đóng dropdown khi click ra ngoài component */
-  @HostListener('document:click', ['$event'])
   public onClickOutside(event: MouseEvent): void {
     if (!this.elementRef.nativeElement.contains(event.target)) {
       this.isOpen.set(false);

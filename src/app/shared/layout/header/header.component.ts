@@ -1,10 +1,10 @@
-import { Component, computed, signal, inject, HostListener } from '@angular/core';
+import { Component, computed, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { Web3Service } from '@core/services/web3.service';
-import { ThemeService } from '@core/services/theme.service';
-import { ToastService } from '@core/services/toast.service';
+import { StateService } from '@core/services/state.service';
+
+
 import { IconComponent } from '@shared/components/icon/icon.component';
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { LogoComponent } from '@shared/components/logo/logo.component';
@@ -18,7 +18,7 @@ import { POPULAR_CHAINS } from '@core/utils/blockchain.utils';
  */
 @Component({
   selector: 'app-header',
-  standalone: true,
+  
   imports: [
     CommonModule,
     IconComponent,
@@ -30,6 +30,9 @@ import { POPULAR_CHAINS } from '@core/utils/blockchain.utils';
     TxSpeedSelectorComponent,
   ],
   templateUrl: './header.component.html',
+  host: {
+    '(document:click)': 'clickOut()'
+  },
   styles: [
     `
       :host {
@@ -39,9 +42,9 @@ import { POPULAR_CHAINS } from '@core/utils/blockchain.utils';
   ],
 })
 export class HeaderComponent {
-  public web3Service = inject(Web3Service);
-  public themeService = inject(ThemeService);
-  private toastService = inject(ToastService);
+  public stateService = inject(StateService);
+  
+  
 
   // Trạng thái hiển thị dropdown ví
   public showDropdown = signal(false);
@@ -50,11 +53,11 @@ export class HeaderComponent {
   public showNetworkDropdown = signal(false);
 
   // Trạng thái hiển thị Mobile Drawer
-  public showMobileMenu = signal(false);
+  
 
   // Rút gọn địa chỉ ví dạng 0x1234...5678
   public shortenedAddress = computed(() => {
-    const address = this.web3Service.address();
+    const address = this.stateService.address();
     if (!address) return '';
     return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
   });
@@ -73,18 +76,18 @@ export class HeaderComponent {
 
   public copyAddress(event: Event) {
     event.stopPropagation();
-    const address = this.web3Service.address();
+    const address = this.stateService.address();
     if (address) {
       navigator.clipboard.writeText(address);
-      this.toastService.showToast('Đã sao chép địa chỉ ví vào bộ nhớ tạm!', 'success');
+      this.stateService.showToast('Đã sao chép địa chỉ ví vào bộ nhớ tạm!', 'success');
       this.showDropdown.set(false);
     }
   }
 
   public viewOnExplorer(event: Event) {
     event.stopPropagation();
-    const address = this.web3Service.address();
-    const chainId = this.web3Service.chainId();
+    const address = this.stateService.address();
+    const chainId = this.stateService.chainId();
     if (!address) return;
 
     const activeChain = POPULAR_CHAINS.find((c) => Number(c.chainId) === Number(chainId));
@@ -95,12 +98,11 @@ export class HeaderComponent {
 
   public async disconnectWallet(event: Event) {
     event.stopPropagation();
-    await this.web3Service.disconnect();
+    await this.stateService.disconnectWallet();
     this.showDropdown.set(false);
   }
 
   // Đóng tất cả dropdown khi click ra ngoài
-  @HostListener('document:click')
   public clickOut() {
     this.showDropdown.set(false);
     this.showNetworkDropdown.set(false);

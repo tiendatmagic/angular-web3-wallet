@@ -1,26 +1,26 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ThemeService } from '@core/services/theme.service';
+import { StateService } from '@core/services/state.service';
 import { IconComponent } from '@shared/components/icon/icon.component';
 
 @Component({
   selector: 'app-theme-switcher',
-  standalone: true,
+  
   imports: [CommonModule, IconComponent],
   template: `
     <div class="flex items-center justify-between">
       <div class="flex items-center gap-1.5 leading-tight select-none">
         <span class="text-xs font-bold text-slate-700 dark:text-slate-300">Giao diện</span>
         <span
-          [class.text-amber-500]="themeService.themeMode() === 'light'"
-          [class.text-indigo-500]="themeService.themeMode() === 'dark'"
-          [class.text-purple-500]="themeService.themeMode() === 'auto'"
+          [class.text-amber-500]="stateService.themeMode() === 'light'"
+          [class.text-indigo-500]="stateService.themeMode() === 'dark'"
+          [class.text-purple-500]="stateService.themeMode() === 'auto'"
           class="text-[11px] font-bold"
         >
           {{
-            themeService.themeMode() === 'light'
+            stateService.themeMode() === 'light'
               ? 'Sáng'
-              : themeService.themeMode() === 'dark'
+              : stateService.themeMode() === 'dark'
                 ? 'Tối'
                 : 'Tự động'
           }}
@@ -30,33 +30,33 @@ import { IconComponent } from '@shared/components/icon/icon.component';
         class="flex items-center bg-slate-100 dark:bg-slate-900 p-0.5 rounded-full border border-slate-200/40 dark:border-slate-800/40"
       >
         <button
-          (click)="themeService.setThemeMode('light')"
-          [class.bg-white]="themeService.themeMode() === 'light'"
-          [class.dark:bg-slate-800]="themeService.themeMode() === 'light'"
-          [class.text-amber-500]="themeService.themeMode() === 'light'"
-          [class.shadow-sm]="themeService.themeMode() === 'light'"
+          (click)="stateService.setThemeMode('light')"
+          [class.bg-white]="stateService.themeMode() === 'light'"
+          [class.dark:bg-slate-800]="stateService.themeMode() === 'light'"
+          [class.text-amber-500]="stateService.themeMode() === 'light'"
+          [class.shadow-sm]="stateService.themeMode() === 'light'"
           class="p-1 rounded-full text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-all cursor-pointer flex items-center justify-center"
           title="Giao diện sáng"
         >
           <app-icon name="sun" class="w-3.5 h-3.5" />
         </button>
         <button
-          (click)="themeService.setThemeMode('auto')"
-          [class.bg-white]="themeService.themeMode() === 'auto'"
-          [class.dark:bg-slate-800]="themeService.themeMode() === 'auto'"
-          [class.text-purple-500]="themeService.themeMode() === 'auto'"
-          [class.shadow-sm]="themeService.themeMode() === 'auto'"
+          (click)="stateService.setThemeMode('auto')"
+          [class.bg-white]="stateService.themeMode() === 'auto'"
+          [class.dark:bg-slate-800]="stateService.themeMode() === 'auto'"
+          [class.text-purple-500]="stateService.themeMode() === 'auto'"
+          [class.shadow-sm]="stateService.themeMode() === 'auto'"
           class="p-1 rounded-full text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-all cursor-pointer flex items-center justify-center"
           title="Tự động theo hệ thống"
         >
           <app-icon name="auto" class="w-3.5 h-3.5" />
         </button>
         <button
-          (click)="themeService.setThemeMode('dark')"
-          [class.bg-white]="themeService.themeMode() === 'dark'"
-          [class.dark:bg-slate-800]="themeService.themeMode() === 'dark'"
-          [class.text-indigo-500]="themeService.themeMode() === 'dark'"
-          [class.shadow-sm]="themeService.themeMode() === 'dark'"
+          (click)="stateService.setThemeMode('dark')"
+          [class.bg-white]="stateService.themeMode() === 'dark'"
+          [class.dark:bg-slate-800]="stateService.themeMode() === 'dark'"
+          [class.text-indigo-500]="stateService.themeMode() === 'dark'"
+          [class.shadow-sm]="stateService.themeMode() === 'dark'"
           class="p-1 rounded-full text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-all cursor-pointer flex items-center justify-center"
           title="Giao diện tối"
         >
@@ -72,8 +72,7 @@ import { IconComponent } from '@shared/components/icon/icon.component';
       }
     `
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush
-})
+  })
 export class ThemeSwitcherComponent {
-  public themeService = inject(ThemeService);
+  public stateService = inject(StateService);
 }

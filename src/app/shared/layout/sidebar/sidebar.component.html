@@ -66,13 +66,13 @@
     <app-theme-switcher />
 
     <!-- Trạng thái ví kết nối -->
-    @if (web3Service.isConnected()) {
+    @if (stateService.isConnected()) {
       <div
         class="pt-3 border-t border-slate-100 dark:border-slate-800/60 flex items-center gap-2"
       >
         <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0 animate-pulse"></span>
         <span class="text-xs font-bold text-slate-500 dark:text-slate-400 truncate font-mono">
-          {{ web3Service.address() | slice: 0 : 6 }}...{{ web3Service.address() | slice: -4 }}
+          {{ stateService.address() | slice: 0 : 6 }}...{{ stateService.address() | slice: -4 }}
         </span>
       </div>
     }

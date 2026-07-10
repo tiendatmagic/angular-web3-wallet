@@ -6,7 +6,7 @@ import { CardComponent } from '@shared/components/card/card.component';
 
 @Component({
   selector: 'app-contact',
-  standalone: true,
+  
   imports: [CommonModule, IconComponent, ButtonComponent, CardComponent],
   templateUrl: './contact.component.html'
 })

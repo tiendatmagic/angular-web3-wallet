@@ -6,11 +6,11 @@ import { ModalComponent } from '@shared/components/modal/modal.component';
 import { IconComponent } from '@shared/components/icon/icon.component';
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { SidebarComponent } from '@shared/layout/sidebar/sidebar.component';
-import { Web3Service } from '@core/services/web3.service';
+import { StateService } from '@core/services/state.service';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
+  
   imports: [
     RouterOutlet,
     HeaderComponent,
@@ -24,16 +24,13 @@ import { Web3Service } from '@core/services/web3.service';
   styleUrl: './app.scss'
 })
 export class App {
-  public web3Service = inject(Web3Service);
+  public stateService = inject(StateService);
 
   public switchNetwork(chainId: number) {
-    this.web3Service.switchNetwork(chainId);
+    this.stateService.switchNetwork(chainId);
   }
 
   public disconnectWallet() {
-    this.web3Service.disconnect();
-    this.web3Service.showWrongChainModal.set(false);
+    this.stateService.disconnectWallet();
   }
-
 }
-

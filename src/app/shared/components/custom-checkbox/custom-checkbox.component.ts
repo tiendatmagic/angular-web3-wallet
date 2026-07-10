@@ -19,7 +19,7 @@ import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/f
  */
 @Component({
   selector: 'app-custom-checkbox',
-  standalone: true,
+  
   imports: [CommonModule, FormsModule],
   templateUrl: './custom-checkbox.component.html',
   providers: [
@@ -29,7 +29,7 @@ import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/f
       multi: true,
     },
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  
   styles: [
     `
       :host {

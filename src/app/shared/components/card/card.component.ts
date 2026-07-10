@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 /**
  * Card container tái sử dụng toàn hệ thống.
@@ -10,13 +10,13 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
  */
 @Component({
   selector: 'app-card, [app-card]',
-  standalone: true,
+  
   template: `<ng-content></ng-content>`,
   host: {
     '[class.app-card]': '!interactive',
     '[class.app-card-interactive]': 'interactive',
   },
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  
   styles: [
     `
       :host:not(.flex):not(.grid):not(.inline-block):not(.inline-flex):not(.hidden) {

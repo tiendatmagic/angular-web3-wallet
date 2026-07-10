@@ -2232,5 +2232,19 @@
     - Đổi tên tham chiếu icon từ `'blockchain'` (chưa đăng ký) sang `'info'` tại [sidebar.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/layout/sidebar/sidebar.component.html) và [header.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/layout/header/header.component.html).
   - **Cập nhật tài liệu kiến trúc**: Bổ sung quy tắc bắt buộc phân tách logic và giao diện đối với các Flat Feature trong [ARCHITECTURE.md](file:///d:/git/angular-web3-wallet/ARCHITECTURE.md).
 - **Kết quả:** Giao diện hiển thị icon chuẩn xác theo mockup, các tính năng được cấu trúc phẳng gọn gàng, biên dịch build thành công 100% không lỗi.
+### Yêu cầu: Tái cấu trúc theo Facade Pattern (StateService), quản lý UI State toàn cục và Lazy Loading định tuyến giống cafe-blockchain
 
-
+- **Nội dung yêu cầu:** Người dùng yêu cầu đồng bộ toàn bộ mẫu kiến trúc từ dự án `cafe-blockchain` sang dự án `angular-web3-wallet`, bao gồm việc triển khai Facade Pattern (`StateService`), quản lý trạng thái UI toàn cục (`UiStateService`) và cấu hình Lazy Loading cho định tuyến.
+- **Giải pháp:**
+  - **Tạo mới dịch vụ UI & State**:
+    - Tạo mới [ui-state.service.ts](file:///d:/git/angular-web3-wallet/src/app/core/services/ui-state.service.ts) để quản lý tập trung các trạng thái UI (`showMobileMenu`, `showDropdown`, `showNetworkDropdown`, `isLoading`).
+    - Tạo mới Facade [state.service.ts](file:///d:/git/angular-web3-wallet/src/app/core/services/state.service.ts) tiêm các dịch vụ con (`Web3Service`, `UiStateService`, `ThemeService`, `ToastService`) và ủy thác toàn bộ signal/method cần thiết ra bên ngoài.
+  - **Refactor các component sử dụng StateService**:
+    - Cập nhật [app.ts](file:///d:/git/angular-web3-wallet/src/app/app.ts) & [app.html](file:///d:/git/angular-web3-wallet/src/app/app.html) sử dụng `StateService`.
+    - Cập nhật [home.component.ts](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.ts) & [home.component.html](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.html) sử dụng `StateService`.
+    - Cập nhật [header.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/layout/header/header.component.ts) & [header.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/layout/header/header.component.html) loại bỏ các khai báo state cục bộ và chuyển sang sử dụng `stateService.showMobileMenu` toàn cục.
+    - Cập nhật [sidebar.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/layout/sidebar/sidebar.component.ts) & [sidebar.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/layout/sidebar/sidebar.component.html) sử dụng `StateService`.
+    - Cập nhật [theme-switcher.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/theme-switcher/theme-switcher.component.ts) & [tx-speed-selector.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/tx-speed-selector/tx-speed-selector.component.ts) sử dụng `StateService` để loại bỏ hoàn toàn các injection trực tiếp dịch vụ con từ các component UI nhỏ.
+  - **Cấu hình Lazy Loading định tuyến**:
+    - Cập nhật [app.routes.ts](file:///d:/git/angular-web3-wallet/src/app/app.routes.ts) chuyển đổi các component feature (Home, About, Contact) sang cơ chế Lazy Loading bằng cú pháp `loadComponent: () => import(...).then(m => m.Component)`.
+- **Kết quả:** Build thành công 100% không lỗi. Dung lượng bundle ban đầu giảm đi đáng kể nhờ lazy loading, và cấu trúc code đạt chuẩn quản lý trạng thái Clean Code giống `cafe-blockchain`.

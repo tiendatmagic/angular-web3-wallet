@@ -1,8 +1,8 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-logo',
-  standalone: true,
+  
   template: `
     <div class="relative w-full h-full flex items-center justify-center rounded-full bg-purple-50 dark:bg-purple-950/20 p-[9%] border border-purple-500/20 group">
       <div class="absolute inset-0 bg-gradient-to-tr from-primary/10 to-secondary/10 rounded-full blur-sm group-hover:blur-md transition-all"></div>
@@ -44,6 +44,5 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
       }
     `
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush
-})
+  })
 export class LogoComponent {}

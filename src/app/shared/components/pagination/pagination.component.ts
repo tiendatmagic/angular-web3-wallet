@@ -12,7 +12,7 @@ import { IconComponent } from '@shared/components/icon/icon.component';
 
 @Component({
   selector: 'app-pagination',
-  standalone: true,
+  
   imports: [CommonModule, IconComponent],
   changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './pagination.component.html',

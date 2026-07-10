@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 /**
  * Component icon tái sử dụng toàn hệ thống.
@@ -10,9 +10,9 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
  */
 @Component({
   selector: 'app-icon',
-  standalone: true,
+  
   templateUrl: './icon.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  
   host: {
     style: 'display: inline-flex; align-items: center; justify-content: center;'
   }

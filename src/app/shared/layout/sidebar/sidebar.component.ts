@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { Web3Service } from '@core/services/web3.service';
+import { StateService } from '@core/services/state.service';
 import { IconComponent } from '@shared/components/icon/icon.component';
 import { LogoComponent } from '@shared/components/logo/logo.component';
 import { ThemeSwitcherComponent } from '@shared/components/theme-switcher/theme-switcher.component';
@@ -13,7 +13,7 @@ import { TxSpeedSelectorComponent } from '@shared/components/tx-speed-selector/t
  */
 @Component({
   selector: 'app-sidebar',
-  standalone: true,
+  
   imports: [
     CommonModule,
     RouterModule,
@@ -32,5 +32,5 @@ import { TxSpeedSelectorComponent } from '@shared/components/tx-speed-selector/t
   ],
 })
 export class SidebarComponent {
-  public web3Service = inject(Web3Service);
+  public stateService = inject(StateService);
 }

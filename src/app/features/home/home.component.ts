@@ -10,13 +10,12 @@ import { CustomSearchInputComponent } from '@shared/components/custom-search-inp
 import { CustomSelectComponent } from '@shared/components/custom-select/custom-select.component';
 import { CustomCheckboxComponent } from '@shared/components/custom-checkbox/custom-checkbox.component';
 import { CardComponent } from '@shared/components/card/card.component';
-import { Web3Service } from '@core/services/web3.service';
-import { ToastService } from '@core/services/toast.service';
+import { StateService } from '@core/services/state.service';
 import { parseEther } from 'ethers';
 
 @Component({
   selector: 'app-home',
-  standalone: true,
+  
   imports: [
     CommonModule,
     FormsModule,
@@ -32,8 +31,7 @@ import { parseEther } from 'ethers';
   templateUrl: './home.component.html'
 })
 export class HomeComponent {
-  public web3Service = inject(Web3Service);
-  private toastService = inject(ToastService);
+  public stateService = inject(StateService);
   
   // Trạng thái Form Gửi ETH Demo
   public toAddress = signal('');
@@ -75,10 +73,10 @@ export class HomeComponent {
   // Sao chép địa chỉ ví nhanh
   public copyAddress(event: Event) {
     event.stopPropagation();
-    const address = this.web3Service.address();
+    const address = this.stateService.address();
     if (address) {
       navigator.clipboard.writeText(address);
-      this.toastService.showToast('Đã sao chép địa chỉ ví vào clipboard!', 'success');
+      this.stateService.showToast('Đã sao chép địa chỉ ví vào clipboard!', 'success');
     }
   }
 
@@ -88,30 +86,30 @@ export class HomeComponent {
     const val = String(this.amount() || '').trim();
 
     if (!to || !val) {
-      this.toastService.showToast('Vui lòng điền đầy đủ địa chỉ nhận và số lượng ETH.', 'error');
+      this.stateService.showToast('Vui lòng điền đầy đủ địa chỉ nhận và số lượng ETH.', 'error');
       return;
     }
 
     this.txLoading.set(true);
     this.txHash.set(null);
     this.txError.set(null);
-    this.toastService.showToast('Đang gửi yêu cầu giao dịch đến ví...', 'warning');
+    this.stateService.showToast('Đang gửi yêu cầu giao dịch đến ví...', 'warning');
 
     try {
-      const signer = await this.web3Service.getSigner();
+      const signer = await this.stateService.getSigner();
       
       // Thực hiện gửi giao dịch với cấu hình phí gas động
       const txRequest: any = {
         to,
         value: parseEther(val),
         data: '0x', // Đảm bảo trường data luôn là '0x' để tránh lỗi của một số ví di động như Trust Wallet
-        chainId: this.web3Service.chainId() ? Number(this.web3Service.chainId()) : undefined
+        chainId: this.stateService.chainId() ? Number(this.stateService.chainId()) : undefined
       };
 
       try {
-        const provider = this.web3Service.getProvider();
+        const provider = this.stateService.getProvider();
         const feeData = await provider.getFeeData();
-        const speed = this.web3Service.txSpeed();
+        const speed = this.stateService.txSpeed();
 
         if (speed === 'fast') {
           if (feeData.maxFeePerGas) {
@@ -121,7 +119,7 @@ export class HomeComponent {
             txRequest.maxPriorityFeePerGas = (feeData.maxPriorityFeePerGas * 150n) / 100n;
           }
         } else if (speed === 'custom') {
-          const multiplier = this.web3Service.gasMultiplier() || 2.0;
+          const multiplier = this.stateService.gasMultiplier() || 2.0;
           const multiplierBigInt = BigInt(Math.round(multiplier * 100));
           if (feeData.maxFeePerGas) {
             txRequest.maxFeePerGas = (feeData.maxFeePerGas * multiplierBigInt) / 100n;
@@ -137,12 +135,12 @@ export class HomeComponent {
       const tx = await signer.sendTransaction(txRequest);
       
       this.txHash.set(tx.hash);
-      this.toastService.showToast('Giao dịch đã được phát đi! Đang chờ xác nhận...', 'warning');
+      this.stateService.showToast('Giao dịch đã được phát đi! Đang chờ xác nhận...', 'warning');
       
       // Đợi giao dịch được khai thác trên mạng (mined) và cập nhật số dư mới
       await tx.wait();
-      await this.web3Service.updateBalanceAndNetwork();
-      this.toastService.showToast('Giao dịch chuyển ETH đã thành công!', 'success');
+      await this.stateService.web3Service.updateBalanceAndNetwork();
+      this.stateService.showToast('Giao dịch chuyển ETH đã thành công!', 'success');
       
       // Reset form
       this.toAddress.set('');
@@ -151,7 +149,7 @@ export class HomeComponent {
       console.error('Lỗi khi gửi giao dịch:', err);
       const errMsg = err.reason || err.message || 'Lỗi không xác định xảy ra.';
       this.txError.set(errMsg);
-      this.toastService.showToast('Giao dịch thất bại: ' + errMsg, 'error');
+      this.stateService.showToast('Giao dịch thất bại: ' + errMsg, 'error');
     } finally {
       this.txLoading.set(false);
     }
@@ -161,25 +159,25 @@ export class HomeComponent {
   public async signMessage() {
     const msg = String(this.messageToSign() || '').trim();
     if (!msg) {
-      this.toastService.showToast('Vui lòng nhập nội dung tin nhắn cần ký.', 'error');
+      this.stateService.showToast('Vui lòng nhập nội dung tin nhắn cần ký.', 'error');
       return;
     }
 
     this.signLoading.set(true);
     this.signature.set(null);
     this.signError.set(null);
-    this.toastService.showToast('Đang yêu cầu ký tin nhắn...', 'warning');
+    this.stateService.showToast('Đang yêu cầu ký tin nhắn...', 'warning');
 
     try {
-      const signer = await this.web3Service.getSigner();
+      const signer = await this.stateService.getSigner();
       const sig = await signer.signMessage(msg);
       this.signature.set(sig);
-      this.toastService.showToast('Đã ký tin nhắn thành công!', 'success');
+      this.stateService.showToast('Đã ký tin nhắn thành công!', 'success');
     } catch (err: any) {
       console.error('Lỗi khi ký tin nhắn:', err);
       const errMsg = err.message || 'Lỗi không xác định xảy ra khi ký.';
       this.signError.set(errMsg);
-      this.toastService.showToast('Ký tin nhắn thất bại: ' + errMsg, 'error');
+      this.stateService.showToast('Ký tin nhắn thất bại: ' + errMsg, 'error');
     } finally {
       this.signLoading.set(false);
     }
@@ -189,7 +187,7 @@ export class HomeComponent {
   public copySignature() {
     if (this.signature()) {
       navigator.clipboard.writeText(this.signature()!);
-      this.toastService.showToast('Đã sao chép chữ ký vào bộ nhớ tạm!', 'success');
+      this.stateService.showToast('Đã sao chép chữ ký vào bộ nhớ tạm!', 'success');
     }
   }
 }

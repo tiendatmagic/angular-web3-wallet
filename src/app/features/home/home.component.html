@@ -1,6 +1,6 @@
 <main class="max-w-[1530px] mx-auto w-full px-4 sm:px-6 py-6 md:py-10 space-y-6 md:space-y-8">
   <!-- BANNER CHƯA KẾT NỐI VÍ -->
-  @if (!web3Service.isConnected()) {
+  @if (!stateService.isConnected()) {
     <div app-card class="text-center max-w-2xl mx-auto">
       <div
         class="w-16 h-16 bg-purple-50 dark:bg-purple-950/30 rounded-full flex items-center justify-center mx-auto mb-6 text-purple-600 dark:text-purple-400 border border-purple-500/20"
@@ -15,7 +15,7 @@
       >
         Để bắt đầu trải nghiệm các tính năng tương tác blockchain, vui lòng kết nối ví của bạn.
       </p>
-      <button app-button variant="primary" size="md" (click)="web3Service.connect()">
+      <button app-button variant="primary" size="md" (click)="stateService.connectWallet()">
         <app-icon name="wallet" class="w-5 h-5" strokeWidth="2" />
         Kết nối ví của bạn
       </button>
@@ -23,7 +23,7 @@
   }
 
   <!-- DASHBOARD HOẠT ĐỘNG KHI ĐÃ KẾT NỐI -->
-  @if (web3Service.isConnected()) {
+  @if (stateService.isConnected()) {
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 items-start">
       <!-- CỘT TRÁI: THÔNG TIN VÍ & MẠNG LƯỚI (5/12 cột) -->
       <div class="lg:col-span-5 space-y-5 md:space-y-6">
@@ -44,7 +44,7 @@
               <span
                 class="text-3xl sm:text-4xl font-black text-transparent bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text mt-0.5"
               >
-                {{ web3Service.balance() }} ETH
+                {{ stateService.balance() }} ETH
               </span>
             </div>
 
@@ -59,7 +59,7 @@
                 <span
                   class="font-mono text-xs font-bold text-slate-600 dark:text-slate-300 min-w-0 flex-1 truncate"
                 >
-                  {{ web3Service.address() }}
+                  {{ stateService.address() }}
                 </span>
                 <button
                   (click)="copyAddress($event)"
@@ -78,13 +78,13 @@
               <div class="flex flex-col">
                 <span class="text-[10px] font-bold text-slate-400 uppercase">Mạng kết nối</span>
                 <span class="text-sm font-extrabold text-slate-700 dark:text-slate-200 truncate">
-                  {{ web3Service.networkName() }}
+                  {{ stateService.networkName() }}
                 </span>
               </div>
               <div class="flex flex-col">
                 <span class="text-[10px] font-bold text-slate-400 uppercase">Chain ID</span>
                 <span class="text-sm font-mono font-bold text-slate-700 dark:text-slate-200">
-                  {{ web3Service.chainId() }}
+                  {{ stateService.chainId() }}
                 </span>
               </div>
             </div>
@@ -100,7 +100,7 @@
           </h3>
 
           <!-- Cảnh báo sai mạng -->
-          @if (web3Service.isWrongChain()) {
+          @if (stateService.isWrongChain()) {
             <div
               class="bg-red-500/10 border border-red-500/25 rounded-xl p-3 mb-4 text-xs font-bold text-red-500 flex items-start gap-2"
             >
@@ -110,12 +110,12 @@
           }
 
           <div class="grid grid-cols-2 gap-3">
-            @for (chain of web3Service.POPULAR_CHAINS; track chain.chainId) {
+            @for (chain of stateService.POPULAR_CHAINS; track chain.chainId) {
               <button
-                [class.!border-purple-500]="web3Service.chainId() === +chain.chainId"
-                [class.!text-purple-600]="web3Service.chainId() === +chain.chainId"
-                [class.dark:!text-purple-400]="web3Service.chainId() === +chain.chainId"
-                (click)="web3Service.switchNetwork(+chain.chainId)"
+                [class.!border-purple-500]="stateService.chainId() === +chain.chainId"
+                [class.!text-purple-600]="stateService.chainId() === +chain.chainId"
+                [class.dark:!text-purple-400]="stateService.chainId() === +chain.chainId"
+                (click)="stateService.switchNetwork(+chain.chainId)"
                 class="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800/60 text-xs font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-50/50 dark:hover:bg-slate-900/50 transition-all cursor-pointer"
               >
                 <span

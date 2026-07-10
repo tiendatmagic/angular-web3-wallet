@@ -28,7 +28,10 @@ export interface TabOption {
 
 @Component({
   selector: 'app-tab-group',
-  standalone: true,
+  host: {
+    '(window:resize)': 'onResize()'
+  },
+  
   imports: [CommonModule, IconComponent],
   templateUrl: './tab-group.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
@@ -94,7 +97,6 @@ export class TabGroupComponent implements AfterViewInit, OnChanges, OnDestroy {
     }
   }
 
-  @HostListener('window:resize')
   onResize(): void {
     this.updateSliderPosition();
   }

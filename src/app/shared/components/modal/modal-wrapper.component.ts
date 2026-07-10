@@ -5,7 +5,7 @@ import { IconComponent } from '@shared/components/icon/icon.component';
 
 @Component({
   selector: 'app-modal-wrapper',
-  standalone: true,
+  
   imports: [CommonModule, IconComponent],
   templateUrl: './modal-wrapper.component.html',
 })
