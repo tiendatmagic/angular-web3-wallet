@@ -1,7 +1,7 @@
 import { Injectable, signal, inject, effect } from '@angular/core';
 import { createAppKit, type AppKit } from '@reown/appkit';
 import { EthersAdapter } from '@reown/appkit-adapter-ethers';
-import { mainnet, arbitrum, arbitrumSepolia, sepolia, polygon } from '@reown/appkit/networks';
+import { mainnet, arbitrum, arbitrumSepolia, bsc, bscTestnet } from '@reown/appkit/networks';
 import { BrowserProvider, formatEther } from 'ethers';
 import { environment } from '@environments/environment';
 import { ThemeService } from './theme.service';
@@ -24,7 +24,7 @@ export class Web3Service {
   public gasMultiplier = signal<number>(2);
 
   // Mạng được hỗ trợ
-  public readonly supportedChains = [arbitrumSepolia, sepolia, mainnet, arbitrum, polygon];
+  public readonly supportedChains = [arbitrum, mainnet, bsc, arbitrumSepolia, bscTestnet];
 
   private readonly themeService = inject(ThemeService);
   private readonly toastService = inject(ToastService);
@@ -158,6 +158,15 @@ export class Web3Service {
       await this.modal.open({ view: 'Networks' });
     } catch (error) {
       console.error('Lỗi mở popup chuyển mạng:', error);
+    }
+  }
+
+  // Mở popup chi tiết ví (Account view của AppKit)
+  public async openAccountModal() {
+    try {
+      await this.modal.open({ view: 'Account' });
+    } catch (error) {
+      console.error('Lỗi mở popup chi tiết ví:', error);
     }
   }
 

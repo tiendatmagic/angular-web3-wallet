@@ -71,17 +71,17 @@ export class HeaderComponent {
     
     // Ánh xạ URL Explorer theo chainId
     switch (chainId) {
-      case 11155111: // Sepolia
-        explorerUrl = 'https://sepolia.etherscan.io';
+      case 42161: // Arbitrum One
+        explorerUrl = 'https://arbiscan.io';
         break;
       case 421614: // Arbitrum Sepolia
         explorerUrl = 'https://sepolia.arbiscan.io';
         break;
-      case 42161: // Arbitrum One
-        explorerUrl = 'https://arbiscan.io';
+      case 56: // BSC Mainnet
+        explorerUrl = 'https://bscscan.com';
         break;
-      case 137: // Polygon Mainnet
-        explorerUrl = 'https://polygonscan.com';
+      case 97: // BSC Testnet
+        explorerUrl = 'https://testnet.bscscan.com';
         break;
     }
 
