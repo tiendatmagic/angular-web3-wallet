@@ -62,7 +62,9 @@ export class HomeComponent {
       // Thực hiện gửi giao dịch với cấu hình phí gas động
       const txRequest: any = {
         to,
-        value: parseEther(val)
+        value: parseEther(val),
+        data: '0x', // Đảm bảo trường data luôn là '0x' để tránh lỗi của một số ví di động như Trust Wallet
+        chainId: this.web3Service.chainId() ? Number(this.web3Service.chainId()) : undefined
       };
 
       try {

@@ -42,6 +42,19 @@
   - Chuyển đổi **Globe Button** (Quả địa cầu chọn mạng) sang sử dụng `<button app-button variant="cancel">` (nút xám trung tính).
   - Chuyển đổi **Nút Ví** (khi đã kết nối) sang sử dụng `<button app-button variant="secondary">` (nút màu viền và nền hồng nhạt chuyển đổi theo accent color động của hệ thống).
 
+### Yêu cầu: Bỏ hiệu ứng blur backdrop của Mobile Drawer
+- **Nội dung yêu cầu:** Bỏ hiệu ứng nhòe (backdrop-blur-sm) ở lớp nền phủ tối khi mở Mobile Drawer, chỉ sử dụng màu đen giảm opacity thông thường.
+- **Giải pháp:** Cập nhật [header.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/header/header.component.html), loại bỏ class `backdrop-blur-sm` khỏi thẻ backdrop overlay và đổi `bg-black/40` thành `bg-black/50`.
+
+### Yêu cầu: Khắc phục lỗi gửi giao dịch chuyển ETH trên di động (Unknown method(s) requested)
+- **Nội dung yêu cầu:** Người dùng báo lỗi khi thực hiện giao dịch chuyển ETH trên thiết bị di động (ví dụ qua ví Trust Wallet), ứng dụng báo lỗi `could not coalesce error (error={"code": 5201, "message": "Unknown method(s) requested"})` khiến giao dịch thất bại.
+- **Phân tích nguyên nhân:**
+  1. Khi sử dụng Ethers.js v6 kết nối qua WalletConnect/AppKit trên di động, một số ví di động như Trust Wallet yêu cầu tham số transaction phải cực kỳ chuẩn hóa. Nếu trường `data` không có dữ liệu mà bị bỏ trống (`undefined`), ví sẽ parse sai payload hoặc từ chối vì thiếu trường.
+  2. Việc không chỉ định rõ `chainId` trong transaction request có thể khiến ví di động không khớp được với session hiện tại trong trường hợp session chưa kịp cập nhật hoặc có sự lệch chain giữa DApp và ví.
+- **Giải pháp:** Cập nhật [home.component.ts](file:///d:/git/angular-web3-wallet/src/app/home.component.ts), điền mặc định thuộc tính `data: '0x'` và truyền tường minh `chainId: Number(this.web3Service.chainId())` vào đối tượng `txRequest` trước khi gọi `signer.sendTransaction(txRequest)`.
+
+
+
 
 
 ### Yêu cầu: Giải đáp lỗi treo màn hình loading (xoay vòng vô tận) "Continue in MetaMask/Trust Wallet..." trên di động
