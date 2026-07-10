@@ -36,6 +36,9 @@
      - **Trang chủ:** Thay thế các input bằng `<app-custom-input>`. Bọc các phần tử (Địa chỉ ví của bạn, địa chỉ nhận, số lượng gửi) bằng `<div class="form-field">` kèm thẻ `<label>` đơn giản ở ngoài. Loại bỏ class `!rounded-xl` dư thừa trên các nút bấm `app-button`.
      - **Trang liên hệ:** Thay thế email và textarea bằng `<app-custom-input>`. Bọc ngoài bằng `<div class="form-field">` và thẻ `<label>`. Tăng khoảng cách các ô nhập lên `space-y-4`.
      - **Cấu hình Demo:** Thay thế các input cấu hình, date-picker, select, radio group bằng cách bọc ngoài `<div class="form-field">` và thẻ `<label>` thủ công ở ngoài, giúp giao diện đồng bộ khoảng cách tuyệt đối.
+  5. **Tối ưu hóa Spacing và Padding của Modal:**
+     - Cập nhật [modal-wrapper.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/modal/modal-wrapper.component.html) đổi padding của container cha từ `p-6` thành `pt-6 px-6 pb-5`, sửa `pb-3.5` của header thành `pb-4`, sửa `pt-5` của body thành `pt-4` để tạo sự đối xứng.
+     - Cập nhật [demo-modal.component.html](file:///d:/git/angular-web3-wallet/src/app/features/home/components/demo-modal/demo-modal.component.html) thêm đường viền phân cách `border-t border-slate-100 dark:border-slate-800/60 pt-4 mt-1 shrink-0` cho footer để cân đối thị giác hoàn hảo với header ở phía trên.
 
 ### Yêu cầu: Chuẩn hóa và sửa đổi SVG của icon kết nối ví cho đúng ngữ cảnh
 
