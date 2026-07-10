@@ -157,6 +157,11 @@ body.dark {
   @apply h-[42px] w-full text-sm font-semibold rounded-xl bg-slate-50 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 text-slate-800 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]/20 transition-all duration-200;
 }
 
+.form-textarea {
+  padding: 0.75rem 1rem !important;
+  @apply w-full text-sm font-semibold rounded-xl bg-slate-50 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 text-slate-800 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]/20 transition-all duration-200 resize-none;
+}
+
 .search-input {
   padding-left: 2.25rem !important;
   padding-right: 1rem !important;

@@ -11,6 +11,7 @@ import { CustomSelectComponent } from '@shared/components/custom-select/custom-s
 import { CustomCheckboxComponent } from '@shared/components/custom-checkbox/custom-checkbox.component';
 import { CustomDatePickerComponent } from '@shared/components/custom-date-picker/custom-date-picker.component';
 import { CardComponent } from '@shared/components/card/card.component';
+import { CustomInputComponent } from '@shared/components/custom-input/custom-input.component';
 import { StateService } from '@core/services/state.service';
 import { ModalService } from '@core/services/modal.service';
 import { DemoModalComponent } from './components/demo-modal/demo-modal.component';
@@ -31,6 +32,7 @@ import { parseEther } from 'ethers';
     CustomCheckboxComponent,
     CustomDatePickerComponent,
     CardComponent,
+    CustomInputComponent,
   ],
   templateUrl: './home.component.html'
 })

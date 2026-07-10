@@ -9,6 +9,7 @@ import { CustomRadioComponent } from '@shared/components/custom-radio/custom-rad
 import { CustomCheckboxComponent } from '@shared/components/custom-checkbox/custom-checkbox.component';
 import { IconComponent } from '@shared/components/icon/icon.component';
 import { ButtonComponent } from '@shared/components/button/button.component';
+import { CustomInputComponent } from '@shared/components/custom-input/custom-input.component';
 
 @Component({
   selector: 'app-demo-modal',
@@ -22,7 +23,8 @@ import { ButtonComponent } from '@shared/components/button/button.component';
     CustomRadioComponent,
     CustomCheckboxComponent,
     IconComponent,
-    ButtonComponent
+    ButtonComponent,
+    CustomInputComponent
   ],
   templateUrl: './demo-modal.component.html',
   styles: [

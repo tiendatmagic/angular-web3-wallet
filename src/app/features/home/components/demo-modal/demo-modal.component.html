@@ -41,12 +41,11 @@
           class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider"
           >Mốc ngày tối thiểu (YYYY-MM-DD)</label
         >
-        <input
+        <app-custom-input
           type="text"
           [ngModel]="demoDatePickerMinDate()"
           (ngModelChange)="demoDatePickerMinDate.set($event)"
           placeholder="2026-07-20"
-          class="w-full bg-white dark:bg-slate-950/40 border border-slate-200/50 dark:border-slate-800/35 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-[var(--color-primary)] transition-all font-semibold text-slate-800 dark:text-slate-100"
         />
       </div>
     }
@@ -59,12 +58,11 @@
           class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider"
           >Mốc ngày tối đa (YYYY-MM-DD)</label
         >
-        <input
+        <app-custom-input
           type="text"
           [ngModel]="demoDatePickerMaxDate()"
           (ngModelChange)="demoDatePickerMaxDate.set($event)"
           placeholder="2026-07-25"
-          class="w-full bg-white dark:bg-slate-950/40 border border-slate-200/50 dark:border-slate-800/35 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-[var(--color-primary)] transition-all font-semibold text-slate-800 dark:text-slate-100"
         />
       </div>
     }

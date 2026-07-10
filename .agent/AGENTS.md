@@ -23,6 +23,19 @@
   2. Đổi màu nền từ `dark:bg-slate-950` sang màu xám nhẹ hơn `dark:bg-slate-900` để hài hòa và dễ nhận diện hơn.
   3. Cập nhật nhẹ màu ở chế độ sáng (lightmode) cho đồng bộ viền từ `border-slate-200` thành `border-slate-300` và khi hover từ `border-slate-300` thành `border-slate-400` để tăng tính rõ nét.
 
+### Yêu cầu: Loại bỏ class style dư thừa và đồng bộ hóa kích thước ô nhập liệu (Input)
+
+- **Nội dung yêu cầu:**
+  1. Đảm bảo các phần tử khi đã áp dụng component/directive dùng chung như `app-card` hay `app-button` thì không cần tự thiết lập màu nền (background color) hoặc padding thủ công ở ngoài.
+  2. Xem xét và đồng bộ kích thước (chiều cao h-[42px]) của các ô nhập liệu (input, textarea, khung địa chỉ ví) cân đối với nút bấm. Xây dựng component riêng cho ô nhập liệu.
+- **Giải pháp:**
+  1. **Định nghĩa CSS Card tương tác:** Cập nhật [styles.scss](file:///d:/git/angular-web3-wallet/src/styles.scss), gộp chung `.app-card-interactive` vào nhóm định nghĩa chung của `.app-card` để thừa hưởng style nền, viền và padding mặc định, đồng thời bổ sung hiệu ứng hover/active tương tác mượt mà. Khai báo thêm `.form-textarea` đồng bộ style với `.form-input`.
+  2. **Xây dựng `CustomInputComponent` mới:** Tạo component standalone [custom-input.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/custom-input/custom-input.component.ts) (kèm HTML/CSS) kế thừa `ControlValueAccessor` hỗ trợ các loại `type` (text, number, email, textarea) để đồng bộ hóa kích thước chiều cao chuẩn `h-[42px]` và thiết kế bo góc của hệ thống.
+  3. **Rà soát & Đồng bộ các màn hình:**
+     - **Trang chủ:** Thay thế ô nhập địa chỉ nhận và số lượng gửi bằng `<app-custom-input>`. Cập nhật khung hiển thị "Địa chỉ ví của bạn" áp dụng class `.form-input` kết hợp flexbox để có chiều cao chuẩn `h-[42px]`. Loại bỏ class `!rounded-xl` dư thừa trên các nút bấm `app-button`.
+     - **Trang liên hệ:** Thay thế email và textarea bằng `<app-custom-input>`. Loại bỏ class `!rounded-xl` dư thừa.
+     - **Cấu hình Demo:** Thay thế input cấu hình minDate/maxDate bằng `<app-custom-input>`.
+
 ### Yêu cầu: Chuẩn hóa và sửa đổi SVG của icon kết nối ví cho đúng ngữ cảnh
 
 - **Nội dung yêu cầu:** Người dùng phản ánh biểu tượng (icon) kết nối ví hiện tại hiển thị không phù hợp với ngữ cảnh kết nối ví Web3.
