@@ -171,7 +171,12 @@ export class Web3Service {
   // Chuyển sang mạng cụ thể
   public async switchNetwork(chainId: number) {
     try {
-      await this.modal.switchNetwork({ chainId } as any);
+      const network = this.supportedChains.find(chain => Number(chain.id) === chainId);
+      if (network) {
+        await this.modal.switchNetwork(network as any);
+      } else {
+        console.warn(`[Web3] Mạng với chainId ${chainId} không được hỗ trợ để chuyển.`);
+      }
     } catch (error) {
       console.error(`Lỗi chuyển mạng ${chainId}:`, error);
     }

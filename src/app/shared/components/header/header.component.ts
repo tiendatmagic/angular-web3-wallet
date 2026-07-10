@@ -20,10 +20,12 @@ export class HeaderComponent {
   // Trạng thái hiển thị menu thả xuống (Dropdown) của ví
   public showDropdown = signal(false);
   
-  // Trạng thái hiển thị menu ngôn ngữ
-  public showLangDropdown = signal(false);
-  public currentLang = signal<'VI' | 'EN'>('VI');
+  // Trạng thái hiển thị menu chọn mạng nhanh
+  public showNetworkDropdown = signal(false);
 
+  // Trạng thái tốc độ giao dịch trên Sidebar
+  public txSpeed = signal<'default' | 'fast' | 'custom'>('default');
+  
   // Trạng thái hiển thị Mobile Menu
   public showMobileMenu = signal(false);
 
@@ -38,20 +40,14 @@ export class HeaderComponent {
   public toggleDropdown(event: Event) {
     event.stopPropagation();
     this.showDropdown.update(prev => !prev);
-    this.showLangDropdown.set(false);
+    this.showNetworkDropdown.set(false);
   }
 
-  // Toggle trạng thái hiển thị dropdown ngôn ngữ
-  public toggleLangDropdown(event: Event) {
+  // Toggle trạng thái hiển thị dropdown mạng nhanh
+  public toggleNetworkDropdown(event: Event) {
     event.stopPropagation();
-    this.showLangDropdown.update(prev => !prev);
+    this.showNetworkDropdown.update(prev => !prev);
     this.showDropdown.set(false);
-  }
-
-  // Chọn ngôn ngữ
-  public selectLang(lang: 'VI' | 'EN') {
-    this.currentLang.set(lang);
-    this.showLangDropdown.set(false);
   }
 
   // Sao chép địa chỉ ví vào Clipboard và hiển thị Toast thay cho alert
@@ -105,6 +101,6 @@ export class HeaderComponent {
   @HostListener('document:click')
   public clickOut() {
     this.showDropdown.set(false);
-    this.showLangDropdown.set(false);
+    this.showNetworkDropdown.set(false);
   }
 }

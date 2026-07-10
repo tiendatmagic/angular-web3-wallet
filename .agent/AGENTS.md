@@ -24,6 +24,22 @@
 - **Phân tích nguyên nhân:** Tệp cấu hình cũ khai báo `base = "cafe-blockchain-web"` và `publish = "dist/cafe-blockchain-web/browser"`. Do project này có tên là `angular-web3-wallet` và mã nguồn nằm ở thư mục gốc (không phải thư mục con `cafe-blockchain-web`), Netlify không thể chạy lệnh build và tìm đúng thư mục để deploy.
 - **Giải pháp:** Cập nhật file [netlify.toml](file:///d:/git/angular-web3-wallet/netlify.toml), loại bỏ hoàn toàn thuộc tính `base`, đổi `publish` thành `"dist/angular-web3-wallet/browser"`, đồng thời thêm cấu hình `[[redirects]]` để tránh lỗi 404 cho Angular Single Page Application (SPA).
 
+### Yêu cầu: Điều chỉnh giao diện Header và Mobile Drawer theo thiết kế
+- **Nội dung yêu cầu:** 
+  1. Loại bỏ nút điều khiển Theme (Light/Dark/Auto) trên Header Menu.
+  2. Thay đổi chức năng nút Quả địa cầu từ "Chuyển đổi ngôn ngữ" thành "Chuyển đổi mạng lưới" (kết nối mở WalletConnect/AppKit Network dropdown).
+  3. Gỡ bỏ hoàn toàn mục "Cài đặt" / "Chuyển mạng lưới" ở Mobile Drawer (Sidebar).
+  4. Chuyển đổi khu vực hiển thị tên mạng đang chọn ở giữa Header thành một badge tĩnh màu hồng, không cho phép click để đổi mạng theo thiết kế mẫu.
+  5. Ẩn chữ tên thương hiệu "Angular Web3" và "Proof of Random" trên thiết bị di động, đồng thời cho phép nút Quả địa cầu (chọn mạng nhanh) hiển thị trên cả di động để thuận tiện thao tác.
+- **Giải pháp:**
+  - Cập nhật [header.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/header/header.component.html):
+    - Xóa khối HTML của Theme Switcher trên Header.
+    - Xóa khối dropdown ngôn ngữ, thay thế nút quả địa cầu cũ bằng bộ nút click mở dropdown mạng nhanh.
+    - Thay đổi khung hiển thị mạng ở giữa Header thành một `div` badge tĩnh dạng pill màu hồng nhạt/chữ hồng đậm có chấm tròn đại diện, loại bỏ sự kiện click chuyển mạng tại đây.
+    - Ẩn text tên thương hiệu bằng cách thêm class `hidden md:flex flex-col` vào khối chứa.
+    - Cho phép nút quả địa cầu hiển thị trên mobile bằng cách đổi wrapper từ `hidden md:relative md:block` thành `relative block`.
+  - Cập nhật [header.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/header/header.component.ts): Xóa bỏ các thuộc tính và phương thức không dùng tới liên quan đến ngôn ngữ (`showLangDropdown`, `currentLang`, `toggleLangDropdown`, `selectLang`). Thêm signal và hàm toggle cho dropdown chọn mạng nhanh (`showNetworkDropdown`).
+
 ## Ngày 08/07/2026
 
 ### Yêu cầu: Xây dựng khung dự án Angular Web3 bằng Tailwind CSS v4, Ethers.js v6 và Reown AppKit
