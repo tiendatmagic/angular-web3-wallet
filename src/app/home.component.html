@@ -96,26 +96,21 @@
           }
 
           <div class="grid grid-cols-2 gap-3">
-            <button
-              [class.!border-purple-500]="web3Service.chainId() === 42161"
-              [class.!text-purple-600]="web3Service.chainId() === 42161"
-              [class.dark:!text-purple-400]="web3Service.chainId() === 42161"
-              (click)="web3Service.switchNetwork(42161)"
-              class="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800/60 text-xs font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-50/50 dark:hover:bg-slate-900/50 transition-all cursor-pointer"
-            >
-              <span class="w-2 h-2 rounded-full bg-blue-500 flex-shrink-0"></span>
-              Arbitrum One
-            </button>
-            <button
-              [class.!border-purple-500]="web3Service.chainId() === 421614"
-              [class.!text-purple-600]="web3Service.chainId() === 421614"
-              [class.dark:!text-purple-400]="web3Service.chainId() === 421614"
-              (click)="web3Service.switchNetwork(421614)"
-              class="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800/60 text-xs font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-50/50 dark:hover:bg-slate-900/50 transition-all cursor-pointer"
-            >
-              <span class="w-2 h-2 rounded-full bg-pink-500 flex-shrink-0"></span>
-              Arbitrum Sepolia
-            </button>
+            @for (chain of web3Service.POPULAR_CHAINS; track chain.chainId) {
+              <button
+                [class.!border-purple-500]="web3Service.chainId() === +chain.chainId"
+                [class.!text-purple-600]="web3Service.chainId() === +chain.chainId"
+                [class.dark:!text-purple-400]="web3Service.chainId() === +chain.chainId"
+                (click)="web3Service.switchNetwork(+chain.chainId)"
+                class="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800/60 text-xs font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-50/50 dark:hover:bg-slate-900/50 transition-all cursor-pointer"
+              >
+                <span
+                  [style.backgroundColor]="chain.color || '#94a3b8'"
+                  class="w-2 h-2 rounded-full flex-shrink-0"
+                ></span>
+                {{ chain.name.replace(' Mainnet', '') }}
+              </button>
+            }
           </div>
         </div>
 

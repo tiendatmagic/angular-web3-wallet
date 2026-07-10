@@ -7,12 +7,24 @@ import { ThemeService } from '@core/services/theme.service';
 import { ToastService } from '@core/services/toast.service';
 import { IconComponent } from '@shared/components/icon/icon.component';
 import { ButtonComponent } from '@shared/components/button/button.component';
+import { LogoComponent } from '@shared/components/logo/logo.component';
+import { ThemeSwitcherComponent } from '@shared/components/theme-switcher/theme-switcher.component';
+import { TxSpeedSelectorComponent } from '@shared/components/tx-speed-selector/tx-speed-selector.component';
 import { POPULAR_CHAINS } from '../../../core/utils/blockchain.utils';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, IconComponent, ButtonComponent, RouterModule, FormsModule],
+  imports: [
+    CommonModule, 
+    IconComponent, 
+    ButtonComponent, 
+    RouterModule, 
+    FormsModule,
+    LogoComponent,
+    ThemeSwitcherComponent,
+    TxSpeedSelectorComponent
+  ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
@@ -82,19 +94,6 @@ export class HeaderComponent {
     event.stopPropagation();
     await this.web3Service.disconnect();
     this.showDropdown.set(false);
-  }
-
-  // Lấy mã màu chấm tròn đại diện cho từng mạng EVM
-  public getChainColor(chainId: string | number): string {
-    const id = chainId.toString().trim();
-    switch (id) {
-      case '1': return '#627EEA';
-      case '42161': return '#00a3ff';
-      case '56': return '#F3BA2F';
-      case '421614': return '#5ba4cf';
-      case '97': return '#e6a817';
-      default: return '#94a3b8';
-    }
   }
 
   // Click ra ngoài để tự động đóng dropdowns

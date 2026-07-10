@@ -2,6 +2,15 @@
 
 ## Ngày 10/07/2026
 
+### Yêu cầu: Tối ưu hóa mã nguồn Web3 và tái sử dụng component kế thừa
+- **Nội dung yêu cầu:** Người dùng yêu cầu đánh giá xem template Web3 đã ổn chưa và tối ưu hóa kế thừa component.
+- **Phân tích nguyên nhân & Giải pháp:**
+  1. Trùng lặp màu sắc mạng: Di chuyển màu sắc EVM trực tiếp vào trường `color` của `POPULAR_CHAINS` trong `blockchain.utils.ts`. Xóa bỏ các hàm `getChainColor()` trùng lặp ở `app.ts` và `header.component.ts`.
+  2. Đồng bộ mạng nhanh ở Trang chủ: Thay thế card chuyển mạng nhanh viết cứng bằng vòng lặp động `@for (chain of web3Service.POPULAR_CHAINS)` trong `home.component.html`.
+  3. Trùng lặp code SVG Logo: Tạo mới component standalone `app-logo` tại `src/app/shared/components/logo/logo.component.ts`. Thay thế 3 đoạn mã SVG thô trên header/sidebar bằng thẻ `<app-logo>`.
+  4. Trùng lặp điều khiển ở Header (Mobile Drawer & Desktop Sidebar): Tạo mới 2 component standalone `app-theme-switcher` và `app-tx-speed-selector` để đóng gói giao diện chuyển theme và chọn tốc độ giao dịch. Cấu hình `:host { display: block; }` theo đúng quy định `ARCHITECTURE.md`.
+  5. Refactor Header: Sửa đổi `header.component.ts` và `header.component.html` để nhúng các component mới, rút gọn dung lượng HTML của header đi hơn một nửa.
+
 ### Yêu cầu: Tắt Switch Network modal tự động của WalletConnect và thay bằng DApp Modal khi kết nối sai mạng
 - **Nội dung yêu cầu:** Người dùng muốn tự quản lý việc hiển thị modal sai mạng lưới bằng Modal của DApp thay vì để WalletConnect tự động hiện popup mặc định (vốn bị kẹt không tắt được).
 - **Phân tích nguyên nhân & Giải pháp:**

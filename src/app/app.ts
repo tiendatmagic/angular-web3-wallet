@@ -33,16 +33,5 @@ export class App {
     this.web3Service.showWrongChainModal.set(false);
   }
 
-  public getChainColor(chainId: string | number): string {
-    const id = chainId.toString().trim();
-    switch (id) {
-      case '1': return '#627EEA';
-      case '42161': return '#00a3ff';
-      case '56': return '#F3BA2F';
-      case '421614': return '#5ba4cf';
-      case '97': return '#e6a817';
-      default: return '#94a3b8';
-    }
-  }
 }
 
