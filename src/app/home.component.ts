@@ -26,7 +26,7 @@ export class HomeComponent {
   public txError = signal<string | null>(null);
 
   // Trạng thái Form Ký tin nhắn Demo
-  public messageToSign = signal('Chào mừng bạn đến với ProofRandom Web3 DApp!');
+  public messageToSign = signal('Chào mừng bạn đến với Angular Web3!');
   public signature = signal<string | null>(null);
   public signLoading = signal(false);
   public signError = signal<string | null>(null);
@@ -59,11 +59,39 @@ export class HomeComponent {
     try {
       const signer = await this.web3Service.getSigner();
       
-      // Thực hiện gửi giao dịch
-      const tx = await signer.sendTransaction({
+      // Thực hiện gửi giao dịch với cấu hình phí gas động
+      const txRequest: any = {
         to,
         value: parseEther(val)
-      });
+      };
+
+      try {
+        const provider = this.web3Service.getProvider();
+        const feeData = await provider.getFeeData();
+        const speed = this.web3Service.txSpeed();
+
+        if (speed === 'fast') {
+          if (feeData.maxFeePerGas) {
+            txRequest.maxFeePerGas = (feeData.maxFeePerGas * 150n) / 100n;
+          }
+          if (feeData.maxPriorityFeePerGas) {
+            txRequest.maxPriorityFeePerGas = (feeData.maxPriorityFeePerGas * 150n) / 100n;
+          }
+        } else if (speed === 'custom') {
+          const multiplier = this.web3Service.gasMultiplier() || 2.0;
+          const multiplierBigInt = BigInt(Math.round(multiplier * 100));
+          if (feeData.maxFeePerGas) {
+            txRequest.maxFeePerGas = (feeData.maxFeePerGas * multiplierBigInt) / 100n;
+          }
+          if (feeData.maxPriorityFeePerGas) {
+            txRequest.maxPriorityFeePerGas = (feeData.maxPriorityFeePerGas * multiplierBigInt) / 100n;
+          }
+        }
+      } catch (gasErr) {
+        console.warn('[Web3] Không thể cấu hình phí gas nâng cao:', gasErr);
+      }
+
+      const tx = await signer.sendTransaction(txRequest);
       
       this.txHash.set(tx.hash);
       this.toastService.showToast('Giao dịch đã được phát đi! Đang chờ xác nhận...', 'success');

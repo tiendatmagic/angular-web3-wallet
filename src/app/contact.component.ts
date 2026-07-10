@@ -24,14 +24,14 @@ import { ButtonComponent } from '@shared/components/button/button.component';
           <div class="space-y-4">
             <h3 class="text-base font-black text-slate-800 dark:text-white">Thông tin hỗ trợ</h3>
             <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-              Nếu bạn gặp bất kỳ sự cố nào liên quan đến giao dịch, kết nối ví, hoặc có ý tưởng đóng góp cho ProofRandom, vui lòng liên hệ với đội ngũ kỹ thuật thông qua các kênh chính thức của chúng tôi.
+              Nếu bạn gặp bất kỳ sự cố nào liên quan đến giao dịch, kết nối ví, hoặc có ý tưởng đóng góp cho Angular Web3, vui lòng liên hệ với đội ngũ kỹ thuật thông qua các kênh chính thức của chúng tôi.
             </p>
             <div class="space-y-3 pt-2">
-              <div class="flex items-center gap-3 text-xs text-slate-600 dark:text-slate-350">
+              <div class="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-300">
                 <app-icon name="wallet" class="w-4 h-4 text-purple-500" />
                 <span>Hỗ trợ kỹ thuật</span>
               </div>
-              <div class="flex items-center gap-3 text-xs text-slate-600 dark:text-slate-350">
+              <div class="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-300">
                 <app-icon name="blockchain" class="w-4 h-4 text-purple-500" />
                 <span>Mạng lưới chính: Arbitrum One (Chain ID 42161)</span>
               </div>

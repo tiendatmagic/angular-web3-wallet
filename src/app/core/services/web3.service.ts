@@ -20,6 +20,8 @@ export class Web3Service {
   public balance = signal<string>('0.0000');
   public networkName = signal<string>('Unknown Network');
   public isWrongChain = signal<boolean>(false);
+  public txSpeed = signal<'default' | 'fast' | 'custom'>('default');
+  public gasMultiplier = signal<number>(2);
 
   // Mạng được hỗ trợ
   public readonly supportedChains = [arbitrumSepolia, sepolia, mainnet, arbitrum, polygon];

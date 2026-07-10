@@ -40,13 +40,19 @@
     - Ẩn text tên thương hiệu bằng cách thêm class `hidden md:flex flex-col` vào khối chứa.
     - Cho phép nút quả địa cầu hiển thị trên mobile bằng cách đổi wrapper từ `hidden md:relative md:block` thành `relative block`.
     - Thêm khối `<aside>` làm Sidebar cố định bên trái trên desktop.
-    - Thêm khối `<aside>` làm Sidebar cố định bên trái trên desktop.
     - Cấu hình sử dụng `routerLink` và `routerLinkActive` cho các menu link để đổi trang thực tế và đồng bộ class active cho cả Sidebar và Mobile Drawer.
-  - Cập nhật [header.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/header/header.component.ts): Xóa bỏ các thuộc tính và phương thức không dùng tới liên quan đến ngôn ngữ (`showLangDropdown`, `currentLang`, `toggleLangDropdown`, `selectLang`). Thêm signal và hàm toggle cho dropdown chọn mạng nhanh (`showNetworkDropdown`). Khai báo signal `txSpeed` quản lý tốc độ giao dịch trên Sidebar. Import `RouterModule` phục vụ chỉ thị route.
+    - Sửa lỗi Header ngang đè che khuất logo ở góc trên cùng của Sidebar bằng cách tăng `z-index` của Sidebar cố định lên `z-50` và giảm `z-index` của Header trên desktop xuống `md:z-30` (giúp Sidebar xếp chồng lên trên Header ở điểm giao nhau).
+    - Đồng bộ bộ chọn tốc độ giao dịch segmented control và trường nhập hệ số nhân cho cả **Mobile Drawer** và **Desktop Sidebar**.
+    - Thay đổi tên thương hiệu, nhãn phụ và bản quyền chân trang từ `ProofRandom` / `Proof of Random` thành `Angular Web3` / `Web3 Template` trên toàn bộ Header, Mobile Drawer và Desktop Sidebar.
+  - Cập nhật [header.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/header/header.component.ts): Xóa bỏ các thuộc tính và phương thức không dùng tới liên quan đến ngôn ngữ (`showLangDropdown`, `currentLang`, `toggleLangDropdown`, `selectLang`). Thêm signal và hàm toggle cho dropdown chọn mạng nhanh (`showNetworkDropdown`). Khai báo signal `txSpeed` quản lý tốc độ giao dịch trên Sidebar. Import `RouterModule` và `FormsModule` phục vụ chỉ thị route và nhập liệu.
   - Cập nhật [app.html](file:///d:/git/angular-web3-wallet/src/app/app.html): Tách toàn bộ nội dung HTML của các trang con ra ngoài để tránh dồn ứ file. app.html bây giờ chỉ đóng vai trò là shell layout chứa `<app-header>`, `<router-outlet>` (được bọc trong `div` có class `md:pl-72`) và `<app-toast>`.
   - Cập nhật [app.ts](file:///d:/git/angular-web3-wallet/src/app/app.ts): Tinh gọn hoàn toàn, chuyển toàn bộ logic Web3 sang `HomeComponent`. app.ts chỉ còn khai báo class shell trống import `RouterOutlet`, `HeaderComponent` và `ToastComponent`.
   - Cấu hình [app.routes.ts](file:///d:/git/angular-web3-wallet/src/app/app.routes.ts): Đăng ký 3 route chính dẫn tới `HomeComponent` (Trang chủ Web3), `AboutComponent` (Giới thiệu) và `ContactComponent` (Liên hệ).
   - Tạo mới các file [home.component.ts](file:///d:/git/angular-web3-wallet/src/app/home.component.ts), [home.component.html](file:///d:/git/angular-web3-wallet/src/app/home.component.html), [about.component.ts](file:///d:/git/angular-web3-wallet/src/app/about.component.ts), [contact.component.ts](file:///d:/git/angular-web3-wallet/src/app/contact.component.ts).
+  - Cập nhật [contact.component.ts](file:///d:/git/angular-web3-wallet/src/app/contact.component.ts): Sửa lỗi độ tương phản và thay thế lớp màu không tồn tại `dark:text-slate-350` thành `dark:text-slate-300` (giúp chữ sáng rõ nét, dễ đọc trên nền tối). Đồng thời thay đổi mô tả thương hiệu từ `ProofRandom` thành `Angular Web3`.
+  - Cập nhật [web3.service.ts](file:///d:/git/angular-web3-wallet/src/app/core/services/web3.service.ts): Khai báo signal tập trung `txSpeed` (Mặc định/Nhanh/Tùy chọn) và `gasMultiplier` (hệ số nhân phí gas).
+  - Cập nhật [home.component.ts](file:///d:/git/angular-web3-wallet/src/app/home.component.ts): Tích hợp tính toán phí gas động (`maxFeePerGas`, `maxPriorityFeePerGas`) khi chuyển ETH theo hệ số nhân do người dùng thiết lập, đồng thời đổi tên thương hiệu trong chuỗi thông điệp ký.
+
 
 ### Yêu cầu: Sửa lỗi DApp chọn mạng khác trong dropdown không đổi được mạng
 - **Nội dung yêu cầu:** Người dùng báo lỗi khi chọn mạng khác (như Arbitrum One hay Arbitrum Sepolia) trong dropdown chọn nhanh mạng lưới thì không đổi được mạng.
