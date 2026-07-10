@@ -14,7 +14,7 @@ import { AccordionItemComponent } from './accordion-item.component';
 @Component({
   selector: 'app-accordion',
   imports: [CommonModule],
-  template: `<div class="flex flex-col gap-3"><ng-content></ng-content></div>`,
+  templateUrl: './accordion.component.html',
   styles: [
     `
       :host {
