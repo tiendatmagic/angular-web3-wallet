@@ -23,6 +23,12 @@
   2. Đổi màu nền từ `dark:bg-slate-950` sang màu xám nhẹ hơn `dark:bg-slate-900` để hài hòa và dễ nhận diện hơn.
   3. Cập nhật nhẹ màu ở chế độ sáng (lightmode) cho đồng bộ viền từ `border-slate-200` thành `border-slate-300` và khi hover từ `border-slate-300` thành `border-slate-400` để tăng tính rõ nét.
 
+### Yêu cầu: Chuẩn hóa và sửa đổi SVG của icon kết nối ví cho đúng ngữ cảnh
+
+- **Nội dung yêu cầu:** Người dùng phản ánh biểu tượng (icon) kết nối ví hiện tại hiển thị không phù hợp với ngữ cảnh kết nối ví Web3.
+- **Phân tích nguyên nhân:** Tệp [icon.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/icon/icon.component.html) có case `'wallet'` nhưng path SVG lại đang vẽ hình một con chip CPU/Vi mạch (có các chân râu tủa ra hai bên) thay vì một chiếc ví thực tế. Điều này gây hiểu lầm trên UI ở nút kết nối và các khu vực thông báo.
+- **Giải pháp:** Cập nhật tệp [icon.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/icon/icon.component.html) tại case `'wallet'`, thay thế path vẽ chip CPU cũ bằng path vẽ chiếc ví tiền (wallet) chuẩn theo Heroicons v2 outline, giúp hiển thị trực quan và đúng ngữ cảnh Web3 của ứng dụng.
+
 ## Ngày 10/07/2026
 
 ### Yêu cầu: Bổ sung các custom Pipes từ dự án cafe-blockchain

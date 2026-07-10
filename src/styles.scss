@@ -179,8 +179,12 @@ body.dark {
 }
 
 /* ==================== HỆ THỐNG CARD DÙNG CHUNG ==================== */
-.app-card {
+.app-card, .app-card-interactive {
   @apply bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-lg shadow-slate-200/50 dark:shadow-slate-900/30 rounded-[15px] p-6;
+}
+
+.app-card-interactive {
+  @apply transition-all duration-300 hover:shadow-xl hover:shadow-[var(--color-primary)]/10 hover:border-[var(--color-primary)]/30 hover:scale-[1.01] cursor-pointer;
 }
 
 /* ==================== TIỆN ÍCH BỔ SUNG ==================== */
