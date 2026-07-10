@@ -12,9 +12,7 @@ import {
   signal,
   OnChanges,
   SimpleChanges,
-  OnDestroy,
-  ChangeDetectionStrategy,
-} from '@angular/core';
+  OnDestroy} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '@shared/components/icon/icon.component';
 
@@ -34,15 +32,14 @@ export interface TabOption {
   
   imports: [CommonModule, IconComponent],
   templateUrl: './tab-group.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  
   styles: [
     `
       :host {
         display: block;
       }
     `,
-  ],
-})
+  ]})
 export class TabGroupComponent implements AfterViewInit, OnChanges, OnDestroy {
   /** Danh sách các lựa chọn tab */
   @Input() options: TabOption[] = [];
@@ -67,8 +64,7 @@ export class TabGroupComponent implements AfterViewInit, OnChanges, OnDestroy {
   /** Trạng thái vị trí và kích thước của slider */
   public readonly sliderStyle = signal<{ left: string; width: string }>({
     left: '0px',
-    width: '0px',
-  });
+    width: '0px'});
 
   public get activeIndex(): number {
     return this.options.findIndex((opt) => opt.value === this.activeValue);

@@ -14,8 +14,7 @@ import { Component, Input } from '@angular/core';
   template: `<ng-content></ng-content>`,
   host: {
     '[class.app-card]': '!interactive',
-    '[class.app-card-interactive]': 'interactive',
-  },
+    '[class.app-card-interactive]': 'interactive'},
   
   styles: [
     `
@@ -23,8 +22,7 @@ import { Component, Input } from '@angular/core';
         display: block;
       }
     `,
-  ],
-})
+  ]})
 export class CardComponent {
   /** Nếu true, thêm hiệu ứng hover/scale cho card có thể click */
   @Input() interactive = false;

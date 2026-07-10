@@ -5,9 +5,7 @@ import {
   EventEmitter,
   forwardRef,
   signal,
-  ChangeDetectionStrategy,
-  OnDestroy,
-} from '@angular/core';
+  OnDestroy} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { IconComponent } from '../icon/icon.component';
@@ -30,8 +28,7 @@ import { debounceTime } from 'rxjs/operators';
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => CustomSearchInputComponent),
-      multi: true,
-    },
+      multi: true},
   ],
   
   styles: [
@@ -40,8 +37,7 @@ import { debounceTime } from 'rxjs/operators';
         display: block;
       }
     `,
-  ],
-})
+  ]})
 export class CustomSearchInputComponent implements ControlValueAccessor, OnDestroy {
   public readonly val = signal<string>('');
 

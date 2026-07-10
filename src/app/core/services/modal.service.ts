@@ -4,15 +4,13 @@ import {
   ComponentRef,
   createComponent,
   Type,
-  Injector,
-} from '@angular/core';
+  Injector} from '@angular/core';
 import { ModalRef, MODAL_DATA, ModalConfig, ConfirmConfig } from './modal-ref';
 import { ModalWrapperComponent } from '@shared/components/modal/modal-wrapper.component';
 import { ConfirmModalComponent } from '@shared/components/confirm-modal/confirm-modal.component';
 
 @Injectable({
-  providedIn: 'root',
-})
+  providedIn: 'root'})
 export class ModalService {
   constructor(
     private appRef: ApplicationRef,

@@ -5,9 +5,8 @@ import { CommonModule } from '@angular/common';
   selector: 'app-skeleton-loader',
   
   imports: [CommonModule],
-  changeDetection: ChangeDetectionStrategy.Eager,
-  templateUrl: './skeleton-loader.component.html',
-})
+  
+  templateUrl: './skeleton-loader.component.html'})
 export class SkeletonLoaderComponent {
   @Input() type:
     | 'dashboard'

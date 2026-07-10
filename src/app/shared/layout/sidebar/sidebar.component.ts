@@ -29,8 +29,7 @@ import { TxSpeedSelectorComponent } from '@shared/components/tx-speed-selector/t
         display: contents;
       }
     `,
-  ],
-})
+  ]})
 export class SidebarComponent {
   public stateService = inject(StateService);
 }

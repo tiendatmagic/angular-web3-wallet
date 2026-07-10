@@ -8,9 +8,8 @@ import { MODAL_DATA, ModalRef } from '@core/services/modal-ref';
   selector: 'app-confirm-modal',
   
   imports: [CommonModule, IconComponent, ButtonComponent],
-  changeDetection: ChangeDetectionStrategy.Eager,
-  templateUrl: './confirm-modal.component.html',
-})
+  
+  templateUrl: './confirm-modal.component.html'})
 export class ConfirmModalComponent implements OnInit {
   @Input() isOpen = false;
   @Input() title = 'Xác nhận hành động';

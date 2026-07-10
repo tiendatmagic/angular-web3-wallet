@@ -4,9 +4,7 @@ import {
   Output,
   EventEmitter,
   OnChanges,
-  SimpleChanges,
-  ChangeDetectionStrategy,
-} from '@angular/core';
+  SimpleChanges} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '@shared/components/icon/icon.component';
 
@@ -14,9 +12,8 @@ import { IconComponent } from '@shared/components/icon/icon.component';
   selector: 'app-pagination',
   
   imports: [CommonModule, IconComponent],
-  changeDetection: ChangeDetectionStrategy.Eager,
-  templateUrl: './pagination.component.html',
-})
+  
+  templateUrl: './pagination.component.html'})
 export class PaginationComponent implements OnChanges {
   @Input() currentPage: number = 1;
   @Input() totalPages: number = 1;

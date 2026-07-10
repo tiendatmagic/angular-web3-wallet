@@ -13,13 +13,11 @@ import { CommonModule } from '@angular/common';
     }
     <ng-content></ng-content>
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  
   host: {
     '[class]': 'hostClasses',
     '[attr.disabled]': '(disabled || loading) ? "" : null',
-    '[class.pointer-events-none]': 'loading || disabled',
-  },
-})
+    '[class.pointer-events-none]': 'loading || disabled'}})
 export class ButtonComponent {
   @Input() variant:
     | 'primary'

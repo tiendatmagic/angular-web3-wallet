@@ -2248,3 +2248,16 @@
   - **Cấu hình Lazy Loading định tuyến**:
     - Cập nhật [app.routes.ts](file:///d:/git/angular-web3-wallet/src/app/app.routes.ts) chuyển đổi các component feature (Home, About, Contact) sang cơ chế Lazy Loading bằng cú pháp `loadComponent: () => import(...).then(m => m.Component)`.
 - **Kết quả:** Build thành công 100% không lỗi. Dung lượng bundle ban đầu giảm đi đáng kể nhờ lazy loading, và cấu trúc code đạt chuẩn quản lý trạng thái Clean Code giống `cafe-blockchain`.
+
+### Yêu cầu: Kiểm tra và tối ưu tuân thủ toàn diện quy chuẩn .gemini/GEMINI.md
+
+- **Nội dung yêu cầu:** Rà soát mã nguồn toàn bộ dự án để tuân thủ tuyệt đối các nguyên tắc Angular & TypeScript trong cấu hình [.gemini/GEMINI.md](file:///d:/git/angular-web3-wallet/.gemini/GEMINI.md).
+- **Giải pháp:**
+  - **Dọn dẹp `standalone: true`**: Loại bỏ thuộc tính khai báo `standalone: true` ở tất cả 26 file component do Angular v20+ đã tự động mặc định là Standalone.
+  - **Dọn dẹp `changeDetection`**: Loại bỏ thuộc tính `changeDetection` thủ công (cả `OnPush` và lỗi viết sai `Eager` cũ) khỏi tất cả các component do Angular v22+ đã tự động mặc định cơ chế Change Detection là OnPush.
+  - **Chuyển đổi `@HostListener` sang `host` object**: Tái cấu trúc loại bỏ decorator `@HostListener` và khai báo cấu hình lắng nghe sự kiện trực tiếp trong trường `host` ở các component:
+    - [header.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/layout/header/header.component.ts)
+    - [tab-group.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/tab-group/tab-group.component.ts)
+    - [custom-select.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/custom-select/custom-select.component.ts)
+  - **Dọn dẹp dấu phẩy thừa**: Chạy kịch bản xử lý tự động để xóa bỏ dấu phẩy đơn độc (stray commas) gây ra bởi quá trình xóa các import `ChangeDetectionStrategy` và `HostListener` không còn sử dụng.
+- **Kết quả:** Mã nguồn cực kỳ sạch sẽ, tuân thủ tuyệt đối các quy định phát triển của DApp, biên dịch build thành công 100% không cảnh báo/lỗi.

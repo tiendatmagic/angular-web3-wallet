@@ -71,8 +71,7 @@ import { IconComponent } from '@shared/components/icon/icon.component';
         display: block;
       }
     `
-  ],
-  })
+  ]})
 export class ThemeSwitcherComponent {
   public stateService = inject(StateService);
 }

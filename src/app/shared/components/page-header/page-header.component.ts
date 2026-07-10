@@ -5,9 +5,8 @@ import { CommonModule } from '@angular/common';
   selector: 'app-page-header',
   
   imports: [CommonModule],
-  changeDetection: ChangeDetectionStrategy.Eager,
-  templateUrl: './page-header.component.html',
-})
+  
+  templateUrl: './page-header.component.html'})
 export class PageHeaderComponent {
   @Input() title = '';
   @Input() description = '';

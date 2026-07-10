@@ -4,9 +4,7 @@ import {
   Output,
   EventEmitter,
   forwardRef,
-  signal,
-  ChangeDetectionStrategy,
-} from '@angular/core';
+  signal} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -26,8 +24,7 @@ import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/f
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => CustomCheckboxComponent),
-      multi: true,
-    },
+      multi: true},
   ],
   
   styles: [
@@ -36,8 +33,7 @@ import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/f
         display: block;
       }
     `,
-  ],
-})
+  ]})
 export class CustomCheckboxComponent implements ControlValueAccessor {
   public readonly checked = signal<boolean>(false);
 

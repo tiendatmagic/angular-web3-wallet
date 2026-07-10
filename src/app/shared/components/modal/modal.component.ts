@@ -6,9 +6,8 @@ import { IconComponent } from '@shared/components/icon/icon.component';
   selector: 'app-modal',
   
   imports: [CommonModule, IconComponent],
-  changeDetection: ChangeDetectionStrategy.Eager,
-  templateUrl: './modal.component.html',
-})
+  
+  templateUrl: './modal.component.html'})
 export class ModalComponent {
   @Input() isOpen = false;
   @Input() title = '';

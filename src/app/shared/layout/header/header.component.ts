@@ -39,8 +39,7 @@ import { POPULAR_CHAINS } from '@core/utils/blockchain.utils';
         display: contents;
       }
     `,
-  ],
-})
+  ]})
 export class HeaderComponent {
   public stateService = inject(StateService);
   

@@ -21,8 +21,7 @@ import { FormsModule } from '@angular/forms';
         display: block;
       }
     `,
-  ],
-})
+  ]})
 export class CustomSwitchComponent {
   @Input() checked: boolean = false;
   @Output() checkedChange = new EventEmitter<boolean>();

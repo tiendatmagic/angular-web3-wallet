@@ -81,8 +81,7 @@ import { StateService } from '@core/services/state.service';
         display: block;
       }
     `
-  ],
-  })
+  ]})
 export class TxSpeedSelectorComponent {
   public stateService = inject(StateService);
 }

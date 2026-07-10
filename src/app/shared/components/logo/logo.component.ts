@@ -43,6 +43,5 @@ import { Component } from '@angular/core';
         display: block;
       }
     `
-  ],
-  })
+  ]})
 export class LogoComponent {}

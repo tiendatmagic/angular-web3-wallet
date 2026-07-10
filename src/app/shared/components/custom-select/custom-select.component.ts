@@ -8,9 +8,7 @@ import {
   inject,
   signal,
   computed,
-  forwardRef,
-  ChangeDetectionStrategy,
-} from '@angular/core';
+  forwardRef} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { IconComponent } from '../icon/icon.component';
@@ -39,8 +37,7 @@ export interface SelectOption {
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => CustomSelectComponent),
-      multi: true,
-    },
+      multi: true},
   ],
   styles: [
     `
@@ -48,8 +45,7 @@ export interface SelectOption {
         display: block;
       }
     `,
-  ],
-})
+  ]})
 export class CustomSelectComponent implements ControlValueAccessor {
   private readonly elementRef = inject(ElementRef);
 

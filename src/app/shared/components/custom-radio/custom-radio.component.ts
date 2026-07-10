@@ -4,9 +4,7 @@ import {
   Output,
   EventEmitter,
   forwardRef,
-  signal,
-  ChangeDetectionStrategy,
-} from '@angular/core';
+  signal} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -26,8 +24,7 @@ import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/f
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => CustomRadioComponent),
-      multi: true,
-    },
+      multi: true},
   ],
   
   styles: [
@@ -43,8 +40,7 @@ import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/f
         animation: scaleUp 0.15s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
       }
     `,
-  ],
-})
+  ]})
 export class CustomRadioComponent implements ControlValueAccessor {
   public readonly checked = signal<boolean>(false);
 

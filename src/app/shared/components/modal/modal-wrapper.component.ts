@@ -7,8 +7,7 @@ import { IconComponent } from '@shared/components/icon/icon.component';
   selector: 'app-modal-wrapper',
   
   imports: [CommonModule, IconComponent],
-  templateUrl: './modal-wrapper.component.html',
-})
+  templateUrl: './modal-wrapper.component.html'})
 export class ModalWrapperComponent {
   title = '';
   size: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' = 'md';

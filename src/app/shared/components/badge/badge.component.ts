@@ -12,9 +12,8 @@ import { CommonModule } from '@angular/common';
     '[class.cursor-pointer]': 'interactive',
     '[class.hover:opacity-85]': 'interactive',
     '[class.active:scale-95]': 'interactive',
-    '[class.transition-all]': 'interactive',
-  },
-  changeDetection: ChangeDetectionStrategy.Eager,
+    '[class.transition-all]': 'interactive'},
+  
   styles: [
     `
       :host {
@@ -25,8 +24,7 @@ import { CommonModule } from '@angular/common';
         line-height: 1;
       }
     `,
-  ],
-})
+  ]})
 export class BadgeComponent {
   @Input() variant:
     | 'primary'
