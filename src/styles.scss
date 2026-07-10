@@ -180,7 +180,7 @@ body.dark {
 
 /* ==================== HỆ THỐNG CARD DÙNG CHUNG ==================== */
 .app-card {
-  @apply bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-lg shadow-slate-200/50 dark:shadow-slate-900/30 rounded-[15px] transition-all duration-300 p-6;
+  @apply bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-lg shadow-slate-200/50 dark:shadow-slate-900/30 rounded-[15px] p-6;
 }
 
 /* ==================== TIỆN ÍCH BỔ SUNG ==================== */

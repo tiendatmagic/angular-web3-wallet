@@ -1,23 +1,21 @@
 <main class="max-w-[1530px] mx-auto w-full px-4 sm:px-6 py-6 md:py-10 space-y-6 md:space-y-8">
-
   <!-- BANNER CHƯA KẾT NỐI VÍ -->
   @if (!web3Service.isConnected()) {
     <div app-card class="text-center max-w-2xl mx-auto">
-      <div class="w-16 h-16 bg-purple-50 dark:bg-purple-950/30 rounded-full flex items-center justify-center mx-auto mb-6 text-purple-600 dark:text-purple-400 border border-purple-500/20">
+      <div
+        class="w-16 h-16 bg-purple-50 dark:bg-purple-950/30 rounded-full flex items-center justify-center mx-auto mb-6 text-purple-600 dark:text-purple-400 border border-purple-500/20"
+      >
         <app-icon name="blockchain" class="w-8 h-8" strokeWidth="1.5" />
       </div>
       <h2 class="text-2xl md:text-3xl font-black text-slate-800 dark:text-white mb-4">
         Khung ứng dụng Web3 cao cấp
       </h2>
-      <p class="text-slate-500 dark:text-slate-400 text-sm sm:text-base mb-8 max-w-md mx-auto leading-relaxed">
+      <p
+        class="text-slate-500 dark:text-slate-400 text-sm sm:text-base mb-8 max-w-md mx-auto leading-relaxed"
+      >
         Để bắt đầu trải nghiệm các tính năng tương tác blockchain, vui lòng kết nối ví của bạn.
       </p>
-      <button
-        app-button
-        variant="primary"
-        size="lg"
-        (click)="web3Service.connect()"
-      >
+      <button app-button variant="primary" size="md" (click)="web3Service.connect()">
         <app-icon name="wallet" class="w-5 h-5" strokeWidth="2" />
         Kết nối ví của bạn
       </button>
@@ -27,30 +25,40 @@
   <!-- DASHBOARD HOẠT ĐỘNG KHI ĐÃ KẾT NỐI -->
   @if (web3Service.isConnected()) {
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 items-start">
-
       <!-- CỘT TRÁI: THÔNG TIN VÍ & MẠNG LƯỚI (5/12 cột) -->
       <div class="lg:col-span-5 space-y-5 md:space-y-6">
-
         <!-- CARD TRẠNG THÁI VÍ -->
         <div app-card>
-          <h3 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4">
+          <h3
+            class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4"
+          >
             Trạng thái tài khoản
           </h3>
 
           <div class="space-y-4">
             <!-- Số dư lớn -->
             <div class="flex flex-col py-1">
-              <span class="text-xs font-bold text-slate-400 dark:text-slate-500">Số dư hiện tại</span>
-              <span class="text-3xl sm:text-4xl font-black text-transparent bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text mt-0.5">
+              <span class="text-xs font-bold text-slate-400 dark:text-slate-500"
+                >Số dư hiện tại</span
+              >
+              <span
+                class="text-3xl sm:text-4xl font-black text-transparent bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text mt-0.5"
+              >
                 {{ web3Service.balance() }} ETH
               </span>
             </div>
 
             <!-- Địa chỉ ví -->
             <div class="flex flex-col gap-1">
-              <span class="text-xs font-bold text-slate-400 dark:text-slate-500">Địa chỉ ví của bạn</span>
-              <div class="flex items-center gap-2 bg-slate-50 dark:bg-slate-950/40 border border-slate-200/30 dark:border-slate-800/30 rounded-xl px-3 py-2.5">
-                <span class="font-mono text-xs font-bold text-slate-600 dark:text-slate-300 min-w-0 flex-1 truncate">
+              <span class="text-xs font-bold text-slate-400 dark:text-slate-500"
+                >Địa chỉ ví của bạn</span
+              >
+              <div
+                class="flex items-center gap-2 bg-slate-50 dark:bg-slate-950/40 border border-slate-200/30 dark:border-slate-800/30 rounded-xl px-3 py-2.5"
+              >
+                <span
+                  class="font-mono text-xs font-bold text-slate-600 dark:text-slate-300 min-w-0 flex-1 truncate"
+                >
                   {{ web3Service.address() }}
                 </span>
                 <button
@@ -64,7 +72,9 @@
             </div>
 
             <!-- Mạng & Chain ID -->
-            <div class="grid grid-cols-2 gap-4 border-t border-slate-100 dark:border-slate-800/40 pt-4">
+            <div
+              class="grid grid-cols-2 gap-4 border-t border-slate-100 dark:border-slate-800/40 pt-4"
+            >
               <div class="flex flex-col">
                 <span class="text-[10px] font-bold text-slate-400 uppercase">Mạng kết nối</span>
                 <span class="text-sm font-extrabold text-slate-700 dark:text-slate-200 truncate">
@@ -83,13 +93,17 @@
 
         <!-- CARD CHUYỂN MẠNG NHANH -->
         <div app-card>
-          <h3 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4">
+          <h3
+            class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4"
+          >
             Chuyển nhanh mạng lưới
           </h3>
 
           <!-- Cảnh báo sai mạng -->
           @if (web3Service.isWrongChain()) {
-            <div class="bg-red-500/10 border border-red-500/25 rounded-xl p-3 mb-4 text-xs font-bold text-red-500 flex items-start gap-2">
+            <div
+              class="bg-red-500/10 border border-red-500/25 rounded-xl p-3 mb-4 text-xs font-bold text-red-500 flex items-start gap-2"
+            >
               <app-icon name="warning" class="w-4 h-4 mt-0.5 flex-shrink-0" />
               <span>Bạn đang ở mạng không được hỗ trợ. Vui lòng chuyển sang mạng dưới đây.</span>
             </div>
@@ -113,30 +127,34 @@
             }
           </div>
         </div>
-
       </div>
 
       <!-- CỘT PHẢI: CÁC HOẠT ĐỘNG GIAO DỊCH DEMO (7/12 cột) -->
       <div class="lg:col-span-7 space-y-6">
-
         <!-- THỰC HIỆN GỬI GIAO DỊCH DEMO -->
         <div app-card>
           <div class="flex items-center gap-3 mb-6">
-            <div class="w-10 h-10 bg-purple-50 dark:bg-purple-950/30 rounded-xl flex items-center justify-center text-purple-600 dark:text-purple-400 border border-purple-500/10">
+            <div
+              class="w-10 h-10 bg-purple-50 dark:bg-purple-950/30 rounded-xl flex items-center justify-center text-purple-600 dark:text-purple-400 border border-purple-500/10"
+            >
               <app-icon name="send" class="w-5 h-5" />
             </div>
             <div>
               <h3 class="text-base font-black text-slate-800 dark:text-white">
                 Gửi giao dịch Demo
               </h3>
-              <p class="text-xs text-slate-400 dark:text-slate-500">Thử nghiệm chuyển ETH tới ví khác</p>
+              <p class="text-xs text-slate-400 dark:text-slate-500">
+                Thử nghiệm chuyển ETH tới ví khác
+              </p>
             </div>
           </div>
 
           <div class="space-y-4">
             <!-- Địa chỉ nhận -->
             <div class="flex flex-col gap-1.5">
-              <label class="text-xs font-bold text-slate-500 dark:text-slate-400">Địa chỉ ví nhận</label>
+              <label class="text-xs font-bold text-slate-500 dark:text-slate-400"
+                >Địa chỉ ví nhận</label
+              >
               <input
                 type="text"
                 placeholder="0x..."
@@ -147,7 +165,9 @@
 
             <!-- Số lượng ETH -->
             <div class="flex flex-col gap-1.5">
-              <label class="text-xs font-bold text-slate-500 dark:text-slate-400">Số lượng ETH gửi</label>
+              <label class="text-xs font-bold text-slate-500 dark:text-slate-400"
+                >Số lượng ETH gửi</label
+              >
               <input
                 type="number"
                 placeholder="0.01"
@@ -177,13 +197,18 @@
 
             <!-- Kết quả giao dịch -->
             @if (txHash()) {
-              <div class="bg-emerald-500/10 border border-emerald-500/25 rounded-xl p-4 space-y-2 mt-4">
+              <div
+                class="bg-emerald-500/10 border border-emerald-500/25 rounded-xl p-4 space-y-2 mt-4"
+              >
                 <div class="flex items-center gap-2 text-emerald-500 text-xs font-bold">
                   <app-icon name="shield-check" class="w-4 h-4" />
                   <span>Giao dịch thành công</span>
                 </div>
                 <div class="flex items-center justify-between gap-4">
-                  <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Transaction Hash</span>
+                  <span
+                    class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider"
+                    >Transaction Hash</span
+                  >
                   <a
                     [href]="'https://sepolia.arbiscan.io/tx/' + txHash()"
                     target="_blank"
@@ -197,7 +222,9 @@
 
             <!-- Lỗi giao dịch -->
             @if (txError()) {
-              <div class="bg-red-500/10 border border-red-500/25 rounded-xl p-4 text-xs font-bold text-red-500 flex items-start gap-2">
+              <div
+                class="bg-red-500/10 border border-red-500/25 rounded-xl p-4 text-xs font-bold text-red-500 flex items-start gap-2"
+              >
                 <app-icon name="warning" class="w-4 h-4 mt-0.5 flex-shrink-0" />
                 <span class="break-words min-w-0">Lỗi: {{ txError() }}</span>
               </div>
@@ -208,21 +235,25 @@
         <!-- KÝ TIN NHẮN DEMO BẢO MẬT -->
         <div app-card>
           <div class="flex items-center gap-3 mb-6">
-            <div class="w-10 h-10 bg-purple-50 dark:bg-purple-950/30 rounded-xl flex items-center justify-center text-purple-600 dark:text-purple-400 border border-purple-500/10">
+            <div
+              class="w-10 h-10 bg-purple-50 dark:bg-purple-950/30 rounded-xl flex items-center justify-center text-purple-600 dark:text-purple-400 border border-purple-500/10"
+            >
               <app-icon name="signature" class="w-5 h-5" />
             </div>
             <div>
-              <h3 class="text-base font-black text-slate-800 dark:text-white">
-                Demo Ký tin nhắn
-              </h3>
-              <p class="text-xs text-slate-400 dark:text-slate-500">Xác thực thông điệp không mất phí gas</p>
+              <h3 class="text-base font-black text-slate-800 dark:text-white">Demo Ký tin nhắn</h3>
+              <p class="text-xs text-slate-400 dark:text-slate-500">
+                Xác thực thông điệp không mất phí gas
+              </p>
             </div>
           </div>
 
           <div class="space-y-4">
             <!-- Nội dung tin nhắn -->
             <div class="flex flex-col gap-1.5">
-              <label class="text-xs font-bold text-slate-500 dark:text-slate-400">Nội dung thông điệp</label>
+              <label class="text-xs font-bold text-slate-500 dark:text-slate-400"
+                >Nội dung thông điệp</label
+              >
               <textarea
                 rows="2"
                 [(ngModel)]="messageToSign"
@@ -249,15 +280,23 @@
 
             <!-- Kết quả chữ ký -->
             @if (signature()) {
-              <div class="bg-purple-500/10 border border-purple-500/25 rounded-xl p-4 space-y-2 mt-4">
-                <div class="flex items-center justify-between text-purple-600 dark:text-purple-400 text-xs font-bold">
+              <div
+                class="bg-purple-500/10 border border-purple-500/25 rounded-xl p-4 space-y-2 mt-4"
+              >
+                <div
+                  class="flex items-center justify-between text-purple-600 dark:text-purple-400 text-xs font-bold"
+                >
                   <div class="flex items-center gap-2">
                     <app-icon name="signature" class="w-4 h-4" />
                     <span>Đã tạo chữ ký số</span>
                   </div>
                 </div>
-                <div class="flex gap-2 items-start bg-white/50 dark:bg-slate-950/40 p-2.5 rounded-xl border border-slate-200/20 dark:border-slate-850">
-                  <span class="text-xs font-mono break-all text-slate-600 dark:text-slate-300 min-w-0 flex-1 leading-relaxed">
+                <div
+                  class="flex gap-2 items-start bg-white/50 dark:bg-slate-950/40 p-2.5 rounded-xl border border-slate-200/20 dark:border-slate-850"
+                >
+                  <span
+                    class="text-xs font-mono break-all text-slate-600 dark:text-slate-300 min-w-0 flex-1 leading-relaxed"
+                  >
                     {{ signature() }}
                   </span>
                   <button
@@ -273,16 +312,16 @@
 
             <!-- Lỗi ký -->
             @if (signError()) {
-              <div class="bg-red-500/10 border border-red-500/25 rounded-xl p-4 text-xs font-bold text-red-500 flex items-start gap-2">
+              <div
+                class="bg-red-500/10 border border-red-500/25 rounded-xl p-4 text-xs font-bold text-red-500 flex items-start gap-2"
+              >
                 <app-icon name="warning" class="w-4 h-4 mt-0.5 flex-shrink-0" />
                 <span class="break-words min-w-0">Lỗi: {{ signError() }}</span>
               </div>
             }
           </div>
         </div>
-
       </div>
-
     </div>
   }
   <!-- ══════════════════════════════════════════════════════ -->
@@ -291,27 +330,39 @@
   <div class="space-y-4">
     <!-- Tiêu đề section -->
     <div class="flex items-center gap-3">
-      <div class="w-10 h-10 bg-pink-50 dark:bg-pink-950/30 rounded-xl flex items-center justify-center text-pink-600 dark:text-pink-400 border border-pink-500/10">
+      <div
+        class="w-10 h-10 bg-pink-50 dark:bg-pink-950/30 rounded-xl flex items-center justify-center text-pink-600 dark:text-pink-400 border border-pink-500/10"
+      >
         <app-icon name="bolt" class="w-5 h-5" [solid]="true" viewBox="0 0 20 20" />
       </div>
       <div>
         <h3 class="text-base font-black text-slate-800 dark:text-white">UI Components Showcase</h3>
-        <p class="text-xs text-slate-400 dark:text-slate-500">Demo tất cả các shared components đã được xây dựng</p>
+        <p class="text-xs text-slate-400 dark:text-slate-500">
+          Demo tất cả các shared components đã được xây dựng
+        </p>
       </div>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-
       <!-- CARD 1: Custom Switch -->
       <div app-card>
-        <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
-          <app-icon name="bolt" class="w-3.5 h-3.5 text-pink-500" [solid]="true" viewBox="0 0 20 20" />
+        <h4
+          class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
+        >
+          <app-icon
+            name="bolt"
+            class="w-3.5 h-3.5 text-pink-500"
+            [solid]="true"
+            viewBox="0 0 20 20"
+          />
           Custom Switch
         </h4>
         <div class="space-y-4">
           <!-- Compact mode -->
           <div class="flex items-center justify-between">
-            <span class="text-sm font-semibold text-slate-600 dark:text-slate-300">Compact toggle</span>
+            <span class="text-sm font-semibold text-slate-600 dark:text-slate-300"
+              >Compact toggle</span
+            >
             <app-custom-switch
               [checked]="demoSwitchChecked()"
               (checkedChange)="demoSwitchChecked.set($event)"
@@ -326,7 +377,9 @@
             [checked]="demoSwitchFull()"
             (checkedChange)="demoSwitchFull.set($event)"
           />
-          <div class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2">
+          <div
+            class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2"
+          >
             compact={{ demoSwitchChecked() }} &nbsp;|&nbsp; full={{ demoSwitchFull() }}
           </div>
         </div>
@@ -334,8 +387,15 @@
 
       <!-- CARD 2: Custom Radio -->
       <div app-card>
-        <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
-          <app-icon name="bolt" class="w-3.5 h-3.5 text-purple-500" [solid]="true" viewBox="0 0 20 20" />
+        <h4
+          class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
+        >
+          <app-icon
+            name="bolt"
+            class="w-3.5 h-3.5 text-purple-500"
+            [solid]="true"
+            viewBox="0 0 20 20"
+          />
           Custom Radio
         </h4>
         <div class="space-y-3">
@@ -349,7 +409,9 @@
               (select)="demoRadioValue.set($event)"
             />
           }
-          <div class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2">
+          <div
+            class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2"
+          >
             selected={{ demoRadioValue() }}
           </div>
         </div>
@@ -357,7 +419,9 @@
 
       <!-- CARD 3: Custom Checkbox -->
       <div app-card>
-        <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
+        <h4
+          class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
+        >
           <app-icon name="shield-check" class="w-3.5 h-3.5 text-pink-500" strokeWidth="2.5" />
           Custom Checkbox
         </h4>
@@ -367,7 +431,9 @@
             label="Chấp nhận điều khoản dịch vụ"
             description="Tôi đồng ý với các điều khoản và cam kết bảo mật thông tin ví dApp này."
           />
-          <div class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2">
+          <div
+            class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2"
+          >
             checked={{ demoCheckboxValue() }}
           </div>
         </div>
@@ -375,7 +441,9 @@
 
       <!-- CARD 4: Custom Search Input -->
       <div app-card>
-        <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
+        <h4
+          class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
+        >
           <app-icon name="search" class="w-3.5 h-3.5 text-blue-500" strokeWidth="2.5" />
           Custom Search Input
         </h4>
@@ -387,7 +455,9 @@
             [ngModel]="demoSearchQuery()"
             (valueChange)="demoSearchQuery.set($event)"
           />
-          <div class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2">
+          <div
+            class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2"
+          >
             query="{{ demoSearchQuery() || '(trống)' }}"
           </div>
         </div>
@@ -395,7 +465,9 @@
 
       <!-- CARD 5: Custom Select -->
       <div app-card>
-        <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
+        <h4
+          class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
+        >
           <app-icon name="chevron-down" class="w-3.5 h-3.5 text-emerald-500" strokeWidth="2.5" />
           Custom Select
         </h4>
@@ -410,13 +482,13 @@
             placement="auto"
             [(value)]="demoSelectValue"
           />
-          <div class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2">
+          <div
+            class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2"
+          >
             selected={{ demoSelectValue() ?? '(chưa chọn)' }}
           </div>
         </div>
       </div>
-
     </div>
   </div>
-
 </main>
