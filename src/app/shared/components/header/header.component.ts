@@ -1,5 +1,6 @@
 import { Component, computed, signal, inject, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { Web3Service } from '@core/services/web3.service';
 import { ThemeService } from '@core/services/theme.service';
 import { ToastService } from '@core/services/toast.service';
@@ -8,7 +9,7 @@ import { IconComponent } from '@shared/components/icon/icon.component';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, IconComponent],
+  imports: [CommonModule, IconComponent, RouterModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })

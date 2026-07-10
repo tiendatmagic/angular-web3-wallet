@@ -268,38 +268,39 @@
 
     <!-- NAV LINKS (scrollable nếu cần) -->
     <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
-
-      <!-- Mục menu: Trang chủ (active demo) -->
+      <!-- Trang chủ -->
       <a
-        href="#"
+        routerLink="/home"
+        routerLinkActive="bg-purple-50 dark:bg-purple-950/30 text-purple-600 dark:text-purple-400 font-extrabold"
+        [routerLinkActiveOptions]="{exact: true}"
         (click)="showMobileMenu.set(false)"
-        class="flex items-center gap-3.5 px-4 py-3 rounded-xl bg-purple-50 dark:bg-purple-950/30 text-purple-600 dark:text-purple-400 font-bold text-sm transition-all"
+        class="flex items-center gap-3.5 px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/40 hover:text-purple-600 dark:hover:text-purple-400 text-slate-600 dark:text-slate-400 font-semibold text-sm transition-all cursor-pointer"
       >
         <app-icon name="home" class="w-5 h-5 flex-shrink-0" />
         <span>Trang chủ</span>
       </a>
 
-      <!-- Mục menu: Lịch sử giao dịch -->
+      <!-- Giới thiệu -->
       <a
-        href="#"
+        routerLink="/about"
+        routerLinkActive="bg-purple-50 dark:bg-purple-950/30 text-purple-600 dark:text-purple-400 font-extrabold"
         (click)="showMobileMenu.set(false)"
-        class="flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/40 hover:text-purple-600 dark:hover:text-purple-400 font-semibold text-sm transition-all"
+        class="flex items-center gap-3.5 px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/40 hover:text-purple-600 dark:hover:text-purple-400 text-slate-600 dark:text-slate-400 font-semibold text-sm transition-all cursor-pointer"
       >
-        <app-icon name="history" class="w-5 h-5 flex-shrink-0" />
-        <span>Lịch sử giao dịch</span>
+        <app-icon name="blockchain" class="w-5 h-5 flex-shrink-0" />
+        <span>Giới thiệu</span>
       </a>
 
-      <!-- Mục menu: Xác minh kết quả -->
+      <!-- Liên hệ -->
       <a
-        href="#"
+        routerLink="/contact"
+        routerLinkActive="bg-purple-50 dark:bg-purple-950/30 text-purple-600 dark:text-purple-400 font-extrabold"
         (click)="showMobileMenu.set(false)"
-        class="flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/40 hover:text-purple-600 dark:hover:text-purple-400 font-semibold text-sm transition-all"
+        class="flex items-center gap-3.5 px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/40 hover:text-purple-600 dark:hover:text-purple-400 text-slate-600 dark:text-slate-400 font-semibold text-sm transition-all cursor-pointer"
       >
-        <app-icon name="shield-check" class="w-5 h-5 flex-shrink-0" />
-        <span>Xác minh kết quả</span>
+        <app-icon name="send" class="w-5 h-5 flex-shrink-0" />
+        <span>Liên hệ</span>
       </a>
-
-
     </nav>
 
     <!-- THEME SWITCHER (TRONG DRAWER) -->
@@ -400,26 +401,35 @@
 
   <!-- MENU LINKS -->
   <nav class="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto">
+    <!-- Trang chủ -->
     <a
-      href="#"
-      class="flex items-center gap-3.5 px-4 py-3 rounded-xl bg-purple-50 dark:bg-purple-950/30 text-purple-600 dark:text-purple-400 font-extrabold text-sm transition-all"
+      routerLink="/home"
+      routerLinkActive="bg-purple-50 dark:bg-purple-950/30 text-purple-600 dark:text-purple-400 font-extrabold"
+      [routerLinkActiveOptions]="{exact: true}"
+      class="flex items-center gap-3.5 px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/40 hover:text-purple-600 dark:hover:text-purple-400 text-slate-600 dark:text-slate-400 font-semibold text-sm transition-all cursor-pointer"
     >
       <app-icon name="home" class="w-5 h-5 flex-shrink-0" />
       <span>Trang chủ</span>
     </a>
+
+    <!-- Giới thiệu -->
     <a
-      href="#"
-      class="flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/40 hover:text-purple-600 dark:hover:text-purple-400 font-semibold text-sm transition-all"
+      routerLink="/about"
+      routerLinkActive="bg-purple-50 dark:bg-purple-950/30 text-purple-600 dark:text-purple-400 font-extrabold"
+      class="flex items-center gap-3.5 px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/40 hover:text-purple-600 dark:hover:text-purple-400 text-slate-600 dark:text-slate-400 font-semibold text-sm transition-all cursor-pointer"
     >
-      <app-icon name="history" class="w-5 h-5 flex-shrink-0" />
-      <span>Lịch sử quay</span>
+      <app-icon name="blockchain" class="w-5 h-5 flex-shrink-0" />
+      <span>Giới thiệu</span>
     </a>
+
+    <!-- Liên hệ -->
     <a
-      href="#"
-      class="flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/40 hover:text-purple-600 dark:hover:text-purple-400 font-semibold text-sm transition-all"
+      routerLink="/contact"
+      routerLinkActive="bg-purple-50 dark:bg-purple-950/30 text-purple-600 dark:text-purple-400 font-extrabold"
+      class="flex items-center gap-3.5 px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/40 hover:text-purple-600 dark:hover:text-purple-400 text-slate-600 dark:text-slate-400 font-semibold text-sm transition-all cursor-pointer"
     >
-      <app-icon name="shield-check" class="w-5 h-5 flex-shrink-0" />
-      <span>Xác minh kết quả</span>
+      <app-icon name="send" class="w-5 h-5 flex-shrink-0" />
+      <span>Liên hệ</span>
     </a>
   </nav>
 

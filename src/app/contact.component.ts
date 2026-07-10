@@ -1,0 +1,74 @@
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { IconComponent } from '@shared/components/icon/icon.component';
+import { ButtonComponent } from '@shared/components/button/button.component';
+
+@Component({
+  selector: 'app-contact',
+  standalone: true,
+  imports: [CommonModule, IconComponent, ButtonComponent],
+  template: `
+    <main class="max-w-[1530px] mx-auto w-full px-4 sm:px-6 py-6 md:py-10 space-y-6 md:space-y-8">
+      <div class="app-card !p-8 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md">
+        <div class="flex items-center gap-3.5 mb-6">
+          <div class="w-10 h-10 rounded-xl bg-purple-50 dark:bg-purple-950/30 flex items-center justify-center text-purple-600 dark:text-purple-400 border border-purple-500/10">
+            <app-icon name="send" class="w-5 h-5" />
+          </div>
+          <div>
+            <h2 class="text-xl font-black text-slate-800 dark:text-white">Liên hệ với chúng tôi</h2>
+            <p class="text-xs font-semibold text-slate-400 dark:text-slate-500 mt-0.5">Gửi phản hồi và kết nối với dự án</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="space-y-4">
+            <h3 class="text-base font-black text-slate-800 dark:text-white">Thông tin hỗ trợ</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+              Nếu bạn gặp bất kỳ sự cố nào liên quan đến giao dịch, kết nối ví, hoặc có ý tưởng đóng góp cho ProofRandom, vui lòng liên hệ với đội ngũ kỹ thuật thông qua các kênh chính thức của chúng tôi.
+            </p>
+            <div class="space-y-3 pt-2">
+              <div class="flex items-center gap-3 text-xs text-slate-600 dark:text-slate-350">
+                <app-icon name="wallet" class="w-4 h-4 text-purple-500" />
+                <span>Hỗ trợ kỹ thuật</span>
+              </div>
+              <div class="flex items-center gap-3 text-xs text-slate-600 dark:text-slate-350">
+                <app-icon name="blockchain" class="w-4 h-4 text-purple-500" />
+                <span>Mạng lưới chính: Arbitrum One (Chain ID 42161)</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-slate-50/50 dark:bg-slate-950/30 border border-slate-200/40 dark:border-slate-850 rounded-2xl p-6 space-y-4">
+            <h3 class="text-sm font-black text-slate-800 dark:text-white">Gửi lời nhắn nhanh</h3>
+            <div class="space-y-3">
+              <div>
+                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Email của bạn</label>
+                <input
+                  type="email"
+                  placeholder="name&#64;example.com"
+                  class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-purple-500 transition-all"
+                />
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Nội dung tin nhắn</label>
+                <textarea
+                  rows="3"
+                  placeholder="Nhập nội dung lời nhắn..."
+                  class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-purple-500 transition-all resize-none"
+                ></textarea>
+              </div>
+              <button
+                app-button
+                variant="primary"
+                class="w-full py-2.5 !rounded-xl text-xs font-bold"
+              >
+                Gửi phản hồi
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  `
+})
+export class ContactComponent { }

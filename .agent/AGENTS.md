@@ -31,6 +31,7 @@
   3. Gỡ bỏ hoàn toàn mục "Cài đặt" / "Chuyển mạng lưới" ở Mobile Drawer (Sidebar).
   4. Chuyển đổi khu vực hiển thị tên mạng đang chọn ở giữa Header thành một badge tĩnh màu hồng, không cho phép click để đổi mạng theo thiết kế mẫu.
   5. Ẩn chữ tên thương hiệu "Angular Web3" và "Proof of Random" trên thiết bị di động, đồng thời cho phép nút Quả địa cầu (chọn mạng nhanh) hiển thị trên cả di động để thuận tiện thao tác.
+  6. Xây dựng một Sidebar cố định ở bên trái trên màn hình desktop (giống như Drawer trên mobile) chứa Logo, Menu links, Bộ chọn tốc độ giao dịch và Theme Switcher, đồng thời dịch chuyển vùng Main Content và Header sang phải 72px (288px) thông qua class `md:pl-72`.
 - **Giải pháp:**
   - Cập nhật [header.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/header/header.component.html):
     - Xóa khối HTML của Theme Switcher trên Header.
@@ -38,7 +39,19 @@
     - Thay đổi khung hiển thị mạng ở giữa Header thành một `div` badge tĩnh dạng pill màu hồng nhạt/chữ hồng đậm có chấm tròn đại diện, loại bỏ sự kiện click chuyển mạng tại đây.
     - Ẩn text tên thương hiệu bằng cách thêm class `hidden md:flex flex-col` vào khối chứa.
     - Cho phép nút quả địa cầu hiển thị trên mobile bằng cách đổi wrapper từ `hidden md:relative md:block` thành `relative block`.
-  - Cập nhật [header.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/header/header.component.ts): Xóa bỏ các thuộc tính và phương thức không dùng tới liên quan đến ngôn ngữ (`showLangDropdown`, `currentLang`, `toggleLangDropdown`, `selectLang`). Thêm signal và hàm toggle cho dropdown chọn mạng nhanh (`showNetworkDropdown`).
+    - Thêm khối `<aside>` làm Sidebar cố định bên trái trên desktop.
+    - Thêm khối `<aside>` làm Sidebar cố định bên trái trên desktop.
+    - Cấu hình sử dụng `routerLink` và `routerLinkActive` cho các menu link để đổi trang thực tế và đồng bộ class active cho cả Sidebar và Mobile Drawer.
+  - Cập nhật [header.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/header/header.component.ts): Xóa bỏ các thuộc tính và phương thức không dùng tới liên quan đến ngôn ngữ (`showLangDropdown`, `currentLang`, `toggleLangDropdown`, `selectLang`). Thêm signal và hàm toggle cho dropdown chọn mạng nhanh (`showNetworkDropdown`). Khai báo signal `txSpeed` quản lý tốc độ giao dịch trên Sidebar. Import `RouterModule` phục vụ chỉ thị route.
+  - Cập nhật [app.html](file:///d:/git/angular-web3-wallet/src/app/app.html): Tách toàn bộ nội dung HTML của các trang con ra ngoài để tránh dồn ứ file. app.html bây giờ chỉ đóng vai trò là shell layout chứa `<app-header>`, `<router-outlet>` (được bọc trong `div` có class `md:pl-72`) và `<app-toast>`.
+  - Cập nhật [app.ts](file:///d:/git/angular-web3-wallet/src/app/app.ts): Tinh gọn hoàn toàn, chuyển toàn bộ logic Web3 sang `HomeComponent`. app.ts chỉ còn khai báo class shell trống import `RouterOutlet`, `HeaderComponent` và `ToastComponent`.
+  - Cấu hình [app.routes.ts](file:///d:/git/angular-web3-wallet/src/app/app.routes.ts): Đăng ký 3 route chính dẫn tới `HomeComponent` (Trang chủ Web3), `AboutComponent` (Giới thiệu) và `ContactComponent` (Liên hệ).
+  - Tạo mới các file [home.component.ts](file:///d:/git/angular-web3-wallet/src/app/home.component.ts), [home.component.html](file:///d:/git/angular-web3-wallet/src/app/home.component.html), [about.component.ts](file:///d:/git/angular-web3-wallet/src/app/about.component.ts), [contact.component.ts](file:///d:/git/angular-web3-wallet/src/app/contact.component.ts).
+
+### Yêu cầu: Sửa lỗi DApp chọn mạng khác trong dropdown không đổi được mạng
+- **Nội dung yêu cầu:** Người dùng báo lỗi khi chọn mạng khác (như Arbitrum One hay Arbitrum Sepolia) trong dropdown chọn nhanh mạng lưới thì không đổi được mạng.
+- **Phân tích nguyên nhân:** Hàm `switchNetwork(chainId)` trước đó gọi `this.modal.switchNetwork({ chainId } as any)`. Theo tài liệu của Reown AppKit, hàm `switchNetwork` nhận một đối tượng `caipNetwork` hoàn chỉnh (được import từ `@reown/appkit/networks`) hoặc một chuỗi CAIP-2 dạng `'eip155:1'`. Việc truyền một object `{ chainId }` tự chế là không hợp lệ.
+- **Giải pháp:** Cập nhật hàm `switchNetwork(chainId)` trong [web3.service.ts](file:///d:/git/angular-web3-wallet/src/app/core/services/web3.service.ts). Tìm đối tượng mạng tương ứng trong mảng `supportedChains` dựa trên `id` và truyền trực tiếp đối tượng mạng (chain) đó cho `this.modal.switchNetwork(network)`.
 
 ## Ngày 08/07/2026
 
