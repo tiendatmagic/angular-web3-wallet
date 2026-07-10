@@ -45,6 +45,10 @@
     - Đồng bộ bộ chọn tốc độ giao dịch segmented control và trường nhập hệ số nhân cho cả **Mobile Drawer** và **Desktop Sidebar**.
     - Thay đổi tên thương hiệu, nhãn phụ và bản quyền chân trang từ `ProofRandom` / `Proof of Random` thành `Angular Web3` / `Web3 Template` trên toàn bộ Header, Mobile Drawer và Desktop Sidebar.
     - Điều chỉnh bố cục phần **LOGO & BRAND** trên Desktop Sidebar sang dạng hàng ngang (Row Layout): Logo nằm bên trái, tiêu đề thương hiệu (Angular Web3) và nhãn phụ nằm bên phải để cân đối và phù hợp với thiết kế mẫu.
+    - Đồng bộ lại thứ tự các mục tại Footer của Mobile Drawer (Tốc độ giao dịch ở trên, Giao diện ở dưới) đồng nhất hoàn toàn với Desktop Sidebar.
+    - Đồng bộ hóa màu sắc chữ thương hiệu `Angular Web3` (Angular màu hồng, Web3 màu tím/indigo) và Logo SVG xoay tròn ở tất cả các vị trí (Mobile Header, Mobile Drawer, Desktop Sidebar) để đảm bảo tính nhất quán của giao diện DApp.
+
+
 
   - Cập nhật [header.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/header/header.component.ts): Xóa bỏ các thuộc tính và phương thức không dùng tới liên quan đến ngôn ngữ (`showLangDropdown`, `currentLang`, `toggleLangDropdown`, `selectLang`). Thêm signal và hàm toggle cho dropdown chọn mạng nhanh (`showNetworkDropdown`). Khai báo signal `txSpeed` quản lý tốc độ giao dịch trên Sidebar. Import `RouterModule` và `FormsModule` phục vụ chỉ thị route và nhập liệu.
   - Cập nhật [app.html](file:///d:/git/angular-web3-wallet/src/app/app.html): Tách toàn bộ nội dung HTML của các trang con ra ngoài để tránh dồn ứ file. app.html bây giờ chỉ đóng vai trò là shell layout chứa `<app-header>`, `<router-outlet>` (được bọc trong `div` có class `md:pl-72`) và `<app-toast>`.
@@ -57,6 +61,8 @@
   - Cập nhật [toast.service.ts](file:///d:/git/angular-web3-wallet/src/app/core/services/toast.service.ts) và [toast.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/toast/toast.component.ts): Nâng cấp cơ chế quản lý Toast thành mảng các `ToastItem` để hỗ trợ hiển thị nhiều thông báo cùng lúc (xếp chồng lên nhau ở góc màn hình) thay vì chỉ hiển thị tối đa một thông báo duy nhất tại một thời điểm.
   - Cập nhật [toast.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/toast/toast.component.html): Duyệt và hiển thị danh sách các toast thông qua chỉ thị `@for`, gán thời gian chạy lùi của thanh tiến trình (`animationDuration`) động theo thời gian sống cụ thể của mỗi toast. Phân định rõ 3 loại màu sắc: Xanh lá cây cho Thành công, Đỏ cho Lỗi, Vàng cho Cảnh báo/Chờ xử lý mà không bị lẫn lộn màu sắc gradient thương hiệu.
   - Cập nhật [home.component.ts](file:///d:/git/angular-web3-wallet/src/app/home.component.ts): Đổi các trạng thái chờ xử lý (pending) như gửi giao dịch, chờ khai thác sang loại `warning` để hiển thị màu vàng/cam trực quan.
+  - Cập nhật [icon.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/icon/icon.component.html): Thêm case `'loading'` chứa path SVG đường tròn khuyết 3/4 giúp các nút bấm khi ở trạng thái gửi giao dịch/ký tin nhắn hiển thị spinner xoay tròn chính xác thay vì fallback icon chấm hỏi.
+
 
 
 
