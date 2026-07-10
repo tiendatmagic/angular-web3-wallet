@@ -2,6 +2,24 @@
 
 ## Ngày 10/07/2026
 
+### Yêu cầu: Bổ sung UI Components và tái cấu trúc Layout (tham khảo cafe-blockchain)
+- **Nội dung yêu cầu:** Kiểm tra các component còn thiếu trong `shared/components` (card, radio, switch, search input, select) tham khảo dự án cafe-blockchain và áp dụng vào các trang. Đồng thời tạo thư mục `shared/layout` chứa Sidebar component riêng như cafe-blockchain.
+- **Phân tích Gap:**
+  - Components thiếu: `card`, `custom-switch`, `custom-radio`, `custom-search-input`, `custom-select`
+  - Layout thiếu: `shared/layout/sidebar/` (Desktop Sidebar đang bị nhét cứng vào `header.component.html`)
+- **Giải pháp:**
+  1. **[NEW] `card.component.ts`**: Directive `app-card, [app-card]` host-binding class `.app-card` / `.app-card-interactive`, dùng `ng-content`.
+  2. **[NEW] `custom-switch/`**: Component toggle 2 mode `compact` (inline) và `full` (panel card). Sử dụng `var(--color-primary)` cho màu checked.
+  3. **[NEW] `custom-radio/`**: Implements `ControlValueAccessor`. Animated center dot bằng `@keyframes scaleUp`. Hỗ trợ `label`, `description`, `name`, `value`.
+  4. **[NEW] `custom-search-input/`**: Implements `ControlValueAccessor` + debounce RxJS. Input: `placeholder`, `debounce`, `loading`, `clearable`. Loading spinner dùng màu `--color-primary`.
+  5. **[NEW] `custom-select/`**: Smart dropdown với fixed positioning, scroll listener, search tích hợp, checkmark trên option được chọn. Implements `ControlValueAccessor`.
+  6. **[NEW] `shared/layout/sidebar/sidebar.component.ts + .html`**: Tách phần `<aside>` Desktop Sidebar ra khỏi `header.component.html`. Component này import `RouterModule`, `IconComponent`, `LogoComponent`, `ThemeSwitcherComponent`, `TxSpeedSelectorComponent`.
+  7. **[MODIFY] `header.component.html`**: Xóa khối `<aside>` Desktop Sidebar (~78 dòng) để giảm kích thước file.
+  8. **[MODIFY] `app.html`**: Thêm `<app-sidebar>` trước `<app-header>`.
+  9. **[MODIFY] `app.ts`**: Import `SidebarComponent` và thêm vào `imports` array.
+  10. **[MODIFY] `home.component.ts + .html`**: Import và áp dụng 4 component mới. Thêm section "UI Components Showcase" với 4 card demo: Switch, Radio, Search Input, Select.
+- **Kết quả:** Build thành công 100% không lỗi. Tất cả component tuân thủ `:host { display: block; }` và dùng `var(--color-primary)` theo `design.md`.
+
 ### Yêu cầu: Tối ưu hóa mã nguồn Web3 và tái sử dụng component kế thừa
 - **Nội dung yêu cầu:** Người dùng yêu cầu đánh giá xem template Web3 đã ổn chưa và tối ưu hóa kế thừa component.
 - **Phân tích nguyên nhân & Giải pháp:**

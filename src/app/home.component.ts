@@ -4,6 +4,10 @@ import { CommonModule } from '@angular/common';
 import { IconComponent } from '@shared/components/icon/icon.component';
 import { BadgeComponent } from '@shared/components/badge/badge.component';
 import { ButtonComponent } from '@shared/components/button/button.component';
+import { CustomSwitchComponent } from '@shared/components/custom-switch/custom-switch.component';
+import { CustomRadioComponent } from '@shared/components/custom-radio/custom-radio.component';
+import { CustomSearchInputComponent } from '@shared/components/custom-search-input/custom-search-input.component';
+import { CustomSelectComponent } from '@shared/components/custom-select/custom-select.component';
 import { Web3Service } from '@core/services/web3.service';
 import { ToastService } from '@core/services/toast.service';
 import { parseEther } from 'ethers';
@@ -11,7 +15,16 @@ import { parseEther } from 'ethers';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, FormsModule, IconComponent, ButtonComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    IconComponent,
+    ButtonComponent,
+    CustomSwitchComponent,
+    CustomRadioComponent,
+    CustomSearchInputComponent,
+    CustomSelectComponent,
+  ],
   templateUrl: './home.component.html'
 })
 export class HomeComponent {
@@ -30,6 +43,29 @@ export class HomeComponent {
   public signature = signal<string | null>(null);
   public signLoading = signal(false);
   public signError = signal<string | null>(null);
+
+  // === DEMO STATE: UI Components Showcase ===
+  public demoSwitchChecked = signal(true);
+  public demoSwitchFull = signal(false);
+  public demoRadioValue = signal('arbitrum');
+  public demoSearchQuery = signal('');
+  public demoSelectValue = signal<string | null>(null);
+
+  /** Danh sách chain để demo custom-select */
+  public readonly demoChainOptions = [
+    { value: '1',     label: 'Ethereum Mainnet' },
+    { value: '42161', label: 'Arbitrum One' },
+    { value: '56',    label: 'BNB Smart Chain' },
+    { value: '421614',label: 'Arbitrum Sepolia' },
+    { value: '97',    label: 'BSC Testnet' },
+  ];
+
+  /** Danh sách radio options cho demo */
+  public readonly demoRadioOptions = [
+    { value: 'arbitrum', label: 'Arbitrum One', description: 'Layer 2 - Phí thấp, tốc độ cao' },
+    { value: 'ethereum', label: 'Ethereum',     description: 'Mainnet - Bảo mật cao nhất' },
+    { value: 'bsc',      label: 'BNB Chain',    description: 'BSC - Phí cực rẻ' },
+  ];
 
   // Sao chép địa chỉ ví nhanh
   public copyAddress(event: Event) {
