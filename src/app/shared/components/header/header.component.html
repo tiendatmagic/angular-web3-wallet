@@ -28,7 +28,8 @@
         <!-- Tên thương hiệu -->
         <div class="hidden md:flex flex-col">
           <span class="text-base sm:text-2xl font-black tracking-tight leading-none">
-            <span class="text-pink-600 dark:text-pink-500">Angular</span> <span class="text-purple-600 dark:text-purple-400">Web3</span>
+            <span class="text-pink-600 dark:text-pink-500">Angular</span>
+            <span class="text-purple-600 dark:text-purple-400">Web3</span>
           </span>
           <span
             class="hidden sm:inline-block text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] mt-1 select-none"
@@ -92,21 +93,27 @@
             <div class="space-y-0.5 px-2">
               @for (chain of web3Service.POPULAR_CHAINS; track chain.chainId) {
                 <button
-                  (click)="web3Service.switchNetwork(+chain.chainId); showNetworkDropdown.set(false)"
+                  (click)="
+                    web3Service.switchNetwork(+chain.chainId); showNetworkDropdown.set(false)
+                  "
                   [class.bg-pink-50]="web3Service.chainId() === +chain.chainId"
                   [class.dark:bg-pink-950/20]="web3Service.chainId() === +chain.chainId"
-                  class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-all cursor-pointer group"
+                  class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-all cursor-pointer group"
                 >
                   <div class="flex items-center gap-3">
                     <span
                       [style.backgroundColor]="chain.color || '#94a3b8'"
                       class="w-3 h-3 rounded-full inline-block shadow-sm flex-shrink-0"
                     ></span>
-                    <span class="group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
+                    <span
+                      class="group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors"
+                    >
                       {{ chain.name.replace(' Mainnet', '') }}
                     </span>
                   </div>
-                  <span class="text-[10px] font-mono font-semibold text-slate-400 dark:text-slate-500">
+                  <span
+                    class="text-[10px] font-mono font-semibold text-slate-400 dark:text-slate-500"
+                  >
                     {{ chain.chainId }}
                   </span>
                 </button>
@@ -137,9 +144,7 @@
               >
                 {{ shortenedAddress() }}
               </span>
-              <span
-                class="text-[10px] font-black text-pink-500 tracking-wider"
-              >
+              <span class="text-[10px] font-black text-pink-500 tracking-wider">
                 {{ web3Service.balance() }} ETH
               </span>
             </div>
@@ -167,9 +172,7 @@
                 >
                   {{ web3Service.address() }}
                 </p>
-                <p class="text-xs font-black text-pink-500 mt-1">
-                  {{ web3Service.balance() }} ETH
-                </p>
+                <p class="text-xs font-black text-pink-500 mt-1">{{ web3Service.balance() }} ETH</p>
               </div>
               <!-- Nút: Sao chép địa chỉ -->
               <button
@@ -257,9 +260,12 @@
       <!-- Chữ tiêu đề & mô tả bên phải -->
       <div class="flex flex-col select-none">
         <span class="text-base font-black tracking-tight leading-none mb-1.5">
-          <span class="text-pink-600 dark:text-pink-500">Angular</span> <span class="text-purple-600 dark:text-purple-400">Web3</span>
+          <span class="text-pink-600 dark:text-pink-500">Angular</span>
+          <span class="text-purple-600 dark:text-purple-400">Web3</span>
         </span>
-        <span class="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest leading-none">
+        <span
+          class="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest leading-none"
+        >
           Web3 Template
         </span>
       </div>
@@ -303,13 +309,17 @@
     </nav>
 
     <!-- BOTTOM DRAWER CONTROLS (Tốc độ GD & Giao diện) -->
-    <div class="px-5 py-4 border-t border-slate-100 dark:border-slate-800/60 bg-slate-50/30 dark:bg-slate-900/10 space-y-4">
+    <div
+      class="px-5 py-4 border-t border-slate-100 dark:border-slate-800/60 bg-slate-50/30 dark:bg-slate-900/10 space-y-4"
+    >
       <app-tx-speed-selector />
       <app-theme-switcher />
 
       <!-- 3. Địa chỉ ví kết nối -->
       @if (web3Service.isConnected()) {
-        <div class="pt-3 border-t border-slate-100 dark:border-slate-800/60 flex items-center gap-2">
+        <div
+          class="pt-3 border-t border-slate-100 dark:border-slate-800/60 flex items-center gap-2"
+        >
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0"></span>
           <span class="text-xs font-bold text-slate-500 dark:text-slate-400 truncate font-mono">
             {{ web3Service.address() | slice: 0 : 6 }}...{{ web3Service.address() | slice: -4 }}
@@ -327,15 +337,22 @@
   class="fixed inset-y-0 left-0 z-50 w-72 bg-white dark:bg-slate-950 border-r border-slate-200/50 dark:border-slate-900/50 hidden md:flex flex-col shadow-sm select-none"
 >
   <!-- LOGO & BRAND -->
-  <div class="flex items-center gap-3.5 px-6 py-6 border-b border-slate-100 dark:border-slate-800/60">
+  <div
+    class="flex items-center gap-3.5 px-6 py-6 border-b border-slate-100 dark:border-slate-800/60"
+  >
     <!-- Icon tròn bên trái -->
     <app-logo class="w-11 h-11 shrink-0" />
     <!-- Chữ tiêu đề & mô tả bên phải -->
     <div class="flex flex-col select-none">
-      <span class="text-base font-black tracking-tight leading-none text-slate-800 dark:text-white mb-1.5">
-        <span class="text-pink-600 dark:text-pink-500">Angular</span> <span class="text-purple-600 dark:text-purple-400">Web3</span>
+      <span
+        class="text-base font-black tracking-tight leading-none text-slate-800 dark:text-white mb-1.5"
+      >
+        <span class="text-pink-600 dark:text-pink-500">Angular</span>
+        <span class="text-purple-600 dark:text-purple-400">Web3</span>
       </span>
-      <span class="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest leading-none">
+      <span
+        class="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest leading-none"
+      >
         Web3 Template
       </span>
     </div>
