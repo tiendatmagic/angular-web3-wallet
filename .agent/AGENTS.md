@@ -2296,3 +2296,16 @@
     - [custom-select.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/custom-select/custom-select.component.ts)
   - **Dọn dẹp dấu phẩy thừa**: Chạy kịch bản xử lý tự động để xóa bỏ dấu phẩy đơn độc (stray commas) gây ra bởi quá trình xóa các import `ChangeDetectionStrategy` và `HostListener` không còn sử dụng.
 - **Kết quả:** Mã nguồn cực kỳ sạch sẽ, tuân thủ tuyệt đối các quy định phát triển của DApp, biên dịch build thành công 100% không cảnh báo/lỗi.
+
+### Yêu cầu: Áp dụng fix lỗi tự đóng modal chi tiết ví cho các dự án anh em (michic, proof-random)
+
+- **Nội dung yêu cầu:** Sửa cùng bug modal chi tiết ví tự đóng cho 2 dự án `D:\git\michic` và `D:\git\proof-random` (giống bug đã fix ở angular-web3-wallet).
+- **Phân tích:** Cả hai dự án đều có cùng nguyên nhân gốc rễ:
+  1. Dropdown đóng khi click → nút bị detach DOM → AppKit detect click-outside → tự đóng modal.
+  2. `checkAndUpdateNetworkState` gọi `this.modal.close()` vô điều kiện khi mạng đúng → Account modal vừa mở liền bị đóng.
+- **Giải pháp:**
+  - **proof-random** (`D:\git\proof-random\proof-random-web`):
+    - Cập nhật `wallet-dropdown.component.ts`: Sửa `openWalletModal()` thêm `event.stopPropagation()`, đóng dropdown trước, rồi dùng `setTimeout(100ms)` mở modal.
+    - Cập nhật `wallet-dropdown.component.html`: Truyền `$event` vào `(click)="openWalletModal($event)"`.
+    - Cập nhật `web3.service.ts`: Thêm `prevWrongChain` guard, chỉ gọi `modal.close()` khi chuyển từ sai mạng về đúng mạng.
+  - **michic** (`D:\git\michic\michic`): Đã được sửa từ trước trong phiên làm việc khác — cả `wallet-widget.component.ts` và `web3.service.ts` đều đã có fix tương tự.
