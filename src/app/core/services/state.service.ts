@@ -41,6 +41,7 @@ export class StateService {
   public readonly balance = this.web3Service.balance;
   public readonly networkName = this.web3Service.networkName;
   public readonly isWrongChain = this.web3Service.isWrongChain;
+  public readonly chainSymbol = this.web3Service.chainSymbol;
   public readonly txSpeed = this.web3Service.txSpeed;
   public readonly gasMultiplier = this.web3Service.gasMultiplier;
   public readonly showWrongChainModal = this.web3Service.showWrongChainModal;

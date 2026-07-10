@@ -98,7 +98,7 @@ export class HomeComponent {
     const val = String(this.amount() || '').trim();
 
     if (!to || !val) {
-      this.stateService.showToast('Vui lòng điền đầy đủ địa chỉ nhận và số lượng ETH.', 'error');
+      this.stateService.showToast(`Vui lòng điền đầy đủ địa chỉ nhận và số lượng ${this.stateService.chainSymbol()}.`, 'error');
       return;
     }
 
@@ -152,7 +152,7 @@ export class HomeComponent {
       // Đợi giao dịch được khai thác trên mạng (mined) và cập nhật số dư mới
       await tx.wait();
       await this.stateService.web3Service.updateBalanceAndNetwork();
-      this.stateService.showToast('Giao dịch chuyển ETH đã thành công!', 'success');
+      this.stateService.showToast(`Giao dịch chuyển ${this.stateService.chainSymbol()} đã thành công!`, 'success');
       
       // Reset form
       this.toAddress.set('');

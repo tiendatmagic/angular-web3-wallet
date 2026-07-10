@@ -106,4 +106,24 @@ export class HeaderComponent {
     this.showDropdown.set(false);
     this.showNetworkDropdown.set(false);
   }
+
+  // Mở modal chi tiết ví và dừng nổi bọt sự kiện
+  public openAccountModal(event: Event) {
+    event.stopPropagation();
+    // Đóng dropdown trước để phần tử bị loại bỏ khỏi DOM trước khi modal AppKit mở ra
+    this.showDropdown.set(false);
+    setTimeout(async () => {
+      await this.stateService.openAccountModal();
+    }, 100);
+  }
+
+  // Chuyển mạng nhanh và dừng nổi bọt sự kiện
+  public switchNetwork(event: Event, chainId: number) {
+    event.stopPropagation();
+    // Đóng dropdown trước để tránh xung đột DOM
+    this.showNetworkDropdown.set(false);
+    setTimeout(async () => {
+      await this.stateService.switchNetwork(chainId);
+    }, 100);
+  }
 }

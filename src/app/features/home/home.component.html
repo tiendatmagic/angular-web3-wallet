@@ -44,7 +44,7 @@
               <span
                 class="text-3xl sm:text-4xl font-black text-transparent bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text mt-0.5"
               >
-                {{ stateService.balance() }} ETH
+                {{ stateService.balance() }} {{ stateService.chainSymbol() }}
               </span>
             </div>
 
@@ -144,7 +144,7 @@
                 Gửi giao dịch Demo
               </h3>
               <p class="text-xs text-slate-400 dark:text-slate-500">
-                Thử nghiệm chuyển ETH tới ví khác
+                Thử nghiệm chuyển {{ stateService.chainSymbol() }} tới ví khác
               </p>
             </div>
           </div>
@@ -163,10 +163,10 @@
               />
             </div>
 
-            <!-- Số lượng ETH -->
+            <!-- Số lượng {{ stateService.chainSymbol() }} -->
             <div class="flex flex-col gap-1.5">
               <label class="text-xs font-bold text-slate-500 dark:text-slate-400"
-                >Số lượng ETH gửi</label
+                >Số lượng {{ stateService.chainSymbol() }} gửi</label
               >
               <input
                 type="number"
@@ -191,7 +191,7 @@
                 Đang xử lý giao dịch...
               } @else {
                 <app-icon name="send" class="w-4 h-4" />
-                Xác nhận gửi ETH
+                Xác nhận gửi {{ stateService.chainSymbol() }}
               }
             </button>
 
@@ -373,7 +373,7 @@
           <app-custom-switch
             type="full"
             label="Xác nhận giao dịch"
-            description="Hiển thị popup xác nhận trước khi gửi ETH"
+            description="Hiển thị popup xác nhận trước khi gửi {{ stateService.chainSymbol() }}"
             [checked]="demoSwitchFull()"
             (checkedChange)="demoSwitchFull.set($event)"
           />

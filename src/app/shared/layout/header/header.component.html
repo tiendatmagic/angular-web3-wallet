@@ -125,7 +125,7 @@
                 {{ shortenedAddress() }}
               </span>
               <span class="text-[10px] font-black text-pink-500 tracking-wider">
-                {{ stateService.balance() }} ETH
+                {{ stateService.balance() }} {{ stateService.chainSymbol() }}
               </span>
             </div>
             <app-icon
@@ -145,7 +145,7 @@
                 <p class="font-mono text-[11px] text-slate-700 dark:text-slate-200 break-all font-extrabold leading-snug">
                   {{ stateService.address() }}
                 </p>
-                <p class="text-xs font-black text-pink-500 mt-1">{{ stateService.balance() }} ETH</p>
+                <p class="text-xs font-black text-pink-500 mt-1">{{ stateService.balance() }} {{ stateService.chainSymbol() }}</p>
               </div>
 
               <!-- Sao chép địa chỉ -->

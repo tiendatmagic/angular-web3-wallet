@@ -20,6 +20,7 @@ export class Web3Service {
   public chainId = signal<number | null>(null);
   public isConnected = signal<boolean>(false);
   public balance = signal<string>('0.0000');
+  public chainSymbol = signal<string>('ETH');
   public networkName = signal<string>('Unknown Network');
   public isWrongChain = signal<boolean>(false);
   public txSpeed = signal<'default' | 'fast' | 'custom'>('default');
@@ -162,11 +163,18 @@ export class Web3Service {
 
     if (isSupported) {
       this.networkName.set(supportedChain.name);
+      // Lấy symbol của native currency của chain
+      const symbol = (supportedChain as any).nativeCurrency?.symbol || 'ETH';
+      this.chainSymbol.set(symbol);
+
       this.showWrongChainModal.set(false);
-      try {
-        this.modal.close();
-      } catch (e) {
-        // ignore
+      // Chỉ tự động đóng modal nếu trước đó đang ở sai mạng lưới và nay đã chuyển về đúng mạng
+      if (prevWrongChain) {
+        try {
+          this.modal.close();
+        } catch (e) {
+          // ignore
+        }
       }
       if (showToastAlert && prevChainId && prevChainId !== chainId) {
         this.toastService.showToast(`Đã chuyển sang mạng ${supportedChain.name}!`, 'success');
@@ -174,6 +182,7 @@ export class Web3Service {
     } else {
       const popular = POPULAR_CHAINS.find(c => Number(c.chainId) === chainId);
       this.networkName.set(popular ? popular.name : 'Mạng không hỗ trợ');
+      this.chainSymbol.set('ETH'); // default fallback
       
       if (this.isConnected()) {
         this.showWrongChainModal.set(true);

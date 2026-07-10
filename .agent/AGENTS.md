@@ -2,6 +2,22 @@
 
 ## Ngày 10/07/2026
 
+### Yêu cầu: Khắc phục lỗi tự đóng modal và đồng bộ symbol native token động theo mạng lưới
+
+- **Nội dung yêu cầu:**
+  1. Khi người dùng click vào "Chi tiết ví" trong dropdown của Header, modal chi tiết ví của AppKit tự động bị tắt ngay lập tức.
+  2. DApp hiển thị đơn vị native token balance là "ETH" một cách tĩnh cho tất cả các mạng (ví dụ BNB Smart Chain thì phải là "BNB").
+- **Phân tích nguyên nhân:**
+  1. Khi dropdown đang mở, người dùng click nút bấm. Trình quản lý click handler đóng dropdown làm cho nút bấm bị detached khỏi DOM. Trình kiểm tra click-outside của AppKit thấy click target không nằm trong modal và không còn nằm trong document, liền coi đó là click-outside và tự động đóng modal.
+  2. Một nguyên nhân gốc rễ nghiêm trọng khác: trong `web3.service.ts`, phương thức `checkAndUpdateNetworkState` được gọi liên tục khi AppKit thay đổi trạng thái. Trong phương thức này, nếu mạng được hỗ trợ, lệnh `this.modal.close()` bị gọi vô điều kiện. Do đó, khi Account modal mở ra, AppKit trigger update mạng, dẫn đến lệnh đóng modal tự kích hoạt, tự đóng modal Account ngay lập tức.
+  3. Các file template HTML và TS đang hiển thị chữ "ETH" tĩnh.
+- **Giải pháp:**
+  1. Cập nhật [header.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/layout/header/header.component.ts): Sử dụng `setTimeout` trì hoãn việc mở modal/chuyển mạng thêm 100ms để dropdown đóng hẳn và bị loại khỏi DOM hoàn toàn trước khi modal AppKit mở ra, tránh xung đột DOM và lỗi tự đóng modal.
+  2. Cập nhật [web3.service.ts](file:///d:/git/angular-web3-wallet/src/app/core/services/web3.service.ts): Sửa logic trong `checkAndUpdateNetworkState` chỉ cho phép gọi `this.modal.close()` nếu mạng trước đó thực sự là mạng sai (`if (prevWrongChain)`). Đồng thời khai báo signal `chainSymbol` lấy giá trị động từ `supportedChain.nativeCurrency.symbol` của mạng đang kết nối.
+  3. Cập nhật [state.service.ts](file:///d:/git/angular-web3-wallet/src/app/core/services/state.service.ts): Expose signal `chainSymbol` ra bên ngoài.
+  4. Cập nhật [header.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/layout/header/header.component.html), [home.component.html](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.html) và [home.component.ts](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.ts): Thay thế tất cả các nhãn "ETH" cứng bằng biến động `chainSymbol`.
+
+
 ### Yêu cầu: Bổ sung Custom Date Picker và Modal Demo Showcase
 
 - **Nội dung yêu cầu:** DApp đang thiếu component `custom-date-picker` trong thư mục `shared/components`. Người dùng yêu cầu xây dựng component này và thêm một Modal Demo hiển thị tập hợp tất cả các input controls (date-picker, select, switch, radio, checkbox) để trình diễn UI Components Showcase.
