@@ -8,7 +8,9 @@ import {
   inject,
   signal,
   computed,
-  forwardRef} from '@angular/core';
+  forwardRef,
+  ViewChild,
+  AfterViewChecked} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { IconComponent } from '../icon/icon.component';
@@ -18,7 +20,8 @@ export interface SelectOption {
 }
 
 /**
- * Custom Select Dropdown thông minh với smart placement, tìm kiếm nội bộ.
+ * Custom Select Dropdown thông minh với fixed positioning thoát khỏi overflow container.
+ * Hỗ trợ smart placement (trên/dưới) dựa trên không gian viewport còn lại.
  *
  * Sử dụng:
  *   <app-custom-select [options]="list" valueKey="id" labelKey="name" [(value)]="selected" />
@@ -29,10 +32,10 @@ export interface SelectOption {
   host: {
     '(document:click)': 'onClickOutside($event)'
   },
-  
+
   imports: [CommonModule, FormsModule, IconComponent],
   templateUrl: './custom-select.component.html',
-  
+
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -46,7 +49,7 @@ export interface SelectOption {
       }
     `,
   ]})
-export class CustomSelectComponent implements ControlValueAccessor {
+export class CustomSelectComponent implements ControlValueAccessor, AfterViewChecked {
   private readonly elementRef = inject(ElementRef);
 
   @Input() value: any = null;
@@ -63,8 +66,14 @@ export class CustomSelectComponent implements ControlValueAccessor {
   @Input() containerClass: string = 'w-full';
   @Input() triggerClass: string = 'w-full form-input';
 
+  @ViewChild('triggerBtn', { static: false }) triggerBtn!: ElementRef<HTMLButtonElement>;
+
   public readonly isOpen = signal<boolean>(false);
   public readonly searchQuery = signal<string>('');
+
+  // Tọa độ và kích thước dropdown tính theo viewport (fixed positioning)
+  public dropdownStyle: { [key: string]: string } = {};
+  public resolvedPlacement: 'top' | 'bottom' = 'bottom';
 
   /** Đóng dropdown khi click ra ngoài component */
   public onClickOutside(event: MouseEvent): void {
@@ -78,8 +87,71 @@ export class CustomSelectComponent implements ControlValueAccessor {
     const nextState = !this.isOpen();
     if (nextState) {
       this.searchQuery.set('');
+      this.updateDropdownPosition();
     }
     this.isOpen.set(nextState);
+  }
+
+  /** Tính toán vị trí dropdown dựa trên vị trí trigger button trong viewport */
+  private updateDropdownPosition(): void {
+    const triggerEl = this.triggerBtn?.nativeElement;
+    if (!triggerEl) return;
+
+    const rect = triggerEl.getBoundingClientRect();
+    const dropdownMaxHeight = 280;
+    const gap = 6; // mt-1.5 = 6px
+
+    // Kiểm tra không gian phía dưới và phía trên
+    const spaceBelow = window.innerHeight - rect.bottom - gap;
+    const spaceAbove = rect.top - gap;
+
+    let placeFinal: 'top' | 'bottom';
+    if (this.placement === 'top') {
+      placeFinal = 'top';
+    } else if (this.placement === 'bottom') {
+      placeFinal = 'bottom';
+    } else {
+      // Auto: ưu tiên dưới, nếu không đủ chỗ thì đặt trên
+      placeFinal = spaceBelow >= Math.min(dropdownMaxHeight, 180) ? 'bottom' : 'top';
+    }
+
+    this.resolvedPlacement = placeFinal;
+
+    if (placeFinal === 'bottom') {
+      this.dropdownStyle = {
+        position: 'fixed',
+        top: `${rect.bottom + gap}px`,
+        left: `${rect.left}px`,
+        width: `${rect.width}px`,
+        maxHeight: `${Math.min(dropdownMaxHeight, spaceBelow)}px`,
+        zIndex: '9999',
+      };
+    } else {
+      const height = Math.min(dropdownMaxHeight, spaceAbove);
+      this.dropdownStyle = {
+        position: 'fixed',
+        top: `${rect.top - gap - height}px`,
+        left: `${rect.left}px`,
+        width: `${rect.width}px`,
+        maxHeight: `${height}px`,
+        zIndex: '9999',
+      };
+    }
+  }
+
+  /** Cập nhật vị trí khi scroll hoặc resize */
+  ngAfterViewChecked(): void {
+    if (this.isOpen() && this.triggerBtn) {
+      this.updateDropdownPosition();
+    }
+  }
+
+  @HostListener('window:scroll')
+  @HostListener('window:resize')
+  onWindowChange(): void {
+    if (this.isOpen()) {
+      this.updateDropdownPosition();
+    }
   }
 
   public selectOption(option: any): void {
@@ -148,6 +220,4 @@ export class CustomSelectComponent implements ControlValueAccessor {
   public setDisabledState(isDisabled: boolean): void {
     this.disabled = isDisabled;
   }
-
-
 }

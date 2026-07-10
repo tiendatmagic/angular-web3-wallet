@@ -6,9 +6,15 @@
 
 - **Nội dung yêu cầu:** DApp đang thiếu component `custom-date-picker` trong thư mục `shared/components`. Người dùng yêu cầu xây dựng component này và thêm một Modal Demo hiển thị tập hợp tất cả các input controls (date-picker, select, switch, radio, checkbox) để trình diễn UI Components Showcase.
 - **Giải pháp:**
-  1. **[NEW] `custom-date-picker/`**: Component standalone tích hợp `ControlValueAccessor`, lịch popover 42 ngày (6 tuần) tính toán động, hỗ trợ `minDate`/`maxDate`, click-outside tự đóng, hiển thị ngày dạng `DD/MM/YYYY`. Icon lịch SVG (`calendar`) đã có sẵn trong thư viện `IconComponent`. Tuân thủ `:host { display: block; }` và bo góc tối đa 15px.
+  1. **[NEW] `custom-date-picker/`**: Component standalone tích hợp `ControlValueAccessor`, lịch popover 42 ngày (6 tuần) tính toán động, hỗ trợ `minDate`/`maxDate`, click-outside tự đóng, hiển thị ngày dạng `DD/MM/YYYY`. Icon lịch SVG (`calendar`) đã có sẵn trong thư viện `IconComponent`. Tuân thủ `:host { display: block; }`.
   2. **[MODIFY] `home.component.ts`**: Import `CustomDatePickerComponent` và `ModalComponent`. Thêm signals: `demoDatePickerValue`, `showDemoModal`, `modalDateValue`, `modalSelectValue`, `modalSwitchValue`, `modalRadioValue`, `modalCheckboxValue`.
   3. **[MODIFY] `home.component.html`**: Bổ sung Card 6 "Custom Date Picker" vào grid Showcase. Thêm nút "Mở Modal Demo Form" bên dưới grid. Tích hợp `<app-modal>` size `xl` chứa form demo với 5 loại controls và bảng "Giá trị hiện tại" live output, kèm nút Hủy/Xác nhận.
+  4. **[OPTIMIZE] Thoát khỏi overflow container**: Chuyển đổi dropdown của `custom-select` và popover lịch của `custom-date-picker` từ định vị `absolute` sang `fixed` động tính theo tọa độ viewport (`getBoundingClientRect()`) khi mở, kết hợp lắng nghe sự kiện `scroll` và `resize` của cửa sổ để định vị lại. Điều này giúp các thành phần popup tự do hiển thị đè lên trên modal mà không bị cắt cụt bởi thuộc tính `overflow-y-auto` của modal body.
+  5. **[OPTIMIZE] Smart Placement**: Bổ sung logic tính toán khoảng không gian phía trên và dưới trigger button trong viewport để tự động hiển thị dropdown/lịch ở vị trí tối ưu (phía trên nếu bên dưới không đủ diện tích).
+  6. **[OPTIMIZE] Thiết kế Lịch và Quick Presets**:
+     - Thiết kế giao diện ngày hôm nay dạng chấm tròn nền hồng nhạt (`bg-[var(--color-primary)]/15` và chữ hồng) và ngày được chọn dạng tròn nền đen/trắng (hoặc hồng đậm nếu trùng hôm nay) bo tròn (`rounded-full`).
+     - Bổ sung thanh chọn nhanh thời gian (7 ngày, 1 tháng, 3 tháng, 6 tháng, 1 năm) ngay dưới ô nhập, tự động tính toán cộng thêm số ngày tương ứng từ hôm nay.
+     - Sửa đổi hàm so sánh `minDate` để chuẩn hóa định dạng thời gian và vô hiệu hóa (disabled) chính xác mọi ngày trước mốc thiết lập (ví dụ: không cho chọn ngày quá khứ).
 - **Kết quả:** Build thành công 100% không lỗi. Tất cả component đồng bộ màu `var(--color-primary)` và tuân thủ design system.
 
 ### Yêu cầu: Khắc phục các lỗi UI của các custom components mới xây dựng

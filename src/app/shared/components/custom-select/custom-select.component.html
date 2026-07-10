@@ -1,4 +1,4 @@
-<div class="relative {{ containerClass }}" [class.opacity-60]="disabled">
+<div class="{{ containerClass }}" [class.opacity-60]="disabled">
   @if (label) {
     <label class="text-xs font-bold text-slate-400 uppercase tracking-wide block mb-1.5">{{ label }}</label>
   }
@@ -6,6 +6,7 @@
   <!-- Nút kích hoạt Dropdown -->
   <button
     type="button"
+    #triggerBtn
     (click)="toggleOpen()"
     [disabled]="disabled"
     class="{{ triggerClass }} flex items-center justify-between px-4 text-left transition-all relative"
@@ -26,10 +27,11 @@
     />
   </button>
 
-  <!-- Dropdown Menu -->
+  <!-- Dropdown Menu (fixed positioning - thoát khỏi overflow container) -->
   @if (isOpen()) {
     <div
-      class="absolute left-0 right-0 z-50 mt-1.5 w-full bg-white dark:bg-slate-900 border border-slate-200/85 dark:border-slate-800/85 rounded-xl shadow-xl flex flex-col overflow-hidden max-h-[280px] animate-in fade-in duration-150"
+      [ngStyle]="dropdownStyle"
+      class="bg-white dark:bg-slate-900 border border-slate-200/85 dark:border-slate-800/85 rounded-xl shadow-xl flex flex-col overflow-hidden"
     >
       <!-- Ô tìm kiếm nhanh trong dropdown -->
       @if (showSearch) {
@@ -64,7 +66,7 @@
             @if (compareValues(getOptionValue(opt), value)) {
               <app-icon
                 name="check"
-                class="h-4 w-4 text-[var(--color-primary)] shrink-0 ml-2 animate-in fade-in duration-200"
+                class="h-4 w-4 text-[var(--color-primary)] shrink-0 ml-2"
                 strokeWidth="3"
               />
             }

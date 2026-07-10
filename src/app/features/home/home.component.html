@@ -502,6 +502,7 @@
           <app-custom-date-picker
             label="Ngày giao dịch"
             placeholder="Chọn ngày..."
+            [minDate]="today"
             [(ngModel)]="demoDatePickerValue"
           />
           <div
@@ -537,6 +538,7 @@
         <app-custom-date-picker
           label="Chọn ngày giao dịch"
           placeholder="DD/MM/YYYY"
+          [minDate]="today"
           [(ngModel)]="modalDateValue"
         />
       </div>

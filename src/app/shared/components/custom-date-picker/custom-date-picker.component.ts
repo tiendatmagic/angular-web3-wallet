@@ -4,20 +4,25 @@ import {
   Output,
   EventEmitter,
   ElementRef,
+  HostListener,
   inject,
   signal,
   computed,
-  forwardRef
+  forwardRef,
+  ViewChild,
+  AfterViewChecked
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { IconComponent } from '../icon/icon.component';
 
 /**
- * Custom Date Picker Component chất lượng cao đồng bộ màu thương hiệu dApp.
- * 
+ * Custom Date Picker Component chất lượng cao, fixed positioning thoát overflow.
+ * Hỗ trợ minDate, maxDate, quick-select presets, smart placement.
+ *
  * Sử dụng:
- *   <app-custom-date-picker [(ngModel)]="selectedDate" label="Ngày giao dịch" />
+ *   <app-custom-date-picker [(ngModel)]="selectedDate" label="Ngày bắt đầu" />
+ *   <app-custom-date-picker [(ngModel)]="date" [minDate]="today" [showPresets]="true" />
  */
 @Component({
   selector: 'app-custom-date-picker',
@@ -41,26 +46,38 @@ import { IconComponent } from '../icon/icon.component';
     `
   ]
 })
-export class CustomDatePickerComponent implements ControlValueAccessor {
+export class CustomDatePickerComponent implements ControlValueAccessor, AfterViewChecked {
   private readonly elementRef = inject(ElementRef);
 
   @Input() label: string = '';
   @Input() placeholder: string = 'Chọn ngày...';
   @Input() disabled: boolean = false;
-  @Input() minDate: string = ''; // Định dạng: YYYY-MM-DD
-  @Input() maxDate: string = ''; // Định dạng: YYYY-MM-DD
+  @Input() minDate: string = ''; // YYYY-MM-DD
+  @Input() maxDate: string = ''; // YYYY-MM-DD
+  @Input() showPresets: boolean = true; // Hiển thị nút quick-select
 
   @Output() valueChange = new EventEmitter<string>();
 
-  public readonly value = signal<string>(''); // Lưu trữ dạng: YYYY-MM-DD
+  @ViewChild('triggerDiv', { static: false }) triggerDiv!: ElementRef<HTMLDivElement>;
+
+  public readonly value = signal<string>('');
   public readonly isOpen = signal<boolean>(false);
-  
+
   public readonly currentYear = signal<number>(new Date().getFullYear());
   public readonly currentMonth = signal<number>(new Date().getMonth());
 
   public readonly weekdays = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'];
 
-  // Chuyển đổi định dạng hiển thị ra input (DD/MM/YYYY)
+  public popoverStyle: { [key: string]: string } = {};
+
+  public readonly presets = [
+    { label: '7 ngày', days: 7 },
+    { label: '1 tháng', days: 30 },
+    { label: '3 tháng', days: 90 },
+    { label: '6 tháng', days: 180 },
+    { label: '1 năm', days: 365 },
+  ];
+
   public readonly displayValue = computed(() => {
     const val = this.value();
     if (!val) return '';
@@ -71,21 +88,12 @@ export class CustomDatePickerComponent implements ControlValueAccessor {
     return val;
   });
 
-  // Tính toán ma trận 42 ngày (6 tuần) hiển thị trên lưới lịch
   public readonly calendarDays = computed(() => {
     const year = this.currentYear();
     const month = this.currentMonth();
-
-    // Ngày đầu tiên của tháng
     const firstDay = new Date(year, month, 1);
-    
-    // Thứ của ngày đầu tiên (0: Chủ nhật, 1: Thứ hai, ..., 6: Thứ bảy)
     const startDayOfWeek = firstDay.getDay();
-
-    // Quy đổi tuần bắt đầu từ Thứ Hai: Thứ Hai = 0, ..., Chủ Nhật = 6
     const offset = startDayOfWeek === 0 ? 6 : startDayOfWeek - 1;
-
-    // Ngày bắt đầu vẽ (có thể lùi về tháng trước)
     const startDate = new Date(year, month, 1 - offset);
 
     const daysArray: Date[] = [];
@@ -95,17 +103,18 @@ export class CustomDatePickerComponent implements ControlValueAccessor {
     return daysArray;
   });
 
-  // Tên tháng tiếng Việt hiển thị trên header lịch
   public readonly currentMonthName = computed(() => {
     const monthNames = [
-      'Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6',
-      'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'
+      'Tháng 01', 'Tháng 02', 'Tháng 03', 'Tháng 04', 'Tháng 05', 'Tháng 06',
+      'Tháng 07', 'Tháng 08', 'Tháng 09', 'Tháng 10', 'Tháng 11', 'Tháng 12'
     ];
     return monthNames[this.currentMonth()];
   });
 
   public onClickOutside(event: MouseEvent): void {
     if (!this.elementRef.nativeElement.contains(event.target)) {
+      const popover = document.querySelector('.date-picker-popover');
+      if (popover && popover.contains(event.target as Node)) return;
       this.isOpen.set(false);
     }
   }
@@ -115,11 +124,63 @@ export class CustomDatePickerComponent implements ControlValueAccessor {
     const nextState = !this.isOpen();
     this.isOpen.set(nextState);
     if (nextState) {
-      // Khi mở lịch, chuyển khung ngắm về tháng của giá trị hiện có hoặc tháng hiện tại
       const dateVal = this.parseDate(this.value());
       const baseDate = dateVal || new Date();
       this.currentYear.set(baseDate.getFullYear());
       this.currentMonth.set(baseDate.getMonth());
+      this.updatePopoverPosition();
+    }
+  }
+
+  private updatePopoverPosition(): void {
+    const triggerEl = this.triggerDiv?.nativeElement;
+    if (!triggerEl) return;
+
+    const rect = triggerEl.getBoundingClientRect();
+    const popoverHeight = this.showPresets ? 380 : 340;
+    const popoverWidth = 300;
+    const gap = 6;
+
+    const spaceBelow = window.innerHeight - rect.bottom - gap;
+    const spaceAbove = rect.top - gap;
+    const placeBottom = spaceBelow >= popoverHeight || spaceBelow >= spaceAbove;
+
+    let left = rect.left;
+    if (left + popoverWidth > window.innerWidth - 8) {
+      left = rect.right - popoverWidth;
+    }
+    if (left < 8) left = 8;
+
+    if (placeBottom) {
+      this.popoverStyle = {
+        position: 'fixed',
+        top: `${rect.bottom + gap}px`,
+        left: `${left}px`,
+        width: `${popoverWidth}px`,
+        zIndex: '9999',
+      };
+    } else {
+      this.popoverStyle = {
+        position: 'fixed',
+        top: `${rect.top - gap - popoverHeight}px`,
+        left: `${left}px`,
+        width: `${popoverWidth}px`,
+        zIndex: '9999',
+      };
+    }
+  }
+
+  ngAfterViewChecked(): void {
+    if (this.isOpen() && this.triggerDiv) {
+      this.updatePopoverPosition();
+    }
+  }
+
+  @HostListener('window:scroll')
+  @HostListener('window:resize')
+  onWindowChange(): void {
+    if (this.isOpen()) {
+      this.updatePopoverPosition();
     }
   }
 
@@ -147,9 +208,22 @@ export class CustomDatePickerComponent implements ControlValueAccessor {
 
   public selectDate(date: Date, event: Event): void {
     event.stopPropagation();
-    if (this.isDisabled(date)) return;
+    if (this.isDateDisabled(date)) return;
 
     const formatted = this.formatDate(date);
+    this.value.set(formatted);
+    this.valueChange.emit(formatted);
+    this.onChange(formatted);
+    this.onTouched();
+    this.isOpen.set(false);
+  }
+
+  /** Chọn nhanh preset (tính từ hôm nay) */
+  public selectPreset(days: number, event: Event): void {
+    event.stopPropagation();
+    const target = new Date();
+    target.setDate(target.getDate() + days);
+    const formatted = this.formatDate(target);
     this.value.set(formatted);
     this.valueChange.emit(formatted);
     this.onChange(formatted);
@@ -174,20 +248,28 @@ export class CustomDatePickerComponent implements ControlValueAccessor {
     return date.getMonth() === this.currentMonth();
   }
 
-  public isDisabled(date: Date): boolean {
-    const time = date.getTime();
+  /** Kiểm tra ngày có bị vô hiệu bởi minDate/maxDate */
+  public isDateDisabled(date: Date): boolean {
     if (this.minDate) {
       const min = this.parseDate(this.minDate);
-      if (min && time < min.getTime()) return true;
+      if (min) {
+        // So sánh theo ngày (bỏ giờ phút giây)
+        const minDay = new Date(min.getFullYear(), min.getMonth(), min.getDate());
+        const checkDay = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+        if (checkDay.getTime() < minDay.getTime()) return true;
+      }
     }
     if (this.maxDate) {
       const max = this.parseDate(this.maxDate);
-      if (max && time > max.getTime()) return true;
+      if (max) {
+        const maxDay = new Date(max.getFullYear(), max.getMonth(), max.getDate());
+        const checkDay = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+        if (checkDay.getTime() > maxDay.getTime()) return true;
+      }
     }
     return false;
   }
 
-  // Format Date -> YYYY-MM-DD
   private formatDate(date: Date): string {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -195,7 +277,6 @@ export class CustomDatePickerComponent implements ControlValueAccessor {
     return `${year}-${month}-${day}`;
   }
 
-  // Parse YYYY-MM-DD -> Date
   private parseDate(str: string): Date | null {
     if (!str) return null;
     const parts = str.split('-');
@@ -209,16 +290,18 @@ export class CustomDatePickerComponent implements ControlValueAccessor {
     return null;
   }
 
+  /** Helper: Lấy ngày hôm nay dạng YYYY-MM-DD */
+  public static todayString(): string {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  }
+
   // ControlValueAccessor
   private onChange: (value: any) => void = () => {};
   private onTouched: () => void = () => {};
 
   public writeValue(value: any): void {
-    if (value) {
-      this.value.set(String(value));
-    } else {
-      this.value.set('');
-    }
+    this.value.set(value ? String(value) : '');
   }
 
   public registerOnChange(fn: any): void {

@@ -36,6 +36,7 @@ import { parseEther } from 'ethers';
 })
 export class HomeComponent {
   public stateService = inject(StateService);
+  public readonly today = CustomDatePickerComponent.todayString();
   
   // Trạng thái Form Gửi ETH Demo
   public toAddress = signal('');
