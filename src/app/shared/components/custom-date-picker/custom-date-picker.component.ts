@@ -162,9 +162,10 @@ export class CustomDatePickerComponent implements ControlValueAccessor, AfterVie
     } else {
       this.popoverStyle = {
         position: 'fixed',
-        top: `${rect.top - gap - popoverHeight}px`,
+        top: `${rect.top - gap}px`,
         left: `${left}px`,
         width: `${popoverWidth}px`,
+        transform: 'translateY(-100%)',
         zIndex: '9999',
       };
     }

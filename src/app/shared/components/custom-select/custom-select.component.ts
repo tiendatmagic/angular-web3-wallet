@@ -127,13 +127,13 @@ export class CustomSelectComponent implements ControlValueAccessor, AfterViewChe
         zIndex: '9999',
       };
     } else {
-      const height = Math.min(dropdownMaxHeight, spaceAbove);
       this.dropdownStyle = {
         position: 'fixed',
-        top: `${rect.top - gap - height}px`,
+        top: `${rect.top - gap}px`,
         left: `${rect.left}px`,
         width: `${rect.width}px`,
-        maxHeight: `${height}px`,
+        maxHeight: `${Math.min(dropdownMaxHeight, spaceAbove)}px`,
+        transform: 'translateY(-100%)',
         zIndex: '9999',
       };
     }
