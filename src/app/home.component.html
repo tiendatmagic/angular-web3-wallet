@@ -355,7 +355,25 @@
         </div>
       </div>
 
-      <!-- CARD 3: Custom Search Input -->
+      <!-- CARD 3: Custom Checkbox -->
+      <div app-card>
+        <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
+          <app-icon name="shield-check" class="w-3.5 h-3.5 text-pink-500" strokeWidth="2.5" />
+          Custom Checkbox
+        </h4>
+        <div class="space-y-4">
+          <app-custom-checkbox
+            [(ngModel)]="demoCheckboxValue"
+            label="Chấp nhận điều khoản dịch vụ"
+            description="Tôi đồng ý với các điều khoản và cam kết bảo mật thông tin ví dApp này."
+          />
+          <div class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2">
+            checked={{ demoCheckboxValue() }}
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 4: Custom Search Input -->
       <div app-card>
         <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
           <app-icon name="search" class="w-3.5 h-3.5 text-blue-500" strokeWidth="2.5" />
@@ -375,7 +393,7 @@
         </div>
       </div>
 
-      <!-- CARD 4: Custom Select -->
+      <!-- CARD 5: Custom Select -->
       <div app-card>
         <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
           <app-icon name="chevron-down" class="w-3.5 h-3.5 text-emerald-500" strokeWidth="2.5" />

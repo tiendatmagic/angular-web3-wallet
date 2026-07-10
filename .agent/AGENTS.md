@@ -3,6 +3,7 @@
 ## Ngày 10/07/2026
 
 ### Yêu cầu: Khắc phục các lỗi UI của các custom components mới xây dựng
+
 - **Nội dung yêu cầu:** Người dùng phản hồi:
   1. Giao diện chấm tròn của `custom-radio` bị lệch trục khi được chọn.
   2. Dropdown của `custom-select` bị bay lơ lửng, lệch vị trí sang phải và lỗi icon tìm kiếm (biến thành dấu hỏi chấm `(?)`).
@@ -16,6 +17,7 @@
   3. Cập nhật `custom-select.component.html` & `.ts`: Chuyển dropdown menu sang sử dụng định vị `absolute` trực tiếp thay thế cho định vị `fixed` tính toán động bằng JS. Việc này giúp dropdown tự động khớp theo trigger cha có `relative` và loại bỏ hoàn toàn ảnh hưởng từ `backdrop-blur` hay `transform` ở các card bên ngoài, đồng thời lược bỏ các scroll/resize event listener dư thừa giúp tối ưu hiệu năng.
 
 ### Yêu cầu: Bổ sung UI Components và tái cấu trúc Layout (tham khảo cafe-blockchain)
+
 - **Nội dung yêu cầu:** Kiểm tra các component còn thiếu trong `shared/components` (card, radio, switch, search input, select) tham khảo dự án cafe-blockchain và áp dụng vào các trang. Đồng thời tạo thư mục `shared/layout` chứa Sidebar component riêng như cafe-blockchain.
 - **Phân tích Gap:**
   - Components thiếu: `card`, `custom-switch`, `custom-radio`, `custom-search-input`, `custom-select`
@@ -34,6 +36,7 @@
 - **Kết quả:** Build thành công 100% không lỗi. Tất cả component tuân thủ `:host { display: block; }` và dùng `var(--color-primary)` theo `design.md`.
 
 ### Yêu cầu: Tối ưu hóa mã nguồn Web3 và tái sử dụng component kế thừa
+
 - **Nội dung yêu cầu:** Người dùng yêu cầu đánh giá xem template Web3 đã ổn chưa và tối ưu hóa kế thừa component.
 - **Phân tích nguyên nhân & Giải pháp:**
   1. Trùng lặp màu sắc mạng: Di chuyển màu sắc EVM trực tiếp vào trường `color` của `POPULAR_CHAINS` trong `blockchain.utils.ts`. Xóa bỏ các hàm `getChainColor()` trùng lặp ở `app.ts` và `header.component.ts`.
@@ -43,6 +46,7 @@
   5. Refactor Header: Sửa đổi `header.component.ts` và `header.component.html` để nhúng các component mới, rút gọn dung lượng HTML của header đi hơn một nửa.
 
 ### Yêu cầu: Tắt Switch Network modal tự động của WalletConnect và thay bằng DApp Modal khi kết nối sai mạng
+
 - **Nội dung yêu cầu:** Người dùng muốn tự quản lý việc hiển thị modal sai mạng lưới bằng Modal của DApp thay vì để WalletConnect tự động hiện popup mặc định (vốn bị kẹt không tắt được).
 - **Phân tích nguyên nhân & Giải pháp:**
   1. Thay đổi cấu hình AppKit: đặt `allowUnsupportedChain: true` trong [web3.service.ts](file:///d:/git/angular-web3-wallet/src/app/core/services/web3.service.ts) để tắt modal tự động của WalletConnect.
@@ -54,9 +58,10 @@
      - Cập nhật logic trong [app.ts](file:///d:/git/angular-web3-wallet/src/app/app.ts) để import các component UI và viết hàm trigger chuyển đổi mạng lưới.
 
 ### Yêu cầu: Khắc phục lỗi WalletConnect Relay Server và lỗi treo kết nối di động (failed to publish custom payload)
+
 - **Nội dung yêu cầu:** Người dùng báo lỗi khi kết nối ví hiển thị thông báo "Failed to publish custom payload, please try again. id:... tag:undefined" và bị treo loading trên mobile.
 - **Phân tích nguyên nhân:**
-  1. Project ID cũ (`3cd580cdbe4845d5bcc4d40d6e7a9dd3`) của Cafe Blockchain bị rate-limit do dùng chung và bị khóa vì không khớp tên miền.
+  1. Project ID cũ (`3cd580cdbe4845d5bcc4d40d6e7a9dd3`) của Angular Web3 Wallet bị rate-limit do dùng chung và bị khóa vì không khớp tên miền.
   2. WalletConnect/AppKit tự động fetch remote config từ cloud, kích hoạt SIWE (reown authentication) không mong muốn, dẫn đến handshake bị treo hoặc thất bại khi publisher payload.
 - **Giải pháp:**
   - Cập nhật Project ID mới (`a196657383cc397e36c797a54165e326`) vào [environment.ts](file:///d:/git/angular-web3-wallet/src/environments/environment.ts) và [environment.development.ts](file:///d:/git/angular-web3-wallet/src/environments/environment.development.ts).
@@ -64,6 +69,7 @@
   - Cấu hình `allowUnsupportedChain: false`, `features.reownAuthentication = false` và `enableCoinbase = false`.
 
 ### Yêu cầu: Hỗ trợ mạng BSC, sắp xếp dropdown mạng lưới và đồng bộ UI button Kết nối
+
 - **Nội dung yêu cầu:**
   1. Loại bỏ các chain Sepolia và Polygon, thêm BSC Mainnet và BSC Testnet làm mạng được hỗ trợ.
   2. Sắp xếp lại dropdown chọn mạng: các mạng Mainnet nằm ở trên, Testnet ở dưới, loại bỏ đường gạch ngang ở giữa các mạng.
@@ -82,11 +88,13 @@
     - Giảm padding các item dropdown từ `py-3` xuống `py-2` để giao diện gọn gàng hơn.
 
 ### Yêu cầu: Đồng bộ border-radius của nút ví trên Header
+
 - **Nội dung yêu cầu:** Thống nhất bo góc (border-radius) cho các nút trên Header, không được sử dụng góc bo khác biệt.
 - **Phân tích nguyên nhân:** Nút ví khi đã kết nối sử dụng class `rounded-full` trong khi nút quả địa cầu và nút kết nối khi chưa kết nối đều sử dụng bo góc tối đa 15px (`rounded-xl` / `btn`), gây ra sự lệch tông và thiếu nhất quán trên giao diện Header.
 - **Giải pháp:** Cập nhật [header.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/header/header.component.html), thay thế class `rounded-full` của nút ví EVM (khi đã kết nối) thành `rounded-xl` để khớp với quy chuẩn chung.
 
 ### Yêu cầu: Chuẩn hóa và đồng bộ các nút bấm Header bằng app-button
+
 - **Nội dung yêu cầu:** Chuyển đổi tất cả các nút bấm hành động (Action Buttons) trên Header sang sử dụng chung directive `app-button` để kế thừa thống nhất thiết kế của hệ thống.
 - **Giải pháp:** Cập nhật [header.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/header/header.component.html):
   - Chuyển đổi **Hamburger Button** (Mobile Header) sang sử dụng `<button app-button variant="cancel">` (nút xám trung tính).
@@ -94,10 +102,12 @@
   - Chuyển đổi **Nút Ví** (khi đã kết nối) sang sử dụng `<button app-button variant="secondary">` (nút màu viền và nền hồng nhạt chuyển đổi theo accent color động của hệ thống).
 
 ### Yêu cầu: Bỏ hiệu ứng blur backdrop của Mobile Drawer
+
 - **Nội dung yêu cầu:** Bỏ hiệu ứng nhòe (backdrop-blur-sm) ở lớp nền phủ tối khi mở Mobile Drawer, chỉ sử dụng màu đen giảm opacity thông thường.
 - **Giải pháp:** Cập nhật [header.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/header/header.component.html), loại bỏ class `backdrop-blur-sm` khỏi thẻ backdrop overlay và đổi `bg-black/40` thành `bg-black/50`.
 
 ### Yêu cầu: Khắc phục lỗi gửi giao dịch chuyển ETH trên di động (Unknown method(s) requested)
+
 - **Nội dung yêu cầu:** Người dùng báo lỗi khi thực hiện giao dịch chuyển ETH trên thiết bị di động (ví dụ qua ví Trust Wallet), ứng dụng báo lỗi `could not coalesce error (error={"code": 5201, "message": "Unknown method(s) requested"})` khiến giao dịch thất bại.
 - **Phân tích nguyên nhân:**
   1. Khi sử dụng Ethers.js v6 kết nối qua WalletConnect/AppKit trên di động, một số ví di động như Trust Wallet yêu cầu tham số transaction phải cực kỳ chuẩn hóa. Nếu trường `data` không có dữ liệu mà bị bỏ trống (`undefined`), ví sẽ parse sai payload hoặc từ chối vì thiếu trường.
@@ -105,6 +115,7 @@
 - **Giải pháp:** Cập nhật [home.component.ts](file:///d:/git/angular-web3-wallet/src/app/home.component.ts), điền mặc định thuộc tính `data: '0x'` và truyền tường minh `chainId: Number(this.web3Service.chainId())` vào đối tượng `txRequest` trước khi gọi `signer.sendTransaction(txRequest)`.
 
 ### Yêu cầu: Loại bỏ toast kết nối ví khi reload và căn giữa toast trên mobile
+
 - **Nội dung yêu cầu:**
   1. Loại bỏ thông báo toast "Kết nối ví thành công" hiển thị dư thừa khi người dùng reload trang (F5) mà ví đã kết nối từ trước.
   2. Căn chỉnh lại hiển thị toast trên thiết bị di động (mobile): hiển thị ở phía dưới nhưng căn giữa chiều ngang thay vì lệch góc phải.
@@ -113,6 +124,7 @@
   - Cập nhật [toast.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/toast/toast.component.html): Thay thế định vị class của wrapper thành `fixed bottom-5 left-1/2 -translate-x-1/2 sm:left-auto sm:right-5 sm:translate-x-0` để tự động căn giữa ngang trên mobile và trở về góc phải dưới trên desktop.
 
 ### Yêu cầu: Chuẩn hóa cấu hình RPC và Explorer qua blockchain.utils.ts giống cafe-blockchain
+
 - **Nội dung yêu cầu:** Xem cấu trúc source code của `cafe-blockchain` và tổ chức lại cách lưu trữ, cấu hình RPC và Explorer URL tập trung thay vì map tĩnh cứng ở UI.
 - **Giải pháp:**
   - Tạo mới file [blockchain.utils.ts](file:///d:/git/angular-web3-wallet/src/app/core/utils/blockchain.utils.ts) định nghĩa hằng số `POPULAR_CHAINS` (chứa RPC URL, Explorer URL và tên của 5 chain: Ethereum, Arbitrum One, BNB Smart Chain, Arbitrum Sepolia, BSC Testnet) cùng các hàm bổ trợ `getExplorerApiUrl` và `getBackupRpcUrls`.
@@ -120,14 +132,8 @@
   - Cập nhật [header.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/header/header.component.ts): Thay thế cấu trúc switch-case map tĩnh bằng việc tìm kiếm và lấy `explorerUrl` trực tiếp từ `POPULAR_CHAINS` dựa theo `chainId` động của ví đang kết nối. Đồng thời thêm hàm helper `getChainColor` để trả về màu sắc của chấm tròn của từng mạng.
   - Cập nhật [header.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/header/header.component.html): Loại bỏ 5 nút mạng viết cứng (hardcode) trong HTML và thay thế bằng vòng lặp `@for` động lặp qua `web3Service.POPULAR_CHAINS`.
 
-
-
-
-
-
-
-
 ### Yêu cầu: Giải đáp lỗi treo màn hình loading (xoay vòng vô tận) "Continue in MetaMask/Trust Wallet..." trên di động
+
 - **Nội dung yêu cầu:** Người dùng phản ánh khi bấm kết nối ví (MetaMask, Trust Wallet...) trên trình duyệt di động, WalletConnect/AppKit hiển thị thông báo "Continue in..." và xoay vòng vô tận mà không tự động mở ứng dụng ví.
 - **Phân tích nguyên nhân:**
   1. **Thiếu HTTPS (HTTP Localhost/IP):** Mobile Web3 yêu cầu HTTPS để thực hiện các cơ chế bảo mật của Universal Links/Deep link. Nếu test trên local IP (`http://192.168.1.x:4200`), ví sẽ không phản hồi session handshake.
@@ -140,17 +146,20 @@
   - Hướng dẫn ngắt kết nối các session cũ trong Cài đặt của MetaMask/Trust Wallet và xóa cookies/cache.
 
 ### Yêu cầu: Khắc phục lỗi không thể gửi ETH (lỗi TypeError: this.amount(...).trim is not a function)
+
 - **Nội dung yêu cầu:** Khi bấm nút "Xác nhận gửi ETH", giao dịch không thực hiện được và console báo lỗi: `TypeError: this.amount(...).trim is not a function` tại `app.ts`.
 - **Phân tích nguyên nhân:** Ô input số lượng ETH có kiểu `type="number"` và được liên kết hai chiều qua `[(ngModel)]="amount"`. Khi người dùng nhập số, Angular ngModel tự động chuyển đổi kiểu dữ liệu của `amount` trong Signal từ `string` sang `number`. Do đó, khi gọi `this.amount().trim()`, JavaScript báo lỗi do kiểu `number` không có hàm `trim()`.
 - **Giải pháp:** Cập nhật file [app.ts](file:///d:/git/angular-web3-wallet/src/app/app.ts), bọc giá trị của `this.amount()` và `this.toAddress()` qua hàm `String(...)` trước khi gọi `.trim()`. Áp dụng tương tự cho `this.messageToSign()` để đảm bảo an toàn kiểu dữ liệu.
 
 ### Yêu cầu: Cấu hình tệp `netlify.toml` bị lỗi build trên Netlify
+
 - **Nội dung yêu cầu:** Lỗi build không thành công trên Netlify do cấu hình sai đường dẫn trong `netlify.toml`.
 - **Phân tích nguyên nhân:** Tệp cấu hình cũ khai báo `base = "cafe-blockchain-web"` và `publish = "dist/cafe-blockchain-web/browser"`. Do project này có tên là `angular-web3-wallet` và mã nguồn nằm ở thư mục gốc (không phải thư mục con `cafe-blockchain-web`), Netlify không thể chạy lệnh build và tìm đúng thư mục để deploy.
 - **Giải pháp:** Cập nhật file [netlify.toml](file:///d:/git/angular-web3-wallet/netlify.toml), loại bỏ hoàn toàn thuộc tính `base`, đổi `publish` thành `"dist/angular-web3-wallet/browser"`, đồng thời thêm cấu hình `[[redirects]]` để tránh lỗi 404 cho Angular Single Page Application (SPA).
 
 ### Yêu cầu: Điều chỉnh giao diện Header và Mobile Drawer theo thiết kế
-- **Nội dung yêu cầu:** 
+
+- **Nội dung yêu cầu:**
   1. Loại bỏ nút điều khiển Theme (Light/Dark/Auto) trên Header Menu.
   2. Thay đổi chức năng nút Quả địa cầu từ "Chuyển đổi ngôn ngữ" thành "Chuyển đổi mạng lưới" (kết nối mở WalletConnect/AppKit Network dropdown).
   3. Gỡ bỏ hoàn toàn mục "Cài đặt" / "Chuyển mạng lưới" ở Mobile Drawer (Sidebar).
@@ -175,10 +184,6 @@
     - Cấu hình hiệu ứng trượt động (animation) mượt mà cho **Mobile Drawer** cả khi mở và đóng bằng cách chuyển đổi từ cấu hình `@if` cứng sang điều khiển thuộc tính CSS transition (`invisible`, `opacity-100`, `-translate-x-full`, `translate-x-0`).
     - Cho phép hiển thị số dư native token (ETH) trên thiết bị di động bằng cách loại bỏ lớp CSS ẩn (`hidden sm:inline-block`) trên nút kết nối ví tại Header.
 
-
-
-
-
   - Cập nhật [header.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/header/header.component.ts): Xóa bỏ các thuộc tính và phương thức không dùng tới liên quan đến ngôn ngữ (`showLangDropdown`, `currentLang`, `toggleLangDropdown`, `selectLang`). Thêm signal và hàm toggle cho dropdown chọn mạng nhanh (`showNetworkDropdown`). Khai báo signal `txSpeed` quản lý tốc độ giao dịch trên Sidebar. Import `RouterModule` và `FormsModule` phục vụ chỉ thị route và nhập liệu.
   - Cập nhật [app.html](file:///d:/git/angular-web3-wallet/src/app/app.html): Tách toàn bộ nội dung HTML của các trang con ra ngoài để tránh dồn ứ file. app.html bây giờ chỉ đóng vai trò là shell layout chứa `<app-header>`, `<router-outlet>` (được bọc trong `div` có class `md:pl-72`) và `<app-toast>`.
   - Cập nhật [app.ts](file:///d:/git/angular-web3-wallet/src/app/app.ts): Tinh gọn hoàn toàn, chuyển toàn bộ logic Web3 sang `HomeComponent`. app.ts chỉ còn khai báo class shell trống import `RouterOutlet`, `HeaderComponent` và `ToastComponent`.
@@ -192,10 +197,8 @@
   - Cập nhật [home.component.ts](file:///d:/git/angular-web3-wallet/src/app/home.component.ts): Đổi các trạng thái chờ xử lý (pending) như gửi giao dịch, chờ khai thác sang loại `warning` để hiển thị màu vàng/cam trực quan.
   - Cập nhật [icon.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/icon/icon.component.html): Thêm case `'loading'` chứa path SVG đường tròn khuyết 3/4 giúp các nút bấm khi ở trạng thái gửi giao dịch/ký tin nhắn hiển thị spinner xoay tròn chính xác thay vì fallback icon chấm hỏi.
 
-
-
-
 ### Yêu cầu: Sửa lỗi DApp chọn mạng khác trong dropdown không đổi được mạng
+
 - **Nội dung yêu cầu:** Người dùng báo lỗi khi chọn mạng khác (như Arbitrum One hay Arbitrum Sepolia) trong dropdown chọn nhanh mạng lưới thì không đổi được mạng.
 - **Phân tích nguyên nhân:** Hàm `switchNetwork(chainId)` trước đó gọi `this.modal.switchNetwork({ chainId } as any)`. Theo tài liệu của Reown AppKit, hàm `switchNetwork` nhận một đối tượng `caipNetwork` hoàn chỉnh (được import từ `@reown/appkit/networks`) hoặc một chuỗi CAIP-2 dạng `'eip155:1'`. Việc truyền một object `{ chainId }` tự chế là không hợp lệ.
 - **Giải pháp:** Cập nhật hàm `switchNetwork(chainId)` trong [web3.service.ts](file:///d:/git/angular-web3-wallet/src/app/core/services/web3.service.ts). Tìm đối tượng mạng tương ứng trong mảng `supportedChains` dựa trên `id` và truyền trực tiếp đối tượng mạng (chain) đó cho `this.modal.switchNetwork(network)`.
@@ -203,6 +206,7 @@
 ## Ngày 08/07/2026
 
 ### Yêu cầu: Xây dựng khung dự án Angular Web3 bằng Tailwind CSS v4, Ethers.js v6 và Reown AppKit
+
 - **Nội dung yêu cầu:** Cài đặt và cấu hình Tailwind v4, tích hợp Ethers v6 + Reown AppKit làm khung sườn cho nhiều dự án Web3, xây dựng giao diện Header Menu ProofRandom responsive theo thiết kế mẫu, hỗ trợ chuyển đổi mạng, kết nối ví và tách biệt môi trường cấu hình linh hoạt. Khắc phục lỗi hiển thị theme sáng/tối không đồng bộ và thay thế toàn bộ alert bằng toastfy.
 - **Giải pháp:**
   - **Tổ chức cấu trúc:** Cấu hình Path Aliases (`@core/*`, `@shared/*`, `@features/*`, `@environments/*`) trong `tsconfig.json` tuân thủ nghiêm ngặt `ARCHITECTURE.md`.
@@ -214,10 +218,10 @@
   - **Vá lỗi và Build:** Cấu hình `"ignoreDeprecations": "6.0"` trong `tsconfig.json`, nâng giới hạn budget trong `angular.json` lên 5MB để bundle Web3 an toàn và sửa lỗi thiếu hàm copyAddress.
 - **Kết quả:** Biên dịch thành công 100% không còn lỗi. Theme đồng bộ hoàn hảo, hệ thống Toast mượt mà, sẵn sàng phục vụ làm khung sườn cho nhiều DApp Web3.
 
-
 ## Ngày 02/07/2026
 
 ### Yêu cầu: Đồng bộ tự động theme Light/Dark cho WalletConnect Modal (Reown AppKit)
+
 - **Nội dung yêu cầu:** WalletConnect modal bị lệch theme hiển thị (luôn là Dark Mode) mặc dù trang web đang ở chế độ Light Mode.
 - **Giải pháp:**
   - **Khởi tạo đồng bộ**: Cập nhật hàm `initAppKit()` trong [web3.service.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/core/services/web3.service.ts), đọc cấu hình theme hiện tại từ `localStorage` để thiết lập `themeMode` ngay khi khởi tạo WalletConnect modal.
@@ -226,6 +230,7 @@
 - **Kết quả:** Angular compile thành công 100%. Đảm bảo WalletConnect modal tự động nhận đúng theme tương ứng với giao diện DApp.
 
 ### Yêu cầu: Nâng cấp bảo mật và tối ưu hóa lưu trữ (Thay thế LocalStorage bằng IndexedDB và In-memory State)
+
 - **Nội dung yêu cầu:** Người dùng lo ngại về dung lượng giới hạn 5MB của localStorage và muốn tối ưu hóa bảo mật thông tin phân quyền/dữ liệu cá nhân nhạy cảm ở client.
 - **Giải pháp:**
   - **Backend API:** Cập nhật hàm `me()` trong [AuthController.php](file:///d:/git/cafe-blockchain/cafe-blockchain-api/app/Http/Controllers/AuthController.php) để trả về thêm `role` và `permissions` của nhân viên đăng nhập.
@@ -240,20 +245,20 @@
     - Sửa lỗi `TypeError: errorMsg.includes is not a function` trong interceptor bằng cách ép kiểu chuỗi an toàn (`typeof === 'string'`) cho thông báo lỗi.
 - **Kết quả:** Kiểm thử tự động trên trình duyệt thành công 100%. Giỏ hàng và sản phẩm yêu thích được khôi phục nguyên vẹn sau khi reload (F5). Phân quyền được bảo mật hoàn toàn ở runtime RAM và sửa triệt để lỗi ngắt kết nối ví khi reload.
 
-
 ## Ngày 01/07/2026
 
 ### Yêu cầu: Khắc phục lỗi không chuyển mạng được từ modal Switch Network của Reown AppKit (khi đặt allowUnsupportedChain: false)
+
 - **Nội dung yêu cầu:** Khi người dùng chuyển sang một mạng khác mà DApp không hỗ trợ, modal Switch Network của Wallet Connect/AppKit tự động hiện lên, nhưng bấm chọn các mạng khả dụng trong modal đó thì không thể chuyển mạng được và bị kẹt modal. Người dùng muốn giữ nguyên thiết lập `allowUnsupportedChain: false`.
 - **Giải pháp:**
   - **Giữ trạng thái phiên kết nối khi ví ở sai mạng**: Cập nhật hàm `subscribeAccount` trong [web3.service.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/core/services/web3.service.ts). Khi ví chuyển sang mạng không hỗ trợ, AppKit sẽ kích hoạt sự kiện với `isConnected = false` nhưng địa chỉ ví `address` vẫn được giữ lại. Thay vì tự động logout và xóa phiên kết nối của Dapp, DApp sẽ giữ lại địa chỉ ví và cập nhật trạng thái sai mạng (`isWrongChain = true`), giúp provider của AppKit không bị vô hiệu hóa.
   - **Tự động đóng modal bảo vệ khi chuyển mạng thành công**: Cập nhật sự kiện `chainChanged` trong [web3.service.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/core/services/web3.service.ts). Khi ví chuyển về mạng hỗ trợ, DApp sẽ chủ động gọi `this.modal.close()` để đóng modal "Switch Network", giải phóng giao diện người dùng. Danh sách các mạng hỗ trợ được lấy động từ biến cấu hình tập trung `POPULAR_CHAINS` trong `blockchain.utils.ts` (thay vì viết hardcode các Chain ID).
 - **Kết quả:** Biên dịch thành công 100% không lỗi. Người dùng giữ được thiết lập `allowUnsupportedChain: false`, modal của AppKit tự động hiện lên khi sai mạng, và khi người dùng click chọn mạng trong modal, ví sẽ chuyển mạng thành công và modal đóng lại một cách trơn tru.
 
-
 ## Ngày 30/06/2026
 
 ### Yêu cầu: Tách biệt tính năng Nhà bếp & Pha chế (KDS) thành cờ tính năng riêng trong quản lý gói cước
+
 - **Nội dung yêu cầu:** Người dùng hỏi tính năng Nhà bếp & Pha chế nằm trong những gói cước nào, đã hiển thị trên bảng quản lý gói cước chưa, và dữ liệu gói cước mặc định đã được cập nhật chưa.
 - **Giải pháp:**
   - **Phân tích hiện trạng**: Trước đây, tính năng Nhà bếp & Pha chế chạy phụ thuộc vào cờ Bán hàng POS (`enable_pos`), cả 3 gói mặc định (`free`, `pro`, `ultra`) đều có quyền truy cập do `enable_pos = true`. Trên giao diện, tính năng này chưa được tách biệt hay hiển thị badge riêng.
@@ -272,12 +277,14 @@
 - **Kết quả:** Code biên dịch và chạy thành công 100%. Tính năng Nhà bếp & Pha chế (KDS) hiện đã được tách biệt thành công thành cờ riêng, được cấu hình và kiểm soát độc lập theo gói cước dịch vụ.
 
 ### Yêu cầu: Khắc phục lỗi trùng lặp cột `tax_rate` khi chạy `php artisan migrate` trên Production
+
 - **Nội dung yêu cầu:** Người dùng báo lỗi crash khi chạy lệnh migration: cột `tax_rate` đã tồn tại trong bảng `products`.
 - **Giải pháp:**
   - Cập nhật [2026_06_25_000000_create_tax_system_tables.php](file:///d:/git/cafe-blockchain/cafe-blockchain-api/database/migrations/2026_06_25_000000_create_tax_system_tables.php): Sử dụng cách tiếp cận phòng vệ (defensive migration), bao bọc các lệnh thay đổi cấu trúc bảng và tạo bảng mới bằng kiểm tra `Schema::hasColumn` và `Schema::hasTable` để ngăn chặn việc cố gắng tạo lại các cột/bảng đã tồn tại.
 - **Kết quả:** Lỗi crash khi migrate được giải quyết triệt để, migration chạy mượt mà trên cả môi trường local và production của khách hàng.
 
 ### Yêu cầu: Kiểm tra, xác minh và sửa lỗi tính năng Nhập Thực đơn từ Excel
+
 - **Nội dung yêu cầu:** Người dùng yêu cầu kiểm tra xem tính năng import file Excel cho Thực đơn sản phẩm đã hoàn thành chưa, và báo lỗi khi import tệp Excel tại `C:\Temp\cafe_blockchain_product_template.xlsx`.
 - **Giải pháp:**
   - **Phân tích hiện trạng**: Hệ thống đã có đầy đủ logic frontend [ImportExcelModalComponent](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/menu/components/import-excel-modal/import-excel-modal.component.ts) và backend `importExcel` trong [ProductController.php](file:///d:/git/cafe-blockchain/cafe-blockchain-api/app/Http/Controllers/ProductController.php) cùng các route tương ứng.
@@ -297,6 +304,7 @@
 ## Ngày 28/06/2026
 
 ### Yêu cầu: Triển khai tính năng Màn hình hiển thị Nhà bếp/Pha chế (KDS)
+
 - **Nội dung yêu cầu:** Người dùng yêu cầu phát triển màn hình KDS hiển thị các đơn hàng cần pha chế theo thời gian thực để bếp tiện vận hành và pha nước.
 - **Giải pháp:**
   - **Thiết kế tối ưu DB**: Không tạo bảng DB mới, sử dụng trường `status` hiện có của bảng `orders` và bổ sung thêm trạng thái trung gian là `'ready'` (đã pha xong, chờ phục vụ).
@@ -313,6 +321,7 @@
 - **Kết quả:** PHP linter và Angular build thành công 100%. Màn hình KDS đã được tích hợp hoàn tất, hoạt động chính xác và mượt màng.
 
 ### Yêu cầu: Kiểm thử tự động màn hình KDS trên trình duyệt và xác minh luồng dữ liệu
+
 - **Nội dung yêu cầu:** Người dùng yêu cầu mở trình duyệt chạy thử tính năng KDS để kiểm tra và khắc phục lỗi nếu có.
 - **Giải pháp:**
   - Sử dụng công cụ `browser_subagent` để mở `http://localhost:4200/dashboard` và thực hiện kiểm thử tự động.
@@ -323,6 +332,7 @@
 - **Kết quả:** Kiểm thử thành công 100%, không phát sinh lỗi, các chức năng hoạt động chính xác và đồng bộ từ Frontend xuống Backend.
 
 ### Yêu cầu: Di chuyển vị trí liên kết KDS trên Sidebar xuống dưới mục Sơ đồ bàn
+
 - **Nội dung yêu cầu:** Người dùng muốn liên kết "Nhà bếp & Pha chế" hiển thị ngay dưới mục "Quản lý sơ đồ bàn" trên thanh Sidebar thay vì ở vị trí ban đầu (dưới Bán hàng POS).
 - **Giải pháp:**
   - Cập nhật [sidebar.component.html](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/shared/layout/sidebar/sidebar.component.html):
@@ -332,6 +342,7 @@
 - **Kết quả:** Build thành công 100%. Liên kết KDS đã định vị chính xác dưới mục Quản lý sơ đồ bàn trên cả Desktop và Mobile Sidebar.
 
 ### Yêu cầu: Tách biệt bộ lọc Tab của màn hình KDS thành component con riêng biệt
+
 - **Nội dung yêu cầu:** Người dùng muốn tách các tabs trạng thái (Tất cả đơn, Chờ pha chế, Đang pha chế, Chờ phục vụ) của màn hình KDS thành một component riêng để làm sạch code giao diện chính.
 - **Giải pháp:**
   - Tạo mới component [KdsTabsComponent](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/kds/components/kds-tabs/kds-tabs.component.ts) và tệp giao diện [kds-tabs.component.html](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/kds/components/kds-tabs/kds-tabs.component.html).
@@ -340,6 +351,7 @@
 - **Kết quả:** Code biên dịch thành công 100%. Màn hình KDS hoạt động ổn định, cấu trúc code phẳng, sạch sẽ và dễ bảo trì.
 
 ### Yêu cầu: Khắc phục lỗi nghiệp vụ KDS: Ngăn chặn bếp tự ý hoàn thành đơn hàng
+
 - **Nội dung yêu cầu:** Người dùng phản hồi lỗi nghiệp vụ: Bếp (màn hình KDS) không được phép tự ý hoàn thành đơn hàng (completed). Quyền hoàn thành đơn hàng phải thuộc về Thu ngân tại quầy POS hoặc màn hình Đơn hàng.
 - **Giải pháp:**
   - Cập nhật [kds.component.html](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/kds/kds.component.html): Thay thế nút hành động "Đã phục vụ" (gọi API chuyển trạng thái sang `completed`) khi đơn hàng ở trạng thái `ready` (đã pha xong) bằng một khung hiển thị trạng thái tĩnh **"Chờ phục vụ bê đồ"**.
@@ -347,6 +359,7 @@
 - **Kết quả:** Build thành công 100%. Đảm bảo nghiệp vụ KDS vận hành đúng phân vai trong quán.
 
 ### Yêu cầu: Đồng bộ trạng thái đơn hàng "ready" trên Sổ đơn hàng và giao diện di động khách hàng
+
 - **Nội dung yêu cầu:** Người dùng phản ánh đơn hàng khi bếp pha chế xong và chuyển sang trạng thái "ready" thì trên Sổ đơn hàng (của thu ngân) lại hiển thị nhầm nhãn "Chờ xác nhận" (của pending).
 - **Giải pháp:**
   - Cập nhật [orders.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/orders/orders.component.ts): Thêm tùy chọn `{ value: 'ready', label: 'Chờ phục vụ' }` vào mảng `statusFilterOptions`.
@@ -356,6 +369,7 @@
 - **Kết quả:** Build thành công 100%. Trạng thái đơn hàng hiển thị chính xác, thống nhất trên mọi giao diện hệ thống.
 
 ### Yêu cầu: Tích hợp phân trang (Pagination) cho màn hình KDS
+
 - **Nội dung yêu cầu:** Người dùng muốn biết màn hình KDS đã có phân trang chưa và có kế thừa component phân trang dùng chung của hệ thống không, sau đó yêu cầu thiết lập hiển thị 10 đơn hàng trên mỗi trang.
 - **Giải pháp:**
   - Cập nhật [kds.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/kds/kds.component.ts): Import `PaginationComponent`, bổ sung các signals và computed để phân trang client-side (`kdsCurrentPage`, `kdsItemsPerPage = 10`, `pagedOrders`, `kdsTotalPages`), tự động đưa về trang cuối nếu trang hiện tại vượt quá số trang thực tế. Reset trang về 1 khi chuyển đổi bộ lọc trạng thái.
@@ -363,6 +377,7 @@
 - **Kết quả:** Build thành công 100%. Giao diện KDS kế thừa tốt component phân trang chung, hỗ trợ hiển thị tối đa 10 đơn hàng/trang ngăn nắp, mượt mà.
 
 ### Yêu cầu: Đồng bộ các nút bấm trên giao diện KDS bằng directive ButtonComponent
+
 - **Nội dung yêu cầu:** Người dùng yêu cầu kiểm tra và kế thừa đầy đủ các component giao diện UI dùng chung của Dapp (như Button) trên trang KDS để đảm bảo tính đồng bộ giao diện.
 - **Giải pháp:**
   - Cập nhật [kds.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/kds/kds.component.ts): Import `ButtonComponent`, đăng ký trong mảng `imports`.
@@ -370,6 +385,7 @@
 - **Kết quả:** Build thành công 100%. Giao diện KDS kế thừa tốt component button chung, tăng cường tính đồng bộ thẩm mỹ.
 
 ### Yêu cầu: Bổ sung tính năng Xem chi tiết đơn hàng dạng chỉ đọc (Read-only) cho KDS Bếp
+
 - **Nội dung yêu cầu:** Người dùng hỏi bên bếp có xem được chi tiết đơn hàng hay không.
 - **Giải pháp:**
   - Cập nhật [order-detail-modal.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/orders/components/order-detail-modal/order-detail-modal.component.ts) và [order-detail-modal.component.html](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/orders/components/order-detail-modal/order-detail-modal.component.html): Biến các callback của interface `OrderDetailModalData` thành optional. Bọc các nút đổi trạng thái, hủy đơn, đồng bộ blockchain, đúc voucher trong kiểm tra sự tồn tại của callback.
@@ -378,28 +394,23 @@
 - **Kết quả:** Build thành công 100%. Bếp hiện tại có thể bấm trực tiếp vào mã đơn hàng trên card KDS để xem chi tiết hóa đơn và in lại hóa đơn pha chế, giao diện được bảo vệ ở chế độ chỉ đọc (Read-only) an toàn.
 
 ### Yêu cầu: Hiển thị Trạng thái đơn hàng trong Modal chi tiết đơn
+
 - **Nội dung yêu cầu:** Người dùng đề xuất hiển thị thêm mục trạng thái đơn hàng vào modal chi tiết đơn để dễ theo dõi.
 - **Giải pháp:**
   - Cập nhật [order-detail-modal.component.html](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/orders/components/order-detail-modal/order-detail-modal.component.html): Đổi phần Thời gian đặt hàng chiếm 2 cột thành 1 cột và bổ sung thêm 1 cột hiển thị Trạng thái đơn hàng kế bên, sử dụng BadgeComponent với đầy đủ các trạng thái và màu sắc tương ứng (Thành công, Đang chuẩn bị, Chờ phục vụ, Chờ xác nhận, Đã hủy, Cảnh báo DB).
 - **Kết quả:** Build thành công 100%. Modal chi tiết hiện tại đã hiển thị trạng thái đơn hàng trực quan và rõ ràng hơn.
 
-
-
-
-
-
-
-
 ### Yêu cầu: Khắc phục bộ lọc thời gian trên Dashboard hoạt động không chính xác và lệch múi giờ
+
 - **Nội dung yêu cầu:** Người dùng phản ánh các tùy chọn bộ lọc ngày tháng ("Hôm nay", "7 ngày qua", "30 ngày qua", "Tháng này", "Tự chọn ngày") hoạt động không chính xác trên trang Dashboard.
 - **Giải pháp:**
   - **Đồng bộ múi giờ:** Đổi timezone mặc định của Laravel Backend sang `Asia/Ho_Chi_Minh` trong [config/app.php](file:///d:/git/cafe-blockchain/cafe-blockchain-api/config/app.php) và thêm `APP_TIMEZONE=Asia/Ho_Chi_Minh` vào [.env](file:///d:/git/cafe-blockchain/cafe-blockchain-api/.env) để đồng bộ múi giờ Việt Nam, sửa triệt để lỗi lệch múi giờ UTC (chậm 7 tiếng) khi lọc.
   - **Bổ sung chỉ số theo kỳ ở API:** Cập nhật [DashboardController.php](file:///d:/git/cafe-blockchain/cafe-blockchain-api/app/Http/Controllers/DashboardController.php) để tính toán thêm các chỉ số theo khoảng thời gian lọc: `period_orders_count`, `period_web3_revenue`, `period_pending_web3_count` và trả về qua API.
-  - **Vá lỗi bảo mật & DoS:** 
+  - **Vá lỗi bảo mật & DoS:**
     - Bọc `Carbon::parse()` trong khối `try-catch` để tránh crash ứng dụng khi nhận tham số ngày không hợp lệ.
     - Giới hạn khoảng cách lọc tối đa là 365 ngày để ngăn ngừa các truy vấn nặng gây quá tải cơ sở dữ liệu (DoS).
     - Chuẩn hóa lại chuỗi ngày bằng `toDateString()` trước khi gán vào câu SQL và cache key để tránh lỗi SQL Injection / Cache Poisoning.
-  - **C?p nh?t giao di?n ??ng ? Frontend:** 
+  - **C?p nh?t giao di?n ??ng ? Frontend:**
     - Cập nhật [dashboard.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/dashboard/pages/dashboard/dashboard.component.ts) để sinh nhãn tiêu đề động và nhãn đơn hàng dựa trên preset được chọn.
     - Cập nhật [dashboard.component.html](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/dashboard/pages/dashboard/dashboard.component.html) để các Card 1, Card 3, Card 4 hiển thị động theo dữ liệu kỳ lọc của API (`period_revenue`, `period_orders_count`, `period_web3_revenue`, `period_pending_web3_count`) thay vì tĩnh toàn thời gian.
 - **Kết quả:** Build thành công 100%. Số liệu bộ lọc thay đổi chính xác, trực quan theo khoảng thời gian được chọn.
@@ -407,6 +418,7 @@
 ## Ngày 26/06/2026
 
 ### Yêu cầu: Chuyển đổi danh sách chọn năm trong tạo kỳ kê khai sang sinh tự động động (Dynamic)
+
 - **Nội dung yêu cầu:** Người dùng hỏi về nguồn dữ liệu của ô chọn năm trong modal tạo kỳ kê khai và đặt câu hỏi về trường hợp khách hàng sử dụng đến năm 2030 (khi danh sách cũ bị giới hạn cứng 2025-2028).
 - **Giải pháp:**
   - Cập nhật [create-tax-period-modal.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/tax/components/create-tax-period-modal/create-tax-period-modal.component.ts): Thay thế mảng cứng `[2025, 2026, 2027, 2028]` của `yearOptions` bằng cách sinh động thông qua `Array.from` chạy từ `năm hiện tại - 10` đến `năm hiện tại` (tổng cộng 11 năm, không sinh năm tương lai để phù hợp nghiệp vụ kê khai thuế thực tế).
@@ -415,6 +427,7 @@
 ## Ngày 25/06/2026
 
 ### Yêu cầu: Đồng bộ trạng thái chốt/kê khai thực tế từ Database thay vì LocalStorage
+
 - **Nội dung yêu cầu:** Người dùng phản hồi trạng thái của Tờ khai thuế trong Nhật ký chốt thuế luôn ở dạng "Chưa kê khai / Nháp" dù đã bấm Lưu thành công. Nguyên nhân do trước đây lưu dữ liệu bằng `localStorage` nhưng nay đã nâng cấp lên Database Backend mà code hiển thị logs chưa cập nhật nạp trạng thái thực tế từ server.
 - **Giải pháp:**
   - Cập nhật [TaxPeriod.php](file:///d:/git/cafe-blockchain/cafe-blockchain-api/app/Domain/Entities/TaxPeriod.php): Khai báo quan hệ `details()` với bảng `tax_period_details`.
@@ -423,6 +436,7 @@
 - **Kết quả:** Build thành công 100%. Trạng thái của các log chốt thuế cập nhật tự động và chính xác theo dữ liệu thật trên database.
 
 ### Yêu cầu: Khắc phục lỗi cắt chữ select dropdown và gộp nút footer về bên phải
+
 - **Nội dung yêu cầu:** Người dùng báo lỗi chữ hiển thị trong dropdown select bị cắt ("Khai lần đ...", "Thay đổi thôn...") do cột bảng hẹp ép độ rộng trigger. Đồng thời yêu cầu gộp toàn bộ nút bấm ở footer modal về một phía bên phải thay vì dàn đều sang hai bên.
 - **Giải pháp:**
   - Cập nhật [custom-select.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/shared/components/custom-select/custom-select.component.ts): Thay đổi công thức tính toán độ rộng dropdown: Đặt `minWidth: rect.width` và `width: max-content` (capped `maxWidth: 320px`) để dropdown tự động giãn rộng ra theo chữ. Đồng thời đo lường lề phải màn hình để tự động dịch lùi `left` nếu dropdown tràn ra ngoài rìa phải.
@@ -430,6 +444,7 @@
 - **Kết quả:** Build frontend thành công 100%. Giao diện dropdown không còn bị cắt chữ, các nút bấm xếp gọn gàng ở góc dưới bên phải chuẩn giao diện modal của Dapp.
 
 ### Yêu cầu: Thay thế toàn bộ select native bằng CustomSelectComponent trong modal chi tiết thuế
+
 - **Nội dung yêu cầu:** Thay thế các thẻ `<select>` native (như chọn Cơ quan thuế, Tỉnh/Thành phố trong form thông tin, và chọn Trạng thái trong Phụ lục 01) bằng component `<app-custom-select>` tùy biến để đảm bảo tính đồng bộ giao diện và khắc phục tình trạng hiển thị menu dropdown thô của hệ điều hành.
 - **Giải pháp:**
   - Cập nhật [tax-detail-modal.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/tax/components/tax-detail-modal/tax-detail-modal.component.ts): Import `CustomSelectComponent`, đăng ký trong mảng `imports`, và khai báo `bankStatusOptions: any[]` để định nghĩa 3 trạng thái của tài khoản ngân hàng.
@@ -437,6 +452,7 @@
 - **Kết quả:** Build frontend Angular thành công 100%. Giao diện dropdown đồng bộ, chuyên nghiệp và mượt mà.
 
 ### Yêu cầu: Đồng bộ tab tờ khai thuế trong modal chi tiết bằng TabGroupComponent dùng chung
+
 - **Nội dung yêu cầu:** Người dùng yêu cầu đồng bộ hóa giao diện tab của Tờ khai thuế và PL01 trong modal chi tiết thuế sử dụng component `<app-tab-group>` dùng chung của hệ thống thay vì tự vẽ button thủ công.
 - **Giải pháp:**
   - Cập nhật [tax-detail-modal.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/tax/components/tax-detail-modal/tax-detail-modal.component.ts): Định nghĩa `declarationTabOptions: TabOption[]` gồm 2 tab "Tờ khai thuế" và "PL 01 BK-STK".
@@ -444,6 +460,7 @@
 - **Kết quả:** Build frontend Angular thành công 100%.
 
 ### Yêu cầu: Đồng bộ giao diện modal chi tiết thuế theo chuẩn phẳng của Dapp
+
 - **Nội dung yêu cầu:** Người dùng phản ánh giao diện modal chi tiết kê khai thuế/sổ sách bị lệch tông so với thiết kế chung của Dapp (tự vẽ header tím gradient lòe loẹt, tự dựng div wrapper bên ngoài gây lỗi padding lề chồng chéo). Yêu cầu điều chỉnh lại modal theo phong cách thiết kế phẳng tinh tế, thừa kế tối đa các component chuẩn của hệ thống.
 - **Giải pháp:**
   - Cập nhật [tax.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/tax/tax.component.ts): Loại bỏ `showHeader: false` khi mở `TaxDetailModalComponent` để sử dụng lại header và nút Đóng chuẩn hệ thống của `ModalWrapperComponent`.
@@ -455,12 +472,14 @@
 - **Kết quả:** Build frontend Angular thành công 100%. Giao diện modal phẳng tinh tế, sạch sẽ, hài hòa và đồng bộ 100% với phong cách thiết kế chung của Dapp.
 
 ### Yêu cầu: Tối ưu hóa tải chi tiết kỳ kê khai thuế/sổ sách (Lazy Loading ở Frontend)
+
 - **Nội dung yêu cầu:** Khi vừa mở modal chi tiết kê khai thuế hoặc sổ sách, hệ thống gọi đồng loạt cả 9 API `getPeriodDetails` tải dữ liệu cho tất cả các loại tài liệu (info, declaration, banks, s1a -> s2e) cùng một lúc. Yêu cầu triển khai cơ chế Lazy Loading để chỉ gọi đúng những API cần thiết cho loại tài liệu đang xem.
 - **Giải pháp:**
   - Cập nhật [tax-detail-modal.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/tax/components/tax-detail-modal/tax-detail-modal.component.ts): Cập nhật hàm `loadSavedData()` để dựa trên `logRow.category` xác định mảng `documentTypes` tối thiểu cần tải (Tờ khai chỉ cần `['info', 'declaration', 'banks']`, còn các sổ sách độc lập chỉ cần đúng API của sổ đó). Sử dụng hàm trợ giúp `getData(type)` để ánh xạ động chỉ số kết quả trả về từ `forkJoin` dựa theo mảng `documentTypes` đã lọc, giữ nguyên cơ chế tạo dữ liệu demo thông minh khi lỗi/chưa có dữ liệu.
 - **Kết quả:** Biên dịch frontend thành công 100%. Số lượng API request khi mở modal giảm mạnh (Tờ khai giảm từ 9 xuống 3 request; các sổ sách giảm từ 9 xuống 1 request), cải thiện rõ rệt tốc độ tải và hiệu năng máy chủ.
 
 ### Yêu cầu: Khắc phục lỗi spam request khi lưu dữ liệu kê khai thuế
+
 - **Nội dung yêu cầu:** Khi người dùng bấm liên tục (spam click) vào các nút Lưu (Lưu tờ khai, Lưu sổ S1a -> S2e, Lưu thông tin khai thuế), hệ thống gửi liên tiếp nhiều request API `savePeriodDetails` cùng một lúc, gây quá tải (spam request) lên máy chủ.
 - **Giải pháp:**
   - Cập nhật [tax-detail-modal.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/tax/components/tax-detail-modal/tax-detail-modal.component.ts): Khai báo signal `isSaving` quản lý trạng thái lưu. Ở đầu các phương thức lưu, chặn nếu đang lưu: `if (this.isSaving()) return;`, đặt `this.isSaving.set(true)` trước khi gọi API, và đặt về `false` khi có phản hồi (thành công hoặc thất bại).
@@ -468,6 +487,7 @@
 - **Kết quả:** Biên dịch frontend thành công 100%. Nút lưu có trạng thái loading mượt mà, ngăn chặn hoàn toàn việc spam request khi lưu.
 
 ### Yêu cầu: Tối ưu hóa tải tab phân hệ Thuế (Cache mềm ở Frontend)
+
 - **Nội dung yêu cầu:** Người dùng phản ánh khi bấm chuyển đổi qua lại giữa các tab trong phân hệ Thuế, hệ thống vẫn liên tục gọi API lên server để tải lại dữ liệu. Yêu cầu triển khai cơ chế "cache mềm" (Memory State) để dữ liệu chỉ được tải một lần đầu tiên khi chuyển tab, và chỉ tải lại khi có sự thay đổi thực sự (Tạo, Khóa sổ, Xóa kỳ, hoặc Lưu chi tiết).
 - **Giải pháp:**
   - **Khắc phục lỗi Router hủy Component:** Do Angular Router cấu hình mỗi tab là một route riêng (`/tax/logs`, `/tax/declaration`, `/tax/estimation`) và sẽ tự động hủy component `TaxComponent` cũ và tạo mới khi chuyển route, việc lưu cache trong component bị mất tác dụng. Ta đã dời toàn bộ dữ liệu cache sang Singleton Service `TaxService` tồn tại suốt vòng đời ứng dụng.
@@ -480,6 +500,7 @@
 - **Kết quả:** Build frontend thành công 100%. Giao diện chuyển tab mượt mà lập tức, không còn hiện tượng gọi lại API trùng lặp, tối ưu tải mạng và hiệu năng client.
 
 ### Yêu cầu: Sắp xếp lại các tab cấu hình theo quy trình thiết lập quán
+
 - **Nội dung yêu cầu:** Người dùng yêu cầu sắp xếp lại thứ tự hiển thị của các tab cấu hình trong phân hệ Cài đặt theo đúng quy trình thiết lập thực tế từ cơ bản đến nâng cao.
 - **Giải pháp:**
   - Cập nhật [settings.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/settings/settings.component.ts): Sắp xếp lại thứ tự các tab trong mảng của getter `settingsSubTabOptions` theo đúng trình tự: Cấu hình Quán (general) ➔ Blockchain Web3 (blockchain) ➔ Ủy quyền ví (permissions) ➔ Thanh toán (payment) ➔ Mẫu hoá đơn (invoice) ➔ Cấu hình Thuế (tax) ➔ Website (store) ➔ Voucher NFT (voucher).
@@ -487,6 +508,7 @@
 - **Kết quả:** Build frontend Angular thành công 100%. Giao diện hiển thị đúng trật tự logic quy trình thiết lập quán.
 
 ### Yêu cầu: Tích hợp cấu hình tính năng Thuế vào gói cước (Subscription Plans) ở Admin
+
 - **Nội dung yêu cầu:** Người dùng yêu cầu tích hợp tính năng Thuế vừa triển khai vào cấu hình chi tiết của gói cước (Subscription Plan) trên giao diện quản trị Admin để có thể bật/tắt tính năng Thuế cho từng gói cước. Phân quyền và kiểm tra gói cước phải hoạt động đúng.
 - **Giải pháp:**
   - Cập nhật [subscription-plan-modal.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/admin/components/subscription-plan-modal/subscription-plan-modal.component.ts): Thêm trường `enable_tax` với giá trị boolean vào Form Group cấu hình `features` và xử lý patchValue khi mở modal cập nhật gói cước.
@@ -494,6 +516,7 @@
 - **Kết quả:** Build frontend thành công 100%. Phân quyền gói cước hoạt động đồng bộ và triệt tiêu hoàn toàn lỗi validation 422 từ API khi cập nhật gói cước.
 
 ### Yêu cầu: Nâng cấp lưu trữ dữ liệu chi tiết Thuế từ LocalStorage lên Database Backend
+
 - **Nội dung yêu cầu:** Người dùng yêu cầu chuyển đổi cơ chế lưu trữ dữ liệu chi tiết của tờ khai và các sổ sách trong modal chi tiết kỳ kê khai từ `localStorage` của trình duyệt lên Database Backend (Cloud) nhằm tránh rủi ro mất dữ liệu khi xóa cache trình duyệt hoặc thay đổi thiết bị.
 - **Giải pháp:**
   - **Backend API & Database:**
@@ -509,7 +532,8 @@
 - **Kết quả:** Chạy migration thành công, build frontend thành công 100%. Dữ liệu chi tiết được bảo mật và lưu trữ an toàn trên database.
 
 ### Yêu cầu: Tối ưu hóa responsive phân hệ Thuế, tăng cỡ chữ tờ khai và sửa lỗi load lại API khi đóng modal
-- **Nội dung yêu cầu:** 
+
+- **Nội dung yêu cầu:**
   1. Sửa lỗi bóp méo chữ phần thông tin nhóm thuế ở tab Kê khai thuế trên màn hình laptop/tablet; sửa lỗi co cụm và ngắt dòng chữ của các nút "Thông tin khai thuế", "Tải file" trên header modal chi tiết tờ khai.
   2. Khắc phục vấn đề font chữ tờ khai và các sổ sách quá nhỏ gây khó đọc.
   3. Xử lý lỗi hệ thống tự động reload lại API khi người dùng chỉ bấm nút "Đóng" hoặc dấu "X" (close) mà không lưu thay đổi.
@@ -522,6 +546,7 @@
 - **Kết quả:** Build frontend thành công 100%. Giao diện hiển thị rõ ràng, cân đối, hoàn toàn responsive trên các độ phân giải, và triệt tiêu các API call dư thừa khi đóng modal.
 
 ### Yêu cầu: Nâng cấp hệ thống Nhật ký kê khai Thuế theo Sổ Bán Hàng
+
 - **Nội dung yêu cầu:** Trải nghiệm Sổ Bán Hàng, nâng cấp tính năng Phân loại và Nhật ký kê khai để sinh ra đủ 7 loại tài liệu (Tờ khai và 6 sổ kế toán Chuẩn TT 88) cho mỗi kỳ kê khai. Cho phép click vào từng dòng để xem/sửa chi tiết và lưu cục bộ, tải file Excel/XML thay vì nộp tự động.
 - **Giải pháp:**
   - Cập nhật [tax.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/tax/tax.component.ts): hàm `getFormattedLogs()` sinh ra 1 Tờ khai và 6 loại sổ (S1a, S2a, S2b, S2c, S2d, S2e) cho mỗi kỳ kê khai; lọc chính xác theo dropdown. Loại bỏ import `TaxDetailModalComponent` dư thừa để triệt tiêu warning Angular compiler.
@@ -530,12 +555,13 @@
 - **Kết quả:** Build frontend thành công 100%, không còn warning nào.
 
 ### Yêu cầu: Tạo và tích hợp Custom Radio Button Component
+
 - **Nội dung yêu cầu:** Tạo component Radio Button tùy biến để thay thế các input radio native cũ, đồng bộ với phong cách thiết kế, hỗ trợ Light/Dark Mode và màu chủ đạo thương hiệu.
 - **Giải pháp:**
   - T?o m?i component [CustomRadioComponent](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/shared/components/custom-radio/custom-radio.component.ts) ??c l?p (standalone):
     - Triển khai `ControlValueAccessor` tương thích hoàn toàn với Angular Forms (`ngModel`).
     - Thiết kế giao diện hình tròn với viền mờ trong Light/Dark Mode khi chưa chọn, và tô màu chủ đạo thương hiệu (`var(--color-primary)` - tím) kèm chấm tròn trắng ở giữa và hiệu ứng scale-up khi được chọn.
-    - *Tinh chỉnh thiết kế sau feedback:* Đổi trạng thái chọn từ tô đặc màu hồng chói lọi sang viền màu primary 2px, nền trắng/tối, chấm tròn chính giữa màu primary nhỏ nhắn (10px) kết hợp đổi font-weight chữ nhãn thành `semibold` để giao diện trông tinh tế, sắc nét hơn.
+    - _Tinh chỉnh thiết kế sau feedback:_ Đổi trạng thái chọn từ tô đặc màu hồng chói lọi sang viền màu primary 2px, nền trắng/tối, chấm tròn chính giữa màu primary nhỏ nhắn (10px) kết hợp đổi font-weight chữ nhãn thành `semibold` để giao diện trông tinh tế, sắc nét hơn.
     - Cấu hình `:host { display: block; }` để tránh lỗi dính chữ hoặc sai lệch layout.
   - Cập nhật [create-tax-period-modal.component.html](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/tax/components/create-tax-period-modal/create-tax-period-modal.component.html):
     - Loại bỏ các input radio native cũ và thẻ label tương ứng.
@@ -545,6 +571,7 @@
 - **Kết quả:** Build frontend thành công 100%. Giao diện hiển thị sắc nét, tinh tế.
 
 ### Yêu cầu: Tích hợp Nhóm 4 và đồng bộ hóa quy định Thuế mới năm 2026
+
 - **Nội dung yêu cầu:** Tích hợp quy định thuế năm 2026 bao gồm 4 nhóm doanh thu (Nhóm 1: <1 tỷ, Nhóm 2: 1-3 tỷ, Nhóm 3: 3-50 tỷ, Nhóm 4: >50 tỷ) vào Modal khảo sát, đồng thời cập nhật chính xác công thức tính thuế suất trên Backend và Frontend.
 - **Giải pháp:**
   - Cập nhật [TaxController.php](file:///d:/git/cafe-blockchain/cafe-blockchain-api/app/Http/Controllers/TaxController.php):
@@ -558,6 +585,7 @@
 - **Kết quả:** PHP lint và build frontend Angular thành công 100%.
 
 ### Yêu cầu: Đồng bộ màu sắc nút Thiết lập lại và cập nhật icon svg
+
 - **Nội dung yêu cầu:** Đồng bộ màu sắc nút "Thiết lập lại" trên tab Kê khai thuế sang màu tím giống nút "Tạo kỳ kê khai", và thay đổi icon dấu hỏi sang icon xoay tròn (sync).
 - **Giải pháp:**
   - Cập nhật [tax.component.html](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/tax/tax.component.html):
@@ -566,6 +594,7 @@
 - **Kết quả:** Build frontend thành công 100%.
 
 ### Yêu cầu: Sửa lỗi hover màu sắc chưa đồng đều trong menu ví
+
 - **Nội dung yêu cầu:** Đồng bộ hiệu ứng hover của các mục trong dropdown menu ví người dùng. Hiện tại mục "Thông tin cá nhân" hover ra màu tím, trong khi "Sao chép địa chỉ ví" và "Chi tiết ví" hover ra màu slate xám. Ngoài ra hover row trong bảng Thuế ở Dark Mode bị flash trắng bất thường.
 - **Giải pháp:**
   - Cập nhật [desktop-header.component.html](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/shared/layout/header/desktop-header.component.html) và [sidebar.component.html](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/shared/layout/sidebar/sidebar.component.html):
@@ -576,10 +605,11 @@
 - **Kết quả:** Đồng bộ thành công giao diện hover sang màu tím thương hiệu (purple), hoàn tất quá trình kiểm tra.
 
 ### Yêu cầu: Tối ưu hóa API calls và phân trang phân hệ Thuế
+
 - **Nội dung yêu cầu:** Tối ưu hóa các cuộc gọi API để tránh tình trạng tải lại trùng lặp dữ liệu không cần thiết khi load trang và chuyển tab, đồng thời làm rõ cơ chế phân trang của phân hệ Thuế.
 - **Giải pháp:**
   - **Phân tích:** Trước đây trong `ngOnInit`, hệ thống vừa lắng nghe sự kiện `router.events` vừa kiểm tra `web3Service.walletConnected()` cùng lúc dẫn đến 2 lần gọi `loadInitialData()` song song lúc khởi tạo. Đồng thời mỗi lần chuyển tab, `loadInitialData()` luôn gọi lại API lấy profile thuế `loadTaxProfile()` không cần thiết.
-  - **Tối ưu hóa Frontend (`tax.component.ts`):** 
+  - **Tối ưu hóa Frontend (`tax.component.ts`):**
     - Sử dụng Angular `effect` kết hợp `untracked` để quản lý việc tải dữ liệu tự động. Dữ liệu chỉ được tải khi ví đã kết nối (`walletConnected` chuyển thành `true`) và ứng với từng tab tương ứng (`activeTab` thay đổi).
     - Dùng `untracked` để đọc profile và các hàm load dữ liệu nhằm triệt tiêu hoàn toàn vòng lặp dependency hoặc re-trigger không mong muốn.
     - Lo?i b? vi?c g?i `loadInitialData()` t? ??ng trong `ngOnInit()`, ch? gi? l?i vi?c c?p nh?t tab t? route.
@@ -588,6 +618,7 @@
 - **Kết quả:** Build frontend `npm run build` thành công 100%. Số lượng request khi tải trang và chuyển tab giảm mạnh, không còn tình trạng trùng lặp request API.
 
 ### Yêu cầu: Bỏ menu 3 chấm bảng Kê khai thuế, thay bằng button sm inline
+
 - **Nội dung yêu cầu:** Bỏ nút 3 chấm (dots-vertical) ở cột hành động của bảng Kê khai thuế, thay bằng các button `sm` trực tiếp như các table ở feature khác trong hệ thống.
 - **Giải pháp:**
   - Cập nhật [tax.component.html](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/tax/tax.component.html): Thay thế `div.period-menu-container` + dropdown popup bằng hai button `app-button variant="secondary" size="sm"` inline: nút **Khóa sổ** (màu amber) và nút **Xóa** (màu rose), chỉ hiển thị khi `row.status === 'open'`. Cập nhật header bảng: rút gọn tên cột thành "Số lượng sổ" và thêm header "Hành động".
@@ -599,8 +630,8 @@
   - Nút **Xóa** đổi sang `variant="danger-light"` (đỏ nhạt #F43F5E) để phân biệt rõ với nút **Khóa sổ** (tím secondary). Lý do không dùng class override màu `!border-*` và `hover:!bg-*` vì xung đột với `background-color: color-mix(...)` của CSS gốc `btn-secondary`.
 - **Kết quả:** Build frontend `npm run build` thành công 100% không phát sinh bất kỳ lỗi biên dịch nào.
 
-
 ### Yêu cầu: Nâng cấp button, sửa đổi skeleton và tích hợp demo logs phân hệ Thuế
+
 - **Nội dung yêu cầu:** Chuyển đổi các nút bấm hành động ở tab Kê khai thuế sang size `md` vì size `sm` quá nhỏ; thiết kế lại nút Thiết lập lại (sử dụng icon help-circle, viền hồng nhạt) và nút Khóa sổ (màu gradient hồng-tím). Giải thích ý nghĩa của việc Khóa sổ kỳ kế toán. Khắc phục vấn đề tab Nhật ký kê khai trống bằng cách thiết kế lại cấu trúc bảng (Phân loại, Tên sổ, Trạng thái) và chèn dữ liệu demo tĩnh. Tinh chỉnh lại Skeleton Loading của phân hệ Thuế để loại bỏ Summary card và giả lập đúng UI thực tế của cả hai tab.
 - **Giải pháp:**
   - Cập nhật [tax.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/tax/tax.component.ts): Thêm hằng số demo `demoLogs` chứa thông tin Tờ khai 01.TKN-CNKD và sổ S1a-HKD, viết hàm `getFormattedLogs()` để kết xuất dữ liệu thật và demo nếu trống.
@@ -611,6 +642,7 @@
 - **Kết quả:** Build frontend `npm run build` thành công 100% không phát sinh bất kỳ lỗi biên dịch nào.
 
 ### Yêu cầu: Cấu hình Routing Tab phân hệ Thuế & Xử lý Thiết lập lại, Chuyển hướng khảo sát
+
 - **Nội dung yêu cầu:** Cấu hình route riêng biệt cho mỗi tab của phân hệ Thuế. Đưa nút "Thiết lập lại" về tab Kê khai thuế kèm modal xác nhận. Khi hoàn tất khảo sát, hiển thị modal kết quả rồi tự động chuyển hướng về lại tab Kê khai thuế. Sửa lỗi biên dịch do gọi hàm không tồn tại `openSurveyModal()`.
 - **Giải pháp:**
   - Cập nhật [app.routes.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/app.routes.ts): Chuyển path `tax` thành route cha và định nghĩa các route con cho 3 tab (`logs`, `declaration`, `estimation`). Khi truy cập `/tax` sẽ tự động redirect về `/tax/logs`.
@@ -619,6 +651,7 @@
 - **Kết quả:** Build frontend `npm run build` thành công 100% không phát sinh bất kỳ lỗi biên dịch nào.
 
 ### Yêu cầu: Đồng bộ hóa giao diện tab Cấu hình Thuế trong Cài đặt
+
 - **Nội dung yêu cầu:** Người dùng yêu cầu đồng bộ hóa giao diện nội dung của tab Cấu hình Thuế với các tab cấu hình khác trong phân hệ Cài đặt để đảm bảo tính kế thừa và thống nhất về mặt thẩm mỹ.
 - **Giải pháp:**
   - Cập nhật header của card Cấu hình Thuế trong `settings.component.html`: Bổ sung đường gạch dưới phân cách `border-b` và class padding `pb-2` để khớp 100% với header của các tab khác (general, invoice, store, blockchain, v.v.).
@@ -628,6 +661,7 @@
 - **Kết quả:** Giao diện tab Cấu hình Thuế kế thừa trọn vẹn phong cách thiết kế và UI components của hệ thống, biên dịch Angular hoàn tất thành công.
 
 ### Yêu cầu: Phát triển Phân hệ Quản lý và Kê khai Thuế & Sửa lỗi biên dịch Frontend
+
 - **Nội dung yêu cầu:** Tích hợp tính năng quản lý thuế dành cho Hộ Kinh Doanh Cá Thể và tính thuế VAT tự động trên từng sản phẩm, hiển thị chi tiết tại POS, Storefront, Hoá đơn và biểu mẫu Admin cấu hình. Khắc phục các lỗi biên dịch Angular/TypeScript phát sinh sau khi tích hợp.
 - **Giải pháp:**
   - **Cơ sở dữ liệu:** Tạo bảng `tax_profiles` (Lưu thông tin hồ sơ khảo sát thuế: nhóm kinh doanh, tỷ lệ phân bổ ngành nghề) và `tax_periods` (Lưu lịch sử kỳ kê khai thuế, doanh thu, chi phí, thuế GTGT, TNCN phải nộp, trạng thái khóa sổ).
@@ -645,6 +679,7 @@
   - **Kết quả:** Biên dịch dự án frontend Angular (`npm run build`) thành công 100% không phát sinh lỗi nào, giao diện hiển thị nhãn switch chuẩn xác.
 
 ### Yêu cầu: Chuyển đổi Khảo sát Hồ sơ Thuế sang Modal & Thiết kế Skeleton Loading riêng biệt cho phân hệ Thuế
+
 - **Nội dung yêu cầu:** Bỏ menu con (sub-menu) Thuế ở Sidebar (Desktop & Mobile) để tối giản hóa giao diện. Thiết kế lại luồng Khảo sát thuế: thay vì hiển thị inline chiếm dụng tab, chuyển toàn bộ Form khảo sát 3 bước thành Modal popup riêng (`TaxSurveyModalComponent`) để khi bấm "Khảo sát lại", giao diện quản lý chốt thuế ở dưới vẫn hiển thị bình thường. Đồng thời, thiết kế lại skeleton loading pulse độc lập, mô phỏng chính xác giao diện phân hệ Thuế thay vì kế thừa skeleton loader chung của các chức năng khác để tránh layout shift.
 - **Giải pháp:**
   - **Tách Component Modal:** Đóng gói toàn bộ logic khảo sát 3 bước, dữ liệu form và các hành động kế tiếp thành component riêng biệt [TaxSurveyModalComponent](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/tax/components/tax-survey-modal/tax-survey-modal.component.ts) và template của nó.
@@ -657,6 +692,7 @@
   - **Kết quả:** Biên dịch dự án frontend Angular (`npm run build`) thành công 100% không phát sinh lỗi nào.
 
 ### Yêu cầu: Khắc phục lỗi điều hướng Khảo sát lại, tích hợp Submenu Sidebar, sửa lỗi select [object Object] và nâng cấp Modal & Empty State
+
 - **Nội dung yêu cầu:** Người dùng phản hồi bấm nút "Khảo sát lại" bị kẹt ở bước 1 không có cách nào quay lại trang quản lý cũ. Đồng thời yêu cầu hiển thị sub-menu của phân hệ Thuế ở Sidebar (Desktop & Mobile) để chuyển tab trực tiếp, sửa lỗi dropdown select hiển thị `[object Object]` trong modal, dọn dẹp blur của modal overlay để kế thừa chuẩn và nâng cấp giao diện Empty State cho Kỳ kê khai kèm banner Thông tư 50.
 - **Giải pháp:**
   - **Khắc phục nút quay lại:** Cập nhật [tax.component.html](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/tax/tax.component.html) để hiển thị nút "Hủy bỏ" gọi hàm `cancelSurveyReset()` tại bước 1 khảo sát nếu đã có hồ sơ cũ.
@@ -669,6 +705,7 @@
   - **Thêm Alert & Empty State:** Thêm banner cập nhật Thông tư 50/2026/TT-BTC màu xanh da trời, và nâng cấp Empty State của tab kê khai thành minh họa SVG tờ giấy & cây bút kèm nút tạo kỳ kê khai xanh lá nổi bật.
 
 ### Yêu cầu: Khắc phục lỗi giật hình (layout shift) khi mở Select component
+
 - **Nội dung yêu cầu:** Khi người dùng bấm vào select component, dropdown menu hiển thị lần đầu hoặc các lần tiếp theo bị giật nhẹ lên một cái do lệch vị trí layout trước khi định vị đúng.
 - **Giải pháp:**
   - **Phân tích:** Trước đây, trong [custom-select.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/shared/components/custom-select/custom-select.component.ts), phương thức `toggleOpen()` kích hoạt trạng thái `isOpen` của dropdown trước khi tính toán tọa độ fixed thông qua một tác vụ bất đồng bộ `setTimeout(..., 0)`. Việc này làm cho dropdown bị render tạm thời theo cấu trúc static block rỗng ở vị trí mặc định trong DOM (đẩy layout xung quanh) trước khi chuyển thành `fixed` và bay đến vị trí thực tế của trigger.
@@ -676,6 +713,7 @@
   - **Kết quả:** Build frontend thành công 100%, dropdown menu hiển thị ngay lập tức tại vị trí chính xác mà không gặp bất kỳ độ trễ hay hiện tượng giật giật layout nào.
 
 ### Yêu cầu: Đồng bộ hóa thuật ngữ và quy mô doanh thu khảo sát thuế theo mẫu chuẩn pháp lý gốc
+
 - **Nội dung yêu cầu:** Người dùng yêu cầu đồng bộ hóa 100% tên gọi, thứ tự hiển thị của các nhóm ngành và quy mô doanh thu trong Khảo sát Hồ sơ Thuế khớp với mẫu cũ/văn bản pháp lý gốc (Hình 1).
 - **Giải pháp:**
   - Cập nhật [tax-survey-modal.component.html](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/tax/components/tax-survey-modal/tax-survey-modal.component.html):
@@ -691,6 +729,7 @@
 ## Ngày 24/06/2026
 
 ### Yêu cầu: Khắc phục lỗi hiển thị hình ảnh trên môi trường Production (Nginx Reverse Proxy & /public path)
+
 - **Nội dung yêu cầu:** Hình ảnh tải lên thành công trên production nhưng bị lỗi hiển thị (404) do URL trả về thiếu tiền tố `/public/` khi chạy qua reverse proxy cấu hình sai thư mục gốc (document root hướng tới project root thay vì public).
 - **Giải pháp:**
   - **Tái cấu trúc Backend:** Di chuyỒn và chuẩn hóa logic xử lý URL hình ảnh thành hàm static `normalizeImageUrl($imageUrl)` trong Model [Product.php](file:///d:/git/cafe-blockchain/cafe-blockchain-api/app/Domain/Entities/Product.php).
@@ -700,6 +739,7 @@
   - **Kết quả:** Các API trả về URL chính xác trên cả môi trường local và production, khắc phục hoàn toàn lỗi 500 và lỗi 404 hình ảnh. Đã dọn dẹp cache Laravel. Ngoài ra, đã xóa 6 tệp tin test PHP dư thừa khỏi git tracking để dọn sạch mã nguồn.
 
 ### Yêu cầu: Tích hợp Skeleton Loading cho trang Quản lý Thực đơn (Menu Management)
+
 - **Nội dung yêu cầu:** Hiển thị Skeleton Loading giả lập khi load trang thực đơn hoặc khi thay đổi trang, tìm kiếm, lọc danh mục để tránh delay, màn hình trống và tạo trải nghiệm tải mượt mà.
 - **Giải pháp:**
   - **Frontend Signals:** Khai báo signal cục bộ `isMenuProductsLoading` trong [menu.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/menu/menu.component.ts) để quản lý riêng trạng thái gọi API tải thực đơn phân trang của trang quản lý thực đơn. Cập nhật `loadMenuProducts(...)` để thiết lập trạng thái này thành `true` khi gửi request và `false` khi hoàn thành hoặc lỗi.
@@ -708,6 +748,7 @@
   - **Kết quả:** Biên dịch build frontend Angular thành công 100%, không phát sinh lỗi TypeScript nào.
 
 ### Yêu cầu: Nâng cấp tính năng upload trực tiếp hình ảnh sản phẩm thực đơn (Menu Product Image Upload)
+
 - **Nội dung yêu cầu:** Thay đổi cơ chế dán link URL ảnh tĩnh thủ công bất tiện của sản phẩm bằng giao diện kéo thả/chọn file upload trực tiếp từ thiết bị, tự động nén dung lượng và lưu trữ phân chia theo địa chỉ ví.
 - **Giải pháp:**
   - **Backend API:** Bổ sung phương thức `uploadImage()` và helper `processAndCompressImage()` trong [ProductController.php](file:///d:/git/cafe-blockchain/cafe-blockchain-api/app/Http/Controllers/ProductController.php). Sử dụng thư viện **PHP GD** để resize ảnh về tối đa 800px, nén sang WebP (fallback JPEG) chất lượng 75%, giới hạn dung lượng lưu trữ tối đa 1MB (nếu lớn hơn sẽ tự động xóa). Chuẩn hóa ví chủ quán loại bỏ tiền tố `0x` và viết thường để tạo thư mục lưu trữ phân mảnh thông qua **Laravel Storage public disk**: `storage/app/public/products/{wallet_without_0x}/`. Đặt tên file theo cấu trúc `timestamp_random.webp`.
@@ -717,16 +758,16 @@
   - **Giao diện & Logic:** Cập nhật [product-form-modal.component.html](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/menu/components/product-form-modal/product-form-modal.component.html) và [product-form-modal.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/menu/components/product-form-modal/product-form-modal.component.ts) thay thế ô input text cũ bằng khung upload ảnh nét đứt, spinner loading trạng thái tải lên, và ảnh preview tích hợp hover overlay chứa nút xóa ảnh / thay đổi ảnh. Giữ lại tùy chọn nhập URL thủ công dự phòng.
   - **Kết quả:** Kiểm tra cú pháp PHP thành công 100%. Biên dịch build frontend Angular thành công 100%, không phát sinh bất kỳ lỗi TypeScript nào.
 
-
 ### Yêu cầu: Khắc phục lỗi nút "Xóa tất cả cache" không xóa được thư mục trên hosting
+
 - **Nội dung yêu cầu:** Người dùng phản hồi nút "Xóa tất cả cache" không dọn dẹp sạch được cấu trúc thư mục con của cache trên hosting.
 - **Giải pháp:**
   - **Phân tích:** Cấu trúc cache của Laravel File driver tạo ra nhiều thư mục con sâu (ví dụ `data/01/a2/`). Phương thức `File::cleanDirectory()` chỉ dọn file bên trong nhưng giữ lại cấu trúc thư mục con trống, đồng thời trên hosting Linux có thể xảy ra lỗi xung đột quyền sở hữu (Permission Denied) giữa SSH user và Web server user, dẫn đến crash API 500 nếu gặp file bị lock hoặc không có quyền xóa.
   - **Tái cấu trúc Backend:** Cập nhật [AdminController.php](file:///d:/git/cafe-blockchain/cafe-blockchain-api/app/Http/Controllers/AdminController.php), loại bỏ `File::cleanDirectory()` thay bằng hàm đệ quy tự viết `recursiveCleanDirectory()`. Hàm này duyệt đệ quy, thực hiện `@chmod($path, 0777)` trước khi xóa để tối ưu quyền, dùng `@unlink()` / `@rmdir()` để bỏ qua Warning của PHP, và bọc toàn bộ trong khối `try-catch` để đảm bảo API luôn trả về thành công cho giao diện kể cả khi có file cứng đầu.
   - **Kết quả:** Kiểm tra cú pháp PHP thành công 100%. Các routes hoạt động bình thường, dọn dẹp cache cục bộ thành công.
 
-
 ### Yêu cầu: Nâng cấp thông điệp ký bảo mật SIWE (EIP-4361) phòng chống tấn công giả mạo (Phishing Attack)
+
 - **Nội dung yêu cầu:** Cải tiến chuỗi thông điệp ký ví để phòng chống tấn công giả mạo giao diện đăng nhập (Phishing) dựa trên chuẩn EIP-4361 (Sign-In with Ethereum).
 - **Giải pháp:**
   - **Dựng thông điệp chuẩn SIWE:** Cập nhật [AuthController.php](file:///d:/git/cafe-blockchain/cafe-blockchain-api/app/Http/Controllers/AuthController.php) trong phương thức `getNonce()` để sinh thông điệp chứa các trường động: Domain, Wallet Address, URI, Chain ID, Nonce, và Issued At (UTC ISO 8601). Các thông số này được truyền động từ Client thông qua API trong [api.service.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/core/services/api.service.ts) (lấy trực tiếp host, origin và chainId của ví lúc đăng nhập) giúp thông điệp chính xác 100% theo thời gian thực và mạng lưới của ví.
@@ -735,6 +776,7 @@
   - **Kết quả:** Kiểm tra cú pháp PHP thành công 100%, dọn dẹp cache hệ thống và cache cấu hình thành công.
 
 ### Yêu cầu: Tối ưu hóa hiệu năng Checkout & Storefront (Khắc phục lỗi N+1 Query)
+
 - **Nội dung yêu cầu:** Tối ưu hóa hiệu năng tạo đơn hàng tại POS (Checkout) và Storefront công khai để triệt tiêu lỗi N+1 Query truy vấn sản phẩm/biến thể trong vòng lặp giỏ hàng, đồng thời loại bỏ đề xuất lưu cache Turnstile để cấu hình mặc định.
 - **Giải pháp:**
   - **Eager Load tại POS:** Cập nhật [CreateOrderCommandHandler.php](file:///d:/git/cafe-blockchain/cafe-blockchain-api/app/Application/Orders/Handlers/CreateOrderCommandHandler.php), tải trước toàn bộ danh sách sản phẩm cùng các biến thể thông qua một câu truy vấn `Product::with('variants')->whereIn('id', $productIds)`. Chuyển đổi việc kiểm tra biến thể sang in-memory Collection. Đảm bảo ném ngoại lệ thích hợp nếu sản phẩm/biến thể không hợp lệ.
@@ -743,6 +785,7 @@
   - **Kết quả:** Kiểm tra cú pháp thông qua lệnh `php artisan route:list` thành công 100%, dọn dẹp cache hệ thống `php artisan cache:clear` thành công 100%.
 
 ### Yêu cầu: Tối ưu hóa Database (Đánh Index) & Tái cấu trúc Helper lấy store_owner_address
+
 - **Nội dung yêu cầu:** Đánh chỉ mục (index) bổ sung cho các bảng chính của hệ thống để tối ưu hóa tốc độ truy vấn, đồng thời tái cấu trúc helper lấy địa chỉ ví store owner trong Model User để dùng chung trong các Controller.
 - **Giải pháp:**
   - **Database Migration:** Tạo tệp tin migration `2026_06_24_000000_add_missing_performance_indexes_to_tables.php` chèn 11 chỉ mục (index) mới cho các bảng `orders`, `transactions`, `shifts`, `customers`, `subscription_requests`, `menu_sync_logs`, `inventory_records`, và `products`, đồng thời dọn dẹp và loại bỏ 2 chỉ mục đơn cũ bị trùng lặp dư thừa (`products_store_owner_address_index` và `inventory_records_store_owner_address_index`) để tối ưu hóa tối đa các câu lệnh INSERT/UPDATE. Chạy `php artisan migrate` thành công.
@@ -750,11 +793,13 @@
   - **Kết quả:** Kiểm tra cú pháp thông qua lệnh `php artisan route:list` thành công 100%, các routes hoạt động bình thường, dọn dẹp cache hệ thống thành công.
 
 ### Yêu cầu: Tối ưu hóa hiệu năng khởi động Laravel (Framework Caching)
+
 - **Nội dung yêu cầu:** Kích hoạt cache cấu hình, routes, và views của Laravel để tăng tốc độ khởi động (bootstrap) framework.
 - **Giải pháp:** Chạy chuỗi lệnh tối ưu hóa: `php artisan config:cache`, `php artisan route:cache`, và `php artisan view:cache` thành công.
 - **Kết quả:** Laravel giảm thời gian khởi động tối đa trên môi trường production, cải thiện độ trễ tổng thể của toàn bộ hệ thống API.
 
 ### Yêu cầu: Triển khai Database Pagination (Phân trang thực tế từ Database) & Limit = 10 cho toàn bộ các module
+
 - **Nội dung yêu cầu:** Chuyển đổi cơ chế load dữ liệu từ Client-side sang Server-side Database Pagination cho các module lớn (Đơn hàng, Thực đơn, Kho hàng, Khách hàng, Ca trực, Sổ nợ, Thu chi tài chính và SaaS Admin) với limit mặc định là 10. Đồng thời sửa bug hiển thị tên store trong SaaS Admin.
 - **Giải pháp:**
   - **Backend:** Cập nhật các Controller và Repositories (như `DashboardController`, `ProductController`, `CustomerController`, `InventoryController`, `TransactionController`, `ShiftController`, `DebtController`, `AdminController`) trả về dữ liệu phân trang thực tế từ database (`paginate($limit)`). Đặc biệt, đóng gói thêm các dữ liệu aggregates tổng thu/chi, tổng nợ/số lượng con nợ tổng thể từ cơ sở dữ liệu vào JSON response envelope. Sử dụng `JSON_EXTRACT` trên MySQL để tìm kiếm theo tên store trong trường dữ liệu JSON gộp. Sử dụng helper `Setting::getForStore` để sửa bug toàn bộ tên store của quán bị hiển thị mặc định thành "Cafe Web3 POS".
@@ -764,6 +809,7 @@
   - **Kết quả:** Kiểm tra cú pháp PHP thành công 100%. Dọn dẹp cache backend thành công. Biên dịch build dự án Angular (`npm run build`) thành công 100%, tất cả 14 module hoạt động mượt mà với Database Pagination và giao diện POS/Storefront tương thích ngược hoàn hảo.
 
 ### Yêu cầu: Tối ưu hóa hiệu năng truy vấn Database & xử lý Backend (Dashboard, Orders, Shifts & Settings)
+
 - **Nội dung yêu cầu:** Người dùng phản hồi tốc độ truy vấn chậm, đặc biệt là khi dùng cache không hiệu quả ở lần tải đầu tiên (load lần đầu).
 - **Giải pháp:**
   - **Tối ưu hóa Dashboard:**
@@ -781,8 +827,9 @@
   - **Kết quả:** Kiểm tra thử nghiệm thực tế cho thấy thời gian xử lý Orders Query giảm mạnh xuống chỉ còn ~54 ms, Lịch sử ca trực còn ~14 ms, Dashboard xử lý mượt mà trong ~77 ms và tiêu tốn cực ít bộ nhớ RAM của PHP.
 
 ### Thảo luận giải pháp: Đồng bộ hóa đơn bảo mật thông tin trên Blockchain
+
 - **Nội dung câu hỏi:** Người dùng tìm hiểu giải pháp đồng bộ hóa đơn lên blockchain đảm bảo tính riêng tư (chỉ khách hàng mua hóa đơn xem được) và giải quyết bài toán tính sẵn sàng dữ liệu khi server sập cũng như phân quyền cho chủ quán/nhân viên.
-- **Giải pháp đề xuất:** 
+- **Giải pháp đề xuất:**
   - Đề xuất giải pháp Encrypted Event Logs (Mã hóa thông tin nhạy cảm trước khi phát Event trên BSC).
   - Tối ưu dữ liệu lưu trữ phi tập trung (IPFS/Arweave) đã mã hóa.
   - Sử dụng cơ chế mã hóa đa khóa đối xứng (Multi-Recipient Encryption) bằng Public Key của cả Khách hàng và Chủ quán để cùng giải mã được khi cần thiết.
@@ -790,8 +837,8 @@
 
 ## Ngày 23/06/2026
 
-
 ### Yêu cầu: Khắc phục lỗi độ dài khóa chính trong Database Migration (system_settings)
+
 - **Nội dung yêu cầu:** Người dùng gặp lỗi `#1071 - Specified key was too long; max key length is 1000 bytes` khi chạy lệnh tạo khóa chính cho bảng `system_settings` ở cột `key` trên MySQL.
 - **Giải pháp:**
   - Cập nhật [2026_06_19_000003_create_system_settings_table.php](file:///d:/git/cafe-blockchain/cafe-blockchain-api/database/migrations/2026_06_19_000003_create_system_settings_table.php) để thay đổi độ dài cột `key` từ mặc định (255) thành `191` ký tự: `$table->string('key', 191)->primary();`.
@@ -799,10 +846,11 @@
   - Tạo script PHP tạm `run_db_clean.php` để drop bảng lỗi `system_settings` và xóa bản ghi migration của nó khỏi bảng `migrations`. Tiến hành chạy dọn dẹp và thực thi `php artisan migrate` thành công để khởi tạo lại bảng cấu hình mới với độ dài `key` là `191` ký tự mà không ảnh hưởng đến dữ liệu các bảng khác.
 
 ### Yêu cầu: Bổ sung tính năng Bỏ qua ca trực trên POS cho mọi gói cước
+
 - **Nội dung yêu cầu:** Người dùng muốn cho phép bán hàng POS và chọn sơ đồ bàn ăn mà không bắt buộc phải mở ca trực mới. Đối với gói cước Free (không hỗ trợ quản lý ca trực), hoặc khi nhân viên muốn bán hàng off-shift ở mọi gói cước khác, cho phép bấm nút "Bỏ qua ca trực" để tiếp tục bán hàng.
 - **Giải pháp:**
   - **Frontend Shift Service:** Cập nhật [shift.service.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/core/services/shift.service.ts), bổ sung signal `isShiftSkipped` và phương thức `skipShift()` để lưu trạng thái người dùng bỏ qua ca trực, tự động reset về `false` khi mở/đóng ca thành công hoặc khi tải lại trang/đăng nhập lại.
-  - **Frontend POS Component & Template:** 
+  - **Frontend POS Component & Template:**
     - Cập nhật [pos.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/pos/pages/pos/pos.component.ts) để điều kiện check ca trực ở `addToCart` chấp nhận nếu có ca đang mở hoặc `isShiftSkipped` là `true`.
     - Cập nhật [pos.component.html](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/pos/pages/pos/pos.component.html) bổ sung một nút bấm "Bỏ qua ca trực" thiết kế `variant="secondary"` nằm ngay dưới nút "Mở ca". Đồng thời cập nhật các điều kiện ẩn/hiện giỏ hàng, banner mobile và Floating Bottom Bar dựa trên ca trực hoặc trạng thái bỏ qua ca trực.
   - **Frontend Tables Component:** Cập nhật [tables.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/tables/tables.component.ts) cho phép mở bàn chuyển sang POS nếu ca trực đã mở hoặc nếu `isShiftSkipped` là `true`.
@@ -811,7 +859,8 @@
   - Chạy `npm run build` biên dịch frontend thành công 100%.
 
 ### Yêu cầu: Thêm cấu hình ưu đãi người mới và Sửa lỗi hiển thị dữ liệu bảng biểu trong SaaS Admin
-- **Nội dung yêu cầu:** 
+
+- **Nội dung yêu cầu:**
   - Thêm chức năng bật/tắt ưu đãi người mới tại tab Gói cước (`/admin?tab=plans`), cho phép cấu hình gói mặc định và thời hạn sử dụng. Khi ví mới tham gia sẽ tự động nhận gói ưu đãi này.
   - Sửa lỗi hiển thị `[object Object]` ở cột Tính năng hỗ trợ và lỗi hiển thị `true`/`false` ở cột Trạng thái, khôi phục các nút hành động bị mất trong các bảng của SaaS Admin.
 - **Giải pháp:**
@@ -823,8 +872,8 @@
   - Chạy `php -l` kiỒm tra cú pháp backend thành công 100%.
   - Chạy `npm run build` biên dịch dự án frontend thành công 100%.
 
-
 ### Yêu cầu: Sửa lỗi Class "App\Infrastructure\Persistence\Eloquent\OrderItem" (OrderItemModel) not found trên trang danh sách đơn hàng (/orders)
+
 - **Nội dung yêu cầu:** Người dùng báo lỗi trắng trang/lỗi hệ thống khi truy cập đường dẫn `http://localhost:4200/orders`. Lỗi hiển thị Toast: `Class "App\Infrastructure\Persistence\Eloquent\OrderItem" not found` (bị cắt ngắn từ `OrderItemModel`).
 - **Giải pháp:**
   - **Phân tích:** Trong handler xử lý truy vấn đơn hàng [GetOrdersQueryHandler.php](file:///d:/git/cafe-blockchain/cafe-blockchain-api/app/Application/Orders/Handlers/GetOrdersQueryHandler.php), khi re-hydrate dữ liệu đơn hàng từ mảng cache/DB, hệ thống đã khởi tạo sai Class `$item = new \App\Infrastructure\Persistence\Eloquent\OrderItemModel();` thay vì sử dụng thực thể Domain Entity `\App\Domain\Entities\OrderItem()`.
@@ -832,8 +881,8 @@
   - Chạy `php -l` kiỒm tra cú pháp thành công 100%.
   - Chạy `php artisan cache:clear` dọn dẹp bộ nhớ đệm hệ thống thành công.
 
-
 ### Yêu cầu: KiỒm tra và chuẩn hóa các nút bấm native trong SaaS Admin sang app-button
+
 - **Nội dung yêu cầu:** Xem xét các trang tab trong hệ thống quản trị SaaS Admin, kiểm tra xem các control như nút bấm, tab, input, select đã được kế thừa từ các component dùng chung chưa và thực hiện chuẩn hóa.
 - **Giải pháp:**
   - Rà soát hệ thống cho thấy các tab chính/phụ (`<app-tab-group>`), bộ chọn dropdown (`<app-custom-select>`), ô tìm kiếm (`<app-custom-search-input>`), bảng biểu và phân trang (`<app-table>`), các modal con (`subscription-plan-modal`, `tenant-subscription-modal`) đều đã kế thừa tốt 100% từ component dùng chung.
@@ -842,6 +891,7 @@
   - Chạy biên dịch `npm run build` thành công 100%.
 
 ### Yêu cầu: Tái cấu trúc lưu trữ cấu hình settings dạng JSON gộp
+
 - **Nội dung yêu cầu:** Gom toàn bộ cấu hình của một ví chủ cửa hàng thành 1 bản ghi duy nhất lưu dưới dạng JSON gộp trong DB thay vì phân rã ra hơn 30 bản ghi riêng biệt như hiện tại nhằm tối ưu hóa và tiết kiệm tài nguyên cơ sở dữ liệu.
 - **Giải pháp:**
   - **Backend Entity**: Cập nhật [Setting.php](file:///d:/git/cafe-blockchain/cafe-blockchain-api/app/Domain/Entities/Setting.php), định nghĩa danh sách keys loại trừ khỏi JSON gộp (`website_slug` để giữ nguyên cấu trúc truy vấn unique nhanh). Toàn bộ các keys khác sẽ được mã hóa và lưu trữ chung trong một bản ghi duy nhất có `key` = `'store_config'` dạng chuỗi JSON.
@@ -852,6 +902,7 @@
   - Chạy `php artisan cache:clear` dọn dẹp cache hệ thống thành công.
 
 ### Yêu cầu: Loại bỏ tự động tạo cấu hình mặc định trong Database khi kết nối ví lần đầu
+
 - **Nội dung yêu cầu:** Khi người dùng vừa kết nối ví lần đầu, không tự động tạo các bản ghi cấu hình mặc định (`store_name`, `primary_color`, `secondary_color`,...) trong DB bảng `settings`. Chỉ ghi nhận vào DB khi người dùng chủ động sửa đổi và bấm Lưu cấu hình.
 - **Giải pháp:**
   - **Backend Entity**: Cập nhật [Setting.php](file:///d:/git/cafe-blockchain/cafe-blockchain-api/app/Domain/Entities/Setting.php) bổ sung mảng tĩnh `$systemDefaults` chứa 35 key cấu hình mặc định và cập nhật hàm `getForStore($key, $storeOwnerAddress, $default = null)` cùng `get($key, $default = null)` để tự động trả về giá trị fallback này nếu DB chưa có bản ghi.
@@ -859,8 +910,8 @@
   - Chạy kiểm tra lỗi cú pháp PHP bằng `php -l` thành công 100%.
   - Chạy `php artisan cache:clear` dọn dẹp cache hệ thống thành công.
 
-
 ### Yêu cầu: Đổi tông màu chủ đạo mặc định của toàn hệ thống (cả FE & BE)
+
 - **Nội dung yêu cầu:** Đổi màu chủ đạo và màu thứ cấp thương hiệu DApp mặc định sang màu mới (Hồng Neon `#ff00dd` và Tím Neon `#8000ff`), đồng thời cập nhật tài liệu thiết kế.
 - **Giải pháp:**
   - **Tài liệu**: Cập nhật [design.md](file:///d:/git/cafe-blockchain/design.md) và [ARCHITECTURE.md](file:///d:/git/cafe-blockchain/ARCHITECTURE.md) mô tả tông màu mới.
@@ -870,6 +921,7 @@
   - Chạy thành công `php artisan cache:clear` và kiỒm tra cú pháp PHP.
 
 ### Yêu cầu: Gộp các phần tử trang trí nền phát sáng thành một component dùng chung
+
 - **Nội dung yêu cầu:** Gộp các element trang trí (glowing mesh) ở trang chủ/POS và trang explorer thành 1 component duy nhất để dễ quản lý và kế thừa.
 - **Giải pháp:**
   - **Tạo Component mới**: Tạo component [glowing-mesh.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/shared/components/glowing-mesh/glowing-mesh.component.ts) và tệp template [glowing-mesh.component.html](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/shared/components/glowing-mesh/glowing-mesh.component.html) chứa 2 div lưới phát sáng và styles `:host` để định vị.
@@ -878,6 +930,7 @@
   - Chạy `npm run build` thành công.
 
 ### Yêu cầu: Bổ sung switch cấu hình bật/tắt hiệu ứng nền phát sáng trang POS & Quản trị
+
 - **Nội dung yêu cầu:** Thêm switch bật/tắt hiệu ứng glowing mesh tại trang cấu hình cá nhân (`/profile/settings`), mặc định là bật.
 - **Giải pháp:**
   - **UiState Service**: Cập nhật [ui-state.service.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/core/services/ui-state.service.ts), bổ sung signal `showBackgroundMesh` (lấy từ localStorage, mặc định là true) và phương thức `setBackgroundMesh(enabled: boolean)` để lưu tùy chọn của người dùng.
@@ -886,12 +939,14 @@
   - **Shell Layout**: Cập nhật [app.html](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/app.html), thêm điều kiện `stateService.showBackgroundMesh()` vào khối render glowing mesh để ẩn/hiện hiệu ứng động theo cấu hình cá nhân.
 
 ### Yêu cầu: Cấu hình redirect về trang chủ khi nhấn vào Logo DApp
+
 - **Nội dung yêu cầu:** Khi người dùng nhấn vào ảnh Logo của DApp thì chuyển hướng về trang chủ.
 - **Giải pháp:**
   - **Frontend:** Cập nhật [sidebar.component.html](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/shared/layout/sidebar/sidebar.component.html). Bọc các logo (cả ảnh và chữ kèm theo) trong thẻ liên kết `routerLink="/"` với các class `cursor-pointer hover:opacity-90 transition-opacity` trên cả Sidebar Desktop, Header Mobile và Menu Drawer Mobile. Riêng Menu Drawer Mobile, khi nhấn vào logo còn tự động đóng menu qua `(click)="isMobileMenuOpen.set(false)"`.
   - Tiến hành biên dịch `npm run build` thành công 100%.
 
 ### Yêu cầu: Nâng cấp tính năng Xóa tất cả cache hệ thống để xóa sạch tệp tin cache cứng ở backend
+
 - **Nội dung yêu cầu:** Người dùng phản hồi nút "Xóa tất cả cache" chưa làm sạch được cache ở trang dashboard, pos,... đề xuất xóa trực tiếp thư mục cache `storage/framework/cache/data`.
 - **Giải pháp:**
   - **Phân tích:** Trên hệ điều hành Windows, lệnh `php artisan cache:clear` chạy qua context HTTP Web Server đôi khi không thể dọn dẹp triệt để do xung đột quyền hoặc lock file. Giải pháp xóa cứng thư mục dữ liệu cache là an toàn và tối ưu nhất.
@@ -899,6 +954,7 @@
   - Thực hiện kiểm tra lỗi cú pháp PHP thành công 100%.
 
 ### Yêu cầu: Khắc phục lỗi JS crash `TypeError: e[Symbol.iterator] is not a function` trên trang Dashboard khi đọc cache
+
 - **Nội dung yêu cầu:** Sửa lỗi giao diện Dashboard bị crash và báo lỗi `TypeError: e[Symbol.iterator] is not a function` trên console mỗi khi ca trực cập nhật thời gian dưới nền.
 - **Giải pháp:**
   - **Phân tích:** Do cơ chế lưu cache của Laravel (`Cache::remember`) trả về Eloquent Collection dạng Object `{0:..., 1:...}` thay vì mảng tuần tự `[]` khi khôi phục từ file cache, khiến Angular `@for` bị crash do không thể lặp qua đối tượng.
@@ -907,6 +963,7 @@
   - **Frontend**: Tiến hành chạy lại tiến trình `npm run build` thành công để sinh ra bundle mới nhất (`main-FNAZNWWZ.js`), loại bỏ hoàn toàn các file JS cũ đang bị cache trên trình duyệt.
 
 ### Yêu cầu: Khắc phục lỗi JS crash `TypeError: e.payment_methods.reduce is not a function` và `e[Symbol.iterator] is not a function` trên trang Báo cáo (Reports) khi đọc cache
+
 - **Nội dung yêu cầu:** Trang Báo cáo (`/reports`) bị lỗi trắng biểu đồ, crash và báo lỗi `TypeError: e.payment_methods.reduce is not a function` trên Console của trình duyệt.
 - **Giải pháp:**
   - **Phân tích:** Tương tự như Dashboard, dữ liệu báo cáo (`products`, `customers`, và `payment_methods`) trong [ReportController.php](file:///d:/git/cafe-blockchain/cafe-blockchain-api/app/Http/Controllers/ReportController.php) được lưu cache dưới dạng Eloquent Collection / DB Collection. Khi đọc từ cache, chúng bị biến thành Object khiến frontend Angular không thể sử dụng các hàm mảng như `reduce()` hay vòng lặp `@for`.
@@ -914,12 +971,14 @@
   - **Dọn cache**: Chạy thành công lệnh `php artisan cache:clear`.
 
 ### Yêu cầu: Thêm hiệu ứng lưới màu phát sáng nền (Background decorative glowing mesh) cho trang POS, Dashboard và các mục menu quản trị khác
+
 - **Nội dung yêu cầu:** Trang trí cho giao diện chính của trang POS, Dashboard và tất cả các mục menu quản trị khác bằng cách bổ sung 2 div hiệu ứng nền phát sáng mờ (màu primary và emerald) giống như trang Blockchain Explorer.
 - **Giải pháp:**
   - Cập nhật [app.html](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/app.html): Chèn 2 thẻ `div` hiệu ứng phát sáng mờ (blur) vào ngay đầu thẻ `<main>` quản lý cột nội dung bên phải, bọc trong điều kiện `@if (!isPublicLayout)` để đảm bảo hiệu ứng chỉ hiển thị ở giao diện quản trị/POS nội bộ, tránh ảnh hưởng đến các trang công khai khác (như storefront hoặc blockchain explorer đã tự tích hợp).
   - Biên dịch `npm run build` thành công 100%.
 
 ### Yêu cầu: Loại bỏ cơ chế tự động gọi API getPublicSettings khi chưa đăng nhập và triệt tiêu query cửa hàng đầu tiên ở Backend
+
 - **Nội dung yêu cầu:** Tránh gọi API `/api/settings/public` vô nghĩa khi người dùng chưa kết nối ví/chưa đăng nhập, đồng thời loại bỏ logic truy vấn lấy ngẫu nhiên cửa hàng đầu tiên tại backend khi không xác định được context cửa hàng.
 - **Giải pháp:**
   - **State Service**: Cập nhật [state.service.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/core/services/state.service.ts) để loại bỏ hoàn toàn việc tự động gọi `loadPublicSettingsAndMenu()` trong `constructor` khi ví chưa được kết nối. Đồng thời thêm nhánh `else` vào `effect` nạp cấu hình tự động khi đăng nhập để tắt màn hình loading (`isInitialLoading.set(false)`) ngay lập tức khi ví chưa kết nối, khắc phục lỗi treo màn hình "Đang tải thực đơn...".
@@ -929,6 +988,7 @@
   - Biên dịch `npm run build` và kiểm tra cú pháp PHP thành công 100%.
 
 ### Yêu cầu: TriỒn khai Backend Cache (BE Cache) cho Cửa hàng
+
 - **Nội dung yêu cầu:** Triển khai cơ chế cache ở Backend (BE) cho các phân hệ của từng cửa hàng với thời gian lưu trữ tùy chỉnh: cấu hình phân quyền (24 giờ), báo cáo lịch sử (1 tuần), báo cáo hôm nay (10 phút), sơ đồ bàn/khu vực (24 giờ), phương thức thanh toán (24 giờ), và nhóm khách hàng (24 giờ).
 - **Giải pháp:**
   - **Core Utility**: Bổ sung hàm `registerCacheKey` và `clearStoreCache` trong [Setting.php](file:///d:/git/cafe-blockchain/cafe-blockchain-api/app/Domain/Entities/Setting.php) để quản lý danh sách cache key động theo từng cửa hàng.
@@ -939,6 +999,7 @@
   - Chạy `php -l` kiểm tra cú pháp thành công 100% cho toàn bộ file.
 
 ### Yêu cầu: Tích hợp nút bấm dọn dẹp toàn bộ cache cho trang quản trị hệ thống SaaS Admin (Tab bảo trì)
+
 - **Nội dung yêu cầu:** Người dùng muốn thêm một nút bấm duy nhất để xóa tất cả cache cùng một lúc bao gồm: làm mới compiled views, xóa cấu hình cache, xóa định tuyến cache, tối ưu hóa hiệu năng, và xóa cache tối ưu hóa.
 - **Giải pháp:**
   - **Backend API**: Cập nhật [AdminController.php](file:///d:/git/cafe-blockchain/cafe-blockchain-api/app/Http/Controllers/AdminController.php), tạo phương thức `clearAllCaches()` gọi tuần tự các lệnh `optimize:clear`, `view:clear`, `optimize`, `cache:clear` và dọn dẹp các cache key quản trị SaaS Admin. Đăng ký route POST `/admin/maintenance/clear-all` trong [api.php](file:///d:/git/cafe-blockchain/cafe-blockchain-api/routes/api.php).
@@ -947,6 +1008,7 @@
   - Chạy `npm run build` thành công 100%.
 
 ### Yêu cầu: Tái cấu trúc SaaS Admin sử dụng Store Service chuyên biệt (Tối ưu cơ chế Cache FE & Lưu giữ trạng thái)
+
 - **Nội dung yêu cầu:** Triển khai phương án 2 để tái cấu trúc hoàn toàn giao diện SaaS Admin (`admin-saas.component.ts`) nhằm tối ưu việc lưu giữ bộ lọc/phân trang/tìm kiếm của từng tab, đơn giản hóa và chuẩn hóa code bằng cách tách logic dữ liệu ra một Store Service độc lập (`saas-admin.store.ts`).
 - **Giải pháp:**
   - **Tạo mới Store Service**: [saas-admin.store.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/admin/services/saas-admin.store.ts) chứa toàn bộ các signals lưu trữ dữ liệu, cờ cache, computed signals lọc dữ liệu khách hàng, phân trang, và các helper methods (logs, packages, filter change events).
@@ -955,6 +1017,7 @@
   - Chạy `npm run build` thành công 100%.
 
 ### Yêu cầu: Triển khai bộ nhớ đệm phía Backend (BE Cache) cho các API quản trị SaaS Admin
+
 - **Nội dung yêu cầu:** Triển khai cache phía Laravel Backend để tăng tốc độ phản hồi API quản trị và giảm tải Database, loại trừ API Danh sách yêu cầu nâng gói và API Log lỗi hệ thống để đảm bảo dữ liệu real-time.
 - **Giải pháp:**
   - Cập nhật [AdminController.php](file:///d:/git/cafe-blockchain/cafe-blockchain-api/app/Http/Controllers/AdminController.php):
@@ -963,7 +1026,9 @@
     - Đối với phương thức thanh toán (`admin_payment_methods` - 24 giờ) và nhân viên hệ thống (`admin_system_staffs` - 24 giờ): Cache toàn bộ danh sách dạng mảng thô, khi lấy ra sử dụng helper `collect()` để lọc tìm kiếm và phân trang bằng Collection thô để giảm phân mảnh cache key.
     - Cấu hình tự động xóa cache (`\Cache::forget`) trong các hàm ghi dữ liệu tương ứng (thêm, sửa, xóa, khôi phục mặc định, phê duyệt thuê bao).
     - Cập nhật hàm tối ưu hóa (`optimize` và `clearOptimize`) để dọn dẹp toàn bộ các cache key của trang quản trị.
+
 ### Yêu cầu: Khắc phục lỗi tab Thuê bao hiển thị trống và đồng bộ nhãn bộ lọc, sửa lỗi định dạng ngày ở tab Cửa hàng
+
 - **Nội dung yêu cầu:** Sửa lỗi tab Thuê bao không hiển thị dữ liệu (kể cả khi đã phê duyệt), sửa lỗi bộ chọn hiển thị sai nhãn "Tất cả trạng thái" mặc dù store load pending, và sửa lỗi ngày đăng ký hiển thị `[object Object]` ở tab Cửa hàng.
 - **Giải pháp:**
   - Cập nhật [admin-saas.component.html](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/admin/admin-saas.component.html):
@@ -973,6 +1038,7 @@
   - Chạy `npm run build` thành công 100%. Xác minh trên trình duyệt hiển thị chuẩn và lọc dữ liệu chính xác.
 
 ### Yêu cầu: Cập nhật thời gian lưu cache báo cáo/dashboard động và tối ưu dọn dẹp khi kết ca
+
 - **Nội dung yêu cầu:** Cập nhật thời gian cache Báo cáo & Dashboard ngày hôm nay (động) từ 10 phút xuống còn 2 phút. Đồng thời đảm bảo hệ thống dọn sạch hoàn toàn các cache báo cáo/dashboard của cửa hàng đó khi nhân viên kết ca (Shift close).
 - **Giải pháp:**
   - **Cập nhật TTL**: Cập nhật thời gian sống của cache động từ `600` giây (10 phút) thành `120` giây (2 phút) trong `index()` của [DashboardController.php](file:///d:/git/cafe-blockchain/cafe-blockchain-api/app/Http/Controllers/DashboardController.php) và [ReportController.php](file:///d:/git/cafe-blockchain/cafe-blockchain-api/app/Http/Controllers/ReportController.php).
@@ -980,6 +1046,7 @@
   - Chạy `php -l` kiỒm tra cú pháp thành công 100% cho các controller.
 
 ### Yêu cầu: Triển khai bộ nhớ đệm (Cache Backend) bổ sung cho Cửa hàng và SaaS
+
 - **Nội dung yêu cầu:** Tích hợp bộ nhớ đệm Backend cho: Cấu hình cửa hàng (lưu 24 giờ), Danh sách khách hàng POS (lưu 10 phút), Danh sách gói cước cho Shop (lưu 24 giờ) và Nguyên vật liệu & Định lượng (lưu 24 giờ).
 - **Giải pháp:**
   - **Cấu hình cửa hàng (Settings)**: Tích hợp cache `store_settings_admin:{$storeOwner}` (24h) vào `SettingController.php`. Tự động xóa cache khi lưu cài đặt hoặc khi đồng bộ hóa blockchain đơn hàng/giao dịch thành công (trong `OrderController.php` và `TransactionController.php`).
@@ -989,17 +1056,17 @@
   - Chạy `php -l` kiểm tra cú pháp thành công 100% đối với cả 7 controller đã sửa đổi.
 
 ### Yêu cầu: Triển khai bộ nhớ đệm (Cache Backend) cho Lịch sử ca làm việc đã đóng trong quá khứ
+
 - **Nội dung yêu cầu:** Tích hợp bộ nhớ đệm Backend cho lịch sử các ca trực đã đóng của các tháng cũ trong quá khứ nhằm giảm tải truy vấn cơ sở dữ liệu khi xem lịch sử.
 - **Giải pháp:**
   - **Phân mảnh Cache theo tháng**: Cập nhật [EloquentShiftRepository.php](file:///d:/git/cafe-blockchain/cafe-blockchain-api/app/Infrastructure/Persistence/Repositories/EloquentShiftRepository.php) trong phương thức `getHistory`. Ca làm việc của tháng hiện tại sẽ được tải real-time, còn các ca trực thuộc tháng cũ sẽ được lưu cache dưới key `store_shifts_history:{$storeOwner}:{$userIdStr}:{$month}` trong vòng 1 tuần (604.800 giây).
   - **Cơ chế xóa cache**: Cập nhật [ShiftController.php](file:///d:/git/cafe-blockchain/cafe-blockchain-api/app/Http/Controllers/ShiftController.php) trong hàm kết ca `close()`, tự động giải phóng mảnh cache của tháng tương ứng cho cả key nhân viên cụ thể và key `all` của quản trị viên để tránh dữ liệu bị stale.
   - Chạy `php -l` kiỒm tra cú pháp thành công 100%.
 
-
-
 ## Ngày 22/06/2026
 
 ### Yêu cầu: Triển khai cơ chế cache phía giao diện (FE) cho tất cả các tab quản trị (SaaS Admin) và tích hợp nút Tải lại
+
 - **Nội dung yêu cầu:** Tránh việc gọi API tải lại liên tục khi người dùng chuyển đổi qua lại giữa các tab trong SaaS Admin. Đồng thời, giữ nguyên trạng thái bộ lọc/phân trang của từng tab để dữ liệu không bị reset mất công tìm lại. Cần có cơ chế tải lại dữ liệu thủ công (Tải lại) cho các tab này.
 - **Giải pháp:**
   - Cập nhật [admin-saas.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/admin/admin-saas.component.ts):
@@ -1013,6 +1080,7 @@
   - Chạy `npm run build` thành công 100%.
 
 ### Yêu cầu: Đồng bộ giao diện Log Viewer và Thư viện đã cài đặt trong SaaS Admin
+
 - **Nội dung yêu cầu:** Sửa đổi giao diện Log Viewer để không dùng các thành phần native cũ, thay thế bằng các UI component hệ thống (`<app-custom-select>`, `<app-custom-search-input>`, và directive `app-button`). Sửa lỗi icon SVG nút Tải lại (sử dụng icon `sync` chuẩn). Đồng bộ chiều cao hiển thị của toàn bộ các control này (bằng chiều cao ô tìm kiếm: 36px/h-9, bo góc 15px/rounded-xl). Chuyển bộ chuyển đổi tab thư viện Backend (Composer) và Frontend (NPM) sang component `<app-tab-group>` dùng chung.
 - **Giải pháp:**
   - Cập nhật [admin-saas.component.html](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/admin/admin-saas.component.html):
@@ -1023,6 +1091,7 @@
   - Chạy `npm run build` thành công 100%.
 
 ### Yêu cầu: Cập nhật Thông tin Môi trường Khách (Client) và hiển thị Thư viện Frontend NPM
+
 - **Nội dung yêu cầu:** Đổi tên card "MÔI TRƯỜNG FRONTEND" thành một tên thân thiện hơn (ví dụ: "MÔI TRƯỜNG KHÁCH (CLIENT)"), hiển thị thêm dung lượng đóng gói Web (Build/Bundle size) của Angular, đồng thời đọc và hiển thị danh sách thư viện đã cài đặt trong tệp `package.json` của frontend với tính năng tìm kiếm, phân trang và chuyển đổi tab.
 - **Giải pháp:**
   - Cập nhật backend [AdminController.php](file:///d:/git/cafe-blockchain/cafe-blockchain-api/app/Http/Controllers/AdminController.php):
@@ -1033,7 +1102,7 @@
     - [post-build.js](file:///d:/git/cafe-blockchain/cafe-blockchain-web/scripts/post-build.js): Tạo script Node.js post-build tự động tính toán tổng dung lượng đóng gói của Angular và xuất ra tệp tin JSON tĩnh `assets/build-size.json` trong folder build output.
     - [package.json](file:///d:/git/cafe-blockchain/cafe-blockchain-web/package.json): Liên kết script post-build chạy tự động sau lệnh build: `"build": "ng build && node scripts/post-build.js"`.
     - [api.service.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/core/services/api.service.ts): Bổ sung hàm `getWebBuildSize()` để tải tệp `assets/build-size.json`.
-    - [admin-saas.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/admin/admin-saas.component.ts): 
+    - [admin-saas.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/admin/admin-saas.component.ts):
       - Import tĩnh `packageInfo` từ `package.json` ở compile-time và tự động gán cho `npmPackages` signal (giúp hoạt động 100% trên Vercel).
       - Đổi `packages` sang computed signal chuyển động giữa Composer (tải qua API) và NPM (đọc tĩnh).
       - Cập nhật `loadSysInfo()` sử dụng `forkJoin` kết hợp `catchError(() => of(null))` tải file tĩnh `build-size.json` gán cho signal `webBuildSize`, tự động fallback thông minh nếu lỗi.
@@ -1046,6 +1115,7 @@
   - Chạy `npm run build` thành công 100%.
 
 ### Yêu cầu: Bổ sung card hiển thị thông số và kiểm tra trạng thái hoạt động của Redis
+
 - **Nội dung yêu cầu:** Tích hợp kiểm tra xem hosting máy chủ có cài đặt extension Redis, có đang cấu hình sử dụng Redis cho Cache, Session, Queue không và đo trạng thái kết nối (ping/pong) cũng như phiên bản của Redis.
 - **Giải pháp:**
   - Cập nhật backend [AdminController.php](file:///d:/git/cafe-blockchain/cafe-blockchain-api/app/Http/Controllers/AdminController.php):
@@ -1056,6 +1126,7 @@
   - Chạy `npm run build` thành công 100%.
 
 ### Yêu cầu: Rà soát lỗi tiềm ẩn (Bug Review)
+
 - **Nội dung yêu cầu:** Rà soát toàn bộ dự án để tìm các lỗi logic, bảo mật, và toàn vẹn dữ liệu tiềm ẩn.
 - **Giải pháp:**
   - Quét mã nguồn backend Laravel và frontend Angular để tìm các điểm bất hợp lý, thiếu kiểm tra phân quyền, lỗi logic, hoặc không khớp dữ liệu.
@@ -1068,6 +1139,7 @@
   - Tạo báo cáo phân tích chi tiết tại [potential_bugs_review.md](file:///C:/Users/dev/.gemini/antigravity-ide/brain/37d30ac1-7462-4218-b7f0-19a59afdd136/potential_bugs_review.md).
 
 ### Yêu cầu: Bỏ xử lý lỗi status 0 ra khỏi luồng kích hoạt màn hình bảo trì
+
 - **Nội dung yêu cầu:** Loại bỏ lỗi `status === 0` (mất kết nối mạng hoặc lỗi CORS) ra khỏi điều kiện kích hoạt màn hình bảo trì toàn trang để tránh việc khóa giao diện người dùng khi mất mạng. Chuyển lỗi này sang luồng hiển thị Toast thông báo lỗi thông thường.
 - **Giải pháp:**
   - Cập nhật [http-error.interceptor.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/core/services/http-error.interceptor.ts):
@@ -1079,6 +1151,7 @@
   - Chạy `npm run build` thành công 100%.
 
 ### Yêu cầu: Triển khai và đồng bộ hóa Custom Search Input Component dùng chung
+
 - **Nội dung yêu cầu:** Xây dựng một component tìm kiếm độc lập dùng chung (`<app-custom-search-input>`) kế thừa từ class CSS `.search-input` có sẵn để đồng bộ hóa giao diện tìm kiếm trên toàn hệ thống FE, bổ sung nút xóa nhanh (Clear) và hiển thị spinner loading tự động khi tìm kiếm bất đồng bộ. Thay thế toàn bộ các ô nhập tìm kiếm thủ công trong tất cả các component.
   - Giải pháp:
     - Tạo mới component độc lập: [custom-search-input.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/shared/components/custom-search-input/custom-search-input.component.ts) & [custom-search-input.component.html](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/shared/components/custom-search-input/custom-search-input.component.html). Triển khai `ControlValueAccessor` tương thích hoàn toàn `ngModel`, hỗ trợ `debounce`, `@Input() loading` hiển thị spinner, nút Xóa nhanh (`close` icon) và cơ chế tự động đệm lề phải (`padding-right: 2.5rem !important`) khi hiện nút xóa/spinner.
@@ -1099,6 +1172,7 @@
   - Chạy `npm run build` thành công 100%.
 
 ### Yêu cầu: Tối ưu hóa responsive cho trang Quản lý Thực đơn (Menu)
+
 - **Nội dung yêu cầu:** Sửa lỗi giao diện trang Thực đơn bị vỡ layout trên thiết bị di động và máy tính bảng (tablet), chữ tiêu đề "Quản lý Thực đơn" bị bóp nghẹt thành 4 dòng dọc do các nút hành động chiếm quá nhiều diện tích.
 - **Giải pháp:**
   - Cập nhật [menu.component.html](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/menu/menu.component.html):
@@ -1107,6 +1181,7 @@
   - Chạy `npm run build` thành công 100%.
 
 ### Yêu cầu: Hiển thị thêm thông tin môi trường Frontend (tab Thông tin hệ thống - sysinfo)
+
 - **Nội dung yêu cầu:** Hiển thị thêm thông tin môi trường của phía Frontend như phiên bản Angular, chế độ Production, API Endpoint và các thông tin trình duyệt của khách hàng trên tab "Thông tin hệ thống" (`/admin?tab=sysinfo`).
 - **Giải pháp:**
   - Cập nhật [admin-saas.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/admin/admin-saas.component.ts): Import `VERSION`, `HostListener` từ `@angular/core` và `environment` từ `@environments/environment`. Thêm các biến/computed signals `angularVersion`, `frontendEnv`, `windowWidth`, `windowHeight`, `clientInfo` để thu thập thông tin phiên bản Angular, cấu hình môi trường, độ phân giải màn hình, trình duyệt và hệ điều hành của người dùng.
@@ -1114,14 +1189,15 @@
   - Chạy `npm run build` thành công 100%.
 
 ### Yêu cầu: Khắc phục triệt để lỗi tab Nhân viên hệ thống (SaaS System Staff) không hiển thị cho vai trò Admin
+
 - **Nội dung yêu cầu:** Tài khoản có vai trò Quản trị viên (`admin` role) vào SaaS Admin vẫn không nhìn thấy dữ liệu tab "Nhân viên hệ thống" mặc dù tab này đã được hiển thị trên thanh điều hướng.
 - **Phân tích:** Mặc dù đã cho phép tải dữ liệu và hiển thị tab option cho `admin` role, khối HTML hiển thị nội dung tab staffs tại [admin-saas.component.html](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/admin/admin-saas.component.html) vẫn bị chặn cứng bởi điều kiện `@if (activeSubTab() === 'staffs' && stateService.isSuperAdmin())`.
 - **Giải pháp:**
   - Cập nhật [admin-saas.component.html](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/admin/admin-saas.component.html) dòng 1842: Thay đổi điều kiện `@if` thành `@if (activeSubTab() === 'staffs' && (stateService.isSuperAdmin() || stateService.currentUserAdminRole() === 'admin'))` để cho phép cả Super Admin và vai trò admin có thể hiển thị nội dung tab.
   - Chạy `npm run build` thành công 100%.
 
-
 ### Yêu cầu: Sửa lỗi màu sắc hiển thị chữ trên Light/Darkmode và tối ưu hiệu ứng Hover cho Checkbox
+
 - **Nội dung yêu cầu:** Sửa lỗi giao diện mất màu chữ hoặc hiển thị quá tối trên chế độ Light/Darkmode của checkbox và các nút đóng modal/drawer. Đồng thời tối ưu hiệu ứng hover cho checkbox để dễ nhìn và rõ ràng hơn.
 - **Giải pháp:**
   - Phát hiện và sửa lỗi gõ phím `text-slate-250` (không tồn tại trong TailwindCSS mặc định) thành `text-slate-200` tại các file: [custom-checkbox.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/shared/components/custom-checkbox/custom-checkbox.component.ts), [modal.component.html](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/shared/components/modal/modal.component.html), [modal-wrapper.component.html](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/shared/components/modal/modal-wrapper.component.html), [drawer.component.html](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/shared/components/drawer/drawer.component.html), [blockchain-explorer.component.html](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/blockchain/pages/blockchain-explorer/blockchain-explorer.component.html).
@@ -1130,6 +1206,7 @@
   - Chạy `npm run build` thành công 100%.
 
 ### Yêu cầu: Sửa lỗi Race Condition khiến tab Nhân viên hệ thống không hiển thị dữ liệu và Fix Responsive TabGroup
+
 - **Nội dung yêu cầu:** Quản trị viên hệ thống (admin role) vào tab "Nhân viên hệ thống" thấy trống dù API đã trả về dữ liệu. Đồng thời thanh tab bị mất responsive khi nhiều tab.
 - **Root Cause (Race Condition):** Trong `ngOnInit`, `triggerTabLoad('staffs')` → `loadSystemStaffs()` chạy async TRƯỚC khi `loadStaffAdminData()` đặt `isDataLoading.set(true)`. Khi `loadSystemStaffs()` hoàn thành và set data vào signal, template đang bị BLOCK bởi `isDataLoading = true` nên Angular không re-render. Khi `loadStaffAdminData()` xong và unblock template, signal đã được set từ trước nên không trigger thêm change detection nào.
 - **Giải pháp:**
@@ -1138,6 +1215,7 @@
   - Chạy `npm run build` thành công 100%.
 
 ### Yêu cầu: Cho phép Quản trị viên (admin role) xem danh sách nhân viên hệ thống và phương thức thanh toán (chỉ đọc)
+
 - **Nội dung yêu cầu:** Quản trị viên hệ thống (`admin` role) không xem được danh sách nhân viên hệ thống và danh sách phương thức thanh toán. Yêu cầu cho phép xem (chỉ đọc), không cho phép thêm/sửa/xóa.
 - **Giải pháp:**
   - Cập nhật backend [api.php](file:///d:/git/cafe-blockchain/cafe-blockchain-api/routes/api.php): Di chuyỒn `GET /admin/staffs` và `GET /admin/payment-methods` từ nhóm `EnsureIsSuperAdmin` sang nhóm `EnsureIsSystemAdmin`. Các route write (POST/PUT/DELETE) giữ nguyên trong nhóm Super Admin.
@@ -1161,6 +1239,7 @@
   - Chạy `npm run build` thành công 100%.
 
 ### Yêu cầu: Sửa lỗi màu sắc hiển thị chữ trên Light/Darkmode và tối ưu hiệu ứng Hover cho Checkbox
+
 - **Nội dung yêu cầu:** Sửa lỗi giao diện mất màu chữ hoặc hiển thị quá tối trên chế độ Light/Darkmode của checkbox và các nút đóng modal/drawer. Đồng thời tối ưu hiệu ứng hover cho checkbox để dễ nhìn và rõ ràng hơn.
 - **Giải pháp:**
   - Phát hiện và sửa lỗi gõ phím `text-slate-250` (không tồn tại trong TailwindCSS mặc định) thành `text-slate-200` tại các file:
@@ -1179,6 +1258,7 @@
   - Chạy `npm run build` thành công 100%.
 
 ### Yêu cầu: Tích hợp chức năng Chỉnh sửa Nhân viên hệ thống (SaaS System Staff)
+
 - **Nội dung yêu cầu:** Bổ sung tính năng chỉnh sửa thông tin nhân viên hệ thống (bao gồm Tên, Địa chỉ ví, Vai trò staff/admin và Trạng thái hoạt động is_active).
 - **Giải pháp:**
   - Cập nhật backend:
@@ -1193,6 +1273,7 @@
   - Chạy `npm run build` thành công 100%.
 
 ### Yêu cầu: Điều chỉnh các cột bảng Yêu cầu Thuê bao và Đồng bộ giao diện SaaS Admin
+
 - **Nội dung yêu cầu:** Thêm cột Ngày hết hạn cho bảng Thuê bao (tách hạn sử dụng ra khỏi cột Thuê bao hiện tại). Đổi tên cột Đăng ký mới thành Gói dịch vụ và chỉ hiển thị badge tên gói (bỏ text chi tiết tháng/giá). Bỏ cột Tài khoản nhận (vì xem chi tiết đã đủ thông tin). Đồng bộ giao diện header của tab Thuê bao để hiển thị giống tab Nhân viên hệ thống.
 - **Giải pháp:**
   - Cập nhật [admin-saas.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/admin/admin-saas.component.ts): Cập nhật `subscriptionColumns` để phản ánh đúng cấu trúc cột mới.
@@ -1205,6 +1286,7 @@
   - Chạy `npm run build` thành công 100%.
 
 ### Yêu cầu: Tích hợp Tìm kiếm, Phân trang và Tối ưu Responsive cho Nhân viên hệ thống
+
 - **Nội dung yêu cầu:** Bổ sung thanh tìm kiếm (search), bộ phân trang (pagination) và đảm bảo hiển thị responsive cho tab "Nhân viên hệ thống" trong SaaS Admin. Đồng thời, loại bỏ các modal code inline cũ ở HTML.
 - **Giải pháp:**
   - Cập nhật [admin-saas.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/admin/admin-saas.component.ts): Reset signals tìm kiếm và phân trang của nhân viên khi chuyỒn tab.
@@ -1215,10 +1297,11 @@
   - Chạy `npm run build` thành công 100%.
 
 ### Yêu cầu: Triển khai Quy trình duyệt thuê bao thủ công và Phân quyền Nhân viên hỗ trợ hệ thống (SaaS Staff) - Bổ sung thông tin đối soát và Modal Chi tiết 5xl
+
 - **Nội dung yêu cầu:** Chuyển luồng nâng cấp gói cước tự động thành quy trình duyệt chuyển khoản thủ công. Khi chủ quán gửi nâng cấp, hệ thống lưu yêu cầu ở trạng thái `pending` kèm theo mã giao dịch TxHash và thông tin tài khoản nhận. Cấu hình danh sách nhân viên hỗ trợ hệ thống (`system_staffs`) được quản lý bởi Super Admin. Phân quyền cho Nhân viên hệ thống (`staff`) khi vào SaaS Admin chỉ thấy 2 tab "Thuê bao" (để duyệt/từ chối) và "Cửa hàng" (xem danh sách). Hiển thị thêm tên cửa hàng, gói dịch vụ hiện tại, ngày hết hạn hiện tại của quán, và tài khoản nhận của superadmin được chọn. Hỗ trợ nút "Xem chi tiết" mở modal 5xl để đối soát và xử lý duyệt/từ chối trực tiếp.
 - **Giải pháp:**
   - Cập nhật database: Tạo các bảng `system_staffs` và `subscription_requests` thông qua migration Laravel.
-  - Cập nhật API routes và controllers tại backend: 
+  - Cập nhật API routes và controllers tại backend:
     - Thêm middleware `system.admin` cho phép cả `super_admin` và `staff` truy cập các API duyệt thuê bao và danh sách cửa hàng.
     - M? r?ng api tr? v? `admin_role` ('super_admin', 'staff' ho?c null).
     - Cập nhật `AuthController.php` để tạo yêu cầu pending thay vì nâng cấp trực tiếp.
@@ -1227,7 +1310,7 @@
     - [api.service.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/core/services/api.service.ts): Khai báo các API kết nối backend mới.
     - [state.service.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/core/services/state.service.ts): Lưu `currentUserAdminRole` và định nghĩa computed signals `isSystemStaff`, `isSystemAdmin`.
     - [sidebar.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/shared/layout/sidebar/sidebar.component.ts) & [sidebar.component.html](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/shared/layout/sidebar/sidebar.component.html): Cho phép `staff` (thông qua `isSystemAdmin()`) truy cập menu SaaS Admin.
-    - [admin-saas.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/admin/admin-saas.component.ts) & [admin-saas.component.html](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/admin/admin-saas.component.html): 
+    - [admin-saas.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/admin/admin-saas.component.ts) & [admin-saas.component.html](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/admin/admin-saas.component.html):
       - Tách tab options theo vai trò (Staff chỉ thấy "Thuê bao" và "Cửa hàng").
       - Thiết kế tab "Thuê bao": Bảng danh sách hiển thị nâng cao gồm Cửa hàng, Thuê bao hiện tại, Đăng ký mới, Tài khoản nhận, TxHash, Trạng thái, Ngày gửi. Nút "Xem chi tiết" mở modal 5xl hiển thị chi tiết đối soát chuyển khoản và hỗ trợ Duyệt/Từ chối trực tiếp trong modal.
       - Thiết kế tab "Nhân viên hệ thống" (chỉ Super Admin thấy, hỗ trợ thêm/xóa ví nhân viên).
@@ -1235,6 +1318,7 @@
   - Chạy `npm run build` thành công 100%.
 
 ### Yêu cầu: Tích hợp Quản lý Phương thức thanh toán của Nhà sáng lập (Super Admin) và hiển thị trên Modal Nâng cấp
+
 - **Nội dung yêu cầu:** Thêm tab "Thanh toán" trong giao diện Super Admin (SaaS Admin) để cấu hình các phương thức thanh toán của hệ thống (Ngân hàng, Ví điện tử), đồng thời hiển thị thông tin tài khoản và mã QR chuyển khoản động trên modal nâng cấp gói cước thay thế cho phương thức tĩnh.
 - **Giải pháp:**
   - Cập nhật database: Tạo bảng `system_payment_methods` và model `SystemPaymentMethod.php`.
@@ -1247,6 +1331,7 @@
   - Chạy `npm run build` thành công 100%.
 
 ### Yêu cầu: Đồng bộ giao diện modal Chi tiết phê duyệt thuê bao (Subscription Detail Modal) và sửa lỗi cú pháp lồng thẻ
+
 - **Nội dung yêu cầu:** Xem lại modal chi tiết đăng ký thuê bao để đồng bộ hóa giao diện (đưa thành component riêng và tham khảo thiết kế từ các modal khác). Không lưu `payment_method_details` trong bảng `subscription_requests` (chỉ lưu `system_payment_method_id` và đối soát bằng TxHash).
 - **Giải pháp:**
   - **Phân tích cơ sở dữ liệu:** Xác nhận bảng `subscription_requests` thực tế **chỉ lưu** `system_payment_method_id` (không lưu `payment_method_details` để tiết kiệm dữ liệu). Việc hiển thị chi tiết tài khoản ở frontend là do backend map động thông tin từ bảng `system_payment_methods` thông qua relationship Eloquent, đảm bảo an toàn kể cả khi admin xóa phương thức thanh toán.
@@ -1257,6 +1342,7 @@
     - Cập nhật các nút bấm sử dụng đúng các variant Angular (`variant="cancel"`, `variant="danger"`, `variant="primary"`) và loại bỏ các thẻ `<span>` bọc text dư thừa.
 
 ### Yêu cầu: Đồng bộ hóa các nút thao tác bằng Component Button (app-button)
+
 - **Nội dung yêu cầu:** Chuyển đổi các nút thao tác trong danh sách thuê bao và danh sách nhân viên hệ thống từ việc sử dụng các lớp CSS thủ công (ví dụ `btn-secondary btn-xs`) sang sử dụng kế thừa component `app-button` chuẩn của dự án để đảm bảo tính đồng bộ hoàn toàn và thẩm mỹ.
 - **Giải pháp:**
   - Cập nhật [admin-saas.component.html](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/admin/admin-saas.component.html):
@@ -1267,6 +1353,7 @@
 ## Ngày 21/06/2026
 
 ### Yêu cầu: Tách component StoreCartDrawerComponent và thêm nút copy thông tin chuyển khoản ngân hàng/ví điện tử
+
 - **Nội dung yêu cầu:** Tách khối giao diện Drawer giỏ hàng & thanh toán của storefront thành một component con (`StoreCartDrawerComponent`) để làm sạch code trang Store chính, loại bỏ animation và tích hợp nút copy nhanh cho các thông tin tài khoản chuyển khoản (Chủ tài khoản, Số tài khoản/SĐT, Ngân hàng).
 - **Giải pháp:**
   - Tạo mới component [StoreCartDrawerComponent](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/storefront/components/store-cart-drawer/store-cart-drawer.component.ts) để bọc giao diện Drawer giỏ hàng và tích hợp inject `ToastService` để thực hiện hàm `copyToClipboard(text: string)`.
@@ -1276,6 +1363,7 @@
   - Chạy `npm run build` thành công 100%.
 
 ### Yêu cầu: Tối ưu hóa cấu hình CORS, tích hợp Rate Limiting, Cookie SameSite Lax, và chống Bot bằng Cloudflare Turnstile
+
 - **Nội dung yêu cầu:** Người dùng yêu cầu triển khai các biện pháp nâng cấp bảo mật bao gồm: giới hạn CORS Origin Whitelist chặt chẽ, bổ sung Rate Limiting (Throttle) chống spam API, bảo mật cookie xác thực với SameSite Lax, và tích hợp Cloudflare Turnstile chống bot cho storefront tạo đơn hàng công khai.
 - **Giải pháp:**
   - Cập nhật [Cors.php](file:///d:/git/cafe-blockchain/cafe-blockchain-api/app/Http/Middleware/Cors.php): TriỒn khai dynamic whitelist từ `.env` (`ALLOWED_ORIGINS`).
@@ -1288,6 +1376,7 @@
   - Chạy `npm run build` thành công 100%.
 
 ### Yêu cầu: ChuyỒn Cloudflare Turnstile toggle sang Database + Super Admin UI
+
 - **Nội dung yêu cầu:** Người dùng muốn bật/tắt Turnstile từ giao diện Super Admin thay vì phải sửa `.env`. Chiến lược hybrid: `TURNSTILE_SECRET_KEY` giữ nguyên trong `.env` (bảo mật), toggle bật/tắt lưu trong DB `system_settings`.
 - **Giải pháp:**
   - Cập nhật [AdminController.php](file:///d:/git/cafe-blockchain/cafe-blockchain-api/app/Http/Controllers/AdminController.php): Mở rộng `getSystemSettings()` trả về `turnstile_enabled` và `turnstile_has_key`. Mở rộng `updateSystemSettings()` nhận field `turnstile_enabled`, guard không cho bật nếu chưa có Secret Key trong `.env`.
@@ -1298,6 +1387,7 @@
   - Chạy `npm run build` thành công 100%.
 
 ### Yêu cầu: Khắc phục triệt để lỗi modal yêu cầu Sign In SIWE xuất hiện lặp đi lặp lại của WalletConnect AppKit
+
 - **Nội dung yêu cầu:** Người dùng liên tục bị hỏi và bắt phải ký xác thực qua modal Sign In của WalletConnect AppKit mỗi khi reload trang (F5) hoặc kết nối ví, mặc dù DApp đã có session và tải xong API thành công.
 - **Giải pháp:**
   - Cập nhật [web3.service.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/core/services/web3.service.ts):
@@ -1308,6 +1398,7 @@
   - Chạy `npm run build` thành công 100%.
 
 ### Yêu cầu: Khắc phục lỗi modal kết nối ví chỉ hiển thị duy nhất Trust Wallet
+
 - **Nội dung yêu cầu:** Modal kết nối ví Web3 (Reown AppKit) chỉ hiển thị duy nhất ví Trust Wallet, không hiển thị MetaMask hay các ví khác.
 - **Giải pháp:**
   - Cập nhật [web3.service.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/core/services/web3.service.ts):
@@ -1317,8 +1408,8 @@
   - Cập nhật [package.json](file:///d:/git/cafe-blockchain/cafe-blockchain-web/package.json): Bổ sung thư viện `"@reown/appkit-siwe": "^1.8.20"` vào dependencies để đảm bảo được cài đặt đầy đủ.
   - Chạy `npm run build` thành công 100%.
 
-
 ### Yêu cầu: Sửa lỗi lấy sai màu chủ đạo mặc định của DApp khi chưa kết nối ví
+
 - **Nội dung yêu cầu:** Khi chưa kết nối ví, DApp tự động gọi API cài đặt công cộng và bị ghi đè màu của quán đầu tiên trong DB. Thêm vào đó, cache màu sắc không được xóa khi ngắt kết nối ví, và màu sắc không tự động reset về màu mặc định thương hiệu DApp (Tím Violet `#7c3aed`) khi chuyển route khỏi storefront.
 - **Giải pháp:**
   - Cập nhật [SettingController.php](file:///d:/git/cafe-blockchain/cafe-blockchain-api/app/Http/Controllers/SettingController.php): Trong API `getPublicSettings`, nếu không có `order_code` thì trả về màu mặc định thương hiệu DApp (`#7c3aed` và `#c084fc`) thay vì lấy của quán đầu tiên trong DB.
@@ -1326,6 +1417,7 @@
   - Cập nhật [state.service.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/core/services/state.service.ts): Thêm lắng nghe sự kiện chuyển route `syncThemeColorsForRoute(url)` để tự động khôi phục màu sắc thương hiệu mặc định của DApp (`#7c3aed` và `#c084fc`) khi đi ra khỏi storefront và khôi phục màu của quán đang quản lý nếu đã đăng nhập ví.
 
 ### Yêu cầu: Khắc phục lỗi kết nối ví Web3, duplicate popup ký xác thực và lỗi NG0203 trên production
+
 - **Nội dung yêu cầu:** Người dùng trên production bị tự động đăng xuất sau 2 giây F5 và bắt buộc phải kết nối ví, ký xác thực lại. MetaMask hiển thị đồng thời 2 yêu cầu ký gây lỗi duplicate. Đồng thời phát hiện lỗi đỏ `NG0203` trong console khiến Angular dừng hoạt động và đơ giao diện.
 - **Giải pháp:**
   - Cập nhật [web3.service.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/core/services/web3.service.ts):
@@ -1338,6 +1430,7 @@
   - Chạy `npm run build` thành công 100%.
 
 ### Yêu cầu: Tối ưu cấu trúc quản lý trạng thái, giảm phình to tệp `state.service.ts` và quản lý API Loading chạy ngầm
+
 - **Nội dung yêu cầu:** Tệp `state.service.ts` quá dài (God Class) do chứa nhiều logic chuyển tiếp và signal ca trực. Cần tái cấu trúc để các component gọi trực tiếp `ShiftService` chuyên trách và thiết lập cơ chế Custom Header `X-Silent-Request: true` để quản lý API loading chạy ngầm lâu dài.
 - **Giải pháp:**
   - Cập nhật [http-loading.interceptor.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/core/services/http-loading.interceptor.ts): Nhận diện header `X-Silent-Request: true` để chạy ngầm (không hiển thị spinner loading toàn cục) và tự động xóa header này trước khi gửi request đi.
@@ -1348,12 +1441,14 @@
   - Chạy `npm run build` thành công 100%.
 
 ### Yêu cầu: Mặc định tắt hiệu ứng trượt menu dọc nếu không có thiết lập trước đó
+
 - **Nội dung yêu cầu:** Mặc định hiệu ứng trượt menu dọc (sliding background) là tắt nếu chưa có bất kỳ thiết lập nào được lưu trong localStorage.
 - **Giải pháp:**
   - Cập nhật [ui-state.service.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/core/services/ui-state.service.ts): Thay đổi giá trị khởi tạo của signal `useSlidingEffect`. Thay vì kiểm tra `!== 'false'` (dẫn đến mặc định là `true` khi chưa có key lưu trữ vì nhận giá trị `null`), đổi thành so sánh `=== 'true'` để mặc định là `false` khi chưa lưu thiết lập, đồng thời vẫn giữ lại giá trị `'true'` nếu người dùng đã bật trước đó.
   - Chạy `npm run build` thành công 100%.
 
 ### Yêu cầu: Responsive giao diện ca trực #18 trên Dashboard và sửa lỗi cắt badge gói cước
+
 - **Nội dung yêu cầu:** Card ca trực ở Dashboard bị vỡ layout / badge "Đang trực" bị đẩy lệch lên góc trên bên phải và bị cắt khi co giãn màn hình. Đồng thời badge gói cước ở header ví Web3 cũng bị cắt mất góc trên.
 - **Giải pháp:**
   - Cập nhật [dashboard.component.html](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/dashboard/pages/dashboard/dashboard.component.html): Tái cấu trúc phần header của card ca trực hiện tại, đưa badge "Đang trực" vào nằm ngay cạnh text "Ca trực #..." trong flex container có `flex-wrap` để tự động điều chỉnh linh hoạt theo chiều rộng của card, loại bỏ hoàn toàn việc badge bị lệch lên góc trên bên phải và bị cắt.
@@ -1362,6 +1457,7 @@
   - Chạy `npm run build` thành công 100%.
 
 ### Yêu cầu: Khắc phục lỗi tải chậm/nghẽn mạng của API ca trực hiện tại (/shifts/current)
+
 - **Nội dung yêu cầu:** API `/api/shifts/current` luôn tải rất lâu hoặc bị kẹt ở trạng thái Pending cả ở local và production.
 - **Giải pháp:**
   - Cập nhật [api.service.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/core/services/api.service.ts): Sửa `getCurrentShift(ttl?, force?)` để chèn header cache `X-Cache-TTL` và `X-Bypass-Cache`.
@@ -1372,6 +1468,7 @@
   - Chạy `npm run build` thành công 100%.
 
 ### Yêu cầu: Tích hợp bộ CacheInterceptor và cấu hình Cache API ở Frontend
+
 - **Nội dung yêu cầu:** Tích hợp bộ CacheInterceptor cho ứng dụng Frontend Angular để cache in-memory chọn lọc các API feature: POS (10 phút), Quản lý thực đơn (5 phút), Bàn ăn & Khu vực (vĩnh viễn), Báo cáo (10 phút), Nhân viên & Quyền (10 phút). Đồng thời tự động xóa cache (invalidate) khi sửa đổi dữ liệu (POST, PUT, DELETE) trên tài nguyên tương ứng.
 - **Giải pháp:**
   - Tạo mới [cache.interceptor.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/core/services/cache.interceptor.ts) triển khai `HttpInterceptorFn` để cache HTTP GET response và invalidate tự động theo nhóm URL.
@@ -1381,6 +1478,7 @@
   - Chạy `npm run build` thành công 100%.
 
 ### Yêu cầu: Hiển thị chủ quán cố định ở đầu danh sách nhân viên (chỉ đọc)
+
 - **Nội dung yêu cầu:** Trang Quản lý Nhân viên không hiển thị thông tin của chủ quán (chỉ hiện nhân viên). Yêu cầu thêm row chủ quán ở đầu danh sách, vĩnh viễn, không có nút Sửa/Xóa.
 - **Phân tích:** Bảng `staffs` chỉ lưu nhân viên (có `store_owner_address`). Chủ quán chỉ có trong `users` với `store_owner_address = null` — không có trong API nhân viên.
 - **Giải pháp (Frontend-only, không cần thêm API):**
@@ -1389,6 +1487,7 @@
   - Chạy `npm run build` thành công 100%.
 
 ### Yêu cầu: Đồng bộ thông tin cá nhân từ bảng staffs vào trang Profile
+
 - **Nội dung yêu cầu:** Khi nhân viên đăng nhập bằng ví và vào trang `/profile`, form thông tin cá nhân (họ tên, SĐT) bị trống mặc dù admin đã nhập sẵn thông tin trong bảng `staffs`. Cần tự động populate thông tin từ `staffs` vào profile.
 - **Giải pháp:**
   - Cập nhật [AuthController.php](file:///d:/git/cafe-blockchain/cafe-blockchain-api/app/Http/Controllers/AuthController.php):
@@ -1399,8 +1498,8 @@
     - `staffs ? users` (m?t l?n duy nh?t khi ??ng nh?p ??u, n?u users tr?ng)
     - `users → staffs` (mỗi khi người dùng bấm "Cập nhật hồ sơ" ở trang `/profile/info`)
 
-
 ### Yêu cầu: Bổ sung trang cá nhân (Profile) cá nhân cho tất cả tài khoản
+
 - **Nội dung yêu cầu:** Bổ sung trang hồ sơ cá nhân `/profile` gồm 2 tab (Thông tin cá nhân & Cấu hình) có định tuyến (sub-routing) riêng biệt cho mỗi tab, có thể truy cập bởi mọi tài khoản. Chuyển tính năng bật tắt hiệu ứng trượt background (sliding background) của sidebar và storefront vào đây.
 - **Giải pháp:**
   - **Backend Laravel API:**
@@ -1419,6 +1518,7 @@
     - Chạy `npm run build` kiểm tra dự án biên dịch thành công 100%.
 
 ### Yêu cầu: Khắc phục triệt để lỗi đồng bộ Blockchain bằng thuật toán Binary Search Block và RPC Node chính thức
+
 - **Nội dung yêu cầu:** Sửa đổi cơ chế đối soát RPC Fallback để tìm đúng TxHash thật của phiếu thu chi `TC-791741` mà không dùng transaction hash giả lập `0xdecafe` và không bị giới hạn 3 ngày.
 - **Giải pháp:**
   - Cập nhật [base-contract.service.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/core/services/web3/base-contract.service.ts):
@@ -1429,6 +1529,7 @@
   - Chạy `npm run build` kiểm tra dự án biên dịch thành công 100%.
 
 ### Yêu cầu: Sửa lại skeleton loader của trang Cấu hình (Settings)
+
 - **Nội dung yêu cầu:** Đồng bộ skeleton loader của trang cấu hình `/settings` vì hiện tại hiển thị không khớp cấu trúc giao diện thực tế.
 - **Giải pháp:**
   - Cập nhật [skeleton-loader.component.html](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/shared/components/skeleton-loader/skeleton-loader.component.html):
@@ -1437,6 +1538,7 @@
   - Chạy `npm run build` kiểm tra dự án biên dịch thành công 100%.
 
 ### Yêu cầu: Khắc phục lỗi đồng bộ blockchain khi Explorer API V2 bị từ chối truy cập và RPC MetaMask bị lỗi
+
 - **Nội dung yêu cầu:** Sửa lỗi đồng bộ blockchain cho phiếu thu chi và đơn hàng. Explorer API V2 báo lỗi `"Free API access is not supported for this chain"`, đồng thời RPC MetaMask bị rate limit 429 khiến việc gọi contract bị lỗi và trả về `null` ngay lập tức mà không kích hoạt các cơ chế fallback dự phòng. Tối ưu hóa RPC Fallback để tránh spam API và hỗ trợ tốt cho giao dịch cũ.
 - **Giải pháp:**
   - Cập nhật [blockchain.utils.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/core/utils/blockchain.utils.ts): Chuyển đổi hàm `getExplorerApiUrl` quay trở lại trả về endpoint API V1 chuyên biệt riêng cho từng chainId thay vì dùng chung Etherscan API V2 để tránh giới hạn tài khoản Free.
@@ -1450,6 +1552,7 @@
   - Chạy `npm run build` kiểm tra dự án biên dịch thành công 100%.
 
 ### Yêu cầu: Tạo hiệu ứng trượt background màu chủ đạo khi bấm chọn menu/danh mục dọc
+
 - **Nội dung yêu cầu:** Thiết lập hiệu ứng chuyển động mượt mà (sliding background) của màu nền chủ đạo khi người dùng bấm vào các mục điều hướng dọc, tương tự như hiệu ứng của component `<app-tab-group>`. Áp dụng trên Sidebar Admin và Category list của Storefront. Hỗ trợ 2 cơ chế (Trượt/Tĩnh), cho người dùng chọn và lưu vào localStorage.
 - **Giải pháp:**
   - Cập nhật [sidebar.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/shared/layout/sidebar/sidebar.component.ts) và [sidebar.component.html](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/shared/layout/sidebar/sidebar.component.html):
@@ -1469,6 +1572,7 @@
   - Chạy `npm run build` kiểm tra dự án biên dịch thành công 100%.
 
 ### Yêu cầu: Đồng bộ giao diện Modal Chi tiết phiếu thu/chi và Chi tiết hóa đơn
+
 - **Nội dung yêu cầu:** Đồng bộ hóa cách hiển thị mã, giao diện và hiển thị mã trên tiêu đề (title) của cả Modal Chi tiết phiếu thu/chi và Chi tiết hóa đơn.
 - **Giải pháp:**
   - Cập nhật [financials.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/financials/financials.component.ts):
@@ -1479,6 +1583,7 @@
   - Chạy `npm run build` kiểm tra và dự án biên dịch thành công 100%.
 
 ### Yêu cầu: Đánh giá và cập nhật tài liệu thiết kế (design.md)
+
 - **Nội dung yêu cầu:** Xem xét giao diện tổng quan hệ thống và cập nhật đặc tả design system vào file `design.md`.
 - **Giải pháp:** Cập nhật 6 đặc tả kỹ thuật và UI/UX cốt lõi mới nhất vào [design.md](file:///d:/git/cafe-blockchain/design.md):
   - Kiến trúc Dynamic Modal gọi qua TypeScript và chính sách không animation (No-Animation Policy) để phản hồi tức thì.
@@ -1489,6 +1594,7 @@
   - Áp dụng triết lý thiết kế phẳng (Flat Design), loại bỏ các đường border phân tách nằm ngang (`border-t`) không cần thiết.
 
 ### Yêu cầu: Sửa lỗi 500 khi sync transaction lên blockchain
+
 - **Nội dung yêu cầu:** API `PUT /api/transactions/{id}/sync` trả về lỗi 500.
 - **Root cause:** `EloquentTransactionRepository::find()` khai báo tham số `int $id`, nhưng Transaction entity dùng **UUID** làm primary key (string). PHP 8 strict typing ném `TypeError` ngay khi truyền UUID vào.
 - **Giải pháp:** Đổi kiểu tham số từ `int` sang `string` trong cả 2 file:
@@ -1496,6 +1602,7 @@
   - [EloquentTransactionRepository.php](file:///d:/git/cafe-blockchain/cafe-blockchain-api/app/Infrastructure/Persistence/Repositories/EloquentTransactionRepository.php): `public function find(string $id): ?Transaction`
 
 ### Yêu cầu: Khắc phục lỗi đồng bộ Blockchain cho Phiếu thu chi và Đơn hàng
+
 - **Nội dung yêu cầu:** Sửa lỗi đồng bộ blockchain cho phiếu thu chi (giao dịch đã có trên blockchain nhưng MySQL chưa ghi nhận và báo lỗi "already exists" khi ấn đồng bộ lại). Không sử dụng cách quét ngược block qua RPC.
 - **Phân tích:**
   - Logic cũ chỉ gọi Block Explorer API khi có `apiKey` cấu hình trong database. Khi không có `apiKey`, hệ thống fallback sang quét block thủ công bằng RPC (`queryFilter` ±5000 blocks) gây quá tải hoặc lỗi rate limit 429.
@@ -1511,16 +1618,18 @@
 ## Ngày 20/06/2026
 
 ### Yêu cầu: Giải thích lỗi không deploy được contract
+
 - **Nội dung yêu cầu:** Người dùng gặp lỗi khi deploy contract và gửi ảnh chụp màn hình thông báo lỗi: `could not coalesce error (error={ "code": -32005, "httpStatus": 429 }, "message": "Request is being rate limited...", code=UNKNOWN_ERROR, version=6.16.0)`.
-- **Phân tích:** 
+- **Phân tích:**
   - Lỗi HTTP Status `429` có nghĩa là `Too Many Requests` (Quá nhiều yêu cầu).
   - Node RPC mà ứng dụng hoặc ví Metamask đang sử dụng (`https://bnb-testnet.api.onfinality.io/public` hoặc một RPC công cộng khác) đã giới hạn số lượng request (rate limit) đối với địa chỉ IP của người dùng hoặc do Node đó đang bị quá tải diện rộng.
-- **Giải pháp:** 
+- **Giải pháp:**
   - Chờ vài phút để giới hạn được reset và thử lại.
   - Thay đổi RPC Endpoint URL sang một RPC public khác tốt hơn (ví dụ tìm trên chainlist.org như `https://bsc-testnet-rpc.publicnode.com`).
   - Sử dụng dịch vụ RPC cá nhân có API key riêng (từ Alchemy, QuickNode, Ankr, v.v.) để tránh bị rate limit.
 
 ### Yêu cầu: Sửa lỗi không kết nối được ví MetaMask (Connection declined)
+
 - **Nội dung yêu cầu:** Người dùng liên tục gặp lỗi "Connection declined. Connection can be declined if a previous request is still active" khi cố gắng kết nối ví MetaMask, ngay cả khi tắt trình duyệt mở lại.
 - **Phân tích:**
   - Do lệch cấu hình mạng: AppKit đặt `defaultNetwork` cứng là `arbitrum` trong khi DApp mặc định chạy BSC Testnet (ID 97). Khi kết nối thành công, DApp lập tức kích hoạt switch mạng song song gây xung đột trên MetaMask.
@@ -1537,6 +1646,7 @@
   - **Khắc phục lỗi 403 Forbidden khi khởi tạo:** Loại bỏ cuộc gọi API tải menu storefront công khai (`getPublicStoreBySlug`) khi ví chưa kết nối trong `StateService.loadPublicSettingsAndMenu()`, vì API này bị chặn quyền truy cập đối với các kết nối chưa được ký xác thực.
 
 ### Yêu cầu: Tìm hiểu các file quản lý ví, kết nối/ngắt ví và WalletConnect
+
 - **Nội dung yêu cầu:** Hỏi các file đảm nhận module quản lý ví, kết nối ví, ngắt ví, wallet connect.
 - **Phân tích & Phản hồi:**
   - Logic cốt lõi: `web3.service.ts` (Khởi tạo Reown AppKit, xử lý kết nối, ngắt kết nối, chuyển mạng EVM, cập nhật số dư).
@@ -1544,12 +1654,14 @@
   - UI Components gọi Web3/Ví: `web3-public-header.component.ts`, `mobile-sign.component.ts`, `claim-points.component.ts`.
 
 ### Yêu cầu: Xem lại DApp, chain mặc định nếu người dùng không chọn là chain nào?
+
 - **Nội dung yêu cầu:** Tìm hiểu chain mặc định của hệ thống DApp.
 - **Phân tích & Phản hồi:**
   - Trong cấu hình môi trường (`environment.ts` và `environment.development.ts`), `defaultChainId` được cấu hình mặc định là `'97'` (BSC Testnet).
   - Trong code [web3.service.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/core/services/web3.service.ts#L334), `defaultNetwork` khi khởi tạo Reown AppKit được gán cứng là `mainnet` (Ethereum Mainnet) nhằm tương thích tốt nhất với ví MetaMask (tránh lỗi Unrecognized Chain ID). Sau khi kết nối ví thành công, DApp lập tức gọi hàm `ensureCorrectNetwork()` để kích hoạt chuyển sang mạng thực tế cấu hình (`configuredChainId` kế thừa từ `defaultChainId` hoặc cấu hình động từ database).
 
 ### Yêu cầu: Đổi chain mặc định của DApp sang Arbitrum và sắp xếp lại danh sách mạng phổ biến
+
 - **Nội dung yêu cầu:** Thay đổi chain mặc định của hệ thống sang Arbitrum (chainId 42161). Đưa Arbitrum lên đầu danh sách chọn mạng và Ethereum xuống vị trí thứ 2.
 - **Quá trình & Giải pháp đã thực hiện:**
   - Đã cập nhật file cấu hình môi trường ([environment.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/environments/environment.ts) và [environment.development.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/environments/environment.development.ts)): đổi `defaultChainId` sang `'42161'` (Arbitrum), `defaultRpcUrl` sang `'https://arb1.arbitrum.io/rpc'`, và `defaultExplorerUrl` sang `'https://arbiscan.io'`.
@@ -1560,6 +1672,7 @@
   - Đã tinh gọn danh sách chain hỗ trợ theo yêu cầu: Chỉ giữ lại **Arbitrum One**, **Base**, **BNB Smart Chain** (Mainnet) cùng **Arbitrum Sepolia**, **BSC Testnet** (Testnet). Loại bỏ Ethereum Mainnet, Polygon, Optimism, Sepolia Testnet khỏi cả `POPULAR_CHAINS` và cấu hình khởi tạo Reown AppKit trong [web3.service.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/core/services/web3.service.ts).
 
 ### Yêu cầu: Sửa lỗi build sau khi nâng cấp Angular v21 -> v22 và TypeScript v6
+
 - **Nội dung yêu cầu:** Sửa lỗi không build được ứng dụng (`npm run build` thất bại) sau khi nâng cấp lên Angular 22 và TypeScript 6.
 - **Quá trình & Giải pháp đã thực hiện:**
   - **Lỗi TS5101 (baseUrl bị deprecated):** Đã cập nhật [tsconfig.json](file:///d:/git/cafe-blockchain/cafe-blockchain-web/tsconfig.json) bằng cách xóa hoàn toàn cấu hình `"baseUrl": "./"` và thêm tiền tố `./` trước các đường dẫn tương đối trong cấu hình `"paths"` (ví dụ: `"@core/*": ["./src/app/core/*"]`). Cách làm này giúp xử lý triệt để cảnh báo TS5101 mà không cần sử dụng cờ tắt cảnh báo tạm thời.
@@ -1567,6 +1680,7 @@
   - Kết quả: Đã chạy thử lệnh `npm run build` và ứng dụng biên dịch thành công hoàn toàn.
 
 ### Yêu cầu: Tìm hiểu và mở rộng breakpoint responsive của Tailwind CSS
+
 - **Nội dung yêu cầu:** Tìm hiểu breakpoint mặc định lớn nhất và mở rộng cấu hình lên `3xl` (`1920px`) và `4xl` (`2560px`).
 - **Quá trình & Giải pháp đã thực hiện:**
   - Xác định dự án đang sử dụng **Tailwind CSS v4** (`@tailwindcss/postcss`).
@@ -1576,7 +1690,9 @@
     --breakpoint-3xl: 1920px;
     --breakpoint-4xl: 2560px;
     ```
+
 ### Yêu cầu: Bổ sung các trường thông tin cấu hình quán mới
+
 - **Nội dung yêu cầu:** Thêm các trường Số điện thoại (bắt buộc, chỉ nhập số), Giờ hoạt động (datetime range), Địa chỉ cửa hàng, và Mô tả cửa hàng (tối đa 200 chữ) trong tab Cấu hình quán.
 - **Quá trình & Giải pháp đã thực hiện:**
   - Cập nhật backend Laravel `SettingController.php`:
@@ -1593,6 +1709,7 @@
     - Đã chạy `npm run build` kiểm tra thành công, không gặp lỗi biên dịch nào.
 
 ### Yêu cầu: Đồng bộ giao diện Modal xem mã QR thanh toán
+
 - **Nội dung yêu cầu:** Sửa đổi modal xem mã QR chuyển khoản ngân hàng vốn là thẻ div tự chế chưa có giao diện đồng bộ để nó nhất quán hoàn toàn với các modal khác của hệ thống.
 - **Quá trình & Giải pháp đã thực hiện:**
   - Cập nhật frontend Angular:
@@ -1602,6 +1719,7 @@
     - Đã chạy `npm run build` kiểm tra thành công, ứng dụng biên dịch hoàn toàn chính xác.
 
 ### Yêu cầu: Điều chỉnh vị trí trường Giờ hoạt động và Mô tả cửa hàng
+
 - **Nội dung yêu cầu:**
   - Đặt trường **Giờ hoạt động** nằm bên phải trường **Số điện thoại** trên màn hình Desktop.
   - Chuyển trường **Mô tả cửa hàng** thành textarea hiển thị full-width (chiếm cả 2 cột của lưới grid trên Desktop).
@@ -1613,6 +1731,7 @@
     - Điều chỉnh textarea mô tả thành `rows="4"` cho gọn gàng và cân đối hơn khi hiển thị full-width.
 
 ### Yêu cầu: Chuyển đổi tất cả modal sang modal động bằng TypeScript và đồng bộ giao diện
+
 - **Nội dung yêu cầu:** Thiết kế giải pháp viết lại toàn bộ các modal thành component riêng biệt, gọi động qua file `.ts` bằng `ModalService`, xóa bỏ hoàn toàn cách nhúng tĩnh modal trong HTML các module để dễ bảo trì và đồng bộ giao diện.
 - **Quá trình & Giải pháp đã thực hiện:**
   - Thiết kế và tạo mới bộ lõi Dynamic Modal:
@@ -1627,6 +1746,7 @@
   - Biên dịch kiểm tra dự án bằng `npm run build` thành công hoàn toàn.
 
 ### Yêu cầu: Tiếp tục hoàn thành dọn dẹp các modal tĩnh còn lại và kiỒm thử compile toàn cục
+
 - **Nội dung yêu cầu:** Rà soát nốt các module POS, Orders, Storefront, Marketplace để chuyển đổi modal sang dynamic và dọn dẹp HTML, giải quyết các cảnh báo biên dịch.
 - **Quá trình & Giải pháp đã thực hiện:**
   - Chuyển đổi và tạo các component động: `VariantSelectModalComponent`, `PosConfirmModalComponent`, `SignQrModalComponent`, `StoreVariantSelectModalComponent`, `OrderSuccessModalComponent`, `OrderDetailModalComponent`, `CancelOrderExplanationModalComponent`, `ListVoucherModalComponent`.
@@ -1636,6 +1756,7 @@
   - Chạy lệnh `npm run build` thành công 100% không có lỗi, tối ưu hóa dung lượng gói bundle.
 
 ### Yêu cầu: Loại bỏ hoàn toàn hiệu ứng animation của modal
+
 - **Nội dung yêu cầu:** Người dùng yêu cầu xóa sạch các hiệu ứng animation (như `animate-in`, `fade-in`, `zoom-in-95`, `duration-150`, `duration-200`...) của toàn bộ modal.
 - **Quá trình & Giải pháp đã thực hiện:**
   - Định vị các file lõi quy chuẩn modal có chứa các lớp animation Tailwind CSS.
@@ -1644,6 +1765,7 @@
   - Chạy `npm run build` xác nhận biên dịch dự án thành công hoàn chỉnh.
 
 ### Yêu cầu: Điều chỉnh chiều rộng (width) của Modal Chi tiết hóa đơn
+
 - **Nội dung yêu cầu:** Chiều rộng của modal chi tiết hóa đơn mới quá hẹp so với phiên bản cũ, làm bố cục 2 cột bị dồn nén theo chiều dọc.
 - **Quá trình & Giải pháp đã thực hiện:**
   - Định vị tham số cấu hình size khi mở `OrderDetailModalComponent` trong [orders.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/orders/orders.component.ts).
@@ -1651,6 +1773,7 @@
   - Chạy `npm run build` xác minh biên dịch dự án thành công hoàn chỉnh.
 
 ### Yêu cầu: Khắc phục lỗi hiển thị nút bấm và lỗi nút "Yêu cầu hủy đơn hàng" trong Modal Chi tiết đơn hàng
+
 - **Nội dung yêu cầu:** Sửa lỗi các nút "HỦY ĐƠN", "CHUẨN BỊ", "HOÀN THÀNH" bị méo lệch, rớt dòng chữ do chật và nút "YÊU CẦU HỦY ĐƠN HÀNG" bấm không hiện modal giải thích nghiệp vụ như cũ. Đồng thời, đồng bộ chiều cao nút đúc voucher NFT.
 - **Quá trình & Giải pháp đã thực hiện:**
   - Khắc phục lỗi nút méo lệch, rớt dòng chữ:
@@ -1663,6 +1786,7 @@
   - Chạy `npm run build` xác minh biên dịch dự án thành công 100%.
 
 ### Yêu cầu: Đồng bộ giao diện nút chọn Loại khách hàng và Giới tính trong Modal Khách hàng
+
 - **Nội dung yêu cầu:** Chuyển đổi các nút toggle lựa chọn thủ công ở mục "Loại khách hàng" và "Giới tính" trong modal "Thêm khách hàng mới" sang sử dụng component dùng chung `<app-tab-group>`.
 - **Quá trình & Giải pháp đã thực hiện:**
   - Cập nhật [customer-form-modal.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/customers/components/customer-form-modal/customer-form-modal.component.ts):
@@ -1672,8 +1796,8 @@
   - Cập nhật [customer-form-modal.component.html](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/customers/components/customer-form-modal/customer-form-modal.component.html):
     - Thay thế toàn bộ khối `div` chứa các button toggle thủ công cũ của "Loại khách hàng" và "Giới tính" bằng thẻ `<app-tab-group>` liên kết với các biến lựa chọn cấu hình.
 
-
 ### Yêu cầu: Sửa lỗi nút HỦY ĐƠN/CHUẨN BỊ/HOÀN THÀNH và checkbox đồng bộ blockchain không hoạt động trong modal chi tiết đơn hàng
+
 - **Nội dung yêu cầu:** Bấm nút hành động trong modal thì modal đóng ngay, loading state không hiển thị. Tích chọn "Đồng bộ Blockchain lập tức" rồi bấm HOÀN THÀNH vẫn không đồng bộ. Yêu cầu các nút không đóng modal khi bấm.
 - **Root cause:**
   - Loading signals (`isOrderStatusUpdating`, `blockchainSyncLoading`...) được truyền vào modal dưới dạng **giá trị tĩnh** (`boolean`) → Modal không reactive sau khi nhận data.
@@ -1686,6 +1810,7 @@
   - Chạy `npm run build` thành công 100%.
 
 ### Yêu cầu: Sửa lỗi Toast animation progress bar không chạy (đứng im màu xanh)
+
 - **Nội dung yêu cầu:** Thanh progress bar màu xanh lá của toast thông báo bị kẹt, không chạy animation thu về 0%.
 - **Root cause thực sự:**
   - Animation CSS (`toastProgress`, `toastSlideIn`, `.toast-progress-success`, `.toast-animate`) đang được đặt trong `app.css` — đây là **stylesheet riêng của `AppComponent`** (dùng `styleUrl: './app.css'`).
@@ -1699,6 +1824,7 @@
   - Chạy `npm run build` thành công 100%.
 
 ### Yêu cầu: Khắc phục triệt để lỗi không đồng bộ blockchain được cho phiếu thu chi (mã TC-791741)
+
 - **Nội dung yêu cầu:** Đồng bộ thành công phiếu thu chi `TC-791741` trên mạng BSC Testnet mà không cần quét block cũ quá lâu qua RPC và không bị cản trở bởi lỗi API Explorer (do API V1 bị khai tử và V2 chặn tài khoản Free).
 - **Giải pháp:**
   - Cập nhật [base-contract.service.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/core/services/web3/base-contract.service.ts):
@@ -1711,11 +1837,13 @@
 ## Ngày 21/06/2026 (tiếp theo)
 
 ### Yêu cầu: Khắc phục triệt để lỗi nhấp nháy hiển thị trạng thái ca trực khi API đang tải (State Flicker)
+
 - **Nội dung yêu cầu:** Khi tải trang, trong lúc API `/api/shifts/current` đang ở trạng thái Pending, Header popover quản lý ca làm việc hiển thị sai lệch thông tin "Chưa vào ca trực" kèm nút "Bắt đầu ca trực" (mặc định của giá trị `null`). Chỉ khi API tải xong mới nhảy sang trạng thái ca mở, tạo ra hiện tượng nhấp nháy giao diện.
 - **Giải pháp:**
   - Cập nhật [state.service.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/core/services/state.service.ts): Sửa `loadShiftDataInitially()` để gọi thông qua `this.refreshCurrentShift()` tập trung của `ShiftStore` thay vì gọi HttpClient trực tiếp và tự subscribe rời rạc. Điều này đảm bảo `isCurrentShiftLoading` luôn được set thành `true` ngay từ đầu và quản lý tập trung trong Store, đồng bộ 100% với giao diện trong lúc API đang Pending.
 
 ### Yêu cầu: Khắc phục lỗi không tự động cập nhật giao diện thành công (có Tx Hash) trong Modal Chi tiết hóa đơn và Phiếu thu/chi khi đồng bộ Blockchain thành công
+
 - **Nội dung yêu cầu:** Khi người dùng click đồng bộ Blockchain trong Modal Chi tiết, giao diện Modal không phản ánh trạng thái thành công (vẫn hiện Chưa đồng bộ/các nút thao tác cũ) hoặc Modal tự động đóng lại đột ngột làm mất đi thông tin Tx Hash.
 - **Giải pháp:**
   - Cập nhật [orders.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/orders/orders.component.ts): Cấu hình thuộc tính `order` truyền vào `OrderDetailModalComponent` dạng **dynamic Javascript getter** trỏ tới Signal `selectedOrderDetails()`. Nhờ đó, khi DB phản hồi và gọi `updateLocalOrder`, Signal thay đổi lập tức cập nhật giao diện Modal (hiển thị Đã ghi nhận thành công + Tx Hash + cập nhật hành động hủy đơn/in hóa đơn). Các callbacks tương ứng cũng được cập nhật để sử dụng dữ liệu mới nhất từ Signal.
@@ -1723,6 +1851,7 @@
   - Chạy `npm run build` thành công 100%.
 
 ### Yêu cầu: Kế thừa nút switch Cloudflare Turnstile từ CustomSwitchComponent dùng chung
+
 - **Nội dung yêu cầu:** Chuyển đổi nút switch Cloudflare Turnstile trong giao diện Super Admin (tab Hệ thống) vốn đang code thủ công (inline raw HTML) sang sử dụng component `<app-custom-switch>` dùng chung của hệ thống để tái sử dụng và đảm bảo giao diện đồng bộ.
 - **Giải pháp:**
   - Cập nhật [admin-saas.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/admin/admin-saas.component.ts): Import `CustomSwitchComponent` từ `@shared/components/custom-switch/custom-switch.component` và bổ sung vào mảng `imports`.
@@ -1730,6 +1859,7 @@
   - Chạy `npm run build` thành công 100%.
 
 ### Yêu cầu: Responsive Header chính của hệ thống trên các thiết bị/viewport nhỏ
+
 - **Nội dung yêu cầu:** Khi viewport bị thu hẹp hoặc ở các màn hình từ `lg` (1024px) đến `xl` (1280px), phần subtitle dài của Header chính bị xuống dòng xấu và đè lấn lên các nút chức năng bên phải, đồng thời nút tỷ giá và nút Kết nối ví Web3 bị chật chội và vỡ chữ.
 - **Giải pháp:**
   - Cập nhật [desktop-header.component.html](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/shared/layout/header/desktop-header.component.html):
@@ -1741,6 +1871,7 @@
   - Chạy `npm run build` thành công 100%.
 
 ### Yêu cầu: Ẩn thanh giỏ hàng nổi (Floating Cart Bar) khi Drawer giỏ hàng đang mở ở Storefront
+
 - **Nội dung yêu cầu:** Khi người dùng đã có món trong giỏ và click mở Drawer giỏ hàng bên phải, thanh Floating Cart Bar (có z-index rất cao) vẫn hiển thị và đè lên giao diện của Drawer, gây ra trùng lặp nút bấm và che mất nút "XÁC NHẬN ĐẶT ĐƠN HÀNG".
 - **Giải pháp:**
   - Cập nhật [store.component.html](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/storefront/pages/store/store.component.html):
@@ -1749,6 +1880,7 @@
   - Chạy `npm run build` thành công 100%.
 
 ### Yêu cầu: Đồng bộ thiết kế (Shadow & Border) của thanh giỏ hàng nổi (Floating Cart Bar) tại Storefront
+
 - **Nội dung yêu cầu:** Shadow và thiết kế của thanh giỏ hàng nổi không đồng bộ với các phần tử nổi khác (như Modal, Card) trong hệ thống, nhìn thô và thiếu chiều sâu.
 - **Giải pháp:**
   - Cập nhật [store.component.html](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/storefront/pages/store/store.component.html):
@@ -1757,6 +1889,7 @@
   - Chạy `npm run build` thành công 100%.
 
 ### Yêu cầu: Tách thanh giỏ hàng nổi (Floating Cart Bar) thành Component riêng và dọn dẹp class thô, gỡ bỏ animation
+
 - **Nội dung yêu cầu:** Người dùng yêu cầu tách phần giao diện thanh giỏ hàng nổi (Floating Cart Bar) ở Storefront thành một component riêng để dễ bảo trì, đồng thời dọn sạch các class Tailwind thô dư thừa (như border, bg, shadow thô) và gỡ bỏ hoàn toàn animation chuyển động theo Chính sách không animation (No-Animation Policy) để phản hồi tức thì.
 - **Giải pháp:**
   - T?o m?i component n?i b? [FloatingCartBarComponent](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/storefront/components/floating-cart-bar) g?m:
@@ -1771,6 +1904,7 @@
   - Chạy `npm run build` thành công 100%.
 
 ### Yêu cầu: Khắc phục lỗi Config Cache Laravel trên Production gây mất cấu hình CORS và hiển thị trang bảo trì
+
 - **Nội dung yêu cầu:** Người dùng báo lỗi giao diện hiển thị màn hình bảo trì trên trang Dashboard Netlify mặc dù họ không bật chế độ bảo trì và đã cấu hình biến môi trường `ALLOWED_ORIGINS` đầy đủ.
 - **Giải pháp:**
   - Xác định nguyên nhân: Do tính năng Config Cache của Laravel (`php artisan config:cache`) vô hiệu hoá các lệnh gọi hàm `env()` trực tiếp trong mã nguồn ngoài thư mục `config/`.
@@ -1783,6 +1917,7 @@
   - Chạy xác minh `php artisan route:list` thành công 100%.
 
 ### Yêu cầu: Phân tách lỗi Bảo trì và lỗi Mất kết nối trên giao diện Frontend
+
 - **Nội dung yêu cầu:** Người dùng chỉ ra việc gom chung tất cả lỗi mất mạng/CORS (status code 0) thành màn hình "Hệ thống đang bảo trì" gây hiểu lầm cho người dùng bình thường và yêu cầu tối ưu hóa việc phân tách này.
 - **Giải pháp:**
   - Cập nhật [ui-state.service.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/core/services/ui-state.service.ts): Bổ sung signal `maintenanceType` có giá trị là `'maintenance' | 'connection' | null`.
@@ -1793,6 +1928,7 @@
   - Chạy `npm run build` kiểm tra dự án biên dịch thành công 100%.
 
 ### Yêu cầu: Khắc phục lỗi 401 Unauthorized access sau khi ký ví do chính sách SameSite Lax của cookie
+
 - **Nội dung yêu cầu:** Người dùng báo lỗi sau khi ký ví thành công (verify API trả về 200), các API tiếp theo (settings, current shift, me) đều bị lỗi 401 với thông điệp `{"message":"Unauthorized access."}`.
 - **Giải pháp:**
   - Xác định nguyên nhân: Frontend (`netlify.app`) và Backend (`ddns.net`) chạy trên hai domain khác nhau. Chính sách `AUTH_COOKIE_SAME_SITE=Lax` mặc định ngăn trình duyệt tự động gửi cookie xác thực thông qua các AJAX/fetch request dạng Cross-Site, dẫn đến việc Backend không nhận được cookie và trả về lỗi 401.
@@ -1804,6 +1940,7 @@
 ## Ngày 22/06/2026
 
 ### Yêu cầu: Tinh chỉnh cấu hình mặc định và giới hạn của các gói cước (Free, Pro, Ultra)
+
 - **Nội dung yêu cầu:** Cập nhật lại giới hạn và tính năng mặc định của các gói cước để phù hợp hơn với thực tế kinh doanh:
   - Gói Free: Đổi tên thành "Gói Dùng Thử", tắt quyền quản lý nhân viên (`enable_staffs = false`, `max_staffs = 0`), tắt chức năng sơ đồ quản lý bàn (`enable_tables = false`), nâng giới hạn sản phẩm tối đa (`max_products`) lên 50, nâng giới hạn giao dịch (`max_transactions`) lên 100, nâng giới hạn ghi nợ (`max_debts`) lên 100.
   - Gói Pro: Nâng giới hạn sản phẩm (`max_products`) lên 500, nâng giới hạn giao dịch (`max_transactions`) lên 100,000, nâng giới hạn ghi nợ (`max_debts`) lên 100,000, mở khóa toàn bộ các tính năng ngoại trừ xuất báo cáo Excel (`enable_excel_export = false`).
@@ -1815,6 +1952,7 @@
   - Chạy `npm run build` thành công 100%.
 
 ### Yêu cầu: Bản địa hóa lỗi giới hạn (403 Subscription Limit) và loại bỏ thông báo lỗi kép
+
 - **Nội dung yêu cầu:** Khi người dùng đạt giới hạn gói cước và nhận mã lỗi 403 Forbidden từ API, hệ thống cần:
   - Bản địa hoá và dịch thông báo giới hạn tiếng Anh thành tiếng Việt thân thiện, đồng thời **luôn khuyên nâng cấp lên gói Ultra** để tiếp cận tài nguyên vô hạn.
   - Loại bỏ các thông báo lỗi chung chung (như "Thêm khách hàng thất bại!", "Thêm món thất bại!") để tránh việc hiển thị hai Toast lỗi cùng một lúc.
@@ -1824,6 +1962,7 @@
   - Chạy `npm run build` thành công 100%.
 
 ### Yêu cầu: Khắc phục lỗ hổng bảo mật và logic khi đăng ký/nâng cấp gói thuê bao mới
+
 - **Nội dung yêu cầu:** Sửa đổi cơ chế nâng cấp gói cước để ngăn chặn hoàn toàn các lỗ hổng:
   - Chặn người dùng tự nâng cấp hoặc chuyển đổi ngược về gói dùng thử (`free`) dưới mọi hình thức, kể cả khi gói trả phí đã hết hạn. Gói dùng thử chỉ được gán tự động duy nhất 1 lần khi đăng ký tài khoản mới.
   - Đối với các tài khoản đang dùng gói trả phí (`pro`/`ultra`) và vẫn còn hạn, chỉ được phép gia hạn thêm chính gói đó, không được đổi gói hoặc hạ cấp giữa chừng.
@@ -1842,9 +1981,10 @@
   - Chạy `npm run build` thành công 100%.
 
 ### Yêu cầu: Rà soát và khắc phục các lỗi logic, bảo mật tiềm ẩn trong hệ thống
+
 - **Nội dung yêu cầu:** Rà soát và khắc phục các lỗi tiềm ẩn liên quan đến bảo mật dữ liệu multi-tenant, toàn vẹn dữ liệu nợ, sập 500 do lỗi kiểu dữ liệu và hiển thị UI custom components.
 - **Giải pháp:**
-  - **Bảo mật Multi-tenant & Toàn vẹn nợ:** 
+  - **Bảo mật Multi-tenant & Toàn vẹn nợ:**
     - Cập nhật [CreateOrderCommandHandler.php](file:///d:/git/cafe-blockchain/cafe-blockchain-api/app/Application/Orders/Handlers/CreateOrderCommandHandler.php) và [UpdateOrderCommand.php](file:///d:/git/cafe-blockchain/cafe-blockchain-api/app/Application/Orders/Commands/UpdateOrderCommand.php) ràng buộc `customer_id` thuộc `$storeOwner`.
     - Cập nhật [UpdateOrderCommand.php](file:///d:/git/cafe-blockchain/cafe-blockchain-api/app/Application/Orders/Commands/UpdateOrderCommand.php): Triển khai đầy đủ thuật toán hoàn nợ cũ và tạo nợ mới khi thay đổi thông tin đơn hàng POS (thay đổi phương thức thanh toán, đổi khách hàng ghi nợ, đổi tổng tiền đơn hàng).
   - **Tránh sập hệ thống (500 Error):**
@@ -1857,6 +1997,7 @@
   - Chạy `npm run build` thành công 100%.
 
 ### Yêu cầu: Đổi tên tab "Bảo trì & Tối ưu" và Tích hợp Nhật ký lỗi hệ thống (Log Viewer)
+
 - **Nội dung yêu cầu:** Đổi tên tab "Hệ thống" (`tab=system`) thành "Bảo trì & Tối ưu" để trực quan hơn cho người dùng. Bổ sung tính năng xem nhật ký lỗi hệ thống (laravel.log) trực tiếp trên tab này một cách an toàn và tối ưu, hỗ trợ lọc lỗi theo cấp độ, tìm kiếm từ khóa, đổi số lượng dòng hiển thị và xem chi tiết stack trace.
 - **Giải pháp:**
   - Cập nhật backend:
@@ -1883,6 +2024,7 @@
 ## Ngày 22/06/2026 (tiếp theo)
 
 ### Yêu cầu: Khắc phục lỗi âm tiền mặt lý thuyết khi kết ca, bổ sung Thời gian đã chạy, và chuyển sang Phương án B (mặc định để trống hoàn toàn tiền thực tế)
+
 - **Nội dung yêu cầu:** Sửa lỗi kết ca khi tiền mặt lý thuyết âm gây lỗi "The actual cash must be at least 0." từ backend. Đồng thời hiển thị "Thời gian đã chạy" của ca hiện tại. Người dùng cũng yêu cầu chuyển sang Phương án B: mặc định để trống hoàn toàn ô nhập tiền mặt thực tế khi mở modal (không điền sẵn tiền lý thuyết hay số 0), buộc thu ngân phải tự đếm tiền và nhập vào, đồng thời ẩn khung chênh lệch lệch két cho tới khi người dùng nhập giá trị.
 - **Giải pháp:**
   - Cập nhật [shift.store.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/shifts/store/shift.store.ts):
@@ -1902,12 +2044,14 @@
   - Chạy `npm run build` thành công 100%.
 
 ### Yêu cầu: Việt hóa cột Phân loại (individual / business) trong Danh sách khách hàng
+
 - **Nội dung yêu cầu:** Sửa đổi hiển thị của cột Phân loại (Classification) trong bảng Danh sách khách hàng (Customers) từ tiếng Anh ("individual" / "business") sang tiếng Việt ("Cá nhân" / "Doanh nghiệp").
 - **Giải pháp:**
   - Cập nhật [customers.component.html](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/customers/customers.component.html) bổ sung mẫu ô tuỳ chỉnh (cell template) `<ng-template appCell="type" let-row>` cho cột `type`.
   - Thực hiện biên dịch kiểm tra bằng `npm run build` thành công.
 
 ### Yêu cầu: Sửa lỗi hiển thị nhãn biến động công nợ, Việt hóa ghi chú mặc định tiếng Anh và bổ sung hiển thị mã khách hàng
+
 - **Nội dung yêu cầu:** Sửa lỗi nhãn lịch sử công nợ thủ công bị gán cứng là "Thu hồi công nợ thủ công" cho cả phiếu tăng (+) và giảm (-), Việt hóa hoàn toàn các ghi chú mặc định được tạo từ Backend (như "Manual debt entry", "Customer debt payment (Via Cash)"), và hiển thị thêm mã khách hàng ở tiêu đề Drawer lịch sử công nợ.
 - **Giải pháp:**
   - **Khắc phục lỗi nhãn và Việt hóa ghi chú:** Phát hiện lỗi do gọi nhầm thuộc tính `log.description` không tồn tại thay vì `log.note` của Model `DebtLog` trong template HTML [debts.component.html](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/debts/debts.component.html). Đã sửa lại và tạo phương thức `translateNote()` trong [debts.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/debts/debts.component.ts) để tự động dịch các ghi chú mặc định tiếng Anh sang tiếng Việt tương ứng (ví dụ: "Ghi nợ thủ công", "Thu hồi công nợ thủ công (Tiền mặt / Chuyển khoản)").
@@ -1915,6 +2059,7 @@
   - Chạy `npm run build` kiểm tra biên dịch thành công 100%.
 
 ### Yêu cầu: Khắc phục các lỗi hiển thị giao diện Dark mode và Light mode
+
 - **Nội dung yêu cầu:** Rà soát và sửa lỗi hiển thị giao diện sáng/tối (Dark/Light mode) của hệ thống.
 - **Giải pháp:**
   - **Phân tích:** Phát hiện nhiều tệp HTML sử dụng class màu sắc không hợp lệ của Tailwind như `slate-850`, `bg-slate-850`, `text-slate-850`, `dark:border-slate-850` hay `dark:hover:bg-slate-850`. Vì `slate-850` không tồn tại trong bảng màu mặc định của Tailwind CSS, trình duyệt bỏ qua thuộc tính này và tự động fall back về màu của chế độ Light mode (ví dụ các nút gợi ý tiền đầu ca mở két "Két trống", "500K", "1 Triệu", "2 Triệu" bị hiển thị nền trắng trên nền tối).
@@ -1929,6 +2074,7 @@
 ## Ngày 24/06/2026 (tiếp theo)
 
 ### Yêu cầu: Tối ưu hóa hiệu năng Backend (BE Cache) - Tránh truy vấn lặp đi lặp lại ở Middleware và API Storefront
+
 - **Nội dung yêu cầu:** Tối ưu hóa hiệu năng Backend bằng cách giảm thiểu số lượng truy vấn SQL dư thừa tại mỗi request (như kiểm tra phân quyền, giới hạn và tính năng của gói cước trong các Middleware, cũng như truy vấn cấu hình slug công khai ở API Storefront).
 - **Giải pháp:**
   - **Tối ưu hóa Domain Entity:**
@@ -1950,6 +2096,7 @@
 ## Ngày 25/06/2026 (tiếp theo)
 
 ### Yêu cầu: Đồng bộ giao diện bộ lọc Phân loại, checkbox, nút bấm và nghiệp vụ đồng bộ nhật ký chốt thuế
+
 - **Nội dung yêu cầu:** Đồng bộ hóa nút "Phân loại" của bộ lọc Nhật ký kê khai kế thừa đúng thiết kế của Select UI (pill rounded-full, có mũi tên chevron xoay động). Đồng bộ màu các checkbox và buttons trong popover và form khảo sát sang màu thương hiệu động `[var(--dynamic-primary)]`. Bổ sung menu 3 chấm ở mỗi dòng trong bảng logs để có tuỳ chọn "Tải file excel" kèm icon `download`. Đồng bộ nghiệp vụ: khi tạo kỳ kê khai thành công (ở trạng thái `open`), tự động hiển thị nhật ký tương ứng ở tab Nhật ký kê khai, và khi bấm xóa kỳ kê khai ở tab Kê khai thuế, nhật ký tương ứng cũng tự động xóa theo.
 - **Giải pháp:**
   - Cập nhật [tax.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/tax/tax.component.ts):
@@ -1967,6 +2114,7 @@
 - **Kết quả:** Biên dịch dự án frontend Angular (`npm run build`) thành công 100% không phát sinh bất kỳ lỗi nào.
 
 ### Yêu cầu: Đồng bộ cấu trúc bảng Kê khai thuế & Khắc phục lỗi biến mất dữ liệu sau khi khóa sổ
+
 - **Nội dung yêu cầu:** Người dùng phản hồi rằng dữ liệu ở tab Kê khai thuế bị trống/không hiện ra so với giao diện tham khảo, đồng thời khi bấm khóa sổ kỳ chốt thuế thì dữ liệu đó biến mất hoàn toàn khỏi bảng.
 - **Giải pháp:**
   - **Phân tích:** Trước đây tab Kê khai thuế chỉ gọi API tải các kỳ đang mở (`status = 'open'`), nên khi một kỳ được khóa sổ (`status` chuyển thành `'locked'`) nó sẽ biến mất khỏi danh sách. Đồng thời cấu trúc cột của bảng cũ hiển thị Doanh thu/Chi phí/Thuế thay vì hiển thị các sổ sách kế toán trong kỳ.
@@ -1982,6 +2130,7 @@
 - **Kết quả:** Biên dịch dự án frontend Angular (`npm run build`) thành công 100% không phát sinh bất kỳ lỗi nào.
 
 ### Yêu cầu: Kế thừa checkbox từ CustomCheckboxComponent và bổ sung Dark Mode đầy đủ trong phân hệ Thuế (Tax)
+
 - **Nội dung yêu cầu:** Đồng bộ hóa các checkbox trong tab Kê khai thuế (Form khảo sát) và tab Nhật ký kê khai (Dropdown bộ lọc Phân loại) kế thừa từ component `<app-custom-checkbox>` của hệ thống và bổ sung đầy đủ màu sắc tương thích Dark Mode.
 - **Giải pháp:**
   - Cập nhật [tax.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/tax/tax.component.ts): Import và đăng ký `CustomCheckboxComponent` vào mảng `imports`.
@@ -1991,6 +2140,7 @@
 - **Kết quả:** Biên dịch dự án frontend Angular (`npm run build`) thành công 100% không phát sinh bất kỳ lỗi nào. Các checkbox hiển thị mượt mà, đổi màu chuẩn theo dynamic primary theme và phản hồi chuẩn xác ở cả hai chế độ sáng/tối.
 
 ### Yêu cầu: Cho phép tái tạo/cập nhật kỳ kê khai thuế đã khóa sổ
+
 - **Nội dung yêu cầu:** Người dùng muốn có thể tạo mới/cập nhật kỳ kê khai thuế cho khoảng thời gian đã được khóa sổ (do dữ liệu trong tháng vẫn liên tục cập nhật).
 - **Giải pháp:**
   - Cập nhật [TaxController.php](file:///d:/git/cafe-blockchain/cafe-blockchain-api/app/Http/Controllers/TaxController.php):
@@ -1999,6 +2149,7 @@
 - **Kết quả:** Cú pháp PHP hợp lệ, cache Laravel đã được dọn sạch. Người dùng có thể cập nhật số liệu bất cứ lúc nào.
 
 ### Yêu cầu: Khắc phục lỗi dropdown Tải file bị cắt, đứt hover và tối ưu hóa đóng modal xem chi tiết thuế
+
 - **Nội dung yêu cầu:** Người dùng báo lỗi giao diện: Rê chuột vào nút "Tải file" ở Header modal xem chi tiết thuế thì hiện dropdown, nhưng khi di chuột xuống các tùy chọn (Tải Excel, Tải XML) thì dropdown biến mất (không bấm được trên máy tính). Ngoài ra, dropdown bị cắt phẳng 2 bên sườn (clipping). Đồng thời người dùng thắc mắc tại sao khi tắt modal (bấm X hoặc bấm ra ngoài) lại cần call API tải lại danh sách. Ngoài ra thay đổi màu nền xanh lá của Header modal thành màu gradient thương hiệu.
 - **Giải pháp:**
   - Cập nhật [tax-detail-modal.component.html](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/tax/components/tax-detail-modal/tax-detail-modal.component.html):
@@ -2012,19 +2163,19 @@
     - Sửa callback đóng modal xem chi tiết: Chỉ gọi API tải lại danh sách `this.loadLogs()` khi modal trả về `true` (người dùng thực sự bấm Lưu thay đổi). Nếu chỉ bấm X hoặc click ngoài để tắt modal (không lưu), hệ thống sẽ bỏ qua gọi API để tiết kiệm tài nguyên mạng.
 - **Kết quả:** Build frontend `npm run build` thành công 100%. Lỗi dropdown và logic tắt modal hoạt động chuẩn xác.
 
-
-
 ### Yêu cầu: Tối ưu chống spam request API (Rate Limiting) và chống Click trùng lặp (Double Click) ở Frontend
+
 - **Nội dung yêu cầu:** Người dùng muốn kiểm tra và kích hoạt cơ chế chống spam/DDoS khi client gọi API liên tục. Đồng thời tinh chỉnh rate limit toàn cục phù hợp (30 requests / 10 giây) để nếu bị chặn, người dùng chỉ cần đợi tối đa 10 giây để được tự động mở khóa.
 - **Giải phҡp:**
   - **Backend (Laravel):**
     - Cập nhật [AppServiceProvider.php](file:///d:/git/cafe-blockchain/cafe-blockchain-api/app/Providers/AppServiceProvider.php): Thay thế rate limiter mặc định pi thành Limit::perSecond(30, 10) (tối đa 30 requests trong 10 giây cho mỗi IP). Thiết lập này giúp tối ưu hóa thời gian mở khóa chỉ còn tối đa 10 giây nếu vô tình bị chặn (HTTP 429).
-    - Cập nhật [bootstrap/app.php](file:///d:/git/cafe-blockchain/cafe-blockchain-api/bootstrap/app.php): Kích hoạt global rate limiting cho toàn bộ API routes bằng cách thêm middleware 	hrottle:api vào nhóm middleware pi.
+    - Cập nhật [bootstrap/app.php](file:///d:/git/cafe-blockchain/cafe-blockchain-api/bootstrap/app.php): Kích hoạt global rate limiting cho toàn bộ API routes bằng cách thêm middleware hrottle:api vào nhóm middleware pi.
   - **Frontend (Angular):**
     - Cập nhật [tax.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/tax/tax.component.ts): Khai báo cờ isOpeningDetail và chặn sự kiện mở modal chồng chéo khi người dùng double click hoặc click spam nhiều lần liên tiếp trên một dòng log. Cờ sẽ tự giải phóng sau khi đóng modal hoặc tự reset sau 1 giây.
 - **Kết quả:** Build frontend thành công 100%. Chạy script PowerShell kiểm thử 35 requests liên tục lên API: 30 requests đầu thành công 200, từ request 31 trở đi bị block 429 và tự mở khóa sau 10 giây.
 
 ### Yêu cầu: Chuẩn hóa app-card directive và dọn dẹp các class CSS dư thừa
+
 - **Nội dung yêu cầu:** Chuyển đổi các thẻ sử dụng class CSS tĩnh `<div class="app-card ...">` sang directive `app-card` dạng `<div app-card>` chuẩn Angular, đồng thời import `CardComponent` vào các component tương ứng (`HomeComponent`, `ContactComponent`, `AboutComponent`) và loại bỏ hoàn toàn các class CSS trùng lặp/dư thừa (padding, background, backdrop-blur).
 - **Giải pháp:**
   - Cập nhật [home.component.ts](file:///d:/git/angular-web3-wallet/src/app/home.component.ts), [contact.component.ts](file:///d:/git/angular-web3-wallet/src/app/contact.component.ts), và [about.component.ts](file:///d:/git/angular-web3-wallet/src/app/about.component.ts): Import và thêm `CardComponent` vào mảng `imports`.
@@ -2032,6 +2183,7 @@
 - **Kết quả:** Build thành công 100%, không còn class thừa và tuân thủ chuẩn Angular Component/Directive.
 
 ### Yêu cầu: Khắc phục lỗi lệch tâm của chấm tròn trong custom-radio
+
 - **Nội dung yêu cầu:** Giao diện chấm tròn của `custom-radio` khi được chọn bị lệch trục (bị lệch lên trên và sang trái và bị cắt góc).
 - **Phân tích nguyên nhân:** Trục trặc do sự xung đột thuộc tính `transform: translate(-50%, -50%)` được định nghĩa cả trong animation keyframes `@keyframes scaleUp` của component và các class định vị tuyệt đối `absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2` của Tailwind. Khi animation chạy xong với chế độ `forwards`, nó ghi đè và làm sai lệch tọa độ trung tâm của chấm tròn.
 - **Giải pháp:**
@@ -2040,12 +2192,20 @@
 - **Kết quả:** Chấm tròn được căn giữa hoàn hảo 100% trong mọi điều kiện và build thành công không lỗi.
 
 ### Yêu cầu: Điều chỉnh khoảng cách icon tìm kiếm trong custom-select và xác nhận tùy chọn bật tắt tìm kiếm
+
 - **Nội dung yêu cầu:** Người dùng phản hồi icon kính lúp của ô tìm kiếm trong dropdown `custom-select` nằm quá sát mép trái. Đồng thời hỏi về tùy chọn để bật/tắt ô tìm kiếm này.
 - **Giải pháp:**
   - **Tối ưu UI khoảng cách**: Cập nhật [custom-select.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/custom-select/custom-select.component.html), thay thế class padding của khung tìm kiếm từ `p-2` sang `px-4 py-2.5` và tăng khoảng cách `gap-2` lên `gap-2.5`. Thay đổi này giúp icon kính lúp được căn lề trái chính xác là 16px, thẳng hàng hoàn hảo với các chữ của list option bên dưới.
   - **Xác nhận tùy chọn bật/tắt tìm kiếm**: Xác nhận component `CustomSelectComponent` đã hỗ trợ sẵn thuộc tính `@Input() showSearch: boolean = false`. Khi sử dụng chỉ cần truyền `[showSearch]="true"` để hiển thị hoặc `[showSearch]="false"` (hoặc không truyền) để ẩn hoàn toàn thanh tìm kiếm.
 - **Kết quả:** Giao diện ô tìm kiếm cân đối và thẳng hàng, build thành công 100% không lỗi.
 
+### Yêu cầu: Xây dựng mới component custom-checkbox và tích hợp vào UI Components Showcase ở trang chủ
 
-
-
+- **Nội dung yêu cầu:** Tạo mới một component Checkbox cao cấp cho dự án và bổ sung thêm phần demo hiển thị (Showcase) cho checkbox này trên trang chủ.
+- **Giải pháp:**
+  - **Xây dựng component**: Tạo mới thư mục [custom-checkbox](file:///d:/git/angular-web3-wallet/src/app/shared/components/custom-checkbox), thiết lập component `CustomCheckboxComponent` kế thừa `ControlValueAccessor` để hỗ trợ liên kết hai chiều `ngModel` và Angular Forms.
+  - **Thiết kế UI**: Khung viền vuông checkbox bo góc nhẹ `rounded-[6px]`, tự động tô màu nền và viền bằng màu Accent `var(--color-primary)` kèm bóng đổ tinh tế khi được chọn. Icon checkmark được vẽ bằng mã inline SVG mảnh và áp dụng chuyển động mượt mà bằng CSS scale và opacity.
+  - **Tích hợp vào Trang chủ**:
+    - Cập nhật [home.component.ts](file:///d:/git/angular-web3-wallet/src/app/home.component.ts) để đăng ký import component mới và khai báo signal `demoCheckboxValue` đại diện cho trạng thái checkbox.
+    - Cập nhật [home.component.html](file:///d:/git/angular-web3-wallet/src/app/home.component.html) thêm card demo "Custom Checkbox" mới làm CARD 3, đồng thời sửa lại số thứ tự comment của các card cũ phía sau cho đồng bộ.
+- **Kết quả:** Component Checkbox hoạt động hoàn hảo, đồng bộ dữ liệu chuẩn xác và giao diện hòa hợp với hệ thống, build thành công 100%.
