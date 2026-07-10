@@ -2,6 +2,34 @@
 
 ## Ngày 10/07/2026
 
+### Yêu cầu: Khắc phục lỗi WalletConnect Relay Server và lỗi treo kết nối di động (failed to publish custom payload)
+- **Nội dung yêu cầu:** Người dùng báo lỗi khi kết nối ví hiển thị thông báo "Failed to publish custom payload, please try again. id:... tag:undefined" và bị treo loading trên mobile.
+- **Phân tích nguyên nhân:**
+  1. Project ID cũ (`3cd580cdbe4845d5bcc4d40d6e7a9dd3`) của Cafe Blockchain bị rate-limit do dùng chung và bị khóa vì không khớp tên miền.
+  2. WalletConnect/AppKit tự động fetch remote config từ cloud, kích hoạt SIWE (reown authentication) không mong muốn, dẫn đến handshake bị treo hoặc thất bại khi publisher payload.
+- **Giải pháp:**
+  - Cập nhật Project ID mới (`a196657383cc397e36c797a54165e326`) vào [environment.ts](file:///d:/git/angular-web3-wallet/src/environments/environment.ts) và [environment.development.ts](file:///d:/git/angular-web3-wallet/src/environments/environment.development.ts).
+  - Import `ApiController` từ `@reown/appkit-controllers` và ghi đè `ApiController.fetchProjectConfig` trong hàm `initAppKit()` của [web3.service.ts](file:///d:/git/angular-web3-wallet/src/app/core/services/web3.service.ts) để tắt hoàn toàn remote config fetch & tắt SIWE client-side.
+  - Cấu hình `allowUnsupportedChain: false`, `features.reownAuthentication = false` và `enableCoinbase = false`.
+
+### Yêu cầu: Hỗ trợ mạng BSC, sắp xếp dropdown mạng lưới và đồng bộ UI button Kết nối
+- **Nội dung yêu cầu:**
+  1. Loại bỏ các chain Sepolia và Polygon, thêm BSC Mainnet và BSC Testnet làm mạng được hỗ trợ.
+  2. Sắp xếp lại dropdown chọn mạng: các mạng Mainnet nằm ở trên, Testnet ở dưới, loại bỏ đường gạch ngang ở giữa các mạng.
+  3. Loại bỏ thông tin chi tiết mạng (Mạng kết nối, Chain ID) khỏi dropdown ví của account.
+  4. Sửa nút Kết nối ví trên Header để kích cỡ bằng với nút Quả địa cầu (đều cao 40px - h-10) và đồng nhất màu sắc gradient.
+  5. Đặt Arbitrum One làm chain mặc định khi khởi tạo DApp.
+- **Giải pháp:**
+  - Cập nhật [web3.service.ts](file:///d:/git/angular-web3-wallet/src/app/core/services/web3.service.ts): Thay thế imports và supportedChains, đưa `arbitrum` lên đầu mảng supportedChains để đặt làm chain mặc định. Thêm method `openAccountModal()`.
+  - Cập nhật [header.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/header/header.component.ts): Thêm import `ButtonComponent` và bổ sung vào metadata component; cập nhật mapping explorer URL cho BSC.
+  - Cập nhật [header.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/header/header.component.html):
+    - Đặt class `w-10 h-10 shrink-0` cho nút quả địa cầu.
+    - Sắp xếp lại thứ tự mạng (Ethereum -> Arbitrum One -> BNB Smart Chain -> Arbitrum Sepolia -> BSC Testnet) và bỏ thẻ divider.
+    - Áp dụng `app-button variant="primary"` với class `h-10 text-xs sm:text-sm px-4 sm:px-6 shrink-0` cho nút Kết nối ví trên header.
+    - Sửa nút "Chi tiết ví" trong account dropdown gọi `web3Service.openAccountModal()`.
+    - Xóa khối thông tin mạng kết nối và Chain ID ở cuối account dropdown.
+    - Giảm padding các item dropdown từ `py-3` xuống `py-2` để giao diện gọn gàng hơn.
+
 ### Yêu cầu: Giải đáp lỗi treo màn hình loading (xoay vòng vô tận) "Continue in MetaMask/Trust Wallet..." trên di động
 - **Nội dung yêu cầu:** Người dùng phản ánh khi bấm kết nối ví (MetaMask, Trust Wallet...) trên trình duyệt di động, WalletConnect/AppKit hiển thị thông báo "Continue in..." và xoay vòng vô tận mà không tự động mở ứng dụng ví.
 - **Phân tích nguyên nhân:**

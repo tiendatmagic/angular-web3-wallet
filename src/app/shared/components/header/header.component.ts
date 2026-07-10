@@ -6,11 +6,12 @@ import { Web3Service } from '@core/services/web3.service';
 import { ThemeService } from '@core/services/theme.service';
 import { ToastService } from '@core/services/toast.service';
 import { IconComponent } from '@shared/components/icon/icon.component';
+import { ButtonComponent } from '@shared/components/button/button.component';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, IconComponent, RouterModule, FormsModule],
+  imports: [CommonModule, IconComponent, ButtonComponent, RouterModule, FormsModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
