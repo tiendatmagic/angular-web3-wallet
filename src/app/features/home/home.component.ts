@@ -16,6 +16,7 @@ import { AccordionComponent } from '@shared/components/accordion/accordion.compo
 import { AccordionItemComponent } from '@shared/components/accordion/accordion-item.component';
 import { KbdComponent } from '@shared/components/kbd/kbd.component';
 import { TooltipDirective } from '@shared/components/tooltip/tooltip.directive';
+import { CustomSliderComponent } from '@shared/components/custom-slider/custom-slider.component';
 import { TabGroupComponent, TabOption } from '@shared/components/tab-group/tab-group.component';
 import { StateService } from '@core/services/state.service';
 import { ModalService } from '@core/services/modal.service';
@@ -44,6 +45,7 @@ import { parseEther } from 'ethers';
     KbdComponent,
     TooltipDirective,
     TabGroupComponent,
+    CustomSliderComponent,
   ],
   templateUrl: './home.component.html'
 })
@@ -77,6 +79,10 @@ export class HomeComponent {
   public demoDatePickerMinDate = signal('2026-07-20'); // Mốc ngày minDate tùy biến (ví dụ: ngày 20)
   public demoDatePickerShowPresets = signal(true); // Cấu hình bật/tắt presets gợi ý chọn nhanh
   public demoAccordionMultiple = signal(false);
+
+  // Trạng thái Demo Slider
+  public demoSliderVal1 = signal(60);
+  public demoSliderVal2 = signal(30);
 
   // Trạng thái Demo Tab Group
   public demoTabValue = signal('wallet');

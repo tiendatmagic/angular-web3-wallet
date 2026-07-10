@@ -2,6 +2,16 @@
 
 ## Ngày 11/07/2026
 
+### Yêu cầu: Áp dụng Tab Group Component dùng chung (`app-tab-group`)
+- **Nội dung yêu cầu:** Rà soát toàn bộ source code, tìm kiếm những vị trí chưa áp dụng `app-tab-group` dùng chung để triển khai đồng bộ hóa giao diện.
+- **Giải pháp:**
+  1. **Đồng bộ hóa TxSpeedSelector:** Thay thế lưới nút chọn tốc độ giao dịch thủ công bằng component `<app-tab-group>` chuẩn của hệ thống, liên kết trực tiếp với signal `stateService.txSpeed` và bộ cấu hình `speedOptions` ("Mặc định", "Nhanh", "Tùy chọn").
+  2. **Đồng bộ hóa ThemeSwitcher:** Chuyển bộ nút thay đổi giao diện (Sáng / Tự động / Tối) sang sử dụng `<app-tab-group>` toàn chiều rộng, tích hợp cả icon và nhãn chữ giúp giao diện đồng bộ hoàn chỉnh với TxSpeedSelector.
+  3. **Thêm Demo Showcase:** 
+     - Tại Trang chủ: Thêm **Card 9 (Custom Tab Group)** giới thiệu tab group mẫu tích hợp icon và badge số lượng thông báo (Ví dApp, Lịch sử, Cấu hình).
+     - Tại Demo Modal: Thêm bộ tab group chọn mạng ưu tiên mẫu ("Ethereum", "Arbitrum", "BNB Chain") kèm chấm tròn màu đại diện (`dotClass`) để kiểm thử khả năng render/đè đắp trong dialog.
+  4. **Kiểm thử biên dịch:** Chạy `npm run build` thành công 100% không lỗi, các component render mượt mà, đúng chuẩn thiết kế.
+
 ### Yêu cầu: Bổ sung các UI Components mới (Accordion, Badge, Kbd, Tooltip) và demo lên trang chủ/modal
 - **Nội dung yêu cầu:** Thêm các UI components như `Accordion`, `Kbd` (Keyboard key), và `Tooltip` vào `src/app/shared/components`, đồng thời trình diễn chúng cùng với component `Badge` (đã có sẵn) trên Trang chủ và Demo Modal. Badge không cần áp dụng Tooltip. Đảm bảo tất cả component đều được tách biệt rõ ràng thành cả tệp `.ts` và `.html` tương ứng.
 - **Giải pháp:**

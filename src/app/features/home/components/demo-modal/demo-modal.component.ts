@@ -16,6 +16,7 @@ import { KbdComponent } from '@shared/components/kbd/kbd.component';
 import { TooltipDirective } from '@shared/components/tooltip/tooltip.directive';
 import { BadgeComponent } from '@shared/components/badge/badge.component';
 import { TabGroupComponent, TabOption } from '@shared/components/tab-group/tab-group.component';
+import { CustomSliderComponent } from '@shared/components/custom-slider/custom-slider.component';
 
 @Component({
   selector: 'app-demo-modal',
@@ -36,7 +37,8 @@ import { TabGroupComponent, TabOption } from '@shared/components/tab-group/tab-g
     KbdComponent,
     TooltipDirective,
     BadgeComponent,
-    TabGroupComponent
+    TabGroupComponent,
+    CustomSliderComponent
   ],
   templateUrl: './demo-modal.component.html',
   styles: [
@@ -56,6 +58,7 @@ export class DemoModalComponent {
   public modalSwitchValue = signal(false);
   public modalRadioValue = signal('arbitrum');
   public modalCheckboxValue = signal(false);
+  public modalSliderValue = signal(3);
 
   // Trạng thái Demo Tab Group trong Modal
   public modalTabValue = signal('bsc');
@@ -97,7 +100,9 @@ export class DemoModalComponent {
       select: this.modalSelectValue(),
       switch: this.modalSwitchValue(),
       radio: this.modalRadioValue(),
-      checkbox: this.modalCheckboxValue()
+      checkbox: this.modalCheckboxValue(),
+      tab: this.modalTabValue(),
+      slider: this.modalSliderValue()
     });
   }
 }
