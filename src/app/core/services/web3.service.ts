@@ -2,6 +2,7 @@ import { Injectable, signal, inject, effect } from '@angular/core';
 import { createAppKit, type AppKit } from '@reown/appkit';
 import { EthersAdapter } from '@reown/appkit-adapter-ethers';
 import { mainnet, arbitrum, arbitrumSepolia, bsc, bscTestnet } from '@reown/appkit/networks';
+import { ApiController } from '@reown/appkit-controllers';
 import { BrowserProvider, formatEther } from 'ethers';
 import { environment } from '@environments/environment';
 import { ThemeService } from './theme.service';
@@ -49,29 +50,45 @@ export class Web3Service {
   }
 
   private initAppKit() {
-    // Đọc Project ID động từ environment
+    if (typeof window === 'undefined') return;
+
     const projectId = environment.walletConnectProjectId;
+    if (!projectId) {
+      console.warn('[Web3] walletConnectProjectId is missing in environment configuration.');
+      return;
+    }
 
-    const metadata = {
-      name: 'Angular Web3 DApp',
-      description: 'Angular Web3 Application Framework',
-      url: typeof window !== 'undefined' ? window.location.origin : 'http://localhost:4200',
-      icons: ['https://avatars.githubusercontent.com/u/37784886']
-    };
+    // Ghi đè ApiController.fetchProjectConfig để ngăn AppKit fetch remote config từ Cloud
+    // Điều này cho phép cấu hình features.reownAuthentication = false có hiệu lực ở client-side
+    try {
+      (ApiController as any).fetchProjectConfig = async () => null;
+    } catch (e) {
+      // ignore
+    }
 
-    // Khởi tạo AppKit ban đầu với theme mode tương ứng
     const isDark = this.themeService.isDarkMode();
 
     this.modal = createAppKit({
       adapters: [new EthersAdapter()],
       networks: this.supportedChains as any,
-      metadata,
+      defaultNetwork: this.supportedChains[0] as any, // Arbitrum One làm default
+      allowUnsupportedChain: false,
+      metadata: {
+        name: 'Angular Web3 DApp',
+        description: 'Angular Web3 Application Framework',
+        url: window.location.origin,
+        icons: [window.location.origin + '/favicon.ico']
+      },
       projectId,
       themeMode: isDark ? 'dark' : 'light',
       features: {
-        analytics: false
-      }
-    });
+        email: false,
+        socials: false,
+        analytics: false,
+        reownAuthentication: false
+      },
+      enableCoinbase: false
+    } as any);
 
     // Lắng nghe sự thay đổi tài khoản
     this.modal.subscribeAccount(async (accountState) => {
