@@ -36,8 +36,8 @@ import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/f
         display: block;
       }
       @keyframes scaleUp {
-        from { transform: translate(-50%, -50%) scale(0); }
-        to   { transform: translate(-50%, -50%) scale(1); }
+        from { transform: scale(0); }
+        to   { transform: scale(1); }
       }
       .animate-scale-up {
         animation: scaleUp 0.15s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;

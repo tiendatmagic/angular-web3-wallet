@@ -2031,4 +2031,13 @@
   - Cập nhật các template của 3 component trên: Đổi các thẻ `div.app-card` thành `<div app-card>` và xóa bỏ các class CSS dư thừa (`!p-5`, `md:!p-6`, `!p-8`, `md:!p-12`, `bg-white/60`, `dark:bg-slate-900/60`, `backdrop-blur-md`).
 - **Kết quả:** Build thành công 100%, không còn class thừa và tuân thủ chuẩn Angular Component/Directive.
 
+### Yêu cầu: Khắc phục lỗi lệch tâm của chấm tròn trong custom-radio
+- **Nội dung yêu cầu:** Giao diện chấm tròn của `custom-radio` khi được chọn bị lệch trục (bị lệch lên trên và sang trái và bị cắt góc).
+- **Phân tích nguyên nhân:** Trục trặc do sự xung đột thuộc tính `transform: translate(-50%, -50%)` được định nghĩa cả trong animation keyframes `@keyframes scaleUp` của component và các class định vị tuyệt đối `absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2` của Tailwind. Khi animation chạy xong với chế độ `forwards`, nó ghi đè và làm sai lệch tọa độ trung tâm của chấm tròn.
+- **Giải pháp:**
+  - Cập nhật [custom-radio.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/custom-radio/custom-radio.component.html): Đặt `flex items-center justify-center` trực tiếp lên vòng tròn cha bên ngoài để trình duyệt tự động căn giữa chấm tròn bên trong mà không cần dùng các class định vị `absolute top-1/2...` và tịnh tiến.
+  - Cập nhật [custom-radio.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/custom-radio/custom-radio.component.ts): Đơn giản hóa `@keyframes scaleUp` chỉ thực hiện biến đổi `scale(0)` sang `scale(1)` mà không can thiệp vào `translate` giúp triệt tiêu hoàn toàn sự xung đột.
+- **Kết quả:** Chấm tròn được căn giữa hoàn hảo 100% trong mọi điều kiện và build thành công không lỗi.
+
+
 

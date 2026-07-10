@@ -5,7 +5,7 @@
 >
   <!-- Vòng tròn radio button -->
   <div
-    class="relative shrink-0 h-5 w-5 rounded-full border-2 transition-all duration-200"
+    class="relative shrink-0 h-5 w-5 rounded-full border-2 transition-all duration-200 flex items-center justify-center"
     [ngClass]="
       checked()
         ? 'border-[var(--color-primary)] bg-white dark:bg-slate-900 shadow-sm shadow-[var(--color-primary)]/15'
@@ -14,7 +14,7 @@
   >
     <!-- Chấm tròn trung tâm khi được chọn -->
     @if (checked()) {
-      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-2.5 w-2.5 rounded-full bg-[var(--color-primary)] animate-scale-up"></div>
+      <div class="h-2.5 w-2.5 rounded-full bg-[var(--color-primary)] animate-scale-up"></div>
     }
   </div>
 
