@@ -19,6 +19,11 @@
 - **Phân tích nguyên nhân:** Ô input số lượng ETH có kiểu `type="number"` và được liên kết hai chiều qua `[(ngModel)]="amount"`. Khi người dùng nhập số, Angular ngModel tự động chuyển đổi kiểu dữ liệu của `amount` trong Signal từ `string` sang `number`. Do đó, khi gọi `this.amount().trim()`, JavaScript báo lỗi do kiểu `number` không có hàm `trim()`.
 - **Giải pháp:** Cập nhật file [app.ts](file:///d:/git/angular-web3-wallet/src/app/app.ts), bọc giá trị của `this.amount()` và `this.toAddress()` qua hàm `String(...)` trước khi gọi `.trim()`. Áp dụng tương tự cho `this.messageToSign()` để đảm bảo an toàn kiểu dữ liệu.
 
+### Yêu cầu: Cấu hình tệp `netlify.toml` bị lỗi build trên Netlify
+- **Nội dung yêu cầu:** Lỗi build không thành công trên Netlify do cấu hình sai đường dẫn trong `netlify.toml`.
+- **Phân tích nguyên nhân:** Tệp cấu hình cũ khai báo `base = "cafe-blockchain-web"` và `publish = "dist/cafe-blockchain-web/browser"`. Do project này có tên là `angular-web3-wallet` và mã nguồn nằm ở thư mục gốc (không phải thư mục con `cafe-blockchain-web`), Netlify không thể chạy lệnh build và tìm đúng thư mục để deploy.
+- **Giải pháp:** Cập nhật file [netlify.toml](file:///d:/git/angular-web3-wallet/netlify.toml), loại bỏ hoàn toàn thuộc tính `base`, đổi `publish` thành `"dist/angular-web3-wallet/browser"`, đồng thời thêm cấu hình `[[redirects]]` để tránh lỗi 404 cho Angular Single Page Application (SPA).
+
 ## Ngày 08/07/2026
 
 ### Yêu cầu: Xây dựng khung dự án Angular Web3 bằng Tailwind CSS v4, Ethers.js v6 và Reown AppKit

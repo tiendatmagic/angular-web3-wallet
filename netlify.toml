@@ -1,7 +1,11 @@
 [build]
-  base = "cafe-blockchain-web"
-  publish = "dist/cafe-blockchain-web/browser"
+  publish = "dist/angular-web3-wallet/browser"
   command = "npm run build"
 
 [build.environment]
   NPM_FLAGS = "--legacy-peer-deps"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
