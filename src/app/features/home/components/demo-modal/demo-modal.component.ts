@@ -45,8 +45,10 @@ export class DemoModalComponent {
 
   // minDate & Presets configurations
   public readonly today = CustomDatePickerComponent.todayString();
-  public limitDatePicker = signal(false);
-  public demoDatePickerMinDate = signal('2026-07-20');
+  public limitDatePicker = signal(true); // Mặc định bật giới hạn
+  public demoDatePickerMinDate = signal(this.today); // Mốc ngày minDate mặc định là hôm nay
+  public limitDatePickerMax = signal(false); // Bật/tắt giới hạn ngày tối đa
+  public demoDatePickerMaxDate = signal('2026-07-25'); // Mốc ngày maxDate mặc định (ví dụ: ngày 25)
   public demoDatePickerShowPresets = signal(true);
 
   public readonly demoChainOptions = [

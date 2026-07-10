@@ -7,8 +7,10 @@
 - **Nội dung yêu cầu:** DApp đang thiếu component `custom-date-picker` trong thư mục `shared/components`. Người dùng yêu cầu xây dựng component này và thêm một Modal Demo hiển thị tập hợp tất cả các input controls (date-picker, select, switch, radio, checkbox) để trình diễn UI Components Showcase.
 - **Giải pháp:**
   1. **[NEW] `custom-date-picker/`**: Component standalone tích hợp `ControlValueAccessor`, lịch popover 42 ngày (6 tuần) tính toán động, hỗ trợ `minDate`/`maxDate`, click-outside tự đóng, hiển thị ngày dạng `DD/MM/YYYY`. Icon lịch SVG (`calendar`) đã có sẵn trong thư viện `IconComponent`. Tuân thủ `:host { display: block; }`.
-  2. **[MODIFY] `home.component.ts`**: Import `CustomDatePickerComponent` và `ModalComponent`. Thêm signals: `demoDatePickerValue`, `showDemoModal`, `modalDateValue`, `modalSelectValue`, `modalSwitchValue`, `modalRadioValue`, `modalCheckboxValue`.
-  3. **[MODIFY] `home.component.html`**: Bổ sung Card 6 "Custom Date Picker" vào grid Showcase. Thêm nút "Mở Modal Demo Form" bên dưới grid. Tích hợp `<app-modal>` size `xl` chứa form demo với 5 loại controls và bảng "Giá trị hiện tại" live output, kèm nút Hủy/Xác nhận.
+  2. **[MODIFY] `home.component.ts`**: Import `DemoModalComponent` và `ModalService`. Inject `ModalService` và định nghĩa phương thức `openDemoModal()` để gọi mở động `DemoModalComponent` khi người dùng nhấn nút. Xóa bỏ các thuộc tính/signals của modal cũ khỏi `HomeComponent`.
+  3. **[MODIFY] `home.component.html`**: Bổ sung Card 6 "Custom Date Picker" vào grid Showcase. Thêm nút "Mở Modal Demo Form" liên kết với hàm `openDemoModal()`. Xóa bỏ hoàn toàn khối HTML `<app-modal>` nhúng tĩnh ở cuối file.
+  4. **[NEW] `DemoModalComponent`**: Tạo component standalone chứa toàn bộ form showcase demo và live output data, độc lập quản lý trạng thái form local và đóng modal trả kết quả qua `ModalRef.close()`.
+  4. **[OPTIMIZE] Khắc phục lỗi dính sát UI (Spacing)**: Chuyển đổi container ngoài cùng của `DemoModalComponent` từ `space-y-6` sang `flex flex-col gap-5` để đảm bảo khoảng cách 20px (gap-5) giữa bảng cấu hình mốc giới hạn và ô nhập Date Picker luôn hiển thị chính xác, không bị ảnh hưởng bởi cơ chế kết xuất element động của Angular.
   4. **[OPTIMIZE] Thoát khỏi overflow container**: Chuyển đổi dropdown của `custom-select` và popover lịch của `custom-date-picker` từ định vị `absolute` sang `fixed` động tính theo tọa độ viewport (`getBoundingClientRect()`) khi mở, kết hợp lắng nghe sự kiện `scroll` và `resize` của cửa sổ để định vị lại. Điều này giúp các thành phần popup tự do hiển thị đè lên trên modal mà không bị cắt cụt bởi thuộc tính `overflow-y-auto` của modal body. Đồng thời khi hiển thị ở phía trên (placement="top"), áp dụng `transform: translateY(-100%)` kết hợp đặt `top` trùng mép trên trigger (trừ đi gap) giúp mép dưới của dropdown/lịch luôn hít sát và bám chặt vào trigger, không bị bay lơ lửng khi chiều cao của chúng thay đổi.
   5. **[OPTIMIZE] Smart Placement**: Bổ sung logic tính toán khoảng không gian phía trên và dưới trigger button trong viewport để tự động hiển thị dropdown/lịch ở vị trí tối ưu (phía trên nếu bên dưới không đủ diện tích).
   6. **[OPTIMIZE] Thiết kế Lịch và Quick Presets**:
@@ -17,7 +19,7 @@
      - Sửa đổi hàm so sánh `minDate` để chuẩn hóa định dạng thời gian và vô hiệu hóa (disabled) chính xác mọi ngày trước mốc thiết lập.
      - **Tương tác linh hoạt:** Mặc định tắt giới hạn `minDate` để người dùng chọn ngày tùy ý. Thêm switch bật/tắt và input nhập mốc ngày `minDate` tùy biến (như ngày 20, 30...) ngay trên UI để kiểm thử động.
      - **Bật/tắt presets linh hoạt:** Thêm thuộc tính `@Input() showPresets` vào component và switch "Hiển thị gợi ý chọn nhanh (presets)" trực quan trên UI Showcase để bật/tắt hàng presets này theo nhu cầu.
-- **Kết quả:** Build thành công 100% không lỗi. Tất cả component đồng bộ màu `var(--color-primary)` và tuân thủ design system.
+- **Kết quả:** Build thành công 100% không lỗi. Tích hợp maxDate động và đồng bộ hóa toàn diện UI các ô nhập liệu theo Design System (bo góc rounded-xl 15px, padding lớn, focus màu thương hiệu). Tất cả component đồng bộ màu `var(--color-primary)`.
 
 ### Yêu cầu: Khắc phục các lỗi UI của các custom components mới xây dựng
 

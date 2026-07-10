@@ -1,16 +1,32 @@
-<div class="space-y-6">
-  <!-- Bảng cấu hình mốc giới hạn minDate & Presets -->
-  <div class="flex flex-col gap-2.5 p-3 bg-slate-50/50 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 rounded-xl space-y-1.5">
+<div class="flex flex-col gap-5">
+  <!-- Bảng cấu hình mốc giới hạn minDate & maxDate & Presets -->
+  <div
+    class="flex flex-col gap-2.5 p-3 bg-slate-50/50 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 rounded-xl space-y-1.5"
+  >
     <div class="flex items-center justify-between">
-      <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Giới hạn ngày tối thiểu (minDate)</span>
+      <span class="text-xs font-bold text-slate-500 dark:text-slate-400"
+        >Giới hạn ngày tối thiểu (minDate)</span
+      >
       <app-custom-switch
         [checked]="limitDatePicker()"
         (checkedChange)="limitDatePicker.set($event)"
       />
     </div>
-    
+
     <div class="flex items-center justify-between">
-      <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Hiển thị gợi ý chọn nhanh (presets)</span>
+      <span class="text-xs font-bold text-slate-500 dark:text-slate-400"
+        >Giới hạn ngày tối đa (maxDate)</span
+      >
+      <app-custom-switch
+        [checked]="limitDatePickerMax()"
+        (checkedChange)="limitDatePickerMax.set($event)"
+      />
+    </div>
+
+    <div class="flex items-center justify-between">
+      <span class="text-xs font-bold text-slate-500 dark:text-slate-400"
+        >Hiển thị gợi ý chọn nhanh (presets)</span
+      >
       <app-custom-switch
         [checked]="demoDatePickerShowPresets()"
         (checkedChange)="demoDatePickerShowPresets.set($event)"
@@ -18,13 +34,37 @@
     </div>
 
     @if (limitDatePicker()) {
-      <div class="flex flex-col gap-1 pt-1 border-t border-slate-200/30 dark:border-slate-800/30 animate-in fade-in duration-200">
-        <label class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Mốc ngày tối thiểu (YYYY-MM-DD)</label>
+      <div
+        class="flex flex-col gap-1 pt-1 border-t border-slate-200/30 dark:border-slate-800/30 animate-in fade-in duration-200"
+      >
+        <label
+          class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider"
+          >Mốc ngày tối thiểu (YYYY-MM-DD)</label
+        >
         <input
           type="text"
-          [(ngModel)]="demoDatePickerMinDate"
+          [ngModel]="demoDatePickerMinDate()"
+          (ngModelChange)="demoDatePickerMinDate.set($event)"
           placeholder="2026-07-20"
-          class="w-full bg-white dark:bg-slate-950 border border-slate-200/50 dark:border-slate-800/45 rounded-lg px-2.5 py-1 text-xs focus:outline-none focus:border-purple-500 transition-all font-mono text-slate-800 dark:text-slate-100"
+          class="w-full bg-white dark:bg-slate-950/40 border border-slate-200/50 dark:border-slate-800/35 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-[var(--color-primary)] transition-all font-semibold text-slate-800 dark:text-slate-100"
+        />
+      </div>
+    }
+
+    @if (limitDatePickerMax()) {
+      <div
+        class="flex flex-col gap-1 pt-1 border-t border-slate-200/30 dark:border-slate-800/30 animate-in fade-in duration-200"
+      >
+        <label
+          class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider"
+          >Mốc ngày tối đa (YYYY-MM-DD)</label
+        >
+        <input
+          type="text"
+          [ngModel]="demoDatePickerMaxDate()"
+          (ngModelChange)="demoDatePickerMaxDate.set($event)"
+          placeholder="2026-07-25"
+          class="w-full bg-white dark:bg-slate-950/40 border border-slate-200/50 dark:border-slate-800/35 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-[var(--color-primary)] transition-all font-semibold text-slate-800 dark:text-slate-100"
         />
       </div>
     }
@@ -36,8 +76,10 @@
       label="Chọn ngày giao dịch"
       placeholder="DD/MM/YYYY"
       [minDate]="limitDatePicker() ? demoDatePickerMinDate() : ''"
+      [maxDate]="limitDatePickerMax() ? demoDatePickerMaxDate() : ''"
       [showPresets]="demoDatePickerShowPresets()"
-      [(ngModel)]="modalDateValue"
+      [ngModel]="modalDateValue()"
+      (ngModelChange)="modalDateValue.set($event)"
     />
   </div>
 
@@ -50,7 +92,8 @@
       valueKey="value"
       labelKey="label"
       [showSearch]="true"
-      [(value)]="modalSelectValue"
+      [value]="modalSelectValue()"
+      (valueChange)="modalSelectValue.set($event)"
     />
   </div>
 
@@ -87,7 +130,8 @@
   <!-- Checkbox trong Modal -->
   <div>
     <app-custom-checkbox
-      [(ngModel)]="modalCheckboxValue"
+      [ngModel]="modalCheckboxValue()"
+      (ngModelChange)="modalCheckboxValue.set($event)"
       label="Tôi đồng ý với điều khoản dịch vụ"
       description="Xác nhận rằng bạn đã đọc và chấp nhận toàn bộ điều khoản."
     />
@@ -119,10 +163,8 @@
 
   <!-- Nút hành động -->
   <div class="flex items-center justify-end gap-3 pt-2">
-    <button app-button variant="cancel" size="sm" (click)="cancel()">
-      Hủy bỏ
-    </button>
-    <button app-button variant="primary" size="sm" (click)="confirm()">
+    <button app-button variant="cancel" size="md" (click)="cancel()">Hủy bỏ</button>
+    <button app-button variant="primary" size="md" (click)="confirm()">
       <app-icon name="check" class="w-4 h-4" strokeWidth="2.5" />
       Xác nhận
     </button>

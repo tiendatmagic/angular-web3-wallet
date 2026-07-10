@@ -427,7 +427,8 @@
         </h4>
         <div class="space-y-4">
           <app-custom-checkbox
-            [(ngModel)]="demoCheckboxValue"
+            [ngModel]="demoCheckboxValue()"
+            (ngModelChange)="demoCheckboxValue.set($event)"
             label="Chấp nhận điều khoản dịch vụ"
             description="Tôi đồng ý với các điều khoản và cam kết bảo mật thông tin ví dApp này."
           />
@@ -480,7 +481,8 @@
             labelKey="label"
             [showSearch]="true"
             placement="auto"
-            [(value)]="demoSelectValue"
+            [value]="demoSelectValue()"
+            (valueChange)="demoSelectValue.set($event)"
           />
           <div
             class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2"
@@ -498,7 +500,7 @@
           <app-icon name="calendar" class="w-3.5 h-3.5 text-amber-500" strokeWidth="2.5" />
           Custom Date Picker
         </h4>
-        <div class="space-y-3.5">
+        <div class="flex flex-col gap-3.5">
           <!-- Bảng cấu hình mốc giới hạn minDate & Presets -->
           <div class="flex flex-col gap-2.5 p-3 bg-slate-50/50 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 rounded-xl space-y-1.5">
             <div class="flex items-center justify-between">
@@ -522,9 +524,10 @@
                 <label class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Mốc ngày tối thiểu (YYYY-MM-DD)</label>
                 <input
                   type="text"
-                  [(ngModel)]="demoDatePickerMinDate"
+                  [ngModel]="demoDatePickerMinDate()"
+                  (ngModelChange)="demoDatePickerMinDate.set($event)"
                   placeholder="2026-07-20"
-                  class="w-full bg-white dark:bg-slate-950 border border-slate-200/50 dark:border-slate-800/45 rounded-lg px-2.5 py-1 text-xs focus:outline-none focus:border-purple-500 transition-all font-mono text-slate-800 dark:text-slate-100"
+                  class="w-full bg-white dark:bg-slate-950/40 border border-slate-200/50 dark:border-slate-800/35 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-[var(--color-primary)] transition-all font-semibold text-slate-800 dark:text-slate-100"
                 />
               </div>
             }
@@ -535,7 +538,8 @@
             placeholder="Chọn ngày..."
             [minDate]="limitDatePicker() ? demoDatePickerMinDate() : ''"
             [showPresets]="demoDatePickerShowPresets()"
-            [(ngModel)]="demoDatePickerValue"
+            [ngModel]="demoDatePickerValue()"
+            (ngModelChange)="demoDatePickerValue.set($event)"
           />
           <div
             class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2"
