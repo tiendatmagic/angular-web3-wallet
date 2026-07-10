@@ -1,15 +1,15 @@
-import { Component, computed, signal, inject } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { StateService } from '@core/services/state.service';
-
 
 import { IconComponent } from '@shared/components/icon/icon.component';
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { LogoComponent } from '@shared/components/logo/logo.component';
 import { ThemeSwitcherComponent } from '@shared/components/theme-switcher/theme-switcher.component';
 import { TxSpeedSelectorComponent } from '@shared/components/tx-speed-selector/tx-speed-selector.component';
+import { ShortAddressPipe } from '@shared/pipes/short-address.pipe';
 import { POPULAR_CHAINS } from '@core/utils/blockchain.utils';
 
 /**
@@ -18,7 +18,6 @@ import { POPULAR_CHAINS } from '@core/utils/blockchain.utils';
  */
 @Component({
   selector: 'app-header',
-  
   imports: [
     CommonModule,
     IconComponent,
@@ -28,6 +27,7 @@ import { POPULAR_CHAINS } from '@core/utils/blockchain.utils';
     LogoComponent,
     ThemeSwitcherComponent,
     TxSpeedSelectorComponent,
+    ShortAddressPipe,
   ],
   templateUrl: './header.component.html',
   host: {
@@ -39,27 +39,16 @@ import { POPULAR_CHAINS } from '@core/utils/blockchain.utils';
         display: contents;
       }
     `,
-  ]})
+  ]
+})
 export class HeaderComponent {
   public stateService = inject(StateService);
-  
-  
 
   // Trạng thái hiển thị dropdown ví
   public showDropdown = signal(false);
 
   // Trạng thái hiển thị dropdown chọn mạng nhanh
   public showNetworkDropdown = signal(false);
-
-  // Trạng thái hiển thị Mobile Drawer
-  
-
-  // Rút gọn địa chỉ ví dạng 0x1234...5678
-  public shortenedAddress = computed(() => {
-    const address = this.stateService.address();
-    if (!address) return '';
-    return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
-  });
 
   public toggleDropdown(event: Event) {
     event.stopPropagation();

@@ -2,6 +2,15 @@
 
 ## Ngày 10/07/2026
 
+### Yêu cầu: Bổ sung các custom Pipes từ dự án cafe-blockchain
+
+- **Nội dung yêu cầu:** Người dùng yêu cầu tham khảo và bổ sung các custom pipes từ dự án `cafe-blockchain` vào hệ thống template Web3 này.
+- **Giải pháp:**
+  1. Sao chép và tạo mới hai tệp pipe độc lập [short-address.pipe.ts](file:///d:/git/angular-web3-wallet/src/app/shared/pipes/short-address.pipe.ts) (rút gọn địa chỉ ví EVM) và [vnd.pipe.ts](file:///d:/git/angular-web3-wallet/src/app/shared/pipes/vnd.pipe.ts) (định dạng tiền tệ VNĐ) vào thư mục `src/app/shared/pipes/`.
+  2. Cấu hình các pipe dưới dạng standalone.
+  3. Cập nhật [header.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/layout/header/header.component.ts) để import và nhúng `ShortAddressPipe` trực tiếp vào mảng `imports`.
+  4. Thay thế thuộc tính logic `shortenedAddress` được tính toán thủ công trong `HeaderComponent` bằng pipe `appShortAddress` động trong [header.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/layout/header/header.component.html) nhằm tối ưu hóa và đơn giản hóa mã nguồn.
+
 ### Yêu cầu: Cập nhật quy tắc phát triển và kiến trúc Modal vào ARCHITECTURE.md
 
 - **Nội dung yêu cầu:** Người dùng yêu cầu bổ sung các quy tắc bắt buộc khi làm việc với Modal vào `ARCHITECTURE.md` để lập trình viên hoặc AI sau này tuân thủ:
