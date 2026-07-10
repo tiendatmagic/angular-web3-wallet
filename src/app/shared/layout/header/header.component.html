@@ -229,7 +229,6 @@
 <!-- MOBILE DRAWER - TRƯỢT TỪ TRÁI SANG (< md)         -->
 <!-- ═══════════════════════════════════════════════════ -->
 <div
-  [class.invisible]="!stateService.showMobileMenu()"
   [class.pointer-events-none]="!stateService.showMobileMenu()"
   class="fixed inset-0 z-[60] md:hidden select-none"
 >
@@ -237,7 +236,9 @@
   <div
     [class.opacity-0]="!stateService.showMobileMenu()"
     [class.opacity-100]="stateService.showMobileMenu()"
-    class="fixed inset-0 bg-black/50 pointer-events-auto"
+    [class.pointer-events-none]="!stateService.showMobileMenu()"
+    [class.pointer-events-auto]="stateService.showMobileMenu()"
+    class="fixed inset-0 bg-black/50 transition-opacity duration-300 ease-in-out"
     (click)="stateService.showMobileMenu.set(false)"
     aria-hidden="true"
   ></div>
@@ -246,7 +247,9 @@
   <div
     [class.-translate-x-full]="!stateService.showMobileMenu()"
     [class.translate-x-0]="stateService.showMobileMenu()"
-    class="fixed inset-y-0 left-0 z-[70] w-[280px] sm:w-[300px] bg-white dark:bg-slate-950 flex flex-col shadow-2xl pointer-events-auto"
+    [class.pointer-events-none]="!stateService.showMobileMenu()"
+    [class.pointer-events-auto]="stateService.showMobileMenu()"
+    class="fixed inset-y-0 left-0 z-[70] w-[280px] sm:w-[300px] bg-white dark:bg-slate-950 flex flex-col shadow-2xl transition-transform duration-300 ease-in-out"
   >
     <!-- Logo & Brand -->
     <div

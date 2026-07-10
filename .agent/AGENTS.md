@@ -1,5 +1,19 @@
 # Lịch sử yêu cầu và xử lý của Agent
 
+## Ngày 11/07/2026
+
+### Yêu cầu: Khắc phục lỗi thiếu hiệu ứng chuyển động (animation) của Mobile Drawer
+
+- **Nội dung yêu cầu:** Người dùng phản ánh rằng Mobile Drawer không có hiệu ứng chuyển động (animation) mượt mà khi đóng mở.
+- **Phân tích nguyên nhân:**
+  1. Thiếu các class transition của Tailwind CSS (`transition-opacity`, `transition-transform`, `duration-300`, `ease-in-out`) cho thẻ backdrop và panel của Drawer.
+  2. Việc sử dụng `[class.invisible]="!stateService.showMobileMenu()"` trên container ngoài cùng làm ẩn Drawer ngay lập tức khi đóng, triệt tiêu mọi hiệu ứng chuyển động.
+- **Giải pháp:**
+  1. Loại bỏ class `invisible` ở container cha để tránh triệt tiêu hiệu ứng khi trạng thái thay đổi.
+  2. Áp dụng `[class.pointer-events-none]="!stateService.showMobileMenu()"` cho container cha để người dùng vẫn tương tác bình thường với trang web khi Drawer đóng.
+  3. Thêm các class transition cho cả Backdrop (`transition-opacity duration-300 ease-in-out`) và Panel (`transition-transform duration-300 ease-in-out`).
+  4. Quản lý trạng thái click bằng `pointer-events-auto` và `pointer-events-none` động trên các phần tử con.
+
 ## Ngày 10/07/2026
 
 ### Yêu cầu: Bổ sung các custom Pipes từ dự án cafe-blockchain
