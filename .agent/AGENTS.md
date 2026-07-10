@@ -35,6 +35,14 @@
 - **Phân tích nguyên nhân:** Nút ví khi đã kết nối sử dụng class `rounded-full` trong khi nút quả địa cầu và nút kết nối khi chưa kết nối đều sử dụng bo góc tối đa 15px (`rounded-xl` / `btn`), gây ra sự lệch tông và thiếu nhất quán trên giao diện Header.
 - **Giải pháp:** Cập nhật [header.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/header/header.component.html), thay thế class `rounded-full` của nút ví EVM (khi đã kết nối) thành `rounded-xl` để khớp với quy chuẩn chung.
 
+### Yêu cầu: Chuẩn hóa và đồng bộ các nút bấm Header bằng app-button
+- **Nội dung yêu cầu:** Chuyển đổi tất cả các nút bấm hành động (Action Buttons) trên Header sang sử dụng chung directive `app-button` để kế thừa thống nhất thiết kế của hệ thống.
+- **Giải pháp:** Cập nhật [header.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/header/header.component.html):
+  - Chuyển đổi **Hamburger Button** (Mobile Header) sang sử dụng `<button app-button variant="cancel">` (nút xám trung tính).
+  - Chuyển đổi **Globe Button** (Quả địa cầu chọn mạng) sang sử dụng `<button app-button variant="cancel">` (nút xám trung tính).
+  - Chuyển đổi **Nút Ví** (khi đã kết nối) sang sử dụng `<button app-button variant="secondary">` (nút màu viền và nền hồng nhạt chuyển đổi theo accent color động của hệ thống).
+
+
 
 ### Yêu cầu: Giải đáp lỗi treo màn hình loading (xoay vòng vô tận) "Continue in MetaMask/Trust Wallet..." trên di động
 - **Nội dung yêu cầu:** Người dùng phản ánh khi bấm kết nối ví (MetaMask, Trust Wallet...) trên trình duyệt di động, WalletConnect/AppKit hiển thị thông báo "Continue in..." và xoay vòng vô tận mà không tự động mở ứng dụng ví.
