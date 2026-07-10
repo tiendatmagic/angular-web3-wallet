@@ -2209,3 +2209,28 @@
     - Cập nhật [home.component.ts](file:///d:/git/angular-web3-wallet/src/app/home.component.ts) để đăng ký import component mới và khai báo signal `demoCheckboxValue` đại diện cho trạng thái checkbox.
     - Cập nhật [home.component.html](file:///d:/git/angular-web3-wallet/src/app/home.component.html) thêm card demo "Custom Checkbox" mới làm CARD 3, đồng thời sửa lại số thứ tự comment của các card cũ phía sau cho đồng bộ.
 - **Kết quả:** Component Checkbox hoạt động hoàn hảo, đồng bộ dữ liệu chuẩn xác và giao diện hòa hợp với hệ thống, build thành công 100%.
+
+### Yêu cầu: Gỡ bỏ toàn bộ hiệu ứng chuyển động (animations, transitions, durations) khỏi app-card và các modal/drawer
+- **Nội dung yêu cầu:** Người dùng yêu cầu kiểm tra và gỡ bỏ toàn bộ hiệu ứng chuyển động, thời gian trễ (duration) và độ nhòe (blur) khỏi component `app-card` và các modal/drawer để giao diện hiển thị ngay lập tức.
+- **Giải pháp:**
+  - Cập nhật [styles.scss](file:///d:/git/angular-web3-wallet/src/styles.scss): Loại bỏ các thuộc tính `transition-all duration-300` khỏi định nghĩa lớp `.app-card` để card không còn hiệu ứng chuyển động mờ/phóng to khi tải.
+  - Cập nhật [header.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/layout/header/header.component.html): Loại bỏ `transition-opacity duration-150` ở lớp phủ tối (backdrop) và `transition-transform duration-200 ease-out` ở Drawer Panel (Mobile Sidebar) để drawer bật mở lập tức mà không có hiệu ứng chuyển cảnh chậm trễ.
+  - Xác nhận các modal tự tạo (`app-modal` / `confirm-modal`) đều đã sử dụng lớp phủ tối trơn `bg-black/40` không chứa blur và không chứa bất kỳ hoạt ảnh chuyển động hay duration nào.
+- **Kết quả:** Các card và modal hoạt động tức thì, mượt mà và trực quan, build thành công 100% không lỗi.
+
+### Yêu cầu: Tái cấu trúc cấu trúc thư mục phẳng (Flat Features) theo ARCHITECTURE.md và sửa lỗi icon menu
+- **Nội dung yêu cầu:** Người dùng yêu cầu xem lại thiết kế kiến trúc của dự án, đưa mỗi trang menu (Trang chủ, Giới thiệu, Liên hệ) thành một Flat Feature riêng biệt và đảm bảo mỗi feature đều có cấu trúc tệp riêng gồm logic `.ts` và giao diện `.html` thay vì viết inline. Đồng thời sửa lỗi icon của Trang chủ và Giới thiệu hiển thị dấu hỏi chấm `(?)` do thiếu đăng ký trong SVG library.
+- **Giải pháp:**
+  - **Tách biệt Logic và Template**:
+    - Chuyển `HomeComponent` về [src/app/features/home/](file:///d:/git/angular-web3-wallet/src/app/features/home/) (chứa `home.component.ts` và `home.component.html`).
+    - Tách biệt `AboutComponent` về [src/app/features/about/](file:///d:/git/angular-web3-wallet/src/app/features/about/) (chứa `about.component.ts` và `about.component.html`).
+    - Tách biệt `ContactComponent` về [src/app/features/contact/](file:///d:/git/angular-web3-wallet/src/app/features/contact/) (chứa `contact.component.ts` và `contact.component.html`).
+    - Xóa bỏ các tệp tin trùng lặp ở thư mục gốc `src/app/`.
+  - **Cập nhật định tuyến**: Cấu hình lại [app.routes.ts](file:///d:/git/angular-web3-wallet/src/app/app.routes.ts) trỏ import sang các đường dẫn tương ứng sử dụng `@features/...`.
+  - **Sửa lỗi hiển thị icon menu `(?)`**:
+    - Cập nhật [icon.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/icon/icon.component.html) bổ sung mã vẽ SVG cho icon `'home'` và `'info'`.
+    - Đổi tên tham chiếu icon từ `'blockchain'` (chưa đăng ký) sang `'info'` tại [sidebar.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/layout/sidebar/sidebar.component.html) và [header.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/layout/header/header.component.html).
+  - **Cập nhật tài liệu kiến trúc**: Bổ sung quy tắc bắt buộc phân tách logic và giao diện đối với các Flat Feature trong [ARCHITECTURE.md](file:///d:/git/angular-web3-wallet/ARCHITECTURE.md).
+- **Kết quả:** Giao diện hiển thị icon chuẩn xác theo mockup, các tính năng được cấu trúc phẳng gọn gàng, biên dịch build thành công 100% không lỗi.
+
+

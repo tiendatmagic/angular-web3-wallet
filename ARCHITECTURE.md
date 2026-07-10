@@ -118,6 +118,7 @@ cafe-blockchain-web/
       - `@environments/*` -> trỏ tới `src/environments/*`
 2.  **Làm phẳng tính năng (Flat Features):**
     - Tất cả các module chức năng chính phải được đặt phẳng ngang hàng dưới thư mục `src/app/features/` (ví dụ: `features/customers`, `features/staffs`). Không lồng chúng vào các thư mục `pages` hoặc lồng bên trong thư mục tính năng khác.
+    - **Tách biệt Logic và Template (Bắt buộc):** Mỗi component tính năng phải được lưu hành dưới cấu trúc tệp tin riêng biệt, bao gồm tệp logic TypeScript (`.component.ts`) và tệp giao diện HTML (`.component.html`) sử dụng cấu hình `templateUrl` thay vì khai báo inline `template: '...'` trực tiếp trong tệp TS.
 3.  **Quản lý trạng thái bằng Slice Stores (Signals):**
     - Không khai báo trực tiếp toàn bộ dữ liệu ứng dụng trong một file `StateService` khổng lồ.
     - Chia nhỏ thành các store tín hiệu nằm trực tiếp trong thư mục tính năng tương ứng bao gồm: `OrderStore`, `SettingStore`, `ShiftStore`, `DebtStore`, `InventoryStore`, `CustomerStore`, `CartStore`, `ProductStore`, `TransactionStore`, `TableStore`, `StaffStore`, `DashboardStore`, và `PriceStore`.
