@@ -1,0 +1,92 @@
+@if (label) {
+  <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5">
+    {{ label }}
+  </label>
+}
+
+<div class="relative w-full">
+  <!-- Input Trigger -->
+  <div
+    (click)="toggleOpen()"
+    class="w-full flex items-center justify-between bg-slate-50/50 dark:bg-slate-950/20 border border-slate-200/50 dark:border-slate-800/35 rounded-xl px-3.5 py-3 text-sm focus-within:border-[var(--color-primary)] transition-all text-slate-800 dark:text-slate-100 font-semibold cursor-pointer select-none"
+    [class.opacity-50]="disabled"
+    [class.pointer-events-none]="disabled"
+  >
+    <span [class.text-slate-400]="!value()" class="truncate">
+      {{ value() ? displayValue() : placeholder }}
+    </span>
+    <div class="w-4 h-4 text-slate-400 dark:text-slate-500 flex-shrink-0 ml-2">
+      <app-icon name="calendar" />
+    </div>
+  </div>
+
+  <!-- Lịch Calendar Popover -->
+  @if (isOpen()) {
+    <div
+      class="absolute z-50 mt-1.5 w-72 bg-white dark:bg-slate-950 border border-slate-200/50 dark:border-slate-800/50 shadow-xl rounded-xl p-4 left-0 sm:right-0 sm:left-auto"
+      (click)="$event.stopPropagation()"
+    >
+      <!-- Header Lịch (Chuyển tháng) -->
+      <div class="flex items-center justify-between mb-4 select-none">
+        <button
+          type="button"
+          (click)="prevMonth($event)"
+          class="p-1.5 hover:bg-slate-50 dark:hover:bg-slate-900 rounded-lg text-slate-500 hover:text-[var(--color-primary)] active:scale-90 transition-all cursor-pointer"
+        >
+          <div class="w-4 h-4">
+            <app-icon name="chevron-left" />
+          </div>
+        </button>
+        <span class="text-xs font-extrabold text-slate-800 dark:text-slate-200 tracking-wide uppercase">
+          {{ currentMonthName() }} {{ currentYear() }}
+        </span>
+        <button
+          type="button"
+          (click)="nextMonth($event)"
+          class="p-1.5 hover:bg-slate-50 dark:hover:bg-slate-900 rounded-lg text-slate-500 hover:text-[var(--color-primary)] active:scale-90 transition-all cursor-pointer"
+        >
+          <div class="w-4 h-4">
+            <app-icon name="chevron-right" />
+          </div>
+        </button>
+      </div>
+
+      <!-- Grid Thứ trong tuần -->
+      <div class="grid grid-cols-7 gap-1 text-center mb-2 select-none">
+        @for (day of weekdays; track day) {
+          <span class="text-[10px] font-extrabold text-slate-400 dark:text-slate-500 uppercase tracking-wider">
+            {{ day }}
+          </span>
+        }
+      </div>
+
+      <!-- Grid Ngày -->
+      <div class="grid grid-cols-7 gap-1">
+        @for (day of calendarDays(); track day.getTime()) {
+          <button
+            type="button"
+            (click)="selectDate(day, $event)"
+            [disabled]="isDisabled(day)"
+            class="aspect-square flex items-center justify-center text-xs font-bold rounded-lg transition-all cursor-pointer"
+            [class.text-slate-350]="!isCurrentMonth(day) && !isSelected(day)"
+            [class.dark:text-slate-700]="!isCurrentMonth(day) && !isSelected(day)"
+            [class.text-slate-800]="isCurrentMonth(day) && !isSelected(day)"
+            [class.dark:text-slate-200]="isCurrentMonth(day) && !isSelected(day)"
+            [class.hover:bg-slate-50]="!isSelected(day) && !isDisabled(day)"
+            [class.dark:hover:bg-slate-900]="!isSelected(day) && !isDisabled(day)"
+            [class.bg-[var(--color-primary)]]="isSelected(day)"
+            [class.text-white]="isSelected(day)"
+            [class.border]="isToday(day) && !isSelected(day)"
+            [class.border-[var(--color-primary)]/45]="isToday(day) && !isSelected(day)"
+            [class.text-[var(--color-primary)]]="isToday(day) && !isSelected(day)"
+            [class.opacity-25]="isDisabled(day)"
+            [class.cursor-not-allowed]="isDisabled(day)"
+            [class.pointer-events-none]="isDisabled(day)"
+          >
+            {{ day.getDate() }}
+          </button>
+        }
+      </div>
+    </div>
+  }
+</div>

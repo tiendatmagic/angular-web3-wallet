@@ -9,6 +9,8 @@ import { CustomRadioComponent } from '@shared/components/custom-radio/custom-rad
 import { CustomSearchInputComponent } from '@shared/components/custom-search-input/custom-search-input.component';
 import { CustomSelectComponent } from '@shared/components/custom-select/custom-select.component';
 import { CustomCheckboxComponent } from '@shared/components/custom-checkbox/custom-checkbox.component';
+import { CustomDatePickerComponent } from '@shared/components/custom-date-picker/custom-date-picker.component';
+import { ModalComponent } from '@shared/components/modal/modal.component';
 import { CardComponent } from '@shared/components/card/card.component';
 import { StateService } from '@core/services/state.service';
 import { parseEther } from 'ethers';
@@ -26,6 +28,8 @@ import { parseEther } from 'ethers';
     CustomSearchInputComponent,
     CustomSelectComponent,
     CustomCheckboxComponent,
+    CustomDatePickerComponent,
+    ModalComponent,
     CardComponent,
   ],
   templateUrl: './home.component.html'
@@ -53,6 +57,15 @@ export class HomeComponent {
   public demoCheckboxValue = signal(true);
   public demoSearchQuery = signal('');
   public demoSelectValue = signal<string | null>(null);
+  public demoDatePickerValue = signal('2026-07-10');
+
+  // === MODAL DEMO STATE ===
+  public showDemoModal = signal(false);
+  public modalDateValue = signal('');
+  public modalSelectValue = signal<string | null>(null);
+  public modalSwitchValue = signal(false);
+  public modalRadioValue = signal('arbitrum');
+  public modalCheckboxValue = signal(false);
 
   /** Danh sách chain để demo custom-select */
   public readonly demoChainOptions = [

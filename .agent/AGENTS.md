@@ -2,6 +2,15 @@
 
 ## Ngày 10/07/2026
 
+### Yêu cầu: Bổ sung Custom Date Picker và Modal Demo Showcase
+
+- **Nội dung yêu cầu:** DApp đang thiếu component `custom-date-picker` trong thư mục `shared/components`. Người dùng yêu cầu xây dựng component này và thêm một Modal Demo hiển thị tập hợp tất cả các input controls (date-picker, select, switch, radio, checkbox) để trình diễn UI Components Showcase.
+- **Giải pháp:**
+  1. **[NEW] `custom-date-picker/`**: Component standalone tích hợp `ControlValueAccessor`, lịch popover 42 ngày (6 tuần) tính toán động, hỗ trợ `minDate`/`maxDate`, click-outside tự đóng, hiển thị ngày dạng `DD/MM/YYYY`. Icon lịch SVG (`calendar`) đã có sẵn trong thư viện `IconComponent`. Tuân thủ `:host { display: block; }` và bo góc tối đa 15px.
+  2. **[MODIFY] `home.component.ts`**: Import `CustomDatePickerComponent` và `ModalComponent`. Thêm signals: `demoDatePickerValue`, `showDemoModal`, `modalDateValue`, `modalSelectValue`, `modalSwitchValue`, `modalRadioValue`, `modalCheckboxValue`.
+  3. **[MODIFY] `home.component.html`**: Bổ sung Card 6 "Custom Date Picker" vào grid Showcase. Thêm nút "Mở Modal Demo Form" bên dưới grid. Tích hợp `<app-modal>` size `xl` chứa form demo với 5 loại controls và bảng "Giá trị hiện tại" live output, kèm nút Hủy/Xác nhận.
+- **Kết quả:** Build thành công 100% không lỗi. Tất cả component đồng bộ màu `var(--color-primary)` và tuân thủ design system.
+
 ### Yêu cầu: Khắc phục các lỗi UI của các custom components mới xây dựng
 
 - **Nội dung yêu cầu:** Người dùng phản hồi:
