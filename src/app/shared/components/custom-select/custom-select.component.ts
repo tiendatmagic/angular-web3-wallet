@@ -8,7 +8,6 @@ import {
   inject,
   signal,
   computed,
-  OnDestroy,
   forwardRef,
   ChangeDetectionStrategy,
 } from '@angular/core';
@@ -48,7 +47,7 @@ export interface SelectOption {
     `,
   ],
 })
-export class CustomSelectComponent implements ControlValueAccessor, OnDestroy {
+export class CustomSelectComponent implements ControlValueAccessor {
   private readonly elementRef = inject(ElementRef);
 
   @Input() value: any = null;
@@ -67,79 +66,12 @@ export class CustomSelectComponent implements ControlValueAccessor, OnDestroy {
 
   public readonly isOpen = signal<boolean>(false);
   public readonly searchQuery = signal<string>('');
-  public readonly dropdownStyle = signal<{ [key: string]: string }>({});
-
-  private scrollListener: (() => void) | null = null;
 
   /** Đóng dropdown khi click ra ngoài component */
   @HostListener('document:click', ['$event'])
   public onClickOutside(event: MouseEvent): void {
     if (!this.elementRef.nativeElement.contains(event.target)) {
       this.isOpen.set(false);
-      this.removeScrollListeners();
-    }
-  }
-
-  /** Tính toán vị trí dropdown tránh bị che khuất viewport */
-  public updateDropdownPosition(): void {
-    const trigger = this.elementRef.nativeElement.querySelector('button');
-    if (!trigger) return;
-
-    const rect = trigger.getBoundingClientRect();
-    const viewportHeight = window.innerHeight;
-    const viewportWidth = window.innerWidth;
-    const spaceBelow = viewportHeight - rect.bottom;
-    const spaceAbove = rect.top;
-    const dropdownHeight = 280;
-
-    let resolvedPlacement: 'top' | 'bottom' = 'bottom';
-    if (this.placement === 'auto') {
-      resolvedPlacement = (spaceBelow < dropdownHeight && spaceAbove > spaceBelow) ? 'top' : 'bottom';
-    } else {
-      resolvedPlacement = this.placement as 'top' | 'bottom';
-    }
-
-    const dropdownMinWidth = Math.max(160, rect.width);
-    let left = rect.left;
-    if (left + dropdownMinWidth > viewportWidth - 16) {
-      left = Math.max(16, viewportWidth - dropdownMinWidth - 16);
-    }
-
-    const styles: { [key: string]: string } = {
-      position: 'fixed',
-      left: `${left}px`,
-      minWidth: `${dropdownMinWidth}px`,
-      width: 'max-content',
-      maxWidth: '320px',
-      zIndex: '9999',
-    };
-
-    if (resolvedPlacement === 'bottom') {
-      styles['top'] = `${rect.bottom + 6}px`;
-      styles['max-height'] = `${Math.min(dropdownHeight, spaceBelow - 16)}px`;
-    } else {
-      styles['bottom'] = `${viewportHeight - rect.top + 6}px`;
-      styles['max-height'] = `${Math.min(dropdownHeight, spaceAbove - 16)}px`;
-    }
-
-    this.dropdownStyle.set(styles);
-  }
-
-  private addScrollListeners(): void {
-    this.removeScrollListeners();
-    const updatePos = () => {
-      if (this.isOpen()) this.updateDropdownPosition();
-    };
-    window.addEventListener('scroll', updatePos, true);
-    window.addEventListener('resize', updatePos, true);
-    this.scrollListener = updatePos;
-  }
-
-  private removeScrollListeners(): void {
-    if (this.scrollListener) {
-      window.removeEventListener('scroll', this.scrollListener, true);
-      window.removeEventListener('resize', this.scrollListener, true);
-      this.scrollListener = null;
     }
   }
 
@@ -148,13 +80,8 @@ export class CustomSelectComponent implements ControlValueAccessor, OnDestroy {
     const nextState = !this.isOpen();
     if (nextState) {
       this.searchQuery.set('');
-      this.updateDropdownPosition();
-      this.isOpen.set(true);
-      this.addScrollListeners();
-    } else {
-      this.isOpen.set(false);
-      this.removeScrollListeners();
     }
+    this.isOpen.set(nextState);
   }
 
   public selectOption(option: any): void {
@@ -164,7 +91,6 @@ export class CustomSelectComponent implements ControlValueAccessor, OnDestroy {
     this.onChange(val);
     this.onTouched();
     this.isOpen.set(false);
-    this.removeScrollListeners();
   }
 
   public get selectedLabel(): string {
@@ -225,7 +151,5 @@ export class CustomSelectComponent implements ControlValueAccessor, OnDestroy {
     this.disabled = isDisabled;
   }
 
-  ngOnDestroy(): void {
-    this.removeScrollListeners();
-  }
+
 }

@@ -29,8 +29,7 @@
   <!-- Dropdown Menu -->
   @if (isOpen()) {
     <div
-      class="bg-white dark:bg-slate-900 border border-slate-200/85 dark:border-slate-800/85 rounded-xl shadow-xl flex flex-col overflow-hidden"
-      [ngStyle]="dropdownStyle()"
+      class="absolute left-0 right-0 z-50 mt-1.5 w-full bg-white dark:bg-slate-900 border border-slate-200/85 dark:border-slate-800/85 rounded-xl shadow-xl flex flex-col overflow-hidden max-h-[280px] animate-in fade-in duration-150"
     >
       <!-- Ô tìm kiếm nhanh trong dropdown -->
       @if (showSearch) {
@@ -65,7 +64,7 @@
             @if (compareValues(getOptionValue(opt), value)) {
               <app-icon
                 name="check"
-                class="h-4 w-4 text-[var(--color-primary)] shrink-0 ml-2"
+                class="h-4 w-4 text-[var(--color-primary)] shrink-0 ml-2 animate-in fade-in duration-200"
                 strokeWidth="3"
               />
             }

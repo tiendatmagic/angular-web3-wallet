@@ -2,6 +2,19 @@
 
 ## Ngày 10/07/2026
 
+### Yêu cầu: Khắc phục các lỗi UI của các custom components mới xây dựng
+- **Nội dung yêu cầu:** Người dùng phản hồi:
+  1. Giao diện chấm tròn của `custom-radio` bị lệch trục khi được chọn.
+  2. Dropdown của `custom-select` bị bay lơ lửng, lệch vị trí sang phải và lỗi icon tìm kiếm (biến thành dấu hỏi chấm `(?)`).
+  3. Icon ở input tìm kiếm của `custom-search-input` bị hiển thị sai thành dấu hỏi chấm `(?)`.
+- **Phân tích nguyên nhân:**
+  1. Keyframe `scaleUp` trong `custom-radio.component.ts` khi hoạt động đã ghi đè thuộc tính `transform: scale(...)` làm mất thuộc tính căn giữa `translate(-50%, -50%)` được định nghĩa bằng Tailwind class.
+  2. Dropdown của `custom-select` sử dụng định vị `fixed` bằng JavaScript tính toán tọa độ theo viewport, nhưng container cha trong `home.component.html` lại sử dụng `backdrop-blur-md` (tạo ra một local containing block mới cho `position: fixed`), dẫn tới tọa độ bị tính sai lệch hoàn toàn. Đồng thời, `IconComponent` thiếu case `'search'` dẫn tới render ra icon mặc định (dấu hỏi chấm).
+- **Giải pháp:**
+  1. Cập nhật `custom-radio.component.ts`: Sửa lại `@keyframes scaleUp` để luôn giữ `transform: translate(-50%, -50%) scale(...)` ở cả hai trạng thái `from` và `to`.
+  2. Cập nhật `icon.component.html`: Thêm case `'search'` vẽ SVG kính lúp chuẩn.
+  3. Cập nhật `custom-select.component.html` & `.ts`: Chuyển dropdown menu sang sử dụng định vị `absolute` trực tiếp thay thế cho định vị `fixed` tính toán động bằng JS. Việc này giúp dropdown tự động khớp theo trigger cha có `relative` và loại bỏ hoàn toàn ảnh hưởng từ `backdrop-blur` hay `transform` ở các card bên ngoài, đồng thời lược bỏ các scroll/resize event listener dư thừa giúp tối ưu hiệu năng.
+
 ### Yêu cầu: Bổ sung UI Components và tái cấu trúc Layout (tham khảo cafe-blockchain)
 - **Nội dung yêu cầu:** Kiểm tra các component còn thiếu trong `shared/components` (card, radio, switch, search input, select) tham khảo dự án cafe-blockchain và áp dụng vào các trang. Đồng thời tạo thư mục `shared/layout` chứa Sidebar component riêng như cafe-blockchain.
 - **Phân tích Gap:**
@@ -2009,5 +2022,13 @@
     - CÃ¡ÂºÂ­p nhÃ¡ÂºÂ­t [bootstrap/app.php](file:///d:/git/cafe-blockchain/cafe-blockchain-api/bootstrap/app.php): KÃƒÂ­ch hoÃ¡ÂºÂ¡t global rate limiting cho toÃƒÂ n bÃ¡Â»â„¢ API routes bÃ¡ÂºÂ±ng cÃƒÂ¡ch thÃƒÂªm middleware 	hrottle:api vÃƒÂ o nhÃƒÂ³m middleware pi.
   - **Frontend (Angular):**
     - CÃ¡ÂºÂ­p nhÃ¡ÂºÂ­t [tax.component.ts](file:///d:/git/cafe-blockchain/cafe-blockchain-web/src/app/features/tax/tax.component.ts): Khai bÃƒÂ¡o cÃ¡Â»Â isOpeningDetail vÃƒÂ  chÃ¡ÂºÂ·n sÃ¡Â»Â± kiÃ¡Â»â€¡n mÃ¡Â»Å¸ modal chÃ¡Â»â€œng chÃƒÂ©o khi ngÃ†Â°Ã¡Â»Âi dÃƒÂ¹ng double click hoÃ¡ÂºÂ·c click spam nhiÃ¡Â»Âu lÃ¡ÂºÂ§n liÃƒÂªn tiÃ¡ÂºÂ¿p trÃƒÂªn mÃ¡Â»â„¢t dÃƒÂ²ng log. CÃ¡Â»Â sÃ¡ÂºÂ½ tÃ¡Â»Â± giÃ¡ÂºÂ£i phÃƒÂ³ng sau khi Ã„â€˜ÃƒÂ³ng modal hoÃ¡ÂºÂ·c tÃ¡Â»Â± reset sau 1 giÃƒÂ¢y.
-- **KÃ¡ÂºÂ¿t quÃ¡ÂºÂ£:** Build frontend thÃƒÂ nh cÃƒÂ´ng 100%. ChÃ¡ÂºÂ¡y script PowerShell kiÃ¡Â»Æ’m thÃ¡Â»Â­ 35 requests liÃƒÂªn tÃ¡Â»Â¥c lÃƒÂªn API: 30 requests Ã„â€˜Ã¡ÂºÂ§u thÃƒÂ nh cÃƒÂ´ng 200, tÃ¡Â»Â« request 31 trÃ¡Â»Å¸ Ã„â€˜i bÃ¡Â»â€¹ block 429 vÃƒÂ  tÃ¡Â»Â± mÃ¡Â»Å¸ khÃƒÂ³a sau 10 giÃƒÂ¢y.
+- **Kết quả:** Build frontend thành công 100%. Chạy script PowerShell kiểm thử 35 requests liên tục lên API: 30 requests đầu thành công 200, từ request 31 trở đi bị block 429 và tự mở khóa sau 10 giây.
+
+### Yêu cầu: Chuẩn hóa app-card directive và dọn dẹp các class CSS dư thừa
+- **Nội dung yêu cầu:** Chuyển đổi các thẻ sử dụng class CSS tĩnh `<div class="app-card ...">` sang directive `app-card` dạng `<div app-card>` chuẩn Angular, đồng thời import `CardComponent` vào các component tương ứng (`HomeComponent`, `ContactComponent`, `AboutComponent`) và loại bỏ hoàn toàn các class CSS trùng lặp/dư thừa (padding, background, backdrop-blur).
+- **Giải pháp:**
+  - Cập nhật [home.component.ts](file:///d:/git/angular-web3-wallet/src/app/home.component.ts), [contact.component.ts](file:///d:/git/angular-web3-wallet/src/app/contact.component.ts), và [about.component.ts](file:///d:/git/angular-web3-wallet/src/app/about.component.ts): Import và thêm `CardComponent` vào mảng `imports`.
+  - Cập nhật các template của 3 component trên: Đổi các thẻ `div.app-card` thành `<div app-card>` và xóa bỏ các class CSS dư thừa (`!p-5`, `md:!p-6`, `!p-8`, `md:!p-12`, `bg-white/60`, `dark:bg-slate-900/60`, `backdrop-blur-md`).
+- **Kết quả:** Build thành công 100%, không còn class thừa và tuân thủ chuẩn Angular Component/Directive.
+
 

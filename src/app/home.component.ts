@@ -8,6 +8,7 @@ import { CustomSwitchComponent } from '@shared/components/custom-switch/custom-s
 import { CustomRadioComponent } from '@shared/components/custom-radio/custom-radio.component';
 import { CustomSearchInputComponent } from '@shared/components/custom-search-input/custom-search-input.component';
 import { CustomSelectComponent } from '@shared/components/custom-select/custom-select.component';
+import { CardComponent } from '@shared/components/card/card.component';
 import { Web3Service } from '@core/services/web3.service';
 import { ToastService } from '@core/services/toast.service';
 import { parseEther } from 'ethers';
@@ -24,6 +25,7 @@ import { parseEther } from 'ethers';
     CustomRadioComponent,
     CustomSearchInputComponent,
     CustomSelectComponent,
+    CardComponent,
   ],
   templateUrl: './home.component.html'
 })

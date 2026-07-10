@@ -2,7 +2,7 @@
 
   <!-- BANNER CHƯA KẾT NỐI VÍ -->
   @if (!web3Service.isConnected()) {
-    <div class="app-card !p-8 md:!p-12 text-center max-w-2xl mx-auto bg-white/60 dark:bg-slate-900/60 backdrop-blur-md">
+    <div app-card class="text-center max-w-2xl mx-auto">
       <div class="w-16 h-16 bg-purple-50 dark:bg-purple-950/30 rounded-full flex items-center justify-center mx-auto mb-6 text-purple-600 dark:text-purple-400 border border-purple-500/20">
         <app-icon name="blockchain" class="w-8 h-8" strokeWidth="1.5" />
       </div>
@@ -32,7 +32,7 @@
       <div class="lg:col-span-5 space-y-5 md:space-y-6">
 
         <!-- CARD TRẠNG THÁI VÍ -->
-        <div class="app-card !p-5 md:!p-6 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md">
+        <div app-card>
           <h3 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4">
             Trạng thái tài khoản
           </h3>
@@ -82,7 +82,7 @@
         </div>
 
         <!-- CARD CHUYỂN MẠNG NHANH -->
-        <div class="app-card !p-5 md:!p-6 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md">
+        <div app-card>
           <h3 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4">
             Chuyển nhanh mạng lưới
           </h3>
@@ -120,7 +120,7 @@
       <div class="lg:col-span-7 space-y-6">
 
         <!-- THỰC HIỆN GỬI GIAO DỊCH DEMO -->
-        <div class="app-card !p-5 md:!p-6 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md">
+        <div app-card>
           <div class="flex items-center gap-3 mb-6">
             <div class="w-10 h-10 bg-purple-50 dark:bg-purple-950/30 rounded-xl flex items-center justify-center text-purple-600 dark:text-purple-400 border border-purple-500/10">
               <app-icon name="send" class="w-5 h-5" />
@@ -206,7 +206,7 @@
         </div>
 
         <!-- KÝ TIN NHẮN DEMO BẢO MẬT -->
-        <div class="app-card !p-5 md:!p-6 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md">
+        <div app-card>
           <div class="flex items-center gap-3 mb-6">
             <div class="w-10 h-10 bg-purple-50 dark:bg-purple-950/30 rounded-xl flex items-center justify-center text-purple-600 dark:text-purple-400 border border-purple-500/10">
               <app-icon name="signature" class="w-5 h-5" />
@@ -303,7 +303,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
       <!-- CARD 1: Custom Switch -->
-      <div class="app-card !p-5 md:!p-6 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md">
+      <div app-card>
         <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
           <app-icon name="bolt" class="w-3.5 h-3.5 text-pink-500" [solid]="true" viewBox="0 0 20 20" />
           Custom Switch
@@ -333,7 +333,7 @@
       </div>
 
       <!-- CARD 2: Custom Radio -->
-      <div class="app-card !p-5 md:!p-6 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md">
+      <div app-card>
         <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
           <app-icon name="bolt" class="w-3.5 h-3.5 text-purple-500" [solid]="true" viewBox="0 0 20 20" />
           Custom Radio
@@ -356,7 +356,7 @@
       </div>
 
       <!-- CARD 3: Custom Search Input -->
-      <div class="app-card !p-5 md:!p-6 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md">
+      <div app-card>
         <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
           <app-icon name="search" class="w-3.5 h-3.5 text-blue-500" strokeWidth="2.5" />
           Custom Search Input
@@ -376,7 +376,7 @@
       </div>
 
       <!-- CARD 4: Custom Select -->
-      <div class="app-card !p-5 md:!p-6 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md">
+      <div app-card>
         <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
           <app-icon name="chevron-down" class="w-3.5 h-3.5 text-emerald-500" strokeWidth="2.5" />
           Custom Select
