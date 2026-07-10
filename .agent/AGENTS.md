@@ -14,6 +14,15 @@
   3. Thêm các class transition cho cả Backdrop (`transition-opacity duration-300 ease-in-out`) và Panel (`transition-transform duration-300 ease-in-out`).
   4. Quản lý trạng thái click bằng `pointer-events-auto` và `pointer-events-none` động trên các phần tử con.
 
+### Yêu cầu: Khắc phục lỗi khó hiển thị của Custom Radio Button trên Darkmode
+
+- **Nội dung yêu cầu:** Người dùng phản ánh nút Custom Radio chưa được chọn ở chế độ tối (darkmode) bị tối sẫm, chìm vào nền card và rất khó nhìn.
+- **Phân tích nguyên nhân:** Ở chế độ tối, khi chưa được chọn, vòng tròn radio button sử dụng class `dark:bg-slate-950` và `dark:border-slate-800/80`. Nền card của ứng dụng vốn đã là màu tối sẫm, dẫn đến việc thiếu độ tương phản trầm trọng.
+- **Giải pháp:** Cập nhật tệp [custom-radio.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/custom-radio/custom-radio.component.html):
+  1. Nâng tone màu viền từ `dark:border-slate-800/80` lên `dark:border-slate-700` và khi hover tăng lên `dark:group-hover:border-slate-500` để hiển thị rõ ràng.
+  2. Đổi màu nền từ `dark:bg-slate-950` sang màu xám nhẹ hơn `dark:bg-slate-900` để hài hòa và dễ nhận diện hơn.
+  3. Cập nhật nhẹ màu ở chế độ sáng (lightmode) cho đồng bộ viền từ `border-slate-200` thành `border-slate-300` và khi hover từ `border-slate-300` thành `border-slate-400` để tăng tính rõ nét.
+
 ## Ngày 10/07/2026
 
 ### Yêu cầu: Bổ sung các custom Pipes từ dự án cafe-blockchain
