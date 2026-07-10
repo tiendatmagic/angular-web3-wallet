@@ -274,6 +274,7 @@ When user's prompt is NOT in English:
 >   4. Protect UI sidebar navigation items (Desktop & Mobile) and route access with `@if (stateService.hasPermission('key_module'))` and `<app-access-restricted>`.
 > - **Angular Custom Component Host Display (CRITICAL):** All Angular custom components (e.g. `app-custom-switch`, `app-custom-select`, `app-custom-date-picker`) must explicitly set `:host { display: block; }` in their stylesheet to prevent display: inline default browser behavior from ignoring Tailwind vertical margins/spacings (which causes adjacent labels/elements to stick together).
 > - **Flat Layout & Border Elimination (CRITICAL):** Avoid using unnecessary horizontal border dividers (`border-t`) to separate sub-sections or settings. Use a flat design with consistent spacing (e.g. `space-y-6`) instead.
+> - **Modal Component Architecture & Inheritance (CRITICAL):** Do NOT use native browser dialogs like `alert` or `confirm`. All modals must be built as standalone components and opened/closed dynamically from the `.ts` controller logic (via a modal dispatch service/dynamic injection), rather than being hardcoded in parent HTML templates. Prioritize reusing or extending existing generic modal components (e.g., confirmations) instead of creating duplicate modal components.
 ---
 
 ## 📁 QUICK REFERENCE

@@ -2,6 +2,14 @@
 
 ## Ngày 10/07/2026
 
+### Yêu cầu: Cập nhật quy tắc phát triển và kiến trúc Modal vào ARCHITECTURE.md
+
+- **Nội dung yêu cầu:** Người dùng yêu cầu bổ sung các quy tắc bắt buộc khi làm việc với Modal vào `ARCHITECTURE.md` để lập trình viên hoặc AI sau này tuân thủ:
+  1. Cấm sử dụng các hộp thoại mặc định của trình duyệt như `alert` hay `confirm`.
+  2. Modal phải được thiết kế dưới dạng Component riêng biệt và gọi mở/đóng động từ tệp logic `.ts`, không nhúng cứng vào HTML template.
+  3. Kế thừa và tái sử dụng tối đa các Component Modal đã có sẵn (ví dụ Modal xác nhận dùng chung) thay vì tạo nhiều component trùng lặp.
+- **Giải pháp:** Cập nhật tệp [ARCHITECTURE.md](file:///d:/git/angular-web3-wallet/ARCHITECTURE.md), thêm mục **"7. Quy tắc quản lý và hiển thị Modal (Bắt buộc)"** quy định chi tiết 3 nguyên tắc này. Đồng thời, cập nhật tệp quy tắc cấu hình hành vi của AI tại [GEMINI.md](file:///d:/git/angular-web3-wallet/.agent/rules/GEMINI.md) ở mục "TIER 2.1: PROJECT-SPECIFIC DESIGN RULES" để đảm bảo các AI Agent trong tương lai luôn bắt buộc tuân thủ quy chuẩn này một cách tự động.
+
 ### Yêu cầu: Khắc phục lỗi tự đóng modal và đồng bộ symbol native token động theo mạng lưới
 
 - **Nội dung yêu cầu:**
