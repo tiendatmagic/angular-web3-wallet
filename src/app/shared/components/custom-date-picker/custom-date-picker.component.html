@@ -72,7 +72,7 @@
       <!-- Weekday Headers -->
       <div class="grid grid-cols-7 gap-0.5 text-center mb-2 select-none">
         @for (day of weekdays; track day) {
-          <span class="text-[11px] font-bold text-[var(--color-primary)]/70 py-1">
+          <span class="text-xs font-bold text-[var(--color-primary)]/70 py-1">
             {{ day }}
           </span>
         }
@@ -85,23 +85,21 @@
             type="button"
             (click)="selectDate(day, $event)"
             [disabled]="isDateDisabled(day)"
-            class="w-full aspect-square flex items-center justify-center text-xs font-bold rounded-full transition-all"
+            class="w-full aspect-square flex items-center justify-center text-sm font-bold rounded-full transition-all"
             [class.text-slate-300]="!isCurrentMonth(day) && !isSelected(day) && !isDateDisabled(day)"
             [class.dark:text-slate-600]="!isCurrentMonth(day) && !isSelected(day) && !isDateDisabled(day)"
             [class.text-slate-700]="isCurrentMonth(day) && !isSelected(day) && !isToday(day) && !isDateDisabled(day)"
             [class.dark:text-slate-300]="isCurrentMonth(day) && !isSelected(day) && !isToday(day) && !isDateDisabled(day)"
-            [class.hover:bg-slate-100]="!isSelected(day) && !isToday(day) && !isDateDisabled(day)"
+            [class.hover:bg-slate-50]="!isSelected(day) && !isToday(day) && !isDateDisabled(day)"
             [class.dark:hover:bg-slate-800]="!isSelected(day) && !isToday(day) && !isDateDisabled(day)"
             [class.cursor-pointer]="!isDateDisabled(day)"
             [class.bg-[var(--color-primary)]/15]="isToday(day) && !isSelected(day)"
-            [class.text-[var(--color-primary)]]="isToday(day) && !isSelected(day)"
-            [class.font-extrabold]="isToday(day)"
-            [class.bg-slate-800]="isSelected(day) && !isToday(day)"
-            [class.dark:bg-slate-200]="isSelected(day) && !isToday(day)"
-            [class.text-white]="isSelected(day) && !isToday(day)"
-            [class.dark:text-slate-900]="isSelected(day) && !isToday(day)"
-            [class.bg-[var(--color-primary)]]="isSelected(day) && isToday(day)"
-            [class.text-white]="isSelected(day) && isToday(day)"
+            [class.!text-[var(--color-primary)]]="isToday(day) && !isSelected(day)"
+            [class.font-extrabold]="isToday(day) || isSelected(day)"
+            [class.bg-[var(--color-primary)]]="isSelected(day)"
+            [class.!text-white]="isSelected(day)"
+            [class.shadow-md]="isSelected(day)"
+            [class.shadow-[var(--color-primary)]/30]="isSelected(day)"
             [class.opacity-30]="isDateDisabled(day)"
             [class.cursor-not-allowed]="isDateDisabled(day)"
             [class.pointer-events-none]="isDateDisabled(day)"

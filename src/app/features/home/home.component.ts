@@ -59,6 +59,9 @@ export class HomeComponent {
   public demoSearchQuery = signal('');
   public demoSelectValue = signal<string | null>(null);
   public demoDatePickerValue = signal('2026-07-10');
+  public limitDatePicker = signal(false); // Mặc định tắt giới hạn để chọn tự do
+  public demoDatePickerMinDate = signal('2026-07-20'); // Mốc ngày minDate tùy biến (ví dụ: ngày 20)
+  public demoDatePickerShowPresets = signal(true); // Cấu hình bật/tắt presets gợi ý chọn nhanh
 
   // === MODAL DEMO STATE ===
   public showDemoModal = signal(false);
