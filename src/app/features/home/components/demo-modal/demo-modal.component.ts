@@ -10,6 +10,11 @@ import { CustomCheckboxComponent } from '@shared/components/custom-checkbox/cust
 import { IconComponent } from '@shared/components/icon/icon.component';
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { CustomInputComponent } from '@shared/components/custom-input/custom-input.component';
+import { AccordionComponent } from '@shared/components/accordion/accordion.component';
+import { AccordionItemComponent } from '@shared/components/accordion/accordion-item.component';
+import { KbdComponent } from '@shared/components/kbd/kbd.component';
+import { TooltipDirective } from '@shared/components/tooltip/tooltip.directive';
+import { BadgeComponent } from '@shared/components/badge/badge.component';
 
 @Component({
   selector: 'app-demo-modal',
@@ -24,7 +29,12 @@ import { CustomInputComponent } from '@shared/components/custom-input/custom-inp
     CustomCheckboxComponent,
     IconComponent,
     ButtonComponent,
-    CustomInputComponent
+    CustomInputComponent,
+    AccordionComponent,
+    AccordionItemComponent,
+    KbdComponent,
+    TooltipDirective,
+    BadgeComponent
   ],
   templateUrl: './demo-modal.component.html',
   styles: [

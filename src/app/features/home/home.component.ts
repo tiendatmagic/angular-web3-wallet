@@ -12,6 +12,10 @@ import { CustomCheckboxComponent } from '@shared/components/custom-checkbox/cust
 import { CustomDatePickerComponent } from '@shared/components/custom-date-picker/custom-date-picker.component';
 import { CardComponent } from '@shared/components/card/card.component';
 import { CustomInputComponent } from '@shared/components/custom-input/custom-input.component';
+import { AccordionComponent } from '@shared/components/accordion/accordion.component';
+import { AccordionItemComponent } from '@shared/components/accordion/accordion-item.component';
+import { KbdComponent } from '@shared/components/kbd/kbd.component';
+import { TooltipDirective } from '@shared/components/tooltip/tooltip.directive';
 import { StateService } from '@core/services/state.service';
 import { ModalService } from '@core/services/modal.service';
 import { DemoModalComponent } from './components/demo-modal/demo-modal.component';
@@ -33,6 +37,11 @@ import { parseEther } from 'ethers';
     CustomDatePickerComponent,
     CardComponent,
     CustomInputComponent,
+    BadgeComponent,
+    AccordionComponent,
+    AccordionItemComponent,
+    KbdComponent,
+    TooltipDirective,
   ],
   templateUrl: './home.component.html'
 })
@@ -65,6 +74,7 @@ export class HomeComponent {
   public limitDatePicker = signal(false); // Mặc định tắt giới hạn để chọn tự do
   public demoDatePickerMinDate = signal('2026-07-20'); // Mốc ngày minDate tùy biến (ví dụ: ngày 20)
   public demoDatePickerShowPresets = signal(true); // Cấu hình bật/tắt presets gợi ý chọn nhanh
+  public demoAccordionMultiple = signal(false);
 
 
 

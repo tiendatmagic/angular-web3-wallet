@@ -2,6 +2,17 @@
 
 ## Ngày 11/07/2026
 
+### Yêu cầu: Bổ sung các UI Components mới (Accordion, Badge, Kbd, Tooltip) và demo lên trang chủ/modal
+- **Nội dung yêu cầu:** Thêm các UI components như `Accordion`, `Kbd` (Keyboard key), và `Tooltip` vào `src/app/shared/components`, đồng thời trình diễn chúng cùng với component `Badge` (đã có sẵn) trên Trang chủ và Demo Modal. Badge không cần áp dụng Tooltip.
+- **Giải pháp:**
+  1. **Tạo Accordion (`app-accordion`, `app-accordion-item`):** Thiết kế dạng component standalone. Sử dụng cơ chế transition trượt cao mượt mà thuần CSS qua `grid-template-rows` (`0fr` -> `1fr`) trong template HTML. Hỗ trợ cơ chế cho phép mở nhiều panel (`multiple = true`) hoặc thu gọn tự động chỉ mở một panel (`multiple = false`).
+  2. **Tạo Kbd (`app-kbd`):** Thiết kế phím bấm 3D chân thực, font chữ `font-mono text-[10px] sm:text-xs`, viền nổi và bóng mờ thích ứng với giao diện sáng/tối.
+  3. **Tạo Tooltip (`appTooltip`):** Directive động định vị `fixed` tính toán tự động theo viewport qua `getBoundingClientRect()` để tránh bị cắt cụt bởi overflow của container cha. Tự động đóng khi màn hình scroll/resize, có hiệu ứng chuyển động scale và fade mượt mà.
+  4. **Tích hợp & Trình diễn:**
+     - Đăng ký các component/directive mới vào `home.component.ts` và `demo-modal.component.ts`.
+     - Tại trang chủ: Thêm **Card 7 (Custom Accordion)** FAQ và **Card 8 (Badge, Kbd & Tooltip)** trình diễn chi tiết các trạng thái.
+     - Tại Demo Modal: Thêm khu vực giới thiệu các component mới (Phím ESC đóng modal, Badge Mới, Accordion điều khoản dApp) và tích hợp tooltip hướng dẫn vào nút "Xác nhận". Loại bỏ appTooltip trên các badge theo yêu cầu cập nhật.
+
 ### Yêu cầu: Khắc phục lỗi thiếu hiệu ứng chuyển động (animation) của Mobile Drawer
 
 - **Nội dung yêu cầu:** Người dùng phản ánh rằng Mobile Drawer không có hiệu ứng chuyển động (animation) mượt mà khi đóng mở.

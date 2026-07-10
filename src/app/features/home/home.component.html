@@ -541,6 +541,101 @@
           </div>
         </div>
       </div>
+
+      <!-- CARD 7: Custom Accordion -->
+      <div app-card>
+        <h4
+          class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
+        >
+          <app-icon name="chevron-down" class="w-3.5 h-3.5 text-pink-500" strokeWidth="2.5" />
+          Custom Accordion
+        </h4>
+        <div class="space-y-4">
+          <div class="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800/40">
+            <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Cho phép mở nhiều mục cùng lúc</span>
+            <app-custom-switch
+              [checked]="demoAccordionMultiple()"
+              (checkedChange)="demoAccordionMultiple.set($event)"
+            />
+          </div>
+
+          <app-accordion [multiple]="demoAccordionMultiple()">
+            <app-accordion-item title="Làm thế nào để kết nối ví?" subtitle="Hướng dẫn kết nối nhanh Web3">
+              Bạn có thể kết nối ví bằng cách nhấn nút &quot;Kết nối ví của bạn&quot; ở đầu trang. Hệ thống hỗ trợ nhiều loại ví thông qua Reown AppKit như MetaMask, Trust Wallet, Coinbase Wallet và các ví WalletConnect khác.
+            </app-accordion-item>
+            <app-accordion-item title="Tại sao cần chuyển đúng mạng lưới?" subtitle="Giải thích cơ chế EVM">
+              Mỗi hợp đồng thông minh được triển khai trên các chuỗi khối (blockchain) khác nhau. Để thực hiện giao dịch đúng địa chỉ và đúng loại token, ví của bạn cần được thiết lập đúng mạng lưới (ví dụ: Arbitrum Sepolia).
+            </app-accordion-item>
+            <app-accordion-item title="Có mất phí gas khi ký tin nhắn không?" subtitle="Bảo mật và chi phí">
+              Không. Việc ký tin nhắn (Message Signing) chỉ là thao tác mã hóa cục bộ bằng khóa riêng của ví để xác thực quyền sở hữu địa chỉ ví, hoàn toàn không gửi giao dịch lên blockchain nên **không tốn bất kỳ chi phí gas nào**.
+            </app-accordion-item>
+          </app-accordion>
+        </div>
+      </div>
+
+      <!-- CARD 8: Badge, Kbd & Tooltip -->
+      <div app-card>
+        <h4
+          class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
+        >
+          <app-icon name="shield-check" class="w-3.5 h-3.5 text-purple-500" strokeWidth="2.5" />
+          Badge, Kbd & Tooltip
+        </h4>
+        
+        <div class="space-y-5">
+          <!-- Tooltip placements demo -->
+          <div class="space-y-2">
+            <label class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Tooltip Placement (Hover me)</label>
+            <div class="flex flex-wrap gap-2.5 pt-1">
+              <button app-button variant="cancel" size="sm" appTooltip="Tooltip hiển thị phía trên 🚀" tooltipPlacement="top">
+                Top
+              </button>
+              <button app-button variant="cancel" size="sm" appTooltip="Tooltip hiển thị phía dưới ✨" tooltipPlacement="bottom">
+                Bottom
+              </button>
+              <button app-button variant="cancel" size="sm" appTooltip="Tooltip hiển thị bên trái 👈" tooltipPlacement="left">
+                Left
+              </button>
+              <button app-button variant="cancel" size="sm" appTooltip="Tooltip hiển thị bên phải 👉" tooltipPlacement="right">
+                Right
+              </button>
+            </div>
+          </div>
+
+          <!-- Kbd keys demo -->
+          <div class="space-y-2">
+            <label class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Keyboard Shortcuts (Kbd)</label>
+            <div class="flex items-center gap-1.5 pt-1 text-sm font-semibold text-slate-600 dark:text-slate-350">
+              <span>Nhấn</span>
+              <kbd app-kbd appTooltip="Phím Command / Windows" tooltipPlacement="top">⌘</kbd>
+              <span>+</span>
+              <kbd app-kbd appTooltip="Phím K" tooltipPlacement="top">K</kbd>
+              <span>để mở nhanh thanh tìm kiếm dApp.</span>
+            </div>
+            <div class="flex items-center gap-1.5 text-sm font-semibold text-slate-600 dark:text-slate-300">
+              <span>Sử dụng phím</span>
+              <kbd app-kbd appTooltip="Phím mũi tên lên">↑</kbd>
+              <kbd app-kbd appTooltip="Phím mũi tên xuống">↓</kbd>
+              <span>để duyệt qua danh sách mạng lưới.</span>
+            </div>
+          </div>
+
+          <!-- Badge variants demo -->
+          <div class="space-y-2">
+            <label class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Badge Variants</label>
+            <div class="flex flex-wrap gap-2 pt-1">
+              <app-badge variant="primary">Primary</app-badge>
+              <app-badge variant="secondary">Secondary</app-badge>
+              <app-badge variant="success" [pulse]="true">Success</app-badge>
+              <app-badge variant="warning">Warning</app-badge>
+              <app-badge variant="danger">Danger</app-badge>
+              <app-badge variant="info">Info</app-badge>
+              <app-badge variant="neutral">Neutral</app-badge>
+              <app-badge variant="ultra" [interactive]="true">Ultra</app-badge>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- NÚT MỞ MODAL DEMO -->
