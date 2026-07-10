@@ -179,6 +179,14 @@ export class Web3Service {
       if (showToastAlert && prevChainId && prevChainId !== chainId) {
         this.toastService.showToast(`Đã chuyển sang mạng ${supportedChain.name}!`, 'success');
       }
+
+      // Tự động điều chỉnh tốc độ gas theo mạng (Testnet -> fast, Mainnet -> default)
+      const isTestnet = !!supportedChain.testnet || supportedChain.name.toLowerCase().includes('sepolia') || supportedChain.name.toLowerCase().includes('testnet');
+      if (isTestnet) {
+        this.txSpeed.set('fast');
+      } else {
+        this.txSpeed.set('default');
+      }
     } else {
       const popular = POPULAR_CHAINS.find(c => Number(c.chainId) === chainId);
       this.networkName.set(popular ? popular.name : 'Mạng không hỗ trợ');
@@ -191,6 +199,16 @@ export class Web3Service {
         }
       } else {
         this.showWrongChainModal.set(false);
+      }
+
+      // Tự động điều chỉnh tốc độ gas theo mạng (Testnet -> fast, Mainnet -> default)
+      const isTestnet = popular 
+        ? popular.name.toLowerCase().includes('sepolia') || popular.name.toLowerCase().includes('testnet')
+        : (chainId === 421614 || chainId === 97 || chainId === 11155111);
+      if (isTestnet) {
+        this.txSpeed.set('fast');
+      } else {
+        this.txSpeed.set('default');
       }
     }
   }
