@@ -47,6 +47,10 @@
     - Điều chỉnh bố cục phần **LOGO & BRAND** trên Desktop Sidebar sang dạng hàng ngang (Row Layout): Logo nằm bên trái, tiêu đề thương hiệu (Angular Web3) và nhãn phụ nằm bên phải để cân đối và phù hợp với thiết kế mẫu.
     - Đồng bộ lại thứ tự các mục tại Footer của Mobile Drawer (Tốc độ giao dịch ở trên, Giao diện ở dưới) đồng nhất hoàn toàn với Desktop Sidebar.
     - Đồng bộ hóa màu sắc chữ thương hiệu `Angular Web3` (Angular màu hồng, Web3 màu tím/indigo) và Logo SVG xoay tròn ở tất cả các vị trí (Mobile Header, Mobile Drawer, Desktop Sidebar) để đảm bảo tính nhất quán của giao diện DApp.
+    - Cấu hình hiệu ứng trượt động (animation) mượt mà cho **Mobile Drawer** cả khi mở và đóng bằng cách chuyển đổi từ cấu hình `@if` cứng sang điều khiển thuộc tính CSS transition (`invisible`, `opacity-100`, `-translate-x-full`, `translate-x-0`).
+    - Cho phép hiển thị số dư native token (ETH) trên thiết bị di động bằng cách loại bỏ lớp CSS ẩn (`hidden sm:inline-block`) trên nút kết nối ví tại Header.
+
+
 
 
 
