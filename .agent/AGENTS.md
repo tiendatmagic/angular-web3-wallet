@@ -1,8 +1,27 @@
-﻿# Lá»‹ch sá»­ yÃªu cáº§u vÃ  xá»­ lÃ½ cá»§a Agent
+# Lịch sử yêu cầu và xử lý của Agent
 
-## NgÃ y 08/07/2026
+## Ngày 10/07/2026
 
-### YÃªu cáº§u: XÃ¢y dá»±ng khung dá»± Ã¡n Angular Web3 báº±ng Tailwind CSS v4, Ethers.js v6 vÃ  Reown AppKit
+### Yêu cầu: Giải đáp lỗi treo màn hình loading (xoay vòng vô tận) "Continue in MetaMask/Trust Wallet..." trên di động
+- **Nội dung yêu cầu:** Người dùng phản ánh khi bấm kết nối ví (MetaMask, Trust Wallet...) trên trình duyệt di động, WalletConnect/AppKit hiển thị thông báo "Continue in..." và xoay vòng vô tận mà không tự động mở ứng dụng ví.
+- **Phân tích nguyên nhân:**
+  1. **Thiếu HTTPS (HTTP Localhost/IP):** Mobile Web3 yêu cầu HTTPS để thực hiện các cơ chế bảo mật của Universal Links/Deep link. Nếu test trên local IP (`http://192.168.1.x:4200`), ví sẽ không phản hồi session handshake.
+  2. **Trình duyệt In-App (In-App Browsers):** Các trình duyệt tích hợp trong Zalo, Telegram, Facebook, Messenger chặn kích hoạt ứng dụng ngoài vì lý do bảo mật.
+  3. **Kẹt session cũ (Stale Connect Session):** Handshake bị treo do session cũ trên ví chưa được ngắt hẳn.
+  4. **Cấu hình Metadata `url` không khớp:** Thuộc tính `url` được gửi đi từ AppKit không khớp với tên miền truy cập thực tế.
+- **Giải pháp:**
+  - Hướng dẫn Developer dùng `ngrok` hoặc `localtunnel` để chạy giao thức HTTPS khi kiểm thử di động.
+  - Hướng dẫn người dùng mở DApp bằng trình duyệt chính thống (Safari/Chrome) hoặc truy cập trực tiếp bằng trình duyệt tích hợp (In-App Browser) bên trong ví.
+  - Hướng dẫn ngắt kết nối các session cũ trong Cài đặt của MetaMask/Trust Wallet và xóa cookies/cache.
+
+### Yêu cầu: Khắc phục lỗi không thể gửi ETH (lỗi TypeError: this.amount(...).trim is not a function)
+- **Nội dung yêu cầu:** Khi bấm nút "Xác nhận gửi ETH", giao dịch không thực hiện được và console báo lỗi: `TypeError: this.amount(...).trim is not a function` tại `app.ts`.
+- **Phân tích nguyên nhân:** Ô input số lượng ETH có kiểu `type="number"` và được liên kết hai chiều qua `[(ngModel)]="amount"`. Khi người dùng nhập số, Angular ngModel tự động chuyển đổi kiểu dữ liệu của `amount` trong Signal từ `string` sang `number`. Do đó, khi gọi `this.amount().trim()`, JavaScript báo lỗi do kiểu `number` không có hàm `trim()`.
+- **Giải pháp:** Cập nhật file [app.ts](file:///d:/git/angular-web3-wallet/src/app/app.ts), bọc giá trị của `this.amount()` và `this.toAddress()` qua hàm `String(...)` trước khi gọi `.trim()`. Áp dụng tương tự cho `this.messageToSign()` để đảm bảo an toàn kiểu dữ liệu.
+
+## Ngày 08/07/2026
+
+### Yêu cầu: Xây dựng khung dự án Angular Web3 bằng Tailwind CSS v4, Ethers.js v6 và Reown AppKit
 - **Ná»™i dung yÃªu cáº§u:** CÃ i Ä‘áº·t vÃ  cáº¥u hÃ¬nh Tailwind v4, tÃ­ch há»£p Ethers v6 + Reown AppKit lÃ m khung sÆ°á»n cho nhiá»u dá»± Ã¡n Web3, xÃ¢y dá»±ng giao diá»‡n Header Menu ProofRandom responsive theo thiáº¿t káº¿ máº«u, há»— trá»£ chuyá»ƒn Ä‘á»•i máº¡ng, káº¿t ná»‘i vÃ­ vÃ  tÃ¡ch biá»‡t mÃ´i trÆ°á»ng cáº¥u hÃ¬nh linh hoáº¡t. Kháº¯c phá»¥c lá»—i hiá»ƒn thá»‹ theme sÃ¡ng/tá»‘i khÃ´ng Ä‘á»“ng bá»™ vÃ  thay tháº¿ toÃ n bá»™ alert báº±ng toastfy.
 - **Giáº£i phÃ¡p:**
   - **Tá»• chá»©c cáº¥u trÃºc:** Cáº¥u hÃ¬nh Path Aliases (`@core/*`, `@shared/*`, `@features/*`, `@environments/*`) trong `tsconfig.json` tuÃ¢n thá»§ nghiÃªm ngáº·t `ARCHITECTURE.md`.

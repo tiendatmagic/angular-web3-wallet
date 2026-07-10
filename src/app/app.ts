@@ -46,8 +46,8 @@ export class App {
 
   // Gửi ETH thông qua Ethers v6 Signer
   public async sendTransaction() {
-    const to = this.toAddress().trim();
-    const val = this.amount().trim();
+    const to = String(this.toAddress() || '').trim();
+    const val = String(this.amount() || '').trim();
 
     if (!to || !val) {
       this.toastService.showToast('Vui lòng điền đầy đủ địa chỉ nhận và số lượng ETH.', 'error');
@@ -91,7 +91,7 @@ export class App {
 
   // Ký tin nhắn bảo mật thông qua ví
   public async signMessage() {
-    const msg = this.messageToSign().trim();
+    const msg = String(this.messageToSign() || '').trim();
     if (!msg) {
       this.toastService.showToast('Vui lòng nhập nội dung tin nhắn cần ký.', 'error');
       return;
