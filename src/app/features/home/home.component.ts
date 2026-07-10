@@ -16,6 +16,7 @@ import { AccordionComponent } from '@shared/components/accordion/accordion.compo
 import { AccordionItemComponent } from '@shared/components/accordion/accordion-item.component';
 import { KbdComponent } from '@shared/components/kbd/kbd.component';
 import { TooltipDirective } from '@shared/components/tooltip/tooltip.directive';
+import { TabGroupComponent, TabOption } from '@shared/components/tab-group/tab-group.component';
 import { StateService } from '@core/services/state.service';
 import { ModalService } from '@core/services/modal.service';
 import { DemoModalComponent } from './components/demo-modal/demo-modal.component';
@@ -42,6 +43,7 @@ import { parseEther } from 'ethers';
     AccordionItemComponent,
     KbdComponent,
     TooltipDirective,
+    TabGroupComponent,
   ],
   templateUrl: './home.component.html'
 })
@@ -75,6 +77,14 @@ export class HomeComponent {
   public demoDatePickerMinDate = signal('2026-07-20'); // Mốc ngày minDate tùy biến (ví dụ: ngày 20)
   public demoDatePickerShowPresets = signal(true); // Cấu hình bật/tắt presets gợi ý chọn nhanh
   public demoAccordionMultiple = signal(false);
+
+  // Trạng thái Demo Tab Group
+  public demoTabValue = signal('wallet');
+  public readonly demoTabOptions: TabOption[] = [
+    { value: 'wallet', label: 'Ví dApp', icon: 'wallet', badge: 3 },
+    { value: 'history', label: 'Lịch sử', icon: 'link-chain' },
+    { value: 'settings', label: 'Cấu hình', icon: 'bolt' }
+  ];
 
 
 

@@ -143,6 +143,16 @@
       <span>để đóng nhanh modal này bất kỳ lúc nào.</span>
     </div>
 
+    <!-- Tab Group mẫu -->
+    <div class="form-field">
+      <label>Chọn mạng ưu tiên (Tab Group)</label>
+      <app-tab-group
+        [options]="modalTabOptions"
+        [activeValue]="modalTabValue()"
+        (valueChange)="modalTabValue.set($event)"
+      ></app-tab-group>
+    </div>
+
     <!-- Accordion rút gọn -->
     <app-accordion>
       <app-accordion-item title="Điều khoản điều kiện ví dApp" subtitle="Đọc kỹ trước khi sử dụng">
@@ -169,6 +179,9 @@
     </div>
     <div class="text-xs font-mono text-slate-500 dark:text-slate-400">
       radio = "{{ modalRadioValue() }}"
+    </div>
+    <div class="text-xs font-mono text-slate-500 dark:text-slate-400">
+      tab = "{{ modalTabValue() }}"
     </div>
     <div class="text-xs font-mono text-slate-500 dark:text-slate-400">
       checkbox = {{ modalCheckboxValue() }}

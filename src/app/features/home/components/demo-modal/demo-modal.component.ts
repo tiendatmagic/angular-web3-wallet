@@ -15,6 +15,7 @@ import { AccordionItemComponent } from '@shared/components/accordion/accordion-i
 import { KbdComponent } from '@shared/components/kbd/kbd.component';
 import { TooltipDirective } from '@shared/components/tooltip/tooltip.directive';
 import { BadgeComponent } from '@shared/components/badge/badge.component';
+import { TabGroupComponent, TabOption } from '@shared/components/tab-group/tab-group.component';
 
 @Component({
   selector: 'app-demo-modal',
@@ -34,7 +35,8 @@ import { BadgeComponent } from '@shared/components/badge/badge.component';
     AccordionItemComponent,
     KbdComponent,
     TooltipDirective,
-    BadgeComponent
+    BadgeComponent,
+    TabGroupComponent
   ],
   templateUrl: './demo-modal.component.html',
   styles: [
@@ -54,6 +56,14 @@ export class DemoModalComponent {
   public modalSwitchValue = signal(false);
   public modalRadioValue = signal('arbitrum');
   public modalCheckboxValue = signal(false);
+
+  // Trạng thái Demo Tab Group trong Modal
+  public modalTabValue = signal('bsc');
+  public readonly modalTabOptions: TabOption[] = [
+    { value: 'ethereum', label: 'Ethereum', dotClass: 'bg-blue-500' },
+    { value: 'arbitrum', label: 'Arbitrum', dotClass: 'bg-indigo-500' },
+    { value: 'bsc', label: 'BNB Chain', dotClass: 'bg-amber-500' }
+  ];
 
   // minDate & Presets configurations
   public readonly today = CustomDatePickerComponent.todayString();

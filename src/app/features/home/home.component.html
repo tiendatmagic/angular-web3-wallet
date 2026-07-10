@@ -636,6 +636,30 @@
           </div>
         </div>
       </div>
+
+      <!-- CARD 9: Custom Tab Group -->
+      <div app-card>
+        <h4
+          class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
+        >
+          <app-icon name="link-chain" class="w-3.5 h-3.5 text-pink-500" strokeWidth="2.5" />
+          Custom Tab Group
+        </h4>
+        
+        <div class="space-y-4">
+          <app-tab-group
+            [options]="demoTabOptions"
+            [activeValue]="demoTabValue()"
+            (valueChange)="demoTabValue.set($event)"
+          ></app-tab-group>
+          
+          <div
+            class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2.5"
+          >
+            activeTab = "{{ demoTabValue() }}"
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- NÚT MỞ MODAL DEMO -->

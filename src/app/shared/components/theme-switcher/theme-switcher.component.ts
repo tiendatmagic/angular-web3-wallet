@@ -1,21 +1,21 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StateService } from '@core/services/state.service';
-import { IconComponent } from '@shared/components/icon/icon.component';
+import { TabGroupComponent, TabOption } from '@shared/components/tab-group/tab-group.component';
 
 @Component({
   selector: 'app-theme-switcher',
-  
-  imports: [CommonModule, IconComponent],
+  standalone: true,
+  imports: [CommonModule, TabGroupComponent],
   template: `
-    <div class="flex items-center justify-between">
-      <div class="flex items-center gap-1.5 leading-tight select-none">
-        <span class="text-xs font-bold text-slate-700 dark:text-slate-300">Giao diện</span>
+    <div class="flex flex-col gap-2">
+      <div class="flex items-center justify-between">
+        <span class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest block">Giao diện</span>
         <span
           [class.text-amber-500]="stateService.themeMode() === 'light'"
           [class.text-indigo-500]="stateService.themeMode() === 'dark'"
           [class.text-purple-500]="stateService.themeMode() === 'auto'"
-          class="text-[11px] font-bold"
+          class="text-[10px] font-black uppercase tracking-wider"
         >
           {{
             stateService.themeMode() === 'light'
@@ -26,43 +26,12 @@ import { IconComponent } from '@shared/components/icon/icon.component';
           }}
         </span>
       </div>
-      <div
-        class="flex items-center bg-slate-100 dark:bg-slate-900 p-0.5 rounded-full border border-slate-200/40 dark:border-slate-800/40"
-      >
-        <button
-          (click)="stateService.setThemeMode('light')"
-          [class.bg-white]="stateService.themeMode() === 'light'"
-          [class.dark:bg-slate-800]="stateService.themeMode() === 'light'"
-          [class.text-amber-500]="stateService.themeMode() === 'light'"
-          [class.shadow-sm]="stateService.themeMode() === 'light'"
-          class="p-1 rounded-full text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-all cursor-pointer flex items-center justify-center"
-          title="Giao diện sáng"
-        >
-          <app-icon name="sun" class="w-3.5 h-3.5" />
-        </button>
-        <button
-          (click)="stateService.setThemeMode('auto')"
-          [class.bg-white]="stateService.themeMode() === 'auto'"
-          [class.dark:bg-slate-800]="stateService.themeMode() === 'auto'"
-          [class.text-purple-500]="stateService.themeMode() === 'auto'"
-          [class.shadow-sm]="stateService.themeMode() === 'auto'"
-          class="p-1 rounded-full text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-all cursor-pointer flex items-center justify-center"
-          title="Tự động theo hệ thống"
-        >
-          <app-icon name="auto" class="w-3.5 h-3.5" />
-        </button>
-        <button
-          (click)="stateService.setThemeMode('dark')"
-          [class.bg-white]="stateService.themeMode() === 'dark'"
-          [class.dark:bg-slate-800]="stateService.themeMode() === 'dark'"
-          [class.text-indigo-500]="stateService.themeMode() === 'dark'"
-          [class.shadow-sm]="stateService.themeMode() === 'dark'"
-          class="p-1 rounded-full text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-all cursor-pointer flex items-center justify-center"
-          title="Giao diện tối"
-        >
-          <app-icon name="moon" class="w-3.5 h-3.5" />
-        </button>
-      </div>
+      
+      <app-tab-group
+        [options]="themeOptions"
+        [activeValue]="stateService.themeMode()"
+        (valueChange)="stateService.setThemeMode($event)"
+      ></app-tab-group>
     </div>
   `,
   styles: [
@@ -74,4 +43,10 @@ import { IconComponent } from '@shared/components/icon/icon.component';
   ]})
 export class ThemeSwitcherComponent {
   public stateService = inject(StateService);
+
+  public readonly themeOptions: TabOption[] = [
+    { value: 'light', label: 'Sáng', icon: 'sun' },
+    { value: 'auto', label: 'Tự động', icon: 'auto' },
+    { value: 'dark', label: 'Tối', icon: 'moon' }
+  ];
 }

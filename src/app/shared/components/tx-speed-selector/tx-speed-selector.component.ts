@@ -2,11 +2,12 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { StateService } from '@core/services/state.service';
+import { TabGroupComponent, TabOption } from '@shared/components/tab-group/tab-group.component';
 
 @Component({
   selector: 'app-tx-speed-selector',
-  
-  imports: [CommonModule, FormsModule],
+  standalone: true,
+  imports: [CommonModule, FormsModule, TabGroupComponent],
   template: `
     <div>
       <div class="flex items-center justify-between mb-2">
@@ -18,42 +19,12 @@ import { StateService } from '@core/services/state.service';
         }
       </div>
       
-      <!-- Segmented Control -->
-      <div class="grid grid-cols-3 bg-slate-100 dark:bg-slate-900 p-0.5 rounded-xl border border-slate-200/40 dark:border-slate-800/40">
-        <button
-          (click)="stateService.txSpeed.set('default')"
-          [class.bg-white]="stateService.txSpeed() === 'default'"
-          [class.dark:bg-slate-800]="stateService.txSpeed() === 'default'"
-          [class.text-slate-800]="stateService.txSpeed() === 'default'"
-          [class.dark:text-white]="stateService.txSpeed() === 'default'"
-          [class.shadow-sm]="stateService.txSpeed() === 'default'"
-          class="py-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-all cursor-pointer text-xs font-bold"
-        >
-          Mặc định
-        </button>
-        <button
-          (click)="stateService.txSpeed.set('fast')"
-          [class.bg-white]="stateService.txSpeed() === 'fast'"
-          [class.dark:bg-slate-800]="stateService.txSpeed() === 'fast'"
-          [class.text-slate-800]="stateService.txSpeed() === 'fast'"
-          [class.dark:text-white]="stateService.txSpeed() === 'fast'"
-          [class.shadow-sm]="stateService.txSpeed() === 'fast'"
-          class="py-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-all cursor-pointer text-xs font-bold"
-        >
-          Nhanh
-        </button>
-        <button
-          (click)="stateService.txSpeed.set('custom')"
-          [class.bg-white]="stateService.txSpeed() === 'custom'"
-          [class.dark:bg-slate-800]="stateService.txSpeed() === 'custom'"
-          [class.text-slate-800]="stateService.txSpeed() === 'custom'"
-          [class.dark:text-white]="stateService.txSpeed() === 'custom'"
-          [class.shadow-sm]="stateService.txSpeed() === 'custom'"
-          class="py-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-all cursor-pointer text-xs font-bold"
-        >
-          Tùy chọn
-        </button>
-      </div>
+      <!-- Segmented Control sử dụng Tab Group -->
+      <app-tab-group
+        [options]="speedOptions"
+        [activeValue]="stateService.txSpeed()"
+        (valueChange)="stateService.txSpeed.set($event)"
+      ></app-tab-group>
 
       <!-- Trường nhập hệ số nhân -->
       @if (stateService.txSpeed() === 'custom') {
@@ -84,4 +55,10 @@ import { StateService } from '@core/services/state.service';
   ]})
 export class TxSpeedSelectorComponent {
   public stateService = inject(StateService);
+
+  public readonly speedOptions: TabOption[] = [
+    { value: 'default', label: 'Mặc định' },
+    { value: 'fast', label: 'Nhanh' },
+    { value: 'custom', label: 'Tùy chọn' }
+  ];
 }
