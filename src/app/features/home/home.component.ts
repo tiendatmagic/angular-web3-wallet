@@ -10,9 +10,10 @@ import { CustomSearchInputComponent } from '@shared/components/custom-search-inp
 import { CustomSelectComponent } from '@shared/components/custom-select/custom-select.component';
 import { CustomCheckboxComponent } from '@shared/components/custom-checkbox/custom-checkbox.component';
 import { CustomDatePickerComponent } from '@shared/components/custom-date-picker/custom-date-picker.component';
-import { ModalComponent } from '@shared/components/modal/modal.component';
 import { CardComponent } from '@shared/components/card/card.component';
 import { StateService } from '@core/services/state.service';
+import { ModalService } from '@core/services/modal.service';
+import { DemoModalComponent } from './components/demo-modal/demo-modal.component';
 import { parseEther } from 'ethers';
 
 @Component({
@@ -29,13 +30,13 @@ import { parseEther } from 'ethers';
     CustomSelectComponent,
     CustomCheckboxComponent,
     CustomDatePickerComponent,
-    ModalComponent,
     CardComponent,
   ],
   templateUrl: './home.component.html'
 })
 export class HomeComponent {
   public stateService = inject(StateService);
+  private readonly modalService = inject(ModalService);
   public readonly today = CustomDatePickerComponent.todayString();
   
   // Trạng thái Form Gửi ETH Demo
@@ -63,13 +64,7 @@ export class HomeComponent {
   public demoDatePickerMinDate = signal('2026-07-20'); // Mốc ngày minDate tùy biến (ví dụ: ngày 20)
   public demoDatePickerShowPresets = signal(true); // Cấu hình bật/tắt presets gợi ý chọn nhanh
 
-  // === MODAL DEMO STATE ===
-  public showDemoModal = signal(false);
-  public modalDateValue = signal('');
-  public modalSelectValue = signal<string | null>(null);
-  public modalSwitchValue = signal(false);
-  public modalRadioValue = signal('arbitrum');
-  public modalCheckboxValue = signal(false);
+
 
   /** Danh sách chain để demo custom-select */
   public readonly demoChainOptions = [
@@ -206,5 +201,23 @@ export class HomeComponent {
       navigator.clipboard.writeText(this.signature()!);
       this.stateService.showToast('Đã sao chép chữ ký vào bộ nhớ tạm!', 'success');
     }
+  }
+
+  // Mở Modal Demo Form động
+  public openDemoModal(): void {
+    const ref = this.modalService.open(DemoModalComponent, {
+      title: 'Demo Form Components',
+      size: 'xl',
+      closeOnBackdropClick: true
+    });
+
+    ref.afterClosed$.subscribe(result => {
+      if (result) {
+        this.stateService.showToast(
+          `Xác nhận form! Date: ${result.date || '(chưa chọn)'}, Select: ${result.select || '(chưa chọn)'}`,
+          'success'
+        );
+      }
+    });
   }
 }

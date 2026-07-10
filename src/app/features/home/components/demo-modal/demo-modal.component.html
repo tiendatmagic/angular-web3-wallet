@@ -1,0 +1,130 @@
+<div class="space-y-6">
+  <!-- Bảng cấu hình mốc giới hạn minDate & Presets -->
+  <div class="flex flex-col gap-2.5 p-3 bg-slate-50/50 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 rounded-xl space-y-1.5">
+    <div class="flex items-center justify-between">
+      <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Giới hạn ngày tối thiểu (minDate)</span>
+      <app-custom-switch
+        [checked]="limitDatePicker()"
+        (checkedChange)="limitDatePicker.set($event)"
+      />
+    </div>
+    
+    <div class="flex items-center justify-between">
+      <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Hiển thị gợi ý chọn nhanh (presets)</span>
+      <app-custom-switch
+        [checked]="demoDatePickerShowPresets()"
+        (checkedChange)="demoDatePickerShowPresets.set($event)"
+      />
+    </div>
+
+    @if (limitDatePicker()) {
+      <div class="flex flex-col gap-1 pt-1 border-t border-slate-200/30 dark:border-slate-800/30 animate-in fade-in duration-200">
+        <label class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Mốc ngày tối thiểu (YYYY-MM-DD)</label>
+        <input
+          type="text"
+          [(ngModel)]="demoDatePickerMinDate"
+          placeholder="2026-07-20"
+          class="w-full bg-white dark:bg-slate-950 border border-slate-200/50 dark:border-slate-800/45 rounded-lg px-2.5 py-1 text-xs focus:outline-none focus:border-purple-500 transition-all font-mono text-slate-800 dark:text-slate-100"
+        />
+      </div>
+    }
+  </div>
+
+  <!-- Date Picker trong Modal -->
+  <div>
+    <app-custom-date-picker
+      label="Chọn ngày giao dịch"
+      placeholder="DD/MM/YYYY"
+      [minDate]="limitDatePicker() ? demoDatePickerMinDate() : ''"
+      [showPresets]="demoDatePickerShowPresets()"
+      [(ngModel)]="modalDateValue"
+    />
+  </div>
+
+  <!-- Select trong Modal -->
+  <div>
+    <app-custom-select
+      label="Mạng lưới blockchain"
+      placeholder="-- Chọn mạng --"
+      [options]="demoChainOptions"
+      valueKey="value"
+      labelKey="label"
+      [showSearch]="true"
+      [(value)]="modalSelectValue"
+    />
+  </div>
+
+  <!-- Switch trong Modal -->
+  <div>
+    <app-custom-switch
+      type="full"
+      label="Xác nhận giao dịch tự động"
+      description="Bỏ qua bước xác nhận thủ công khi gửi ETH"
+      [checked]="modalSwitchValue()"
+      (checkedChange)="modalSwitchValue.set($event)"
+    />
+  </div>
+
+  <!-- Radio trong Modal -->
+  <div>
+    <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-3">
+      Chọn mạng ưu tiên
+    </label>
+    <div class="space-y-2.5">
+      @for (opt of demoRadioOptions; track opt.value) {
+        <app-custom-radio
+          name="modalChain"
+          [value]="opt.value"
+          [label]="opt.label"
+          [description]="opt.description"
+          [checked]="modalRadioValue() === opt.value"
+          (select)="modalRadioValue.set($event)"
+        />
+      }
+    </div>
+  </div>
+
+  <!-- Checkbox trong Modal -->
+  <div>
+    <app-custom-checkbox
+      [(ngModel)]="modalCheckboxValue"
+      label="Tôi đồng ý với điều khoản dịch vụ"
+      description="Xác nhận rằng bạn đã đọc và chấp nhận toàn bộ điều khoản."
+    />
+  </div>
+
+  <!-- Giá trị live output -->
+  <div
+    class="bg-slate-50 dark:bg-slate-950/40 rounded-xl p-4 space-y-1.5 border border-slate-200/30 dark:border-slate-800/30"
+  >
+    <h5 class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-2">
+      Giá trị hiện tại
+    </h5>
+    <div class="text-xs font-mono text-slate-500 dark:text-slate-400">
+      date = "{{ modalDateValue() || '(chưa chọn)' }}"
+    </div>
+    <div class="text-xs font-mono text-slate-500 dark:text-slate-400">
+      select = "{{ modalSelectValue() ?? '(chưa chọn)' }}"
+    </div>
+    <div class="text-xs font-mono text-slate-500 dark:text-slate-400">
+      switch = {{ modalSwitchValue() }}
+    </div>
+    <div class="text-xs font-mono text-slate-500 dark:text-slate-400">
+      radio = "{{ modalRadioValue() }}"
+    </div>
+    <div class="text-xs font-mono text-slate-500 dark:text-slate-400">
+      checkbox = {{ modalCheckboxValue() }}
+    </div>
+  </div>
+
+  <!-- Nút hành động -->
+  <div class="flex items-center justify-end gap-3 pt-2">
+    <button app-button variant="cancel" size="sm" (click)="cancel()">
+      Hủy bỏ
+    </button>
+    <button app-button variant="primary" size="sm" (click)="confirm()">
+      <app-icon name="check" class="w-4 h-4" strokeWidth="2.5" />
+      Xác nhận
+    </button>
+  </div>
+</div>
