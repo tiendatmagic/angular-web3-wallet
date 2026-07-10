@@ -24,6 +24,7 @@ export class Web3Service {
   public isWrongChain = signal<boolean>(false);
   public txSpeed = signal<'default' | 'fast' | 'custom'>('default');
   public gasMultiplier = signal<number>(2);
+  public showWrongChainModal = signal<boolean>(false);
 
   public readonly POPULAR_CHAINS = POPULAR_CHAINS;
 
@@ -91,7 +92,7 @@ export class Web3Service {
       adapters: [new EthersAdapter()],
       networks: this.supportedChains as any,
       defaultNetwork: this.supportedChains[0] as any, // Arbitrum One làm default
-      allowUnsupportedChain: false,
+      allowUnsupportedChain: true,
       metadata: {
         name: 'Angular Web3 DApp',
         description: 'Angular Web3 Application Framework',
@@ -117,11 +118,18 @@ export class Web3Service {
 
       if (accountState.isConnected && accountState.address) {
         await this.updateBalanceAndNetwork();
+        
+        // Cập nhật hiển thị modal nếu mạng hiện tại sai sau khi load account (khi reload)
+        const currentChainId = this.chainId();
+        if (currentChainId) {
+          this.checkAndUpdateNetworkState(currentChainId, false);
+        }
       } else {
         this.balance.set('0.0000');
         this.chainId.set(null);
         this.networkName.set('Unknown Network');
         this.isWrongChain.set(false);
+        this.showWrongChainModal.set(false);
         if (prevConnected) {
           this.toastService.showToast('Đã ngắt kết nối ví!', 'error');
         }
@@ -132,27 +140,50 @@ export class Web3Service {
     this.modal.subscribeNetwork((networkState) => {
       if (networkState.chainId) {
         const id = Number(networkState.chainId);
-        const prevChainId = this.chainId();
-        this.chainId.set(id);
-        this.networkName.set(networkState.caipNetwork?.name || 'Unknown Network');
-
-        // Kiểm tra xem mạng hiện tại có trong danh sách supported không
-        const isSupported = this.supportedChains.some(
-          chain => Number(chain.id) === id
-        );
-        this.isWrongChain.set(!isSupported);
-
-        if (isSupported && prevChainId && prevChainId !== id) {
-          this.toastService.showToast(`Đã chuyển sang mạng ${networkState.caipNetwork?.name || id}!`, 'success');
-        } else if (!isSupported && this.isConnected()) {
-          this.toastService.showToast('Mạng hiện tại không được hỗ trợ!', 'error');
-        }
+        this.checkAndUpdateNetworkState(id, true);
       }
 
       if (this.isConnected()) {
         this.updateBalanceAndNetwork();
       }
     });
+  }
+
+  // Hàm helper tập trung kiểm tra và cập nhật trạng thái mạng lưới
+  private checkAndUpdateNetworkState(chainId: number, showToastAlert = true) {
+    const prevChainId = this.chainId();
+    const prevWrongChain = this.isWrongChain();
+    
+    this.chainId.set(chainId);
+
+    const supportedChain = this.supportedChains.find(c => Number(c.id) === chainId);
+    const isSupported = !!supportedChain;
+    this.isWrongChain.set(!isSupported);
+
+    if (isSupported) {
+      this.networkName.set(supportedChain.name);
+      this.showWrongChainModal.set(false);
+      try {
+        this.modal.close();
+      } catch (e) {
+        // ignore
+      }
+      if (showToastAlert && prevChainId && prevChainId !== chainId) {
+        this.toastService.showToast(`Đã chuyển sang mạng ${supportedChain.name}!`, 'success');
+      }
+    } else {
+      const popular = POPULAR_CHAINS.find(c => Number(c.chainId) === chainId);
+      this.networkName.set(popular ? popular.name : 'Mạng không hỗ trợ');
+      
+      if (this.isConnected()) {
+        this.showWrongChainModal.set(true);
+        if (showToastAlert && (!prevWrongChain || prevChainId !== chainId)) {
+          this.toastService.showToast('Mạng hiện tại không được hỗ trợ!', 'error');
+        }
+      } else {
+        this.showWrongChainModal.set(false);
+      }
+    }
   }
 
   // Cập nhật số dư và thông tin mạng thông qua Ethers BrowserProvider
@@ -169,7 +200,8 @@ export class Web3Service {
         this.balance.set(parseFloat(formattedBalance).toFixed(4));
 
         const network = await ethersProvider.getNetwork();
-        this.chainId.set(Number(network.chainId));
+        const id = Number(network.chainId);
+        this.checkAndUpdateNetworkState(id, false); // Cập nhật không phát ra Toast trùng lặp
       }
     } catch (error) {
       console.error('Lỗi khi cập nhật số dư/mạng:', error);

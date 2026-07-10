@@ -2,6 +2,17 @@
 
 ## Ngày 10/07/2026
 
+### Yêu cầu: Tắt Switch Network modal tự động của WalletConnect và thay bằng DApp Modal khi kết nối sai mạng
+- **Nội dung yêu cầu:** Người dùng muốn tự quản lý việc hiển thị modal sai mạng lưới bằng Modal của DApp thay vì để WalletConnect tự động hiện popup mặc định (vốn bị kẹt không tắt được).
+- **Phân tích nguyên nhân & Giải pháp:**
+  1. Thay đổi cấu hình AppKit: đặt `allowUnsupportedChain: true` trong [web3.service.ts](file:///d:/git/angular-web3-wallet/src/app/core/services/web3.service.ts) để tắt modal tự động của WalletConnect.
+  2. Quản lý trạng thái DApp Modal: thêm signal `showWrongChainModal` trong `Web3Service`.
+  3. Khắc phục lỗi khi reload trang: khi tải lại trang, do sự khác biệt về thời gian trigger sự kiện giữa `subscribeNetwork` (thường chạy trước khi tài khoản được khôi phục) và `subscribeAccount` (nhận `isConnected` sau), ta viết hàm helper tập trung `checkAndUpdateNetworkState()` để cập nhật mạng lưới chính xác và đồng bộ, đảm bảo modal tự động hiển thị sau khi reload nếu ví đang ở sai mạng.
+  4. Cập nhật giao diện:
+     - Tích hợp component `<app-modal>` vào shell [app.html](file:///d:/git/angular-web3-wallet/src/app/app.html) của DApp hiển thị danh sách mạng hỗ trợ và nút ngắt kết nối ví.
+     - Tối ưu hóa thiết kế nút mạng trong modal: Loại bỏ icon `chevron-right` chưa được đăng ký trong thư viện (tránh hiện dấu hỏi chấm `(?)`), căn lề trái phẳng (flat alignment) gọn gàng và tăng kích cỡ chấm màu mạng lên `w-3.5 h-3.5` để tăng tính cân đối.
+     - Cập nhật logic trong [app.ts](file:///d:/git/angular-web3-wallet/src/app/app.ts) để import các component UI và viết hàm trigger chuyển đổi mạng lưới.
+
 ### Yêu cầu: Khắc phục lỗi WalletConnect Relay Server và lỗi treo kết nối di động (failed to publish custom payload)
 - **Nội dung yêu cầu:** Người dùng báo lỗi khi kết nối ví hiển thị thông báo "Failed to publish custom payload, please try again. id:... tag:undefined" và bị treo loading trên mobile.
 - **Phân tích nguyên nhân:**
