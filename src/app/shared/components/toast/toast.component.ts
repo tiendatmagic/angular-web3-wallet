@@ -13,12 +13,4 @@ import { IconComponent } from '@shared/components/icon/icon.component';
 })
 export class ToastComponent {
   public readonly toastService = inject(ToastService);
-
-  public get successMessage() {
-    return this.toastService.successMessage;
-  }
-
-  public get errorMessage() {
-    return this.toastService.errorMessage;
-  }
 }

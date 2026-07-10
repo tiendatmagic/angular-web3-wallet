@@ -54,7 +54,7 @@ export class HomeComponent {
     this.txLoading.set(true);
     this.txHash.set(null);
     this.txError.set(null);
-    this.toastService.showToast('Đang gửi yêu cầu giao dịch đến ví...', 'success');
+    this.toastService.showToast('Đang gửi yêu cầu giao dịch đến ví...', 'warning');
 
     try {
       const signer = await this.web3Service.getSigner();
@@ -94,7 +94,7 @@ export class HomeComponent {
       const tx = await signer.sendTransaction(txRequest);
       
       this.txHash.set(tx.hash);
-      this.toastService.showToast('Giao dịch đã được phát đi! Đang chờ xác nhận...', 'success');
+      this.toastService.showToast('Giao dịch đã được phát đi! Đang chờ xác nhận...', 'warning');
       
       // Đợi giao dịch được khai thác trên mạng (mined) và cập nhật số dư mới
       await tx.wait();
@@ -125,7 +125,7 @@ export class HomeComponent {
     this.signLoading.set(true);
     this.signature.set(null);
     this.signError.set(null);
-    this.toastService.showToast('Đang yêu cầu ký tin nhắn...', 'success');
+    this.toastService.showToast('Đang yêu cầu ký tin nhắn...', 'warning');
 
     try {
       const signer = await this.web3Service.getSigner();

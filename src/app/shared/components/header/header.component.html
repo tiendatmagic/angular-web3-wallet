@@ -1,8 +1,9 @@
 <header
   class="w-full bg-white/90 dark:bg-slate-950/90 backdrop-blur-md border-b border-slate-200/50 dark:border-slate-900/50 sticky top-0 z-50 md:z-30 transition-all duration-300 md:pl-72"
 >
-  <div class="max-w-[1530px] mx-auto w-full px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
-
+  <div
+    class="max-w-[1530px] mx-auto w-full px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between"
+  >
     <!-- PHẦN BÊN TRÁI: NÚT HAMBURGER (MOBILE) + LOGO & THƯƠNG HIỆU (ẨN TRÊN DESKTOP) -->
     <div class="flex md:hidden items-center gap-2 sm:gap-3">
       <!-- Hamburger Button - CHỈ HIỆN MOBILE -->
@@ -32,9 +33,21 @@
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <circle cx="50" cy="50" r="40" stroke="currentColor" stroke-width="6" stroke-dasharray="10 6" />
+            <circle
+              cx="50"
+              cy="50"
+              r="40"
+              stroke="currentColor"
+              stroke-width="6"
+              stroke-dasharray="10 6"
+            />
             <circle cx="50" cy="50" r="25" stroke="currentColor" stroke-width="4" />
-            <path d="M50 10V25M50 75V90M10 50H25M75 50H90" stroke="currentColor" stroke-width="6" stroke-linecap="round" />
+            <path
+              d="M50 10V25M50 75V90M10 50H25M75 50H90"
+              stroke="currentColor"
+              stroke-width="6"
+              stroke-linecap="round"
+            />
             <circle cx="50" cy="50" r="8" fill="url(#logo-grad-h)" />
             <defs>
               <linearGradient id="logo-grad-h" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -47,10 +60,14 @@
 
         <!-- Tên thương hiệu -->
         <div class="hidden md:flex flex-col">
-          <span class="text-base sm:text-2xl font-black bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent tracking-tight">
+          <span
+            class="text-base sm:text-2xl font-black bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent tracking-tight"
+          >
             Angular Web3
           </span>
-          <span class="hidden sm:inline-block text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] -mt-1 select-none">
+          <span
+            class="hidden sm:inline-block text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] -mt-1 select-none"
+          >
             Web3 Template
           </span>
         </div>
@@ -79,7 +96,6 @@
 
     <!-- PHẦN BÊN PHẢI: THEME, NGÔN NGỮ, NÚT VÍ -->
     <div class="flex items-center gap-2 sm:gap-3">
-
       <!-- Nút Chuyển Mạng Lưới -->
       <div class="relative block">
         <button
@@ -91,10 +107,16 @@
         </button>
 
         @if (showNetworkDropdown()) {
-          <div class="absolute right-0 mt-2 w-72 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 rounded-2xl shadow-xl z-50 overflow-hidden py-3 animate-in fade-in slide-in-from-top-1 duration-150">
+          <div
+            class="absolute right-0 mt-2 w-72 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 rounded-2xl shadow-xl z-50 overflow-hidden py-3 animate-in fade-in slide-in-from-top-1 duration-150"
+          >
             <!-- Tiêu đề dropdown -->
-            <div class="px-4 pb-2 mb-2 border-b border-slate-100 dark:border-slate-800/60 select-none">
-              <span class="text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest block text-center">
+            <div
+              class="px-4 pb-2 mb-2 border-b border-slate-100 dark:border-slate-800/60 select-none"
+            >
+              <span
+                class="text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest block text-center"
+              >
                 -- Chọn nhanh mạng phổ biến nhất --
               </span>
             </div>
@@ -109,10 +131,17 @@
                 class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-all cursor-pointer group"
               >
                 <div class="flex items-center gap-2">
-                  <span class="w-2.5 h-2.5 rounded-full bg-[#00a3ff] inline-block shadow-sm shadow-[#00a3ff]/30"></span>
-                  <span class="group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">Arbitrum One</span>
+                  <span
+                    class="w-2.5 h-2.5 rounded-full bg-[#00a3ff] inline-block shadow-sm shadow-[#00a3ff]/30"
+                  ></span>
+                  <span
+                    class="group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors"
+                    >Arbitrum One</span
+                  >
                 </div>
-                <span class="text-[9px] font-mono font-bold text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded">
+                <span
+                  class="text-[9px] font-mono font-bold text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded"
+                >
                   42161
                 </span>
               </button>
@@ -125,10 +154,17 @@
                 class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-all cursor-pointer group"
               >
                 <div class="flex items-center gap-2">
-                  <span class="w-2.5 h-2.5 rounded-full bg-[#ff007a] inline-block shadow-sm shadow-[#ff007a]/30"></span>
-                  <span class="group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">Arbitrum Sepolia</span>
+                  <span
+                    class="w-2.5 h-2.5 rounded-full bg-[#ff007a] inline-block shadow-sm shadow-[#ff007a]/30"
+                  ></span>
+                  <span
+                    class="group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors"
+                    >Arbitrum Sepolia</span
+                  >
                 </div>
-                <span class="text-[9px] font-mono font-bold text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded">
+                <span
+                  class="text-[9px] font-mono font-bold text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded"
+                >
                   421614
                 </span>
               </button>
@@ -145,25 +181,44 @@
             class="flex items-center gap-2 sm:gap-3 border border-pink-500/25 bg-pink-500/5 hover:bg-pink-500/10 transition-all duration-300 rounded-full pl-3 pr-3.5 sm:pl-3.5 sm:pr-4 py-1.5 group cursor-pointer shadow-sm hover:shadow-pink-500/10"
           >
             <span class="relative flex h-2.5 w-2.5 flex-shrink-0">
-              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span
+                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"
+              ></span>
               <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
             </span>
             <div class="flex flex-col text-left select-none leading-tight">
-              <span class="font-mono text-xs sm:text-[13px] font-extrabold text-slate-700 dark:text-slate-200">
+              <span
+                class="font-mono text-xs sm:text-[13px] font-extrabold text-slate-700 dark:text-slate-200"
+              >
                 {{ shortenedAddress() }}
               </span>
-              <span class="hidden sm:inline-block text-[10px] font-black text-pink-500 tracking-wider">
+              <span
+                class="hidden sm:inline-block text-[10px] font-black text-pink-500 tracking-wider"
+              >
                 {{ web3Service.balance() }} ETH
               </span>
             </div>
-            <app-icon name="chevron-down" class="w-3 h-3 sm:w-3.5 sm:h-3.5 text-pink-500 group-hover:translate-y-0.5 transition-transform flex-shrink-0" strokeWidth="2.5" />
+            <app-icon
+              name="chevron-down"
+              class="w-3 h-3 sm:w-3.5 sm:h-3.5 text-pink-500 group-hover:translate-y-0.5 transition-transform flex-shrink-0"
+              strokeWidth="2.5"
+            />
           </button>
 
           @if (showDropdown()) {
-            <div class="absolute right-0 mt-2.5 w-52 sm:w-56 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 rounded-2xl shadow-xl z-50 overflow-hidden py-2 animate-in fade-in slide-in-from-top-2 duration-200">
-              <div class="px-4 py-2 border-b border-slate-100 dark:border-slate-800/50 mb-1 select-none">
-                <span class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Ví của bạn (EVM)</span>
-                <p class="font-mono text-xs text-slate-600 dark:text-slate-400 break-all mt-0.5 font-bold">
+            <div
+              class="absolute right-0 mt-2.5 w-52 sm:w-56 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 rounded-2xl shadow-xl z-50 overflow-hidden py-2 animate-in fade-in slide-in-from-top-2 duration-200"
+            >
+              <div
+                class="px-4 py-2 border-b border-slate-100 dark:border-slate-800/50 mb-1 select-none"
+              >
+                <span
+                  class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest"
+                  >Ví của bạn (EVM)</span
+                >
+                <p
+                  class="font-mono text-xs text-slate-600 dark:text-slate-400 break-all mt-0.5 font-bold"
+                >
                   {{ web3Service.address() }}
                 </p>
               </div>
@@ -208,7 +263,6 @@
           <span class="xs:hidden">Kết nối</span>
         </button>
       }
-
     </div>
   </div>
 </header>
@@ -228,16 +282,36 @@
   <div
     class="fixed inset-y-0 left-0 z-[70] w-[280px] sm:w-[300px] bg-white dark:bg-slate-950 flex flex-col shadow-2xl md:hidden animate-in slide-in-from-left duration-300"
   >
-
     <!-- HEADER CỦA DRAWER: Logo + Nút đóng -->
-    <div class="flex items-center justify-between px-5 pt-5 pb-4 border-b border-slate-100 dark:border-slate-800/60">
+    <div
+      class="flex items-center justify-between px-5 pt-5 pb-4 border-b border-slate-100 dark:border-slate-800/60"
+    >
       <div class="flex items-center gap-3">
         <!-- Logo nhỏ -->
-        <div class="relative w-10 h-10 flex items-center justify-center rounded-full bg-purple-50 dark:bg-purple-950/30 border border-purple-500/20">
-          <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="50" cy="50" r="40" stroke="currentColor" stroke-width="6" stroke-dasharray="10 6" />
+        <div
+          class="relative w-10 h-10 flex items-center justify-center rounded-full bg-purple-50 dark:bg-purple-950/30 border border-purple-500/20"
+        >
+          <svg
+            class="w-6 h-6 text-purple-600 dark:text-purple-400"
+            viewBox="0 0 100 100"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              r="40"
+              stroke="currentColor"
+              stroke-width="6"
+              stroke-dasharray="10 6"
+            />
             <circle cx="50" cy="50" r="25" stroke="currentColor" stroke-width="4" />
-            <path d="M50 10V25M50 75V90M10 50H25M75 50H90" stroke="currentColor" stroke-width="6" stroke-linecap="round" />
+            <path
+              d="M50 10V25M50 75V90M10 50H25M75 50H90"
+              stroke="currentColor"
+              stroke-width="6"
+              stroke-linecap="round"
+            />
             <circle cx="50" cy="50" r="8" fill="url(#logo-grad-drawer)" />
             <defs>
               <linearGradient id="logo-grad-drawer" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -248,10 +322,14 @@
           </svg>
         </div>
         <div class="flex flex-col">
-          <span class="text-base font-black bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent tracking-tight">
+          <span
+            class="text-base font-black bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent tracking-tight"
+          >
             Angular Web3
           </span>
-          <span class="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.18em]">
+          <span
+            class="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.18em]"
+          >
             Web3 Template
           </span>
         </div>
@@ -272,7 +350,7 @@
       <a
         routerLink="/home"
         routerLinkActive="bg-purple-50 dark:bg-purple-950/30 text-purple-600 dark:text-purple-400 font-extrabold"
-        [routerLinkActiveOptions]="{exact: true}"
+        [routerLinkActiveOptions]="{ exact: true }"
         (click)="showMobileMenu.set(false)"
         class="flex items-center gap-3.5 px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/40 hover:text-purple-600 dark:hover:text-purple-400 text-slate-600 dark:text-slate-400 font-semibold text-sm transition-all cursor-pointer"
       >
@@ -305,8 +383,13 @@
 
     <!-- THEME SWITCHER (TRONG DRAWER) -->
     <div class="px-4 pb-3 pt-2 border-t border-slate-100 dark:border-slate-800/60">
-      <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest block mb-2">Giao diện</span>
-      <div class="grid grid-cols-3 bg-slate-50 dark:bg-slate-900 p-1 rounded-xl border border-slate-200/50 dark:border-slate-800/50">
+      <span
+        class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest block mb-2"
+        >Giao diện</span
+      >
+      <div
+        class="grid grid-cols-3 bg-slate-50 dark:bg-slate-900 p-1 rounded-xl border border-slate-200/50 dark:border-slate-800/50"
+      >
         <button
           (click)="themeService.setThemeMode('light')"
           [class.bg-white]="themeService.themeMode() === 'light'"
@@ -346,25 +429,35 @@
     </div>
 
     <!-- FOOTER DRAWER: Tốc độ giao dịch & Hệ số nhân -->
-    <div class="px-5 py-4 border-t border-slate-100 dark:border-slate-800/60 bg-slate-50/50 dark:bg-slate-900/30 space-y-4">
+    <div
+      class="px-5 py-4 border-t border-slate-100 dark:border-slate-800/60 bg-slate-50/50 dark:bg-slate-900/30 space-y-4"
+    >
       <!-- Tốc độ giao dịch header -->
       <div class="flex items-center justify-between">
-        <span class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">
+        <span
+          class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest"
+        >
           Tốc độ giao dịch
         </span>
         @if (web3Service.txSpeed() === 'fast') {
-          <span class="text-xs font-black text-transparent bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text">
+          <span
+            class="text-xs font-black text-transparent bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text"
+          >
             1.5x Phí
           </span>
         } @else if (web3Service.txSpeed() === 'custom') {
-          <span class="text-xs font-black text-transparent bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text">
+          <span
+            class="text-xs font-black text-transparent bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text"
+          >
             {{ web3Service.gasMultiplier() }}x Phí
           </span>
         }
       </div>
 
       <!-- Segmented Control -->
-      <div class="grid grid-cols-3 bg-slate-100 dark:bg-slate-900 p-0.5 rounded-xl border border-slate-200/40 dark:border-slate-800/40">
+      <div
+        class="grid grid-cols-3 bg-slate-100 dark:bg-slate-900 p-0.5 rounded-xl border border-slate-200/40 dark:border-slate-800/40"
+      >
         <button
           (click)="web3Service.txSpeed.set('default')"
           [class.bg-white]="web3Service.txSpeed() === 'default'"
@@ -402,11 +495,13 @@
 
       <!-- Trường nhập hệ số nhân -->
       @if (web3Service.txSpeed() === 'custom') {
-        <div class="flex items-center justify-between bg-slate-100/80 dark:bg-slate-900 border border-slate-200/40 dark:border-slate-800/40 rounded-xl px-4 py-2 text-xs font-bold">
+        <div
+          class="flex items-center justify-between bg-slate-100/80 dark:bg-slate-900 border border-slate-200/40 dark:border-slate-800/40 rounded-xl px-4 py-2 text-xs font-bold"
+        >
           <span class="text-slate-400 uppercase tracking-wider">Hệ số nhân:</span>
           <div class="flex items-center gap-1">
-            <input 
-              type="number" 
+            <input
+              type="number"
               step="0.1"
               min="1"
               max="10"
@@ -424,12 +519,11 @@
         <div class="mt-2 flex items-center gap-2">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0"></span>
           <span class="text-xs font-bold text-slate-500 dark:text-slate-400 truncate font-mono">
-            {{ web3Service.address() | slice:0:6 }}...{{ web3Service.address() | slice:-4 }}
+            {{ web3Service.address() | slice: 0 : 6 }}...{{ web3Service.address() | slice: -4 }}
           </span>
         </div>
       }
     </div>
-
   </div>
 }
 
@@ -440,8 +534,9 @@
   class="fixed inset-y-0 left-0 z-50 w-72 bg-white dark:bg-slate-950 border-r border-slate-200/50 dark:border-slate-900/50 hidden md:flex flex-col shadow-sm select-none"
 >
   <!-- LOGO & BRAND -->
-  <div class="flex flex-col items-center justify-center py-8 border-b border-slate-100 dark:border-slate-800/60">
-    <div class="relative w-14 h-14 flex items-center justify-center rounded-full bg-purple-50 dark:bg-purple-950/20 p-2 border border-purple-500/20 group mb-3">
+  <div class="flex items-center gap-3.5 px-6 py-6 border-b border-slate-100 dark:border-slate-800/60">
+    <!-- Icon tròn bên trái -->
+    <div class="relative w-11 h-11 flex items-center justify-center rounded-full bg-purple-50 dark:bg-purple-950/20 p-1.5 border border-purple-500/20 group flex-shrink-0">
       <div class="absolute inset-0 bg-gradient-to-tr from-primary/20 to-secondary/20 rounded-full blur-sm group-hover:blur-md transition-all"></div>
       <svg class="w-full h-full text-purple-600 dark:text-purple-400 relative z-10 animate-[spin_20s_linear_infinite]" viewBox="0 0 100 100" fill="none">
         <circle cx="50" cy="50" r="40" stroke="currentColor" stroke-width="6" stroke-dasharray="10 6" />
@@ -456,12 +551,15 @@
         </defs>
       </svg>
     </div>
-    <span class="text-xl font-black bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent tracking-tight">
-      Angular Web3
-    </span>
-    <span class="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] -mt-0.5">
-      Web3 Template
-    </span>
+    <!-- Chữ tiêu đề & mô tả bên phải -->
+    <div class="flex flex-col select-none">
+      <span class="text-base font-black tracking-tight leading-none text-slate-800 dark:text-white mb-1.5">
+        <span class="text-pink-600 dark:text-pink-500">Angular</span> <span class="text-purple-600 dark:text-purple-400">Web3</span>
+      </span>
+      <span class="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest leading-none">
+        Web3 Template
+      </span>
+    </div>
   </div>
 
   <!-- MENU LINKS -->
@@ -470,7 +568,7 @@
     <a
       routerLink="/home"
       routerLinkActive="bg-purple-50 dark:bg-purple-950/30 text-purple-600 dark:text-purple-400 font-extrabold"
-      [routerLinkActiveOptions]="{exact: true}"
+      [routerLinkActiveOptions]="{ exact: true }"
       class="flex items-center gap-3.5 px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/40 hover:text-purple-600 dark:hover:text-purple-400 text-slate-600 dark:text-slate-400 font-semibold text-sm transition-all cursor-pointer"
     >
       <app-icon name="home" class="w-5 h-5 flex-shrink-0" />
@@ -499,18 +597,31 @@
   </nav>
 
   <!-- BOTTOM CONTROLS (Tốc độ GD & Giao diện) -->
-  <div class="px-5 py-4 border-t border-slate-100 dark:border-slate-800/60 bg-slate-50/30 dark:bg-slate-900/10 space-y-4">
+  <div
+    class="px-5 py-4 border-t border-slate-100 dark:border-slate-800/60 bg-slate-50/30 dark:bg-slate-900/10 space-y-4"
+  >
     <!-- Tốc độ giao dịch -->
     <div>
       <div class="flex items-center justify-between mb-2">
-        <span class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest block">Tốc độ giao dịch</span>
+        <span
+          class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest block"
+          >Tốc độ giao dịch</span
+        >
         @if (web3Service.txSpeed() === 'fast') {
-          <span class="text-[10px] font-black text-pink-600 dark:text-pink-400 bg-pink-50 dark:bg-pink-950/30 px-2 py-0.5 rounded-md">1.5x Phí</span>
+          <span
+            class="text-[10px] font-black text-pink-600 dark:text-pink-400 bg-pink-50 dark:bg-pink-950/30 px-2 py-0.5 rounded-md"
+            >1.5x Phí</span
+          >
         } @else if (web3Service.txSpeed() === 'custom') {
-          <span class="text-[10px] font-black text-pink-600 dark:text-pink-400 bg-pink-50 dark:bg-pink-950/30 px-2 py-0.5 rounded-md">{{ web3Service.gasMultiplier() }}x Phí</span>
+          <span
+            class="text-[10px] font-black text-pink-600 dark:text-pink-400 bg-pink-50 dark:bg-pink-950/30 px-2 py-0.5 rounded-md"
+            >{{ web3Service.gasMultiplier() }}x Phí</span
+          >
         }
       </div>
-      <div class="grid grid-cols-3 bg-slate-100 dark:bg-slate-900 p-0.5 rounded-xl border border-slate-200/40 dark:border-slate-800/40">
+      <div
+        class="grid grid-cols-3 bg-slate-100 dark:bg-slate-900 p-0.5 rounded-xl border border-slate-200/40 dark:border-slate-800/40"
+      >
         <button
           (click)="web3Service.txSpeed.set('default')"
           [class.bg-white]="web3Service.txSpeed() === 'default'"
@@ -548,11 +659,13 @@
 
       <!-- Trường nhập hệ số nhân -->
       @if (web3Service.txSpeed() === 'custom') {
-        <div class="mt-3 flex items-center justify-between bg-slate-100/80 dark:bg-slate-900 border border-slate-200/40 dark:border-slate-800/40 rounded-xl px-4 py-2 text-xs font-bold">
+        <div
+          class="mt-3 flex items-center justify-between bg-slate-100/80 dark:bg-slate-900 border border-slate-200/40 dark:border-slate-800/40 rounded-xl px-4 py-2 text-xs font-bold"
+        >
           <span class="text-slate-400 uppercase tracking-wider">Hệ số nhân:</span>
           <div class="flex items-center gap-1">
-            <input 
-              type="number" 
+            <input
+              type="number"
               step="0.1"
               min="1"
               max="10"
@@ -576,10 +689,18 @@
           [class.text-purple-500]="themeService.themeMode() === 'auto'"
           class="text-[11px] font-bold"
         >
-          {{ themeService.themeMode() === 'light' ? 'Sáng' : themeService.themeMode() === 'dark' ? 'Tối' : 'Tự động' }}
+          {{
+            themeService.themeMode() === 'light'
+              ? 'Sáng'
+              : themeService.themeMode() === 'dark'
+                ? 'Tối'
+                : 'Tự động'
+          }}
         </span>
       </div>
-      <div class="flex items-center bg-slate-100 dark:bg-slate-900 p-0.5 rounded-full border border-slate-200/40 dark:border-slate-800/40">
+      <div
+        class="flex items-center bg-slate-100 dark:bg-slate-900 p-0.5 rounded-full border border-slate-200/40 dark:border-slate-800/40"
+      >
         <button
           (click)="themeService.setThemeMode('light')"
           [class.bg-white]="themeService.themeMode() === 'light'"
@@ -617,7 +738,9 @@
     </div>
 
     <!-- Copyright -->
-    <div class="text-[9px] text-slate-400 dark:text-slate-500 text-center pt-2 border-t border-slate-100 dark:border-slate-800/40">
+    <div
+      class="text-[9px] text-slate-400 dark:text-slate-500 text-center pt-2 border-t border-slate-100 dark:border-slate-800/40"
+    >
       © 2026 Angular Web3. Phiên bản phi tập trung.
     </div>
   </div>

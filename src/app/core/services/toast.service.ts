@@ -1,37 +1,40 @@
 import { Injectable, signal } from '@angular/core';
 
-export interface ToastMessage {
-  msg: string;
-  id: number;
+export interface ToastItem {
+  id: string;
+  message: string;
+  type: 'success' | 'error' | 'warning';
+  duration: number;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class ToastService {
-  public readonly successMessage = signal<ToastMessage | null>(null);
-  public readonly errorMessage = signal<ToastMessage | null>(null);
+  public readonly toasts = signal<ToastItem[]>([]);
 
-  private _successTimer: any = null;
-  private _errorTimer: any = null;
+  public showToast(message: string, type: 'success' | 'error' | 'warning' = 'success', duration?: number) {
+    const defaultDuration = type === 'success' ? 3000 : type === 'warning' ? 3500 : 4000;
+    const finalDuration = duration || defaultDuration;
+    const id = Date.now().toString() + Math.random().toString(36).substr(2, 9);
+    
+    const newToast: ToastItem = {
+      id,
+      message,
+      type,
+      duration: finalDuration
+    };
 
-  public showToast(msg: string, type: 'success' | 'error' = 'success') {
-    if (type === 'success') {
-      // Xoá timer cũ nếu có
-      if (this._successTimer) clearTimeout(this._successTimer);
-      // Reset về null để Angular unmount DOM rồi restart progress bar animation
-      this.successMessage.set(null);
-      setTimeout(() => {
-        this.successMessage.set({ msg, id: Date.now() });
-        this._successTimer = setTimeout(() => this.successMessage.set(null), 3000);
-      }, 0);
-    } else {
-      if (this._errorTimer) clearTimeout(this._errorTimer);
-      this.errorMessage.set(null);
-      setTimeout(() => {
-        this.errorMessage.set({ msg, id: Date.now() });
-        this._errorTimer = setTimeout(() => this.errorMessage.set(null), 4000);
-      }, 0);
-    }
+    // Thêm toast mới vào danh sách
+    this.toasts.update(current => [...current, newToast]);
+
+    // Tự động xoá toast sau khi hết thời gian duration
+    setTimeout(() => {
+      this.removeToast(id);
+    }, finalDuration);
+  }
+
+  public removeToast(id: string) {
+    this.toasts.update(current => current.filter(t => t.id !== id));
   }
 }
