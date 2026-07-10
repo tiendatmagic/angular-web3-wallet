@@ -111,38 +111,14 @@ export class HomeComponent {
       const signer = await this.stateService.getSigner();
       
       // Thực hiện gửi giao dịch với cấu hình phí gas động
+      const overrides = await this.stateService.getGasOverrides(signer);
       const txRequest: any = {
         to,
         value: parseEther(val),
         data: '0x', // Đảm bảo trường data luôn là '0x' để tránh lỗi của một số ví di động như Trust Wallet
-        chainId: this.stateService.chainId() ? Number(this.stateService.chainId()) : undefined
+        chainId: this.stateService.chainId() ? Number(this.stateService.chainId()) : undefined,
+        ...overrides
       };
-
-      try {
-        const provider = this.stateService.getProvider();
-        const feeData = await provider.getFeeData();
-        const speed = this.stateService.txSpeed();
-
-        if (speed === 'fast') {
-          if (feeData.maxFeePerGas) {
-            txRequest.maxFeePerGas = (feeData.maxFeePerGas * 150n) / 100n;
-          }
-          if (feeData.maxPriorityFeePerGas) {
-            txRequest.maxPriorityFeePerGas = (feeData.maxPriorityFeePerGas * 150n) / 100n;
-          }
-        } else if (speed === 'custom') {
-          const multiplier = this.stateService.gasMultiplier() || 2.0;
-          const multiplierBigInt = BigInt(Math.round(multiplier * 100));
-          if (feeData.maxFeePerGas) {
-            txRequest.maxFeePerGas = (feeData.maxFeePerGas * multiplierBigInt) / 100n;
-          }
-          if (feeData.maxPriorityFeePerGas) {
-            txRequest.maxPriorityFeePerGas = (feeData.maxPriorityFeePerGas * multiplierBigInt) / 100n;
-          }
-        }
-      } catch (gasErr) {
-        console.warn('[Web3] Không thể cấu hình phí gas nâng cao:', gasErr);
-      }
 
       const tx = await signer.sendTransaction(txRequest);
       

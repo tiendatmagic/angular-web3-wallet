@@ -285,4 +285,32 @@ export class Web3Service {
     }
     return new BrowserProvider(walletProvider as any);
   }
+
+  // Lấy gas overrides dựa trên cài đặt tốc độ giao dịch của người dùng
+  public async getGasOverrides(signer?: any): Promise<any> {
+    const overrides: any = {};
+    try {
+      let currentSigner = signer;
+      if (!currentSigner) {
+        currentSigner = await this.getSigner();
+      }
+      const provider = currentSigner.provider;
+      if (!provider) return overrides;
+      
+      const feeData = await provider.getFeeData();
+      const speed = this.txSpeed();
+      if (speed !== 'default') {
+        const multiplier = speed === 'fast' ? 1.5 : this.gasMultiplier();
+        if (feeData.maxFeePerGas) {
+          overrides.maxFeePerGas = (feeData.maxFeePerGas * BigInt(Math.round(multiplier * 100))) / 100n;
+        }
+        if (feeData.maxPriorityFeePerGas) {
+          overrides.maxPriorityFeePerGas = (feeData.maxPriorityFeePerGas * BigInt(Math.round(multiplier * 100))) / 100n;
+        }
+      }
+    } catch (err) {
+      console.warn('[Web3] Không thể lấy fee data để tính gas overrides:', err);
+    }
+    return overrides;
+  }
 }

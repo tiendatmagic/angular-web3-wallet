@@ -101,4 +101,8 @@ export class StateService {
   public getProvider() {
     return this.web3Service.getProvider();
   }
+
+  public async getGasOverrides(signer?: any) {
+    return await this.web3Service.getGasOverrides(signer);
+  }
 }
