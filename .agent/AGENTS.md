@@ -30,6 +30,12 @@
     - Xóa khối thông tin mạng kết nối và Chain ID ở cuối account dropdown.
     - Giảm padding các item dropdown từ `py-3` xuống `py-2` để giao diện gọn gàng hơn.
 
+### Yêu cầu: Đồng bộ border-radius của nút ví trên Header
+- **Nội dung yêu cầu:** Thống nhất bo góc (border-radius) cho các nút trên Header, không được sử dụng góc bo khác biệt.
+- **Phân tích nguyên nhân:** Nút ví khi đã kết nối sử dụng class `rounded-full` trong khi nút quả địa cầu và nút kết nối khi chưa kết nối đều sử dụng bo góc tối đa 15px (`rounded-xl` / `btn`), gây ra sự lệch tông và thiếu nhất quán trên giao diện Header.
+- **Giải pháp:** Cập nhật [header.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/header/header.component.html), thay thế class `rounded-full` của nút ví EVM (khi đã kết nối) thành `rounded-xl` để khớp với quy chuẩn chung.
+
+
 ### Yêu cầu: Giải đáp lỗi treo màn hình loading (xoay vòng vô tận) "Continue in MetaMask/Trust Wallet..." trên di động
 - **Nội dung yêu cầu:** Người dùng phản ánh khi bấm kết nối ví (MetaMask, Trust Wallet...) trên trình duyệt di động, WalletConnect/AppKit hiển thị thông báo "Continue in..." và xoay vòng vô tận mà không tự động mở ứng dụng ví.
 - **Phân tích nguyên nhân:**
