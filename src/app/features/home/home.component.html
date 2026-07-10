@@ -49,10 +49,8 @@
             </div>
 
             <!-- Địa chỉ ví -->
-            <div class="flex flex-col gap-1">
-              <span class="text-xs font-bold text-slate-400 dark:text-slate-500"
-                >Địa chỉ ví của bạn</span
-              >
+            <div class="form-field">
+              <label>Địa chỉ ví của bạn</label>
               <div
                 class="form-input flex items-center justify-between !pl-4 !pr-1.5 py-0"
               >
@@ -151,10 +149,8 @@
 
           <div class="space-y-4">
             <!-- Địa chỉ nhận -->
-            <div class="flex flex-col gap-1.5">
-              <label class="text-xs font-bold text-slate-500 dark:text-slate-400"
-                >Địa chỉ ví nhận</label
-              >
+            <div class="form-field">
+              <label>Địa chỉ ví nhận</label>
               <app-custom-input
                 type="text"
                 placeholder="0x..."
@@ -163,11 +159,9 @@
               />
             </div>
 
-            <!-- Số lượng {{ stateService.chainSymbol() }} -->
-            <div class="flex flex-col gap-1.5">
-              <label class="text-xs font-bold text-slate-500 dark:text-slate-400"
-                >Số lượng {{ stateService.chainSymbol() }} gửi</label
-              >
+            <!-- Số lượng gửi -->
+            <div class="form-field">
+              <label>Số lượng {{ stateService.chainSymbol() }} gửi</label>
               <app-custom-input
                 type="number"
                 placeholder="0.01"

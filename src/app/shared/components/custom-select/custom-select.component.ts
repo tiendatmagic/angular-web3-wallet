@@ -59,7 +59,6 @@ export class CustomSelectComponent implements ControlValueAccessor, AfterViewChe
   @Input() valueKey: string = '';
   @Input() labelKey: string = '';
   @Input() placeholder: string = 'Chọn...';
-  @Input() label: string = '';
   @Input() disabled: boolean = false;
   @Input() placement: 'bottom' | 'top' | 'auto' = 'auto';
   @Input() showSearch: boolean = false;

@@ -30,7 +30,6 @@ export class CustomInputComponent implements ControlValueAccessor {
   @Input() min: number | string = '';
   @Input() max: number | string = '';
   @Input() step: number | string = '';
-  @Input() label: string = '';
   @Input() name: string = '';
   @Input() customClass: string = '';
 

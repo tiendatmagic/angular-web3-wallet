@@ -49,7 +49,6 @@ import { IconComponent } from '../icon/icon.component';
 export class CustomDatePickerComponent implements ControlValueAccessor, AfterViewChecked {
   private readonly elementRef = inject(ElementRef);
 
-  @Input() label: string = '';
   @Input() placeholder: string = 'Chọn ngày...';
   @Input() disabled: boolean = false;
   @Input() minDate: string = ''; // YYYY-MM-DD

@@ -29,12 +29,13 @@
   1. Đảm bảo các phần tử khi đã áp dụng component/directive dùng chung như `app-card` hay `app-button` thì không cần tự thiết lập màu nền (background color) hoặc padding thủ công ở ngoài.
   2. Xem xét và đồng bộ kích thước (chiều cao h-[42px]) của các ô nhập liệu (input, textarea, khung địa chỉ ví) cân đối với nút bấm. Xây dựng component riêng cho ô nhập liệu.
 - **Giải pháp:**
-  1. **Định nghĩa CSS Card tương tác:** Cập nhật [styles.scss](file:///d:/git/angular-web3-wallet/src/styles.scss), gộp chung `.app-card-interactive` vào nhóm định nghĩa chung của `.app-card` để thừa hưởng style nền, viền và padding mặc định, đồng thời bổ sung hiệu ứng hover/active tương tác mượt mà. Khai báo thêm `.form-textarea` đồng bộ style với `.form-input`.
-  2. **Xây dựng `CustomInputComponent` mới:** Tạo component standalone [custom-input.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/custom-input/custom-input.component.ts) (kèm HTML/CSS) kế thừa `ControlValueAccessor` hỗ trợ các loại `type` (text, number, email, textarea) để đồng bộ hóa kích thước chiều cao chuẩn `h-[42px]` và thiết kế bo góc của hệ thống.
-  3. **Rà soát & Đồng bộ các màn hình:**
-     - **Trang chủ:** Thay thế ô nhập địa chỉ nhận và số lượng gửi bằng `<app-custom-input>`. Cập nhật khung hiển thị "Địa chỉ ví của bạn" áp dụng class `.form-input` kết hợp flexbox để có chiều cao chuẩn `h-[42px]`. Loại bỏ class `!rounded-xl` dư thừa trên các nút bấm `app-button`.
-     - **Trang liên hệ:** Thay thế email và textarea bằng `<app-custom-input>`. Loại bỏ class `!rounded-xl` dư thừa.
-     - **Cấu hình Demo:** Thay thế input cấu hình minDate/maxDate bằng `<app-custom-input>`.
+  1. **Định nghĩa CSS Card tương tác:** Cập nhật [styles.scss](file:///d:/git/angular-web3-wallet/src/styles.scss), gộp chung `.app-card-interactive` vào nhóm định nghĩa chung của `.app-card` để thừa hưởng style nền, viền và padding mặc định. Khai báo thêm `.form-textarea` đồng bộ style với `.form-input`.
+  2. **Định nghĩa wrapper class `.form-field`:** Thêm class `.form-field` (`flex flex-col gap-2 w-full`) và cấu hình nhãn `.form-field > label` để tự động hóa định dạng nhãn và duy trì khoảng cách **8px (`gap-2`)** nhất quán giữa label và các control (input, textarea, select, date-picker, radio group) mà không cần code trùng lặp.
+  3. **Xây dựng `CustomInputComponent` mới:** Tạo component standalone [custom-input.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/custom-input/custom-input.component.ts) hỗ trợ các loại `type` (text, number, email, textarea) để đồng bộ hóa kích thước chiều cao chuẩn `h-[42px]`. Component tập trung render điều khiển, gỡ bỏ thuộc tính `label` bên trong (tương tự như `custom-select` và `custom-date-picker`).
+  4. **Rà soát & Đồng bộ các màn hình:**
+     - **Trang chủ:** Thay thế các input bằng `<app-custom-input>`. Bọc các phần tử (Địa chỉ ví của bạn, địa chỉ nhận, số lượng gửi) bằng `<div class="form-field">` kèm thẻ `<label>` đơn giản ở ngoài. Loại bỏ class `!rounded-xl` dư thừa trên các nút bấm `app-button`.
+     - **Trang liên hệ:** Thay thế email và textarea bằng `<app-custom-input>`. Bọc ngoài bằng `<div class="form-field">` và thẻ `<label>`. Tăng khoảng cách các ô nhập lên `space-y-4`.
+     - **Cấu hình Demo:** Thay thế các input cấu hình, date-picker, select, radio group bằng cách bọc ngoài `<div class="form-field">` và thẻ `<label>` thủ công ở ngoài, giúp giao diện đồng bộ khoảng cách tuyệt đối.
 
 ### Yêu cầu: Chuẩn hóa và sửa đổi SVG của icon kết nối ví cho đúng ngữ cảnh
 

@@ -35,12 +35,9 @@
 
     @if (limitDatePicker()) {
       <div
-        class="flex flex-col gap-1 pt-1 border-t border-slate-200/30 dark:border-slate-800/30 animate-in fade-in duration-200"
+        class="form-field pt-1.5 border-t border-slate-200/30 dark:border-slate-800/30 animate-in fade-in duration-200"
       >
-        <label
-          class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider"
-          >Mốc ngày tối thiểu (YYYY-MM-DD)</label
-        >
+        <label>Mốc ngày tối thiểu (YYYY-MM-DD)</label>
         <app-custom-input
           type="text"
           [ngModel]="demoDatePickerMinDate()"
@@ -52,12 +49,9 @@
 
     @if (limitDatePickerMax()) {
       <div
-        class="flex flex-col gap-1 pt-1 border-t border-slate-200/30 dark:border-slate-800/30 animate-in fade-in duration-200"
+        class="form-field pt-1.5 border-t border-slate-200/30 dark:border-slate-800/30 animate-in fade-in duration-200"
       >
-        <label
-          class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider"
-          >Mốc ngày tối đa (YYYY-MM-DD)</label
-        >
+        <label>Mốc ngày tối đa (YYYY-MM-DD)</label>
         <app-custom-input
           type="text"
           [ngModel]="demoDatePickerMaxDate()"
@@ -69,9 +63,9 @@
   </div>
 
   <!-- Date Picker trong Modal -->
-  <div>
+  <div class="form-field">
+    <label>Chọn ngày giao dịch</label>
     <app-custom-date-picker
-      label="Chọn ngày giao dịch"
       placeholder="DD/MM/YYYY"
       [minDate]="limitDatePicker() ? demoDatePickerMinDate() : ''"
       [maxDate]="limitDatePickerMax() ? demoDatePickerMaxDate() : ''"
@@ -82,9 +76,9 @@
   </div>
 
   <!-- Select trong Modal -->
-  <div>
+  <div class="form-field">
+    <label>Mạng lưới blockchain</label>
     <app-custom-select
-      label="Mạng lưới blockchain"
       placeholder="-- Chọn mạng --"
       [options]="demoChainOptions"
       valueKey="value"
@@ -107,10 +101,8 @@
   </div>
 
   <!-- Radio trong Modal -->
-  <div>
-    <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-3">
-      Chọn mạng ưu tiên
-    </label>
+  <div class="form-field">
+    <label>Chọn mạng ưu tiên</label>
     <div class="space-y-2.5">
       @for (opt of demoRadioOptions; track opt.value) {
         <app-custom-radio
