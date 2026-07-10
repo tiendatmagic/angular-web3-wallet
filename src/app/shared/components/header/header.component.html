@@ -110,7 +110,7 @@
           >
             <!-- Tiêu đề dropdown -->
             <div
-              class="px-4 pb-2 mb-2 border-b border-slate-100 dark:border-slate-800/60 select-none"
+              class="px-4 pb-1.5 mb-1 border-b border-slate-100 dark:border-slate-800/60 select-none"
             >
               <span
                 class="text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest block text-center"
@@ -126,7 +126,7 @@
                 (click)="web3Service.switchNetwork(1); showNetworkDropdown.set(false)"
                 [class.bg-pink-50]="web3Service.chainId() === 1"
                 [class.dark:bg-pink-950/20]="web3Service.chainId() === 1"
-                class="w-full flex items-center justify-between px-3 py-3 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-all cursor-pointer group"
+                class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-all cursor-pointer group"
               >
                 <div class="flex items-center gap-3">
                   <span class="w-3 h-3 rounded-full bg-[#627EEA] inline-block shadow-sm shadow-[#627EEA]/40 flex-shrink-0"></span>
@@ -140,7 +140,7 @@
                 (click)="web3Service.switchNetwork(42161); showNetworkDropdown.set(false)"
                 [class.bg-pink-50]="web3Service.chainId() === 42161"
                 [class.dark:bg-pink-950/20]="web3Service.chainId() === 42161"
-                class="w-full flex items-center justify-between px-3 py-3 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-all cursor-pointer group"
+                class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-all cursor-pointer group"
               >
                 <div class="flex items-center gap-3">
                   <span class="w-3 h-3 rounded-full bg-[#00a3ff] inline-block shadow-sm shadow-[#00a3ff]/40 flex-shrink-0"></span>
@@ -154,7 +154,7 @@
                 (click)="web3Service.switchNetwork(56); showNetworkDropdown.set(false)"
                 [class.bg-pink-50]="web3Service.chainId() === 56"
                 [class.dark:bg-pink-950/20]="web3Service.chainId() === 56"
-                class="w-full flex items-center justify-between px-3 py-3 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-all cursor-pointer group"
+                class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-all cursor-pointer group"
               >
                 <div class="flex items-center gap-3">
                   <span class="w-3 h-3 rounded-full bg-[#F3BA2F] inline-block shadow-sm shadow-[#F3BA2F]/40 flex-shrink-0"></span>
@@ -168,7 +168,7 @@
                 (click)="web3Service.switchNetwork(421614); showNetworkDropdown.set(false)"
                 [class.bg-pink-50]="web3Service.chainId() === 421614"
                 [class.dark:bg-pink-950/20]="web3Service.chainId() === 421614"
-                class="w-full flex items-center justify-between px-3 py-3 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-all cursor-pointer group"
+                class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-all cursor-pointer group"
               >
                 <div class="flex items-center gap-3">
                   <span class="w-3 h-3 rounded-full bg-[#5ba4cf] inline-block shadow-sm shadow-[#5ba4cf]/40 flex-shrink-0"></span>
@@ -182,7 +182,7 @@
                 (click)="web3Service.switchNetwork(97); showNetworkDropdown.set(false)"
                 [class.bg-pink-50]="web3Service.chainId() === 97"
                 [class.dark:bg-pink-950/20]="web3Service.chainId() === 97"
-                class="w-full flex items-center justify-between px-3 py-3 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-all cursor-pointer group"
+                class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-all cursor-pointer group"
               >
                 <div class="flex items-center gap-3">
                   <span class="w-3 h-3 rounded-full bg-[#e6a817] inline-block shadow-sm shadow-[#e6a817]/40 flex-shrink-0"></span>
@@ -233,10 +233,10 @@
             >
               <!-- Header: Ví đang kết nối -->
               <div
-                class="px-4 py-3 border-b border-slate-100 dark:border-slate-800/50 mb-1 select-none"
+                class="px-4 py-2 border-b border-slate-100 dark:border-slate-800/50 mb-1 select-none"
               >
                 <span
-                  class="text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest block mb-1.5"
+                  class="text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest block mb-1"
                   >Ví đang kết nối</span
                 >
                 <p
@@ -244,14 +244,14 @@
                 >
                   {{ web3Service.address() }}
                 </p>
-                <p class="text-sm font-black text-pink-500 mt-1.5">
+                <p class="text-xs font-black text-pink-500 mt-1">
                   {{ web3Service.balance() }} ETH
                 </p>
               </div>
               <!-- Nút: Sao chép địa chỉ -->
               <button
                 (click)="copyAddress($event)"
-                class="w-full text-left px-4 py-3 text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-all flex items-center gap-3 cursor-pointer"
+                class="w-full text-left px-4 py-2 text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-all flex items-center gap-3 cursor-pointer"
               >
                 <app-icon name="copy" class="w-4 h-4 text-slate-400" />
                 Sao chép địa chỉ ví
@@ -260,7 +260,7 @@
               <!-- Nút: Chi tiết ví (mở AppKit Account modal) -->
               <button
                 (click)="web3Service.openAccountModal(); showDropdown.set(false)"
-                class="w-full text-left px-4 py-3 text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-all flex items-center gap-3 cursor-pointer"
+                class="w-full text-left px-4 py-2 text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-all flex items-center gap-3 cursor-pointer"
               >
                 <app-icon name="external-link" class="w-4 h-4 text-slate-400" />
                 Chi tiết ví
@@ -269,7 +269,7 @@
               <!-- Nút: Xem trên Explorer -->
               <button
                 (click)="viewOnExplorer($event)"
-                class="w-full text-left px-4 py-3 text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-all flex items-center gap-3 cursor-pointer"
+                class="w-full text-left px-4 py-2 text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-all flex items-center gap-3 cursor-pointer"
               >
                 <app-icon name="globe" class="w-4 h-4 text-slate-400" />
                 Xem trên Explorer
@@ -278,7 +278,7 @@
               <!-- Nút: Ngắt kết nối -->
               <button
                 (click)="disconnectWallet($event)"
-                class="w-full text-left px-4 py-3 text-sm font-semibold text-pink-500 hover:bg-pink-50 dark:hover:bg-pink-950/20 transition-all flex items-center gap-3 border-t border-slate-100 dark:border-slate-800/50 mt-1 cursor-pointer"
+                class="w-full text-left px-4 py-2 text-sm font-semibold text-pink-500 hover:bg-pink-50 dark:hover:bg-pink-950/20 transition-all flex items-center gap-3 border-t border-slate-100 dark:border-slate-800/50 mt-1 cursor-pointer"
               >
                 <app-icon name="logout" class="w-4 h-4" />
                 Ngắt kết nối ví
