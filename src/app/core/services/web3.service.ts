@@ -7,6 +7,7 @@ import { BrowserProvider, formatEther } from 'ethers';
 import { environment } from '@environments/environment';
 import { ThemeService } from './theme.service';
 import { ToastService } from './toast.service';
+import { POPULAR_CHAINS } from '../utils/blockchain.utils';
 
 @Injectable({
   providedIn: 'root'
@@ -24,8 +25,26 @@ export class Web3Service {
   public txSpeed = signal<'default' | 'fast' | 'custom'>('default');
   public gasMultiplier = signal<number>(2);
 
-  // Mạng được hỗ trợ
-  public readonly supportedChains = [arbitrum, mainnet, bsc, arbitrumSepolia, bscTestnet];
+  public readonly POPULAR_CHAINS = POPULAR_CHAINS;
+
+  // Mạng được hỗ trợ (cấu hình động RPC & Explorer từ POPULAR_CHAINS)
+  public readonly supportedChains = [arbitrum, mainnet, bsc, arbitrumSepolia, bscTestnet].map(chain => {
+    const popular = POPULAR_CHAINS.find(c => Number(c.chainId) === Number(chain.id));
+    if (popular) {
+      return {
+        ...chain,
+        rpcUrls: {
+          ...chain.rpcUrls,
+          default: { http: [popular.rpcUrl] }
+        },
+        blockExplorers: {
+          ...chain.blockExplorers,
+          default: { name: popular.name, url: popular.explorerUrl }
+        }
+      };
+    }
+    return chain;
+  });
 
   private readonly themeService = inject(ThemeService);
   private readonly toastService = inject(ToastService);

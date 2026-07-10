@@ -7,6 +7,7 @@ import { ThemeService } from '@core/services/theme.service';
 import { ToastService } from '@core/services/toast.service';
 import { IconComponent } from '@shared/components/icon/icon.component';
 import { ButtonComponent } from '@shared/components/button/button.component';
+import { POPULAR_CHAINS } from '../../../core/utils/blockchain.utils';
 
 @Component({
   selector: 'app-header',
@@ -68,23 +69,9 @@ export class HeaderComponent {
     const chainId = this.web3Service.chainId();
     if (!address) return;
 
-    let explorerUrl = 'https://etherscan.io';
-    
-    // Ánh xạ URL Explorer theo chainId
-    switch (chainId) {
-      case 42161: // Arbitrum One
-        explorerUrl = 'https://arbiscan.io';
-        break;
-      case 421614: // Arbitrum Sepolia
-        explorerUrl = 'https://sepolia.arbiscan.io';
-        break;
-      case 56: // BSC Mainnet
-        explorerUrl = 'https://bscscan.com';
-        break;
-      case 97: // BSC Testnet
-        explorerUrl = 'https://testnet.bscscan.com';
-        break;
-    }
+    // Lấy Explorer URL động từ cấu hình POPULAR_CHAINS
+    const activeChain = POPULAR_CHAINS.find(c => Number(c.chainId) === Number(chainId));
+    const explorerUrl = activeChain ? activeChain.explorerUrl : 'https://etherscan.io';
 
     window.open(`${explorerUrl}/address/${address}`, '_blank');
     this.showDropdown.set(false);
@@ -95,6 +82,19 @@ export class HeaderComponent {
     event.stopPropagation();
     await this.web3Service.disconnect();
     this.showDropdown.set(false);
+  }
+
+  // Lấy mã màu chấm tròn đại diện cho từng mạng EVM
+  public getChainColor(chainId: string | number): string {
+    const id = chainId.toString().trim();
+    switch (id) {
+      case '1': return '#627EEA';
+      case '42161': return '#00a3ff';
+      case '56': return '#F3BA2F';
+      case '421614': return '#5ba4cf';
+      case '97': return '#e6a817';
+      default: return '#94a3b8';
+    }
   }
 
   // Click ra ngoài để tự động đóng dropdowns

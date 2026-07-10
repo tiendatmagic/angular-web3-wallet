@@ -61,6 +61,16 @@
   - Cập nhật [web3.service.ts](file:///d:/git/angular-web3-wallet/src/app/core/services/web3.service.ts): Xóa bỏ hẳn lệnh `this.toastService.showToast('Kết nối ví thành công!', 'success')` trong hàm `subscribeAccount`.
   - Cập nhật [toast.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/toast/toast.component.html): Thay thế định vị class của wrapper thành `fixed bottom-5 left-1/2 -translate-x-1/2 sm:left-auto sm:right-5 sm:translate-x-0` để tự động căn giữa ngang trên mobile và trở về góc phải dưới trên desktop.
 
+### Yêu cầu: Chuẩn hóa cấu hình RPC và Explorer qua blockchain.utils.ts giống cafe-blockchain
+- **Nội dung yêu cầu:** Xem cấu trúc source code của `cafe-blockchain` và tổ chức lại cách lưu trữ, cấu hình RPC và Explorer URL tập trung thay vì map tĩnh cứng ở UI.
+- **Giải pháp:**
+  - Tạo mới file [blockchain.utils.ts](file:///d:/git/angular-web3-wallet/src/app/core/utils/blockchain.utils.ts) định nghĩa hằng số `POPULAR_CHAINS` (chứa RPC URL, Explorer URL và tên của 5 chain: Ethereum, Arbitrum One, BNB Smart Chain, Arbitrum Sepolia, BSC Testnet) cùng các hàm bổ trợ `getExplorerApiUrl` và `getBackupRpcUrls`.
+  - Cập nhật [web3.service.ts](file:///d:/git/angular-web3-wallet/src/app/core/services/web3.service.ts): Import `POPULAR_CHAINS` và dùng cơ chế `.map` để ghi đè dynamic RPC/Explorer URL cho 5 chain của Reown AppKit trước khi truyền khởi tạo modal.
+  - Cập nhật [header.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/header/header.component.ts): Thay thế cấu trúc switch-case map tĩnh bằng việc tìm kiếm và lấy `explorerUrl` trực tiếp từ `POPULAR_CHAINS` dựa theo `chainId` động của ví đang kết nối. Đồng thời thêm hàm helper `getChainColor` để trả về màu sắc của chấm tròn của từng mạng.
+  - Cập nhật [header.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/header/header.component.html): Loại bỏ 5 nút mạng viết cứng (hardcode) trong HTML và thay thế bằng vòng lặp `@for` động lặp qua `web3Service.POPULAR_CHAINS`.
+
+
+
 
 
 
