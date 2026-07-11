@@ -2,6 +2,13 @@
 
 ## Ngày 11/07/2026
 
+### Yêu cầu: Loại bỏ trạng thái kết nối ví dưới Sidebar và thông tin Copyright
+- **Nội dung yêu cầu:** Gỡ bỏ hoàn toàn widget hiển thị địa chỉ ví kết nối và dòng chữ bản quyền (Copyright) ở cuối Sidebar để làm cho thiết kế trở nên tối giản, tập trung hơn.
+- **Giải pháp:**
+  1. Loại bỏ khối `@if (stateService.isConnected())` hiển thị địa chỉ ví rút gọn ở cuối [sidebar.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/layout/sidebar/sidebar.component.html).
+  2. Loại bỏ khối chứa thông tin Copyright `© 2026 Angular Web3. Phiên bản phi tập trung` ở cuối [sidebar.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/layout/sidebar/sidebar.component.html).
+  3. Để đồng bộ giao diện Mobile, loại bỏ khối `@if (stateService.isConnected())` tương ứng tại Mobile Drawer bottom controls trong [header.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/layout/header/header.component.html).
+
 ### Yêu cầu: Thiết kế tràn viền tinh tế (Full-width divider) cho Modal Header và Footer
 - **Nội dung yêu cầu:** Xem xét lại đường kẻ ngang phân tách trên modal (Header divider) để đảm bảo đường kẻ này không bị co lề hai bên, tạo ra thiết kế modal chuẩn mực làm mẫu cho các dự án sau.
 - **Giải pháp:**
