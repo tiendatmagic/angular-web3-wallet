@@ -539,6 +539,88 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
     return checkTime > startTime && checkTime <= hoverTime;
   }
 
+  public isHoverEndDate(date: Date): boolean {
+    const start = this.tempStartDate();
+    const end = this.tempEndDate();
+    const hover = this.hoveredDate();
+    if (!start || end || !hover) return false;
+
+    const checkTime = this.clearTime(date).getTime();
+    const startTime = this.parseDate(start)!.getTime();
+    const hoverTime = this.clearTime(hover).getTime();
+
+    return checkTime === hoverTime && hoverTime > startTime;
+  }
+
+  public isHoverStartDate(date: Date): boolean {
+    const start = this.tempStartDate();
+    const end = this.tempEndDate();
+    const hover = this.hoveredDate();
+    if (!start || end || !hover) return false;
+
+    const checkTime = this.clearTime(date).getTime();
+    const startTime = this.parseDate(start)!.getTime();
+    const hoverTime = this.clearTime(hover).getTime();
+
+    return checkTime === hoverTime && hoverTime < startTime;
+  }
+
+  private clearTime(date: Date): Date {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  }
+
+  public getHighlightClass(date: Date): string {
+    const start = this.tempStartDate();
+    const end = this.tempEndDate();
+    const hover = this.hoveredDate();
+    
+    if (!start) return 'hidden';
+    
+    const dTime = this.clearTime(date).getTime();
+    const sTime = this.parseDate(start)!.getTime();
+    const eTime = end ? this.parseDate(end)!.getTime() : null;
+    const hTime = hover ? this.clearTime(hover).getTime() : null;
+    
+    // Xác định ngày bắt đầu và kết thúc thực tế của dải highlight (chọn chính thức hoặc đang hover)
+    let rangeStart = sTime;
+    let rangeEnd = eTime;
+    
+    if (!end && hTime !== null) {
+      if (hTime >= sTime) {
+        rangeEnd = hTime;
+      } else {
+        rangeStart = hTime;
+        rangeEnd = sTime;
+      }
+    }
+    
+    // Nếu ngày nằm ngoài dải highlight thì không vẽ
+    if (rangeEnd === null) {
+      if (dTime !== sTime) return 'hidden';
+    } else {
+      if (dTime < rangeStart || dTime > rangeEnd) return 'hidden';
+    }
+    
+    // Tính toán bo góc cho ngày nằm TRONG dải highlight:
+    if (rangeEnd === null || rangeStart === rangeEnd) {
+      // Chỉ có 1 ngày duy nhất được highlight
+      return 'rounded-full w-full';
+    }
+    
+    if (dTime === rangeStart) {
+      // Đầu bắt đầu: bo góc trái
+      return 'rounded-l-full w-full';
+    }
+    
+    if (dTime === rangeEnd) {
+      // Đầu kết thúc: bo góc phải
+      return 'rounded-r-full w-full';
+    }
+    
+    // Các ngày ở giữa: không bo góc, rộng 100%
+    return 'w-full';
+  }
+
   public isCurrentMonth(date: Date): boolean {
     return date.getMonth() === this.currentMonth();
   }
