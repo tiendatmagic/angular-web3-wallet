@@ -2,6 +2,13 @@
 
 ## Ngày 11/07/2026
 
+### Yêu cầu: Tách biệt tệp template HTML và stylesheet CSS cho TxSpeedSelector và ThemeSwitcher
+- **Nội dung yêu cầu:** Tiến hành tách mã giao diện HTML và phong cách CSS từ inline trong file `.ts` của hai component `tx-speed-selector` và `theme-switcher` thành các file độc lập `.html` và `.css` để tuân thủ quy chuẩn cấu trúc mã sạch của dự án.
+- **Giải pháp:**
+  1. **TxSpeedSelector:** Tách inline template trong [tx-speed-selector.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/tx-speed-selector/tx-speed-selector.component.ts) sang tệp mới [tx-speed-selector.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/tx-speed-selector/tx-speed-selector.component.html) và inline styles `:host { display: block; }` sang tệp mới [tx-speed-selector.component.css](file:///d:/git/angular-web3-wallet/src/app/shared/components/tx-speed-selector/tx-speed-selector.component.css).
+  2. **ThemeSwitcher:** Tách inline template trong [theme-switcher.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/theme-switcher/theme-switcher.component.ts) sang tệp mới [theme-switcher.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/theme-switcher/theme-switcher.component.html) và inline styles sang tệp mới [theme-switcher.component.css](file:///d:/git/angular-web3-wallet/src/app/shared/components/theme-switcher/theme-switcher.component.css).
+  3. Cập nhật decorator `@Component` của cả hai component trên, chuyển sang liên kết bằng `templateUrl` và `styleUrl` trỏ tới các tệp bên ngoài tương ứng.
+
 ### Yêu cầu: Loại bỏ trạng thái kết nối ví dưới Sidebar và thông tin Copyright
 - **Nội dung yêu cầu:** Gỡ bỏ hoàn toàn widget hiển thị địa chỉ ví kết nối và dòng chữ bản quyền (Copyright) ở cuối Sidebar để làm cho thiết kế trở nên tối giản, tập trung hơn.
 - **Giải pháp:**
