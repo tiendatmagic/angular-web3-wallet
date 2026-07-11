@@ -2,6 +2,13 @@
 
 ## Ngày 11/07/2026
 
+### Yêu cầu: Đồng bộ thiết kế (padding/rounded) cho Wallet Dropdown
+- **Nội dung yêu cầu:** Người dùng yêu cầu đồng bộ cấu trúc layout của các tùy chọn trong Wallet Dropdown (Sao chép địa chỉ ví, chi tiết ví...) khớp với chuẩn của Network Dropdown (có padding viền ngoài và bo tròn `rounded-xl` khi hover thay vì tràn mép).
+- **Giải pháp:**
+  1. Bao bọc các nút menu trong `<div class="space-y-0.5 px-2">` tại [header.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/layout/header/header.component.html).
+  2. Cập nhật class các nút bấm thành `px-3 py-2 rounded-xl text-sm font-semibold hover:bg-slate-50 dark:hover:bg-slate-800/60` đồng thời thêm hiệu ứng chuyển màu `group-hover:text-primary` và `group-hover:text-secondary` cho icon và text.
+  3. Thay thế đường kẻ `border-t` thô trên nút đăng xuất bằng một thanh divider `<div class="h-px bg-slate-100 dark:bg-slate-800/50 my-1">` thực tế và bo tròn cho nút Đăng xuất.
+
 ### Yêu cầu: Loại bỏ box-shadow của nút ví Web3 trong Header
 - **Nội dung yêu cầu:** Người dùng yêu cầu loại bỏ hiệu ứng bóng mờ (box-shadow) của nút hiển thị thông tin địa chỉ ví và số dư ở thanh Header để có giao diện phẳng và gọn gàng hơn.
 - **Giải pháp:** Loại bỏ lớp CSS `shadow-sm` khỏi thẻ `<button>` hiển thị thông tin ví Web3 trong tệp [header.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/layout/header/header.component.html).
