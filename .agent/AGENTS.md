@@ -9,6 +9,8 @@
   2. Cập nhật class các nút bấm thành `px-3 py-2 rounded-xl text-sm font-semibold hover:bg-slate-50 dark:hover:bg-slate-800/60` đồng thời thêm hiệu ứng chuyển màu `group-hover:text-primary` cho cả icon và text.
   3. Thay thế đường kẻ `border-t` thô trên nút đăng xuất bằng một thanh divider `<div class="h-px bg-slate-100 dark:bg-slate-800/50 my-1">` thực tế và bo tròn cho nút Đăng xuất.
   4. **Khắc phục lệch màu & Rút gọn địa chỉ:** Loại bỏ `group-hover:text-secondary` trên nút Ngắt kết nối ví để chữ và biểu tượng luôn giữ màu hồng chủ đạo (`text-primary`) sáng rõ khi hover ở chế độ tối. Đồng thời, rút gọn địa chỉ ví hiển thị ở header của dropdown bằng `appShortAddress` pipe để tránh hiển thị tràn lan.
+  5. **Định vị chính xác (Absolute positioning):** Trên thiết bị từ màn hình `sm` trở lên, chuyển cơ chế định vị từ `fixed` sang `sm:absolute sm:top-full sm:right-0 sm:left-auto sm:mt-2` giúp các dropdown neo chuẩn xác và bám sát vào góc phải của nút cha tương ứng, tránh việc bị lệch vị trí khi cuộn trang hoặc thay đổi kích thước viewport.
+
 
 ### Yêu cầu: Loại bỏ box-shadow của nút ví Web3 trong Header
 - **Nội dung yêu cầu:** Người dùng yêu cầu loại bỏ hiệu ứng bóng mờ (box-shadow) của nút hiển thị thông tin địa chỉ ví và số dư ở thanh Header để có giao diện phẳng và gọn gàng hơn.
