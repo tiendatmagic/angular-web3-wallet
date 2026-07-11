@@ -2,6 +2,27 @@
 
 ## Ngày 11/07/2026
 
+### Yêu cầu: Khắc phục lỗi mất hình ảnh dApp khi kết nối và tương tác ví (WalletConnect/AppKit)
+- **Nội dung yêu cầu:** Hình ảnh đại diện (avatar/logo) của dApp hiển thị lỗi (broken image) trên modal xác nhận giao dịch của WalletConnect AppKit. Yêu cầu lấy logo ảnh từ logo web để đồng bộ hiển thị.
+- **Phân tích nguyên nhân:** 
+  1. Cấu hình metadata `icons` cũ sử dụng `favicon.ico` không tương thích định dạng hiển thị của các ví.
+  2. Khi sửa sang sử dụng `logo.svg` dạng đường dẫn tương đối `/logo.svg`, do dApp chạy ở môi trường phát triển local (`http://localhost:4200` - HTTP) trong khi iframe của AppKit chạy ở domain ngoài qua HTTPS, trình duyệt kích hoạt chính sách Mixed Content chặn tải tài nguyên HTTP không bảo mật vào trang HTTPS bảo mật, dẫn đến hình ảnh tiếp tục bị lỗi hiển thị.
+- **Giải pháp:**
+  1. Tạo file hình ảnh tĩnh [logo.svg](file:///d:/git/angular-web3-wallet/public/assets/logo.svg) nằm trong thư mục `public/assets/` được trích xuất từ SVG của component logo hệ thống, chuyển đổi màu `currentColor` động thành màu thương hiệu cố định (`#8000ff` và gradient `#ff00dd` sang `#8000ff`).
+  2. Cấu hình thuộc tính `icons` trong `createAppKit` tại [web3.service.ts](file:///d:/git/angular-web3-wallet/src/app/core/services/web3.service.ts) trỏ đến đường dẫn tĩnh URL (`window.location.origin + '/assets/logo.svg'`) để người dùng dễ dàng thay thế logo bằng các định dạng khác (PNG, JPG, SVG) chỉ bằng cách đổi file trong thư mục `public/assets/`.
+  3. Cấu hình thuộc tính `"ssl": true` trong tệp [angular.json](file:///d:/git/angular-web3-wallet/angular.json) ở phần serve options của dev-server. Điều này giúp dApp ở local tự động chạy qua HTTPS (`https://localhost:4200`), loại bỏ hoàn toàn lỗi Mixed Content và hiển thị logo tĩnh chính xác trên cả môi trường phát triển cục bộ và production mà không cần hardcode domain.
+  4. Cập nhật thẻ link icon trong [index.html](file:///d:/git/angular-web3-wallet/src/index.html) để đồng bộ favicon của website thành `assets/logo.svg` với type `image/svg+xml`.
+
+### Yêu cầu: Khắc phục lỗi tương tác Smart Contract (Action not allowed) khi sử dụng ví Social (Google/Email)
+- **Nội dung yêu cầu:** Khi người dùng đăng nhập dApp bằng ví Social (như Google, Email, v.v.), khi gửi native token hoặc tương tác smart contract sẽ báo lỗi "Action not allowed" từ ví và lỗi "could not coalesce error (method: eth_requestAccounts)" trên dApp.
+- **Phân tích nguyên nhân:** 
+  1. Khi dApp gọi `getSigner()` để lấy Ethers Signer, Ethers.js v6 `BrowserProvider` sẽ tự động thực hiện cuộc gọi RPC `eth_requestAccounts` hoặc `eth_accounts` qua provider để dò tìm tài khoản. Tuy nhiên, ví Social/Email của Reown AppKit được bảo mật nghiêm ngặt và chặn hoàn toàn cuộc gọi `eth_requestAccounts` từ bên ngoài dApp, dẫn đến lỗi ném ra từ RPC làm crash tiến trình và treo giao dịch.
+  2. Nếu cấu hình loại tài khoản mặc định là `eoa` (`defaultAccountTypes: { eip155: 'eoa' }`), ví Social nhúng sẽ bị lỗi `Action not allowed` ngay từ khi kết nối ở môi trường testnet do thiếu phân quyền. Vì vậy, bắt buộc phải sử dụng loại tài khoản mặc định `smartAccount` để ví Social hoạt động và hiển thị số dư chính xác.
+- **Giải pháp:** 
+  1. Cấu hình `defaultAccountTypes: { eip155: 'smartAccount' }` trong tệp [web3.service.ts](file:///d:/git/angular-web3-wallet/src/app/core/services/web3.service.ts) để ví Social chạy ổn định và hiển thị đúng số dư.
+  2. Cập nhật hàm `getSigner()` trong [web3.service.ts](file:///d:/git/angular-web3-wallet/src/app/core/services/web3.service.ts): Ghi đè (override) phương thức `send` của Ethers `BrowserProvider` đối với hai cuộc gọi `eth_requestAccounts` và `eth_accounts` để trả về trực tiếp địa chỉ ví hiện tại (`this.address()`) mà dApp đã biết sau khi kết nối. Việc này giúp bypass hoàn toàn lỗi phân quyền RPC của ví Social mà không ảnh hưởng đến MetaMask, đồng thời cho phép thực thi `eth_sendTransaction` bình thường.
+  3. Cập nhật hàm `sendTransaction` trong [home.component.ts](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.ts): Định dạng toàn bộ các trường `BigInt` (như `value`, `maxFeePerGas`, `maxPriorityFeePerGas`) sang dạng `hex string` (bắt đầu bằng `0x`) trước khi truyền sang Ethers, tránh lỗi crash do `JSON.stringify` không serialize được BigInt trong SDK của AppKit.
+
 ### Yêu cầu: Tách biệt tệp template HTML và stylesheet CSS cho TxSpeedSelector và ThemeSwitcher
 - **Nội dung yêu cầu:** Tiến hành tách mã giao diện HTML và phong cách CSS từ inline trong file `.ts` của hai component `tx-speed-selector` và `theme-switcher` thành các file độc lập `.html` và `.css` để tuân thủ quy chuẩn cấu trúc mã sạch của dự án.
 - **Giải pháp:**

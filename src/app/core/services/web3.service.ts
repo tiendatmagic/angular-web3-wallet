@@ -91,10 +91,13 @@ export class Web3Service {
         name: 'Angular Web3 DApp',
         description: 'Angular Web3 Application Framework',
         url: window.location.origin,
-        icons: [window.location.origin + '/favicon.ico']
+        icons: [window.location.origin + '/assets/logo.svg']
       },
       projectId,
       themeMode: isDark ? 'dark' : 'light',
+      defaultAccountTypes: {
+        eip155: 'smartAccount'
+      },
       features: {
         analytics: false,
         reownAuthentication: false // Vẫn giữ tắt local SIWX để an toàn
@@ -283,6 +286,19 @@ export class Web3Service {
       throw new Error('Ví chưa được kết nối');
     }
     const ethersProvider = new BrowserProvider(walletProvider as any);
+
+    // Ghi đè phương thức send để bypass cuộc gọi eth_accounts / eth_requestAccounts bị ví Social của AppKit chặn
+    const currentAddress = this.address();
+    const originalSend = ethersProvider.send.bind(ethersProvider);
+    ethersProvider.send = async (method: string, params: any[]) => {
+      if (method === 'eth_requestAccounts' || method === 'eth_accounts') {
+        if (currentAddress) {
+          return [currentAddress];
+        }
+      }
+      return await originalSend(method, params);
+    };
+
     return await ethersProvider.getSigner();
   }
 
