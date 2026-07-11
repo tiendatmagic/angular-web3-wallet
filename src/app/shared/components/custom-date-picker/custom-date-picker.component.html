@@ -37,7 +37,7 @@
   @if (isOpen()) {
     <div
       [ngStyle]="popoverStyle"
-      class="date-picker-popover bg-white dark:bg-slate-950 border border-slate-200/50 dark:border-slate-800/50 shadow-xl rounded-xl p-4"
+      class="date-picker-popover bg-white dark:bg-slate-950 border border-slate-200/50 dark:border-slate-800/50 shadow-lg rounded-xl p-4"
       (click)="$event.stopPropagation()"
     >
       <!-- Header Lịch -->
@@ -82,12 +82,22 @@
             (click)="selectDate(day, $event)"
             [disabled]="isDateDisabled(day)"
             class="w-full aspect-square flex items-center justify-center text-sm font-bold rounded-full transition-all"
-            [class.text-slate-300]="!isCurrentMonth(day) && !isSelected(day) && !isDateDisabled(day)"
-            [class.dark:text-slate-600]="!isCurrentMonth(day) && !isSelected(day) && !isDateDisabled(day)"
-            [class.text-slate-700]="isCurrentMonth(day) && !isSelected(day) && !isToday(day) && !isDateDisabled(day)"
-            [class.dark:text-slate-300]="isCurrentMonth(day) && !isSelected(day) && !isToday(day) && !isDateDisabled(day)"
+            [class.text-slate-300]="
+              !isCurrentMonth(day) && !isSelected(day) && !isDateDisabled(day)
+            "
+            [class.dark:text-slate-600]="
+              !isCurrentMonth(day) && !isSelected(day) && !isDateDisabled(day)
+            "
+            [class.text-slate-700]="
+              isCurrentMonth(day) && !isSelected(day) && !isToday(day) && !isDateDisabled(day)
+            "
+            [class.dark:text-slate-300]="
+              isCurrentMonth(day) && !isSelected(day) && !isToday(day) && !isDateDisabled(day)
+            "
             [class.hover:bg-slate-50]="!isSelected(day) && !isToday(day) && !isDateDisabled(day)"
-            [class.dark:hover:bg-slate-800]="!isSelected(day) && !isToday(day) && !isDateDisabled(day)"
+            [class.dark:hover:bg-slate-800]="
+              !isSelected(day) && !isToday(day) && !isDateDisabled(day)
+            "
             [class.cursor-pointer]="!isDateDisabled(day)"
             [class.bg-[var(--color-primary)]/15]="isToday(day) && !isSelected(day)"
             [class.!text-[var(--color-primary)]]="isToday(day) && !isSelected(day)"

@@ -2,6 +2,10 @@
 
 ## Ngày 11/07/2026
 
+### Yêu cầu: Giới hạn độ đổ bóng (Shadow) tối đa trong tài liệu thiết kế
+- **Nội dung yêu cầu:** Người dùng yêu cầu sửa đổi tài liệu thiết kế để quy định độ đổ bóng (box-shadow) tối đa trên toàn hệ thống chỉ là `shadow-lg`, tuyệt đối không sử dụng `shadow-xl` (hoặc cao hơn).
+- **Giải pháp:** Cập nhật tệp cấu hình thiết kế [.agent/design.md](file:///d:/git/angular-web3-wallet/.agent/design.md) để thay đổi `hover:shadow-xl` thành `hover:shadow-lg` nhằm giới hạn mức bóng đổ theo đúng chuẩn thiết kế giao diện phẳng và hiện đại của dự án.
+
 ### Yêu cầu: Đồng bộ thiết kế (padding/rounded) cho Wallet Dropdown
 - **Nội dung yêu cầu:** Người dùng yêu cầu đồng bộ cấu trúc layout của các tùy chọn trong Wallet Dropdown (Sao chép địa chỉ ví, chi tiết ví...) khớp với chuẩn của Network Dropdown (có padding viền ngoài và bo tròn `rounded-xl` khi hover thay vì tràn mép).
 - **Giải pháp:**
