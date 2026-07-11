@@ -762,6 +762,47 @@
           </div>
         </div>
       </div>
+
+      <!-- CARD 12: Custom Date Time Range Picker -->
+      <div app-card>
+        <h4
+          class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
+        >
+          <app-icon name="calendar" class="w-3.5 h-3.5 text-primary" strokeWidth="2.5" />
+          Custom Date Time Range Picker
+        </h4>
+
+        <div class="space-y-4">
+          <!-- Demo 1: Chọn khoảng ngày thông thường -->
+          <div class="form-field">
+            <label>Khoảng ngày giao dịch (Mặc định)</label>
+            <app-custom-date-time-range
+              placeholder="Chọn khoảng ngày..."
+              [ngModel]="demoRangeValue()"
+              (ngModelChange)="demoRangeValue.set($event)"
+            />
+          </div>
+
+          <!-- Demo 2: Chọn khoảng ngày có giờ phút -->
+          <div class="form-field">
+            <label>Khoảng thời gian chi tiết (Kèm Giờ & Phút)</label>
+            <app-custom-date-time-range
+              placeholder="Chọn khoảng ngày và giờ..."
+              [showTime]="true"
+              [ngModel]="demoRangeWithTimeValue()"
+              (ngModelChange)="demoRangeWithTimeValue.set($event)"
+            />
+          </div>
+
+          <!-- Output debug -->
+          <div
+            class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2.5 space-y-1"
+          >
+            <div>range = start: "{{ demoRangeValue().startDate || '(trống)' }}" | end: "{{ demoRangeValue().endDate || '(trống)' }}"</div>
+            <div>rangeWithTime = start: "{{ demoRangeWithTimeValue().startDate || '(trống)' }}" | end: "{{ demoRangeWithTimeValue().endDate || '(trống)' }}"</div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- NÚT MỞ MODAL DEMO -->

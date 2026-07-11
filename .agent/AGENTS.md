@@ -2,6 +2,18 @@
 
 ## Ngày 12/07/2026
 
+### Yêu cầu: Xây dựng và tích hợp Component chọn khoảng ngày/giờ (Date Time Range Picker)
+- **Nội dung yêu cầu:** Phát triển component `app-custom-date-time-range` phục vụ chọn khoảng ngày (mặc định) và hỗ trợ thêm chọn giờ:phút nếu truyền tham số `[showTime]="true"`. Tích hợp demo showcase lên trang chủ.
+- **Giải pháp:**
+  1. **Tạo component mới:** 
+     - [custom-date-time-range.component.css](file:///d:/git/angular-web3-wallet/src/app/shared/components/custom-date-time-range/custom-date-time-range.component.css): Đảm bảo `:host { display: block; }` để tránh lỗi dính margin.
+     - [custom-date-time-range.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/custom-date-time-range/custom-date-time-range.component.html): Đồng bộ hoàn toàn cấu trúc giao diện với `custom-date-picker` (chevron buttons, weekday headers, cỡ chữ text-sm, nút tròn rounded-full), sửa lỗi cú pháp Angular class binding, đồng thời thay thế bộ chọn giờ mặc định `<input type="time">` bằng các thẻ `<select>` Giờ & Phút tùy chỉnh để tránh lỗi vỡ giao diện của trình duyệt. Sau đó cải tiến toàn bộ bộ chọn giờ phút thành dropdown `div` tùy chỉnh 100% (không dùng điều khiển native, nâng cấp rộng 80px và dài 220px căn giữa trigger, chuyển đổi toàn bộ padding của cả trigger lẫn các dòng số option từ `px-2 py-1.5` thành `p-2` để giãn cách thoáng đãng và ẩn hoàn toàn thanh scrollbar mặc định thô kệch của trình duyệt) và thiết kế lại dải highlight khoảng range nối liền bằng các div phụ tuyệt đối. Sửa lỗi chính tả class `dark:bg-slate-955` thành `dark:bg-slate-950` để tránh popover lịch bị màu trắng toát ở chế độ tối.
+     - [custom-date-time-range.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/custom-date-time-range/custom-date-time-range.component.ts): Triển khai `ControlValueAccessor` cho tương thích biểu mẫu Angular, logic chọn range hai bước, xử lý preset và tính toán tọa độ fixed thông minh chống tràn viewport.
+  2. **Tích hợp Showcase:**
+     - Cập nhật [home.component.ts](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.ts) import component mới, định nghĩa 2 signals `demoRangeValue` và `demoRangeWithTimeValue` để lưu dữ liệu mẫu.
+     - Cập nhật [home.component.html](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.html) bổ sung **Card 12** trong Showcase hiển thị 2 ví dụ chọn khoảng thời gian (mặc định & kèm giờ phút) kèm debug output.
+  3. **Kiểm tra:** Lệnh `npm run build` thành công, không lỗi biên dịch.
+
 ### Yêu cầu: Khắc phục lỗi nhấp nháy trắng (FOUC Dark Mode) và mất CSS khi reload trang dApp
 - **Nội dung yêu cầu:** Khi reload trang, dApp bị hiện tượng nhấp nháy trắng (FOUC) chói mắt ở Dark Mode hoặc hiển thị màn hình trắng do chưa load xong tài nguyên CSS/JS.
 - **Phân tích nguyên nhân:**

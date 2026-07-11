@@ -10,6 +10,7 @@ import { CustomSearchInputComponent } from '@shared/components/custom-search-inp
 import { CustomSelectComponent } from '@shared/components/custom-select/custom-select.component';
 import { CustomCheckboxComponent } from '@shared/components/custom-checkbox/custom-checkbox.component';
 import { CustomDatePickerComponent } from '@shared/components/custom-date-picker/custom-date-picker.component';
+import { CustomDateTimeRangeComponent, DateTimeRangeValue } from '@shared/components/custom-date-time-range/custom-date-time-range.component';
 import { CardComponent } from '@shared/components/card/card.component';
 import { CustomInputComponent } from '@shared/components/custom-input/custom-input.component';
 import { AccordionComponent } from '@shared/components/accordion/accordion.component';
@@ -37,6 +38,7 @@ import { parseEther } from 'ethers';
     CustomSelectComponent,
     CustomCheckboxComponent,
     CustomDatePickerComponent,
+    CustomDateTimeRangeComponent,
     CardComponent,
     CustomInputComponent,
     BadgeComponent,
@@ -79,6 +81,10 @@ export class HomeComponent {
   public demoDatePickerMinDate = signal('2026-07-20'); // Mốc ngày minDate tùy biến (ví dụ: ngày 20)
   public demoDatePickerShowPresets = signal(true); // Cấu hình bật/tắt presets gợi ý chọn nhanh
   public demoAccordionMultiple = signal(false);
+
+  // Trạng thái Demo Date Time Range Picker
+  public demoRangeValue = signal<DateTimeRangeValue>({ startDate: '2026-07-10', endDate: '2026-07-15' });
+  public demoRangeWithTimeValue = signal<DateTimeRangeValue>({ startDate: '2026-07-10 09:00', endDate: '2026-07-12 18:30' });
 
   // Trạng thái Demo Slider
   public demoSliderVal1 = signal(60);
