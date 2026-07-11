@@ -10,7 +10,10 @@ import {
   computed,
   forwardRef,
   ViewChild,
-  AfterViewChecked
+  AfterViewChecked,
+  OnInit,
+  OnDestroy,
+  ChangeDetectorRef
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
@@ -37,8 +40,26 @@ export interface DateTimeRangeValue {
     }
   ]
 })
-export class CustomDateTimeRangeComponent implements ControlValueAccessor, AfterViewChecked {
+export class CustomDateTimeRangeComponent implements ControlValueAccessor, AfterViewChecked, OnInit, OnDestroy {
   private readonly elementRef = inject(ElementRef);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private scrollListener: any;
+
+  ngOnInit(): void {
+    this.scrollListener = () => {
+      if (this.isOpen()) {
+        this.updatePopoverPosition();
+        this.cdr.detectChanges();
+      }
+    };
+    window.addEventListener('scroll', this.scrollListener, true);
+  }
+
+  ngOnDestroy(): void {
+    if (this.scrollListener) {
+      window.removeEventListener('scroll', this.scrollListener, true);
+    }
+  }
 
   @Input() placeholder: string = 'Chọn khoảng thời gian...';
   @Input() disabled: boolean = false;
@@ -228,14 +249,22 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
     if (!triggerEl) return;
 
     const rect = triggerEl.getBoundingClientRect();
-    // Kích thước popover ước lượng: chiều rộng ~320px, chiều cao ~400px (kèm time/presets)
-    const popoverHeight = this.showTime ? 450 : 380;
+    // Kích thước popover thực tế: chiều rộng ~320px, chiều cao ~433px (không time) hoặc ~500px (kèm time)
+    const popoverHeight = this.showTime ? 510 : 440;
     const popoverWidth = 320;
     const gap = 6;
 
     const spaceBelow = window.innerHeight - rect.bottom - gap;
     const spaceAbove = rect.top - gap;
-    const placeBottom = spaceBelow >= popoverHeight || spaceBelow >= spaceAbove;
+
+    let placeBottom = true;
+    if (spaceBelow >= popoverHeight) {
+      placeBottom = true;
+    } else if (spaceAbove >= popoverHeight) {
+      placeBottom = false;
+    } else {
+      placeBottom = spaceBelow >= spaceAbove;
+    }
 
     let left = rect.left;
     if (left + popoverWidth > window.innerWidth - 8) {
@@ -243,24 +272,30 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
     }
     if (left < 8) left = 8;
 
+    let top = 0;
     if (placeBottom) {
-      this.popoverStyle = {
-        position: 'fixed',
-        top: `${rect.bottom + gap}px`,
-        left: `${left}px`,
-        width: `${popoverWidth}px`,
-        zIndex: '9999',
-      };
+      top = rect.bottom + gap;
+      if (top + popoverHeight > window.innerHeight - 8) {
+        top = window.innerHeight - 8 - popoverHeight;
+      }
+      if (top < 8) top = 8;
     } else {
-      this.popoverStyle = {
-        position: 'fixed',
-        top: `${rect.top - gap}px`,
-        left: `${left}px`,
-        width: `${popoverWidth}px`,
-        transform: 'translateY(-100%)',
-        zIndex: '9999',
-      };
+      top = rect.top - gap - popoverHeight;
+      if (top < 8) {
+        top = 8;
+      }
+      if (top + popoverHeight > window.innerHeight - 8) {
+        top = window.innerHeight - 8 - popoverHeight;
+      }
     }
+
+    this.popoverStyle = {
+      position: 'fixed',
+      top: `${top}px`,
+      left: `${left}px`,
+      width: `${popoverWidth}px`,
+      zIndex: '9999',
+    };
   }
 
   ngAfterViewChecked(): void {

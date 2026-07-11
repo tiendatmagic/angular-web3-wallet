@@ -10,7 +10,10 @@ import {
   computed,
   forwardRef,
   ViewChild,
-  AfterViewChecked
+  AfterViewChecked,
+  OnInit,
+  OnDestroy,
+  ChangeDetectorRef
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
@@ -46,8 +49,26 @@ import { IconComponent } from '../icon/icon.component';
     `
   ]
 })
-export class CustomDatePickerComponent implements ControlValueAccessor, AfterViewChecked {
+export class CustomDatePickerComponent implements ControlValueAccessor, AfterViewChecked, OnInit, OnDestroy {
   private readonly elementRef = inject(ElementRef);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private scrollListener: any;
+
+  ngOnInit(): void {
+    this.scrollListener = () => {
+      if (this.isOpen()) {
+        this.updatePopoverPosition();
+        this.cdr.detectChanges();
+      }
+    };
+    window.addEventListener('scroll', this.scrollListener, true);
+  }
+
+  ngOnDestroy(): void {
+    if (this.scrollListener) {
+      window.removeEventListener('scroll', this.scrollListener, true);
+    }
+  }
 
   @Input() placeholder: string = 'Chọn ngày...';
   @Input() disabled: boolean = false;
@@ -142,7 +163,15 @@ export class CustomDatePickerComponent implements ControlValueAccessor, AfterVie
 
     const spaceBelow = window.innerHeight - rect.bottom - gap;
     const spaceAbove = rect.top - gap;
-    const placeBottom = spaceBelow >= popoverHeight || spaceBelow >= spaceAbove;
+
+    let placeBottom = true;
+    if (spaceBelow >= popoverHeight) {
+      placeBottom = true;
+    } else if (spaceAbove >= popoverHeight) {
+      placeBottom = false;
+    } else {
+      placeBottom = spaceBelow >= spaceAbove;
+    }
 
     let left = rect.left;
     if (left + popoverWidth > window.innerWidth - 8) {
@@ -150,24 +179,30 @@ export class CustomDatePickerComponent implements ControlValueAccessor, AfterVie
     }
     if (left < 8) left = 8;
 
+    let top = 0;
     if (placeBottom) {
-      this.popoverStyle = {
-        position: 'fixed',
-        top: `${rect.bottom + gap}px`,
-        left: `${left}px`,
-        width: `${popoverWidth}px`,
-        zIndex: '9999',
-      };
+      top = rect.bottom + gap;
+      if (top + popoverHeight > window.innerHeight - 8) {
+        top = window.innerHeight - 8 - popoverHeight;
+      }
+      if (top < 8) top = 8;
     } else {
-      this.popoverStyle = {
-        position: 'fixed',
-        top: `${rect.top - gap}px`,
-        left: `${left}px`,
-        width: `${popoverWidth}px`,
-        transform: 'translateY(-100%)',
-        zIndex: '9999',
-      };
+      top = rect.top - gap - popoverHeight;
+      if (top < 8) {
+        top = 8;
+      }
+      if (top + popoverHeight > window.innerHeight - 8) {
+        top = window.innerHeight - 8 - popoverHeight;
+      }
     }
+
+    this.popoverStyle = {
+      position: 'fixed',
+      top: `${top}px`,
+      left: `${left}px`,
+      width: `${popoverWidth}px`,
+      zIndex: '9999',
+    };
   }
 
   ngAfterViewChecked(): void {

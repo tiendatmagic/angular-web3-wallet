@@ -10,7 +10,10 @@ import {
   computed,
   forwardRef,
   ViewChild,
-  AfterViewChecked} from '@angular/core';
+  AfterViewChecked,
+  OnInit,
+  OnDestroy,
+  ChangeDetectorRef} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { IconComponent } from '../icon/icon.component';
@@ -29,6 +32,7 @@ export interface SelectOption {
  */
 @Component({
   selector: 'app-custom-select',
+  standalone: true,
   host: {
     '(document:click)': 'onClickOutside($event)'
   },
@@ -49,8 +53,26 @@ export interface SelectOption {
       }
     `,
   ]})
-export class CustomSelectComponent implements ControlValueAccessor, AfterViewChecked {
+export class CustomSelectComponent implements ControlValueAccessor, AfterViewChecked, OnInit, OnDestroy {
   private readonly elementRef = inject(ElementRef);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private scrollListener: any;
+
+  ngOnInit(): void {
+    this.scrollListener = () => {
+      if (this.isOpen()) {
+        this.updateDropdownPosition();
+        this.cdr.detectChanges();
+      }
+    };
+    window.addEventListener('scroll', this.scrollListener, true);
+  }
+
+  ngOnDestroy(): void {
+    if (this.scrollListener) {
+      window.removeEventListener('scroll', this.scrollListener, true);
+    }
+  }
 
   @Input() value: any = null;
   @Output() valueChange = new EventEmitter<any>();
@@ -110,8 +132,14 @@ export class CustomSelectComponent implements ControlValueAccessor, AfterViewChe
     } else if (this.placement === 'bottom') {
       placeFinal = 'bottom';
     } else {
-      // Auto: ưu tiên dưới, nếu không đủ chỗ thì đặt trên
-      placeFinal = spaceBelow >= Math.min(dropdownMaxHeight, 180) ? 'bottom' : 'top';
+      // Auto: Ưu tiên dưới nếu đủ chỗ, nếu không thì đặt bên có nhiều chỗ trống hơn
+      if (spaceBelow >= dropdownMaxHeight) {
+        placeFinal = 'bottom';
+      } else if (spaceAbove >= dropdownMaxHeight) {
+        placeFinal = 'top';
+      } else {
+        placeFinal = spaceBelow >= spaceAbove ? 'bottom' : 'top';
+      }
     }
 
     this.resolvedPlacement = placeFinal;

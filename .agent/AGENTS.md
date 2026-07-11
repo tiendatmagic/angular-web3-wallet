@@ -27,7 +27,11 @@
   4. **Tích hợp vào Modal Demo Form:**
      - Cập nhật [demo-modal.component.ts](file:///d:/git/angular-web3-wallet/src/app/features/home/components/demo-modal/demo-modal.component.ts) import component mới, khai báo signal `modalRangeValue` và trả kết quả về trong hàm `confirm()`.
      - Cập nhật [demo-modal.component.html](file:///d:/git/angular-web3-wallet/src/app/features/home/components/demo-modal/demo-modal.component.html) thêm trường "Chọn khoảng thời gian (Kèm Giờ & Phút)" sử dụng chung các switch cấu hình bật tắt min/max date và presets động của modal.
-  5. **Kiểm tra:** Lệnh `npm run build` thành công, không lỗi biên dịch.
+  5. **Đồng bộ hóa định vị động khi scroll (Capture Phase) & Định vị thông minh:**
+     - Cấu trúc lại `custom-select.component.ts`, `custom-date-picker.component.ts` và `custom-date-time-range.component.ts` bổ sung `OnInit` và `OnDestroy`.
+     - Đăng ký lắng nghe sự kiện scroll ở capture phase (`window.addEventListener('scroll', ..., true)`) để bắt trọn mọi sự kiện cuộn từ các div scroll của modal, tự động gọi hàm cập nhật lại toạ độ để popover chạy bám sát theo ô input trigger.
+     - Triển khai thuật toán định vị thông minh (Smart Placement) kết hợp dịch chuyển chống tràn dọc (Overflow Vertical Adjustment): Tự động quay popover/dropdown lên trên khi không gian phía dưới không đủ chiều cao, đồng thời dịch chuyển toạ độ top lên/xuống thông minh nếu chân hoặc đầu của popover vẫn bị tràn mép màn hình (chuẩn hóa kích thước đo đạc thực tế của range picker là 440px và 510px để dịch chuyển chính xác tuyệt đối), tránh tuyệt đối hiện tượng bị cắt cụt popover khi viewport hẹp.
+  6. **Kiểm tra:** Lệnh `npm run build` thành công, không lỗi biên dịch.
 
 ### Yêu cầu: Khắc phục lỗi nhấp nháy trắng (FOUC Dark Mode) và mất CSS khi reload trang dApp
 - **Nội dung yêu cầu:** Khi reload trang, dApp bị hiện tượng nhấp nháy trắng (FOUC) chói mắt ở Dark Mode hoặc hiển thị màn hình trắng do chưa load xong tài nguyên CSS/JS.
