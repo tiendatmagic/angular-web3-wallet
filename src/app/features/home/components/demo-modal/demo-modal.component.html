@@ -75,6 +75,20 @@
     />
   </div>
 
+  <!-- Date Time Range Picker trong Modal -->
+  <div class="form-field">
+    <label>Chọn khoảng thời gian (Kèm Giờ & Phút)</label>
+    <app-custom-date-time-range
+      placeholder="Chọn khoảng ngày và giờ..."
+      [showTime]="true"
+      [minDate]="limitDatePicker() ? demoDatePickerMinDate() : ''"
+      [maxDate]="limitDatePickerMax() ? demoDatePickerMaxDate() : ''"
+      [showPresets]="demoDatePickerShowPresets()"
+      [ngModel]="modalRangeValue()"
+      (ngModelChange)="modalRangeValue.set($event)"
+    />
+  </div>
+
   <!-- Select trong Modal -->
   <div class="form-field">
     <label>Mạng lưới blockchain</label>

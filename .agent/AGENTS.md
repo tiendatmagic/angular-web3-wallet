@@ -2,6 +2,16 @@
 
 ## Ngày 12/07/2026
 
+### Yêu cầu: Điều chỉnh màu sắc và độ tương phản của Badge (Đặc biệt là Primary Badge)
+- **Nội dung yêu cầu:** Sửa đổi màu sắc chữ của Badge variants để đảm bảo độ tương phản tốt và thẩm mỹ, đặc biệt là sửa lỗi chữ của Primary Badge bị chìm (màu tím tối) ở chế độ tối (dark mode).
+- **Giải pháp:**
+  1. Cập nhật [badge.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/badge/badge.component.ts):
+     - **Primary:** Thay thế việc dùng `dark:text-[var(--color-secondary)]` ở chế độ tối bằng `text-[var(--color-primary)]` đồng nhất. Giảm opacity nền light mode xuống `/10` (và `/20` ở dark mode) để tương phản rõ ràng hơn.
+     - **Secondary & Info:** Sử dụng hàm `color-mix(in srgb, var(--color-secondary) 80%, white)` để làm sáng chữ ở dark mode, tránh bị chìm vào nền tối.
+     - **Danger:** Sửa lỗi chính tả Tailwind class `dark:text-rose-450` thành `dark:text-rose-400`.
+     - **Success & Warning:** Chuẩn hóa độ mờ nền light mode xuống `/10` và dark mode xuống `/20` để giao diện nhất quán.
+     - **Neutral & Ultra:** Tối ưu hóa màu chữ và viền để tăng độ tương phản rõ nét.
+
 ### Yêu cầu: Xây dựng và tích hợp Component chọn khoảng ngày/giờ (Date Time Range Picker)
 - **Nội dung yêu cầu:** Phát triển component `app-custom-date-time-range` phục vụ chọn khoảng ngày (mặc định) và hỗ trợ thêm chọn giờ:phút nếu truyền tham số `[showTime]="true"`. Tích hợp demo showcase lên trang chủ.
 - **Giải pháp:**
@@ -10,9 +20,14 @@
      - [custom-date-time-range.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/custom-date-time-range/custom-date-time-range.component.html): Đồng bộ hoàn toàn cấu trúc giao diện với `custom-date-picker` (chevron buttons, weekday headers, cỡ chữ text-sm, nút tròn rounded-full), sửa lỗi cú pháp Angular class binding, đồng thời thay thế bộ chọn giờ mặc định `<input type="time">` bằng các thẻ `<select>` Giờ & Phút tùy chỉnh để tránh lỗi vỡ giao diện của trình duyệt. Sau đó cải tiến toàn bộ bộ chọn giờ phút thành dropdown `div` tùy chỉnh 100% (không dùng điều khiển native, nâng cấp rộng 80px và dài 220px căn giữa trigger, chuyển đổi toàn bộ padding của cả trigger lẫn các dòng số option từ `px-2 py-1.5` thành `p-2` để giãn cách thoáng đãng và ẩn hoàn toàn thanh scrollbar mặc định thô kệch của trình duyệt) và thiết kế lại dải highlight khoảng range nối liền bằng các div phụ tuyệt đối. Cải tiến dải highlight khi rê chuột (hover) chọn khoảng: khi hover đến ngày kết thúc/bắt đầu tạm thời, dải màu chỉ vẽ 50% ở một nửa để đường cong nút tròn tự động che phủ mép cắt, tránh lộ góc vuông vức thô kệch. Sửa lỗi chính tả class `dark:bg-slate-955` thành `dark:bg-slate-950` để tránh popover lịch bị màu trắng toát ở chế độ tối.
      - [custom-date-time-range.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/custom-date-time-range/custom-date-time-range.component.ts): Triển khai `ControlValueAccessor` cho tương thích biểu mẫu Angular, logic chọn range hai bước, xử lý preset và tính toán tọa độ fixed thông minh chống tràn viewport.
   2. **Tích hợp Showcase:**
-     - Cập nhật [home.component.ts](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.ts) import component mới, định nghĩa 2 signals `demoRangeValue` và `demoRangeWithTimeValue` để lưu dữ liệu mẫu.
-     - Cập nhật [home.component.html](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.html) bổ sung **Card 12** trong Showcase hiển thị 2 ví dụ chọn khoảng thời gian (mặc định & kèm giờ phút) kèm debug output.
-  3. **Kiểm tra:** Lệnh `npm run build` thành công, không lỗi biên dịch.
+     - Cập nhật [home.component.ts](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.ts) import component mới, định nghĩa các signals `demoRangeValue`, `demoRangeWithTimeValue` và `demoRangeLimitValue` để lưu dữ liệu mẫu.
+     - Cập nhật [home.component.html](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.html) bổ sung **Card 12** trong Showcase hiển thị 3 ví dụ chọn khoảng thời gian (mặc định, kèm giờ phút, và giới hạn min/max date tĩnh) kèm debug output.
+  3. **Đồng bộ hóa logic so sánh ngày:**
+     - Cập nhật lại `isInRange` và `isHoverRange` trong [custom-date-time-range.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/custom-date-time-range/custom-date-time-range.component.ts) sử dụng hàm `clearTime(date)` đồng bộ, đồng thời hỗ trợ hover 2 chiều (tiến/lùi) giúp màu chữ số thay đổi chuẩn xác.
+  4. **Tích hợp vào Modal Demo Form:**
+     - Cập nhật [demo-modal.component.ts](file:///d:/git/angular-web3-wallet/src/app/features/home/components/demo-modal/demo-modal.component.ts) import component mới, khai báo signal `modalRangeValue` và trả kết quả về trong hàm `confirm()`.
+     - Cập nhật [demo-modal.component.html](file:///d:/git/angular-web3-wallet/src/app/features/home/components/demo-modal/demo-modal.component.html) thêm trường "Chọn khoảng thời gian (Kèm Giờ & Phút)" sử dụng chung các switch cấu hình bật tắt min/max date và presets động của modal.
+  5. **Kiểm tra:** Lệnh `npm run build` thành công, không lỗi biên dịch.
 
 ### Yêu cầu: Khắc phục lỗi nhấp nháy trắng (FOUC Dark Mode) và mất CSS khi reload trang dApp
 - **Nội dung yêu cầu:** Khi reload trang, dApp bị hiện tượng nhấp nháy trắng (FOUC) chói mắt ở Dark Mode hoặc hiển thị màn hình trắng do chưa load xong tài nguyên CSS/JS.

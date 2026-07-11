@@ -17,6 +17,7 @@ import { TooltipDirective } from '@shared/components/tooltip/tooltip.directive';
 import { BadgeComponent } from '@shared/components/badge/badge.component';
 import { TabGroupComponent, TabOption } from '@shared/components/tab-group/tab-group.component';
 import { CustomSliderComponent } from '@shared/components/custom-slider/custom-slider.component';
+import { CustomDateTimeRangeComponent, DateTimeRangeValue } from '@shared/components/custom-date-time-range/custom-date-time-range.component';
 
 @Component({
   selector: 'app-demo-modal',
@@ -38,7 +39,8 @@ import { CustomSliderComponent } from '@shared/components/custom-slider/custom-s
     TooltipDirective,
     BadgeComponent,
     TabGroupComponent,
-    CustomSliderComponent
+    CustomSliderComponent,
+    CustomDateTimeRangeComponent
   ],
   templateUrl: './demo-modal.component.html',
   styles: [
@@ -54,6 +56,7 @@ export class DemoModalComponent {
 
   // Form State Local
   public modalDateValue = signal('');
+  public modalRangeValue = signal<DateTimeRangeValue>({ startDate: '', endDate: '' });
   public modalSelectValue = signal<string | null>(null);
   public modalSwitchValue = signal(false);
   public modalRadioValue = signal('arbitrum');
@@ -102,7 +105,8 @@ export class DemoModalComponent {
       radio: this.modalRadioValue(),
       checkbox: this.modalCheckboxValue(),
       tab: this.modalTabValue(),
-      slider: this.modalSliderValue()
+      slider: this.modalSliderValue(),
+      range: this.modalRangeValue()
     });
   }
 }

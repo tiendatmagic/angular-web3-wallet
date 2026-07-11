@@ -794,12 +794,25 @@
             />
           </div>
 
+          <!-- Demo 3: Chọn khoảng ngày giới hạn (Min/Max Date) -->
+          <div class="form-field">
+            <label>Khoảng ngày có giới hạn (Min: 2026-07-10, Max: 2026-07-20)</label>
+            <app-custom-date-time-range
+              placeholder="Chọn khoảng ngày giới hạn..."
+              minDate="2026-07-10"
+              maxDate="2026-07-20"
+              [ngModel]="demoRangeLimitValue()"
+              (ngModelChange)="demoRangeLimitValue.set($event)"
+            />
+          </div>
+
           <!-- Output debug -->
           <div
             class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2.5 space-y-1"
           >
             <div>range = start: "{{ demoRangeValue().startDate || '(trống)' }}" | end: "{{ demoRangeValue().endDate || '(trống)' }}"</div>
             <div>rangeWithTime = start: "{{ demoRangeWithTimeValue().startDate || '(trống)' }}" | end: "{{ demoRangeWithTimeValue().endDate || '(trống)' }}"</div>
+            <div>rangeLimit = start: "{{ demoRangeLimitValue().startDate || '(trống)' }}" | end: "{{ demoRangeLimitValue().endDate || '(trống)' }}"</div>
           </div>
         </div>
       </div>

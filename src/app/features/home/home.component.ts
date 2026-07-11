@@ -85,6 +85,7 @@ export class HomeComponent {
   // Trạng thái Demo Date Time Range Picker
   public demoRangeValue = signal<DateTimeRangeValue>({ startDate: '2026-07-10', endDate: '2026-07-15' });
   public demoRangeWithTimeValue = signal<DateTimeRangeValue>({ startDate: '2026-07-10 09:00', endDate: '2026-07-12 18:30' });
+  public demoRangeLimitValue = signal<DateTimeRangeValue>({ startDate: '2026-07-12', endDate: '2026-07-15' });
 
   // Trạng thái Demo Slider
   public demoSliderVal1 = signal(60);

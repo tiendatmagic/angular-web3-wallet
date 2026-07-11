@@ -518,7 +518,7 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
     const end = this.tempEndDate();
     if (!start || !end) return false;
 
-    const checkTime = date.getTime();
+    const checkTime = this.clearTime(date).getTime();
     const startTime = this.parseDate(start)!.getTime();
     const endTime = this.parseDate(end)!.getTime();
 
@@ -531,12 +531,15 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
     const hover = this.hoveredDate();
     if (!start || end || !hover) return false;
 
-    const checkTime = date.getTime();
+    const checkTime = this.clearTime(date).getTime();
     const startTime = this.parseDate(start)!.getTime();
-    const hoverTime = hover.getTime();
+    const hoverTime = this.clearTime(hover).getTime();
 
-    if (hoverTime < startTime) return false;
-    return checkTime > startTime && checkTime <= hoverTime;
+    if (hoverTime >= startTime) {
+      return checkTime > startTime && checkTime < hoverTime;
+    } else {
+      return checkTime > hoverTime && checkTime < startTime;
+    }
   }
 
   public isHoverEndDate(date: Date): boolean {
