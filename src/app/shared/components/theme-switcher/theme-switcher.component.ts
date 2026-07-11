@@ -1,22 +1,17 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StateService } from '@core/services/state.service';
-import { TabGroupComponent, TabOption } from '@shared/components/tab-group/tab-group.component';
+import { IconComponent } from '@shared/components/icon/icon.component';
 
 @Component({
   selector: 'app-theme-switcher',
   standalone: true,
-  imports: [CommonModule, TabGroupComponent],
+  imports: [CommonModule, IconComponent],
   template: `
-    <div class="flex flex-col gap-2">
-      <div class="flex items-center justify-between">
-        <span class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest block">Giao diện</span>
-        <span
-          [class.text-amber-500]="stateService.themeMode() === 'light'"
-          [class.text-indigo-500]="stateService.themeMode() === 'dark'"
-          [class.text-purple-500]="stateService.themeMode() === 'auto'"
-          class="text-[10px] font-black uppercase tracking-wider"
-        >
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-1.5 leading-tight select-none">
+        <span class="text-xs font-bold text-slate-700 dark:text-slate-300">Giao diện</span>
+        <span class="text-[11px] font-bold text-purple-500">
           {{
             stateService.themeMode() === 'light'
               ? 'Sáng'
@@ -26,12 +21,44 @@ import { TabGroupComponent, TabOption } from '@shared/components/tab-group/tab-g
           }}
         </span>
       </div>
-      
-      <app-tab-group
-        [options]="themeOptions"
-        [activeValue]="stateService.themeMode()"
-        (valueChange)="stateService.setThemeMode($event)"
-      ></app-tab-group>
+      <div class="flex items-center bg-slate-100 dark:bg-slate-900 p-0.5 rounded-full border border-slate-200/40 dark:border-slate-800/40">
+        <button
+          (click)="stateService.setThemeMode('light')"
+          title="Giao diện sáng"
+          [class.bg-white]="stateService.themeMode() === 'light'"
+          [class.dark:bg-slate-800]="stateService.themeMode() === 'light'"
+          [class.text-purple-500]="stateService.themeMode() === 'light'"
+          [class.shadow-sm]="stateService.themeMode() === 'light'"
+          [class.text-slate-400]="stateService.themeMode() !== 'light'"
+          class="p-1 rounded-full hover:text-slate-700 dark:hover:text-slate-200 transition-all cursor-pointer flex items-center justify-center"
+        >
+          <app-icon name="sun" class="w-3.5 h-3.5 flex items-center justify-center" />
+        </button>
+        <button
+          (click)="stateService.setThemeMode('auto')"
+          title="Tự động theo hệ thống"
+          [class.bg-white]="stateService.themeMode() === 'auto'"
+          [class.dark:bg-slate-800]="stateService.themeMode() === 'auto'"
+          [class.text-purple-500]="stateService.themeMode() === 'auto'"
+          [class.shadow-sm]="stateService.themeMode() === 'auto'"
+          [class.text-slate-400]="stateService.themeMode() !== 'auto'"
+          class="p-1 rounded-full hover:text-slate-700 dark:hover:text-slate-200 transition-all cursor-pointer flex items-center justify-center"
+        >
+          <app-icon name="auto" class="w-3.5 h-3.5 flex items-center justify-center" />
+        </button>
+        <button
+          (click)="stateService.setThemeMode('dark')"
+          title="Giao diện tối"
+          [class.bg-white]="stateService.themeMode() === 'dark'"
+          [class.dark:bg-slate-800]="stateService.themeMode() === 'dark'"
+          [class.text-purple-500]="stateService.themeMode() === 'dark'"
+          [class.shadow-sm]="stateService.themeMode() === 'dark'"
+          [class.text-slate-400]="stateService.themeMode() !== 'dark'"
+          class="p-1 rounded-full hover:text-slate-700 dark:hover:text-slate-200 transition-all cursor-pointer flex items-center justify-center"
+        >
+          <app-icon name="moon" class="w-3.5 h-3.5 flex items-center justify-center" />
+        </button>
+      </div>
     </div>
   `,
   styles: [
@@ -40,13 +67,8 @@ import { TabGroupComponent, TabOption } from '@shared/components/tab-group/tab-g
         display: block;
       }
     `
-  ]})
+  ]
+})
 export class ThemeSwitcherComponent {
   public stateService = inject(StateService);
-
-  public readonly themeOptions: TabOption[] = [
-    { value: 'light', label: 'Sáng', icon: 'sun' },
-    { value: 'auto', label: 'Tự động', icon: 'auto' },
-    { value: 'dark', label: 'Tối', icon: 'moon' }
-  ];
 }

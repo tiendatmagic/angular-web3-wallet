@@ -2,6 +2,13 @@
 
 ## Ngày 11/07/2026
 
+### Yêu cầu: Đồng bộ giao diện Theme Switcher chuẩn theo mã nguồn tham khảo
+- **Nội dung yêu cầu:** Cập nhật lại giao diện và cấu trúc DOM của component `app-theme-switcher` sao cho khớp hoàn toàn với thiết kế mẫu (dạng thanh pill bo tròn chứa các nút icon hình tròn nhỏ).
+- **Giải pháp:**
+  1. Loại bỏ việc sử dụng component chung `<app-tab-group>` trong `<app-theme-switcher>`.
+  2. Tách và xây dựng lại layout thuần bằng cấu trúc DOM tham khảo: Sử dụng thanh pill container `bg-slate-100 dark:bg-slate-900 rounded-full p-0.5 border` và các nút button `rounded-full flex items-center justify-center` chứa các biểu tượng `<app-icon>` kích thước `w-3.5 h-3.5`.
+  3. Sử dụng signal `stateService.themeMode()` để kiểm tra động trạng thái hoạt động nhằm áp dụng các CSS class active (`bg-white dark:bg-slate-800 text-purple-500 shadow-sm`) một cách chính xác khi người dùng click chọn theme.
+
 ### Yêu cầu: Khắc phục lỗi ẩn đăng nhập mạng xã hội (Social Login) và tự động đồng bộ theo cấu hình Reown Dashboard
 - **Nội dung yêu cầu:** Giải thích lý do tại sao Social Login không tự động đồng bộ từ Reown Dashboard về ứng dụng mà lại bị ẩn hoàn toàn, và đưa ra giải pháp tuân thủ đồng bộ từ Cloud.
 - **Giải pháp:**

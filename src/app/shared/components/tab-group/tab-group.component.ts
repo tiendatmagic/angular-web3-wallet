@@ -50,6 +50,12 @@ export class TabGroupComponent implements AfterViewInit, OnChanges, OnDestroy {
   /** Class CSS tùy chỉnh cho container */
   @Input() containerClass: string = '';
 
+  /** Class CSS tùy chỉnh cho các nút bấm tab (để tùy chỉnh padding, width, v.v.) */
+  @Input() buttonClass: string = '';
+
+  /** Class CSS tùy chỉnh cho thẻ span nhãn chữ (ví dụ ẩn chữ trên desktop) */
+  @Input() labelClass: string = '';
+
   /** Cho phép các tab tự động chia đều chiều rộng (flex-1). Mặc định là true. */
   @Input() flex: boolean = true;
 
