@@ -24,6 +24,15 @@
   --dynamic-secondary: #8000ff;
 }
 
+html {
+  background-color: #f8fafc;
+  transition: background-color 0.3s;
+}
+
+html.dark {
+  background-color: #030712;
+}
+
 body {
   font-family: var(--font-sans);
   background-color: #f8fafc;
@@ -36,6 +45,7 @@ body {
 }
 
 /* Thêm Class-based Dark Mode hỗ trợ */
+html.dark body,
 body.dark {
   background-color: #030712;
   color: #f8fafc;

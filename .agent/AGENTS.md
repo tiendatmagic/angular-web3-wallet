@@ -1,5 +1,20 @@
 # Lịch sử yêu cầu và xử lý của Agent
 
+## Ngày 12/07/2026
+
+### Yêu cầu: Khắc phục lỗi nhấp nháy trắng (FOUC Dark Mode) và mất CSS khi reload trang dApp
+- **Nội dung yêu cầu:** Khi reload trang, dApp bị hiện tượng nhấp nháy trắng (FOUC) chói mắt ở Dark Mode hoặc hiển thị màn hình trắng do chưa load xong tài nguyên CSS/JS.
+- **Phân tích nguyên nhân:**
+  1. Trạng thái theme tối được khôi phục muộn bởi Angular `ThemeService` (chạy sau khi tải xong bundle JS/CSS và khởi động ứng dụng), trong khi nền của `body` mặc định là màu sáng.
+  2. Thời gian tải các file tài nguyên bất đồng bộ của Angular gây ra khoảng trống trắng tạm thời bên trong `<app-root>` trước khi component được render.
+- **Giải pháp:**
+  1. Cập nhật [index.html](file:///d:/git/angular-web3-wallet/src/index.html):
+     * Thêm một đoạn inline script siêu nhẹ ở `<head>` để đọc `localStorage` và áp dụng ngay class `dark` vào thẻ `html` trước khi trình duyệt render giao diện.
+     * Thêm màn hình Splash Screen (Loading Screen) đẹp mắt bằng HTML/CSS thuần (đồng bộ màu sáng/tối theo CSS Variables) bên trong thẻ `<app-root>` để hiển thị ngay lập tức trong lúc chờ tải bundle Angular.
+  2. Cập nhật [styles.scss](file:///d:/git/angular-web3-wallet/src/styles.scss):
+     * Thiết lập nền mặc định cho thẻ `html` để chuyển màu tối tức thì.
+     * Bổ sung quy tắc selector `html.dark body` để thừa hưởng màu nền tối `#030712` ngay khi thẻ `html` có class `dark` (trước khi Angular kịp khởi chạy để add class `.dark` vào `body`).
+
 ## Ngày 11/07/2026
 
 ### Yêu cầu: Đồng bộ quy chuẩn nhãn trường nhập liệu (Field Labels) dạng chữ in hoa
