@@ -43,7 +43,7 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
   @Input() placeholder: string = 'Chọn khoảng thời gian...';
   @Input() disabled: boolean = false;
   @Input() showTime: boolean = false; // Bật chế độ chọn Giờ:Phút
-  @Input() showPresets: boolean = true; // Bật thanh chọn nhanh
+  @Input() showPresets: boolean = false; // Bật thanh chọn nhanh
   @Input() minDate: string = ''; // YYYY-MM-DD
   @Input() maxDate: string = ''; // YYYY-MM-DD
 
