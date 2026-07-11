@@ -2,6 +2,14 @@
 
 ## Ngày 11/07/2026
 
+### Yêu cầu: Thiết kế tràn viền tinh tế (Full-width divider) cho Modal Header và Footer
+- **Nội dung yêu cầu:** Xem xét lại đường kẻ ngang phân tách trên modal (Header divider) để đảm bảo đường kẻ này không bị co lề hai bên, tạo ra thiết kế modal chuẩn mực làm mẫu cho các dự án sau.
+- **Giải pháp:**
+  1. Loại bỏ padding ngang `px-6` tại khung chứa chung Modal Content (`modal-wrapper.component.html`).
+  2. Bổ sung padding ngang `px-6` vào các phần tử con bao gồm Header và Body để giữ nội dung căn lề chính xác.
+  3. Sửa lỗi class border `border-slate-150` không hợp lệ (gây ra màu viền đen sậm thô của trình duyệt) thành `border-slate-100` ở light mode để hiển thị thanh phân cách tinh tế.
+  4. Sử dụng kỹ thuật negative margin (`-mx-6 px-6`) cho khu vực Footer trong `demo-modal.component.html` giúp đường phân cách chân footer (`border-t`) chạy tràn viền 100% cân đối hoàn toàn với Header, trong khi các nút bấm vẫn căn thẳng hàng hoàn hảo với body.
+
 ### Yêu cầu: Loại bỏ màu sắc gắn cứng (hardcoded colors) và đồng bộ màu sắc thương hiệu động
 - **Nội dung yêu cầu:** Đảm bảo toàn bộ trang, các trang con, component, feature đều tuân thủ màu sắc chủ đạo (primary) và màu phụ (secondary) động, không được gắn cứng một màu như `text-pink-600`, `text-purple-600`, `bg-pink-50`, v.v.
 - **Giải pháp:**
