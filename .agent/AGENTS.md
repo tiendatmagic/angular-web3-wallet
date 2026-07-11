@@ -2,6 +2,10 @@
 
 ## Ngày 11/07/2026
 
+### Yêu cầu: Loại bỏ box-shadow của nút ví Web3 trong Header
+- **Nội dung yêu cầu:** Người dùng yêu cầu loại bỏ hiệu ứng bóng mờ (box-shadow) của nút hiển thị thông tin địa chỉ ví và số dư ở thanh Header để có giao diện phẳng và gọn gàng hơn.
+- **Giải pháp:** Loại bỏ lớp CSS `shadow-sm` khỏi thẻ `<button>` hiển thị thông tin ví Web3 trong tệp [header.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/layout/header/header.component.html).
+
 ### Yêu cầu: Thêm Card "Demo Form Components" vào trang chủ
 - **Nội dung yêu cầu:** Thêm một card demo mới trên trang chủ hiển thị bố cục form gồm: Ngày sinh (date picker), Giới tính (pill tab selector Nam/Nữ), Địa chỉ ví Web3 (EVM) (input text).
 - **Giải pháp:**
