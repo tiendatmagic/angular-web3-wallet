@@ -2,6 +2,13 @@
 
 ## Ngày 11/07/2026
 
+### Yêu cầu: Đồng bộ quy chuẩn nhãn trường nhập liệu (Field Labels) dạng chữ in hoa
+- **Nội dung yêu cầu:** Thống nhất đồng bộ toàn bộ nhãn (label) của các trường nhập liệu trong ứng dụng thành chữ in hoa (`uppercase`), màu chữ mờ nhẹ (`text-slate-400 dark:text-slate-500`) và cập nhật quy tắc này vào tài liệu thiết kế.
+- **Giải pháp:**
+  1. Cấu trúc lại nhãn "Nội dung thông điệp" tại [home.component.html](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.html) bằng cách bọc vào `.form-field` và loại bỏ class inline để kế thừa style tự động, đồng thời chuẩn hóa textarea bằng class `form-textarea` của hệ thống.
+  2. Chuẩn hóa nhãn "Mốc ngày tối thiểu" và các nhãn showcase phụ (Tooltip, Shortcuts, Badges) trong trang chủ để đồng nhất cỡ chữ, độ mờ và kiểu in hoa.
+  3. Cập nhật đặc tả thiết kế nhãn trường nhập liệu vào phần "Bố cục biểu mẫu & Nhãn trường" tại cả hai tệp [design.md](file:///d:/git/angular-web3-wallet/design.md) và [.agent/design.md](file:///d:/git/angular-web3-wallet/.agent/design.md).
+
 ### Yêu cầu: Giới hạn độ đổ bóng (Shadow) tối đa trong tài liệu thiết kế
 - **Nội dung yêu cầu:** Người dùng yêu cầu sửa đổi tài liệu thiết kế để quy định độ đổ bóng (box-shadow) tối đa trên toàn hệ thống chỉ là `shadow-lg`, tuyệt đối không sử dụng `shadow-xl` (hoặc cao hơn).
 - **Giải pháp:** Cập nhật tệp cấu hình thiết kế [.agent/design.md](file:///d:/git/angular-web3-wallet/.agent/design.md) để thay đổi `hover:shadow-xl` thành `hover:shadow-lg` nhằm giới hạn mức bóng đổ theo đúng chuẩn thiết kế giao diện phẳng và hiện đại của dự án.

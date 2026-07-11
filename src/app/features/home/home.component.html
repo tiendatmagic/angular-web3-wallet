@@ -242,14 +242,12 @@
 
           <div class="space-y-4">
             <!-- Nội dung tin nhắn -->
-            <div class="flex flex-col gap-1.5">
-              <label class="text-xs font-bold text-slate-500 dark:text-slate-400"
-                >Nội dung thông điệp</label
-              >
+            <div class="form-field">
+              <label>Nội dung thông điệp</label>
               <textarea
                 rows="2"
                 [(ngModel)]="messageToSign"
-                class="w-full bg-slate-50/50 dark:bg-slate-950/20 border border-slate-200/50 dark:border-slate-800/35 rounded-xl px-3.5 py-3 text-sm focus:outline-none focus:border-primary transition-all text-slate-800 dark:text-slate-100 resize-none"
+                class="form-textarea"
               ></textarea>
             </div>
 
@@ -512,14 +510,14 @@
             </div>
 
             @if (limitDatePicker()) {
-              <div class="flex flex-col gap-1 pt-1 border-t border-slate-200/30 dark:border-slate-800/30 animate-in fade-in duration-200">
-                <label class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Mốc ngày tối thiểu (YYYY-MM-DD)</label>
+              <div class="form-field pt-1 border-t border-slate-200/30 dark:border-slate-800/30 animate-in fade-in duration-200">
+                <label>Mốc ngày tối thiểu (YYYY-MM-DD)</label>
                 <input
                   type="text"
                   [ngModel]="demoDatePickerMinDate()"
                   (ngModelChange)="demoDatePickerMinDate.set($event)"
                   placeholder="2026-07-20"
-                  class="w-full bg-white dark:bg-slate-950/40 border border-slate-200/50 dark:border-slate-800/35 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-[var(--color-primary)] transition-all font-semibold text-slate-800 dark:text-slate-100"
+                  class="form-input"
                 />
               </div>
             }
@@ -584,7 +582,7 @@
         <div class="space-y-5">
           <!-- Tooltip placements demo -->
           <div class="space-y-2">
-            <label class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Tooltip Placement (Hover me)</label>
+            <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider select-none">Tooltip Placement (Hover me)</label>
             <div class="flex flex-wrap gap-2.5 pt-1">
               <button app-button variant="cancel" size="sm" appTooltip="Tooltip hiển thị phía trên 🚀" tooltipPlacement="top">
                 Top
@@ -603,7 +601,7 @@
 
           <!-- Kbd keys demo -->
           <div class="space-y-2">
-            <label class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Keyboard Shortcuts (Kbd)</label>
+            <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider select-none">Keyboard Shortcuts (Kbd)</label>
             <div class="flex items-center gap-1.5 pt-1 text-sm font-semibold text-slate-600 dark:text-slate-350">
               <span>Nhấn</span>
               <kbd app-kbd appTooltip="Phím Command / Windows" tooltipPlacement="top">⌘</kbd>
@@ -621,7 +619,7 @@
 
           <!-- Badge variants demo -->
           <div class="space-y-2">
-            <label class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Badge Variants</label>
+            <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider select-none">Badge Variants</label>
             <div class="flex flex-wrap gap-2 pt-1">
               <app-badge variant="primary">Primary</app-badge>
               <app-badge variant="secondary">Secondary</app-badge>
