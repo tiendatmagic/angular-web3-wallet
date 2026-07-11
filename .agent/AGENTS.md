@@ -8,7 +8,7 @@
   1. Bao bọc các nút menu trong `<div class="space-y-0.5 px-2">` tại [header.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/layout/header/header.component.html). Sau đó loại bỏ `space-y-0.5` ở cả 2 dropdown (chọn mạng và ví) để khoảng cách được giãn cách tự nhiên theo padding.
   2. Cập nhật class các nút bấm thành `px-3 py-2 rounded-xl text-sm font-semibold hover:bg-slate-50 dark:hover:bg-slate-800/60` đồng thời thêm hiệu ứng chuyển màu `group-hover:text-primary` cho cả icon và text.
   3. Thay thế đường kẻ `border-t` thô trên nút đăng xuất bằng một thanh divider `<div class="h-px bg-slate-100 dark:bg-slate-800/50 my-1">` thực tế và bo tròn cho nút Đăng xuất.
-  4. **Khắc phục lệch màu:** Loại bỏ `group-hover:text-secondary` trên nút Ngắt kết nối ví để chữ và biểu tượng luôn giữ màu hồng chủ đạo (`text-primary`) sáng rõ và không bị đổi sang màu tím tối thẫm (`text-secondary`) khi hover ở chế độ tối.
+  4. **Khắc phục lệch màu & Rút gọn địa chỉ:** Loại bỏ `group-hover:text-secondary` trên nút Ngắt kết nối ví để chữ và biểu tượng luôn giữ màu hồng chủ đạo (`text-primary`) sáng rõ khi hover ở chế độ tối. Đồng thời, rút gọn địa chỉ ví hiển thị ở header của dropdown bằng `appShortAddress` pipe để tránh hiển thị tràn lan.
 
 ### Yêu cầu: Loại bỏ box-shadow của nút ví Web3 trong Header
 - **Nội dung yêu cầu:** Người dùng yêu cầu loại bỏ hiệu ứng bóng mờ (box-shadow) của nút hiển thị thông tin địa chỉ ví và số dư ở thanh Header để có giao diện phẳng và gọn gàng hơn.
