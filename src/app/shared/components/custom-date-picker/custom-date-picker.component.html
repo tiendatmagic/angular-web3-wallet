@@ -3,10 +3,12 @@
   <div
     #triggerDiv
     (click)="toggleOpen()"
-    class="w-full flex items-center justify-between bg-slate-50/50 dark:bg-slate-950/20 border border-slate-200/50 dark:border-slate-800/35 rounded-xl px-3.5 py-3 text-sm transition-all text-slate-800 dark:text-slate-100 font-semibold cursor-pointer select-none"
+    class="form-input flex items-center justify-between !py-0 cursor-pointer select-none"
     [class.opacity-50]="disabled"
     [class.pointer-events-none]="disabled"
     [class.border-[var(--color-primary)]]="isOpen()"
+    [class.ring-1]="isOpen()"
+    [class.ring-[var(--color-primary)]/20]="isOpen()"
   >
     <span [class.text-slate-400]="!value()" class="truncate">
       {{ value() ? displayValue() : placeholder }}

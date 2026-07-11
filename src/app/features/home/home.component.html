@@ -709,6 +709,61 @@
           </div>
         </div>
       </div>
+
+      <!-- CARD 11: Demo Form Components -->
+      <div app-card>
+        <h4
+          class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
+        >
+          <app-icon name="bolt" class="w-3.5 h-3.5 text-primary" strokeWidth="2.5" />
+          Demo Form Components
+        </h4>
+
+        <div class="space-y-4">
+          <!-- Hàng 1: Ngày sinh + Giới tính -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- Ngày sinh -->
+            <div class="form-field">
+              <label>Ngày sinh</label>
+              <app-custom-date-picker
+                placeholder="Chọn ngày sinh"
+                [showPresets]="false"
+                [ngModel]="demoProfileBirthday()"
+                (ngModelChange)="demoProfileBirthday.set($event)"
+              />
+            </div>
+
+            <!-- Giới tính -->
+            <div class="form-field">
+              <label>Giới tính</label>
+              <app-tab-group
+                [options]="genderOptions"
+                [activeValue]="demoProfileGender()"
+                (valueChange)="demoProfileGender.set($event)"
+              />
+            </div>
+          </div>
+
+          <!-- Hàng 2: Địa chỉ ví Web3 (EVM) -->
+          <div class="form-field">
+            <label>Địa chỉ ví Web3 (EVM)</label>
+            <app-custom-input
+              placeholder="0x..."
+              [ngModel]="demoProfileWallet()"
+              (ngModelChange)="demoProfileWallet.set($event)"
+            />
+          </div>
+
+          <!-- Output debug nhỏ -->
+          <div
+            class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2.5 space-y-0.5"
+          >
+            <div>birthday = "{{ demoProfileBirthday() || '(chưa chọn)' }}"</div>
+            <div>gender = "{{ demoProfileGender() }}"</div>
+            <div>wallet = "{{ demoProfileWallet() || '(chưa nhập)' }}"</div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- NÚT MỞ MODAL DEMO -->

@@ -2,6 +2,14 @@
 
 ## Ngày 11/07/2026
 
+### Yêu cầu: Thêm Card "Demo Form Components" vào trang chủ
+- **Nội dung yêu cầu:** Thêm một card demo mới trên trang chủ hiển thị bố cục form gồm: Ngày sinh (date picker), Giới tính (pill tab selector Nam/Nữ), Địa chỉ ví Web3 (EVM) (input text).
+- **Giải pháp:**
+  1. Thêm 3 signals mới vào [home.component.ts](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.ts): `demoProfileBirthday`, `demoProfileGender` (mặc định `'male'`), `demoProfileWallet`, và `genderOptions: TabOption[]` với hai mục Nam/Nữ.
+  2. Thêm **Card 11** vào [home.component.html](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.html) sử dụng: `app-custom-date-picker` (showPresets=false), `app-tab-group` cho giới tính, `app-custom-input` cho địa chỉ ví. Bố cục hàng đầu dạng 2 cột (`sm:grid-cols-2`), hàng hai full-width, kèm debug output hiển thị giá trị signal thời gian thực.
+  3. Tái sử dụng hoàn toàn các component đã có (`app-custom-date-picker`, `app-tab-group`, `app-custom-input`) không cần tạo component mới.
+  4. **Đồng bộ hóa kích thước giao diện:** Cập nhật tệp [custom-date-picker.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/custom-date-picker/custom-date-picker.component.html) để áp dụng lớp `form-input` và loại bỏ padding dọc thủ công (`py-3`). Việc này giúp đồng bộ hóa hoàn toàn chiều cao của Date Picker (`h-[42px]`) tương thích hoàn hảo với `app-tab-group` và `app-custom-input` thông thường, giải quyết triệt để lỗi lệch giao diện.
+
 ### Yêu cầu: Khắc phục lỗi mất hình ảnh dApp khi kết nối và tương tác ví (WalletConnect/AppKit)
 - **Nội dung yêu cầu:** Hình ảnh đại diện (avatar/logo) của dApp hiển thị lỗi (broken image) trên modal xác nhận giao dịch của WalletConnect AppKit. Yêu cầu lấy logo ảnh từ logo web để đồng bộ hiển thị.
 - **Phân tích nguyên nhân:** 

@@ -92,6 +92,15 @@ export class HomeComponent {
     { value: 'settings', label: 'Cấu hình', icon: 'bolt' }
   ];
 
+  // Trạng thái Demo Form Components
+  public demoProfileBirthday = signal('');
+  public demoProfileGender = signal('male');
+  public demoProfileWallet = signal('');
+  public readonly genderOptions: TabOption[] = [
+    { value: 'male', label: 'Nam' },
+    { value: 'female', label: 'Nữ' },
+  ];
+
 
 
   /** Danh sách chain để demo custom-select */
