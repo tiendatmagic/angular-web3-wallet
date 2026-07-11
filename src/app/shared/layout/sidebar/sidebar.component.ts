@@ -9,11 +9,11 @@ import { TxSpeedSelectorComponent } from '@shared/components/tx-speed-selector/t
 
 /**
  * Sidebar cố định bên trái trên Desktop (>= md breakpoint).
- * Hiển thị Logo, Nav Links, Tx Speed Selector, Theme Switcher, Copyright.
+ * Active item: nền primary/10 + text primary.
+ * Hover: nền xám, text không đổi màu.
  */
 @Component({
   selector: 'app-sidebar',
-  
   imports: [
     CommonModule,
     RouterModule,
@@ -29,7 +29,8 @@ import { TxSpeedSelectorComponent } from '@shared/components/tx-speed-selector/t
         display: contents;
       }
     `,
-  ]})
+  ],
+})
 export class SidebarComponent {
   public stateService = inject(StateService);
 }
