@@ -79,14 +79,7 @@ export class Web3Service {
       return;
     }
 
-    // Ghi đè ApiController.fetchProjectConfig để ngăn AppKit fetch remote config từ Cloud
-    // Điều này cho phép cấu hình features.reownAuthentication = false có hiệu lực ở client-side
-    try {
-      (ApiController as any).fetchProjectConfig = async () => null;
-    } catch (e) {
-      // ignore
-    }
-
+    // Để AppKit tự động lấy cấu hình từ Reown Cloud Dashboard (Social & Email)
     const isDark = this.themeService.isDarkMode();
 
     this.modal = createAppKit({
@@ -103,10 +96,8 @@ export class Web3Service {
       projectId,
       themeMode: isDark ? 'dark' : 'light',
       features: {
-        email: false,
-        socials: false,
         analytics: false,
-        reownAuthentication: false
+        reownAuthentication: false // Vẫn giữ tắt local SIWX để an toàn
       },
       enableCoinbase: false
     } as any);

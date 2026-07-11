@@ -2,6 +2,12 @@
 
 ## Ngày 11/07/2026
 
+### Yêu cầu: Khắc phục lỗi ẩn đăng nhập mạng xã hội (Social Login) và tự động đồng bộ theo cấu hình Reown Dashboard
+- **Nội dung yêu cầu:** Giải thích lý do tại sao Social Login không tự động đồng bộ từ Reown Dashboard về ứng dụng mà lại bị ẩn hoàn toàn, và đưa ra giải pháp tuân thủ đồng bộ từ Cloud.
+- **Giải pháp:**
+  1. **Lịch sử lỗi cũ:** Trước đây lập trình viên viết đoạn code ghi đè `ApiController.fetchProjectConfig` (trả về `null`) nhằm tránh lỗi SIWX (yêu cầu ký tin nhắn khi kết nối) khi máy chủ Cloud ép cấu hình `reownAuthentication: true`. Tác dụng phụ là chặn luôn cấu hình Social/Email vì nó cần thông tin từ Cloud để tạo iframe đăng nhập.
+  2. **Giải pháp hiện tại:** Vì hiện tại trên Dashboard của người dùng, **Reown Authentication** đã được chuyển sang **OFF**, và **Social & Email** được bật **ON**, ta có thể gỡ bỏ hoàn toàn đoạn hack `fetchProjectConfig` và gỡ các cấu hình `email: false` / `socials: false` cứng ở client-side. SDK sẽ tự động lấy đúng thiết lập từ Dashboard của Reown.
+
 ### Yêu cầu: Áp dụng Tab Group Component dùng chung (`app-tab-group`)
 - **Nội dung yêu cầu:** Rà soát toàn bộ source code, tìm kiếm những vị trí chưa áp dụng `app-tab-group` dùng chung để triển khai đồng bộ hóa giao diện.
 - **Giải pháp:**
