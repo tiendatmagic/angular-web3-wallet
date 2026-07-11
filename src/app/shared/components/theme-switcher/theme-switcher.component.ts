@@ -11,7 +11,7 @@ import { IconComponent } from '@shared/components/icon/icon.component';
     <div class="flex items-center justify-between">
       <div class="flex items-center gap-1.5 leading-tight select-none">
         <span class="text-xs font-bold text-slate-700 dark:text-slate-300">Giao diện</span>
-        <span class="text-[11px] font-bold text-purple-500">
+        <span class="text-[11px] font-bold text-primary">
           {{
             stateService.themeMode() === 'light'
               ? 'Sáng'
@@ -27,7 +27,7 @@ import { IconComponent } from '@shared/components/icon/icon.component';
           title="Giao diện sáng"
           [class.bg-white]="stateService.themeMode() === 'light'"
           [class.dark:bg-slate-800]="stateService.themeMode() === 'light'"
-          [class.text-purple-500]="stateService.themeMode() === 'light'"
+          [class.text-primary]="stateService.themeMode() === 'light'"
           [class.shadow-sm]="stateService.themeMode() === 'light'"
           [class.text-slate-400]="stateService.themeMode() !== 'light'"
           class="p-1 rounded-full hover:text-slate-700 dark:hover:text-slate-200 transition-all cursor-pointer flex items-center justify-center"
@@ -39,7 +39,7 @@ import { IconComponent } from '@shared/components/icon/icon.component';
           title="Tự động theo hệ thống"
           [class.bg-white]="stateService.themeMode() === 'auto'"
           [class.dark:bg-slate-800]="stateService.themeMode() === 'auto'"
-          [class.text-purple-500]="stateService.themeMode() === 'auto'"
+          [class.text-primary]="stateService.themeMode() === 'auto'"
           [class.shadow-sm]="stateService.themeMode() === 'auto'"
           [class.text-slate-400]="stateService.themeMode() !== 'auto'"
           class="p-1 rounded-full hover:text-slate-700 dark:hover:text-slate-200 transition-all cursor-pointer flex items-center justify-center"
@@ -51,7 +51,7 @@ import { IconComponent } from '@shared/components/icon/icon.component';
           title="Giao diện tối"
           [class.bg-white]="stateService.themeMode() === 'dark'"
           [class.dark:bg-slate-800]="stateService.themeMode() === 'dark'"
-          [class.text-purple-500]="stateService.themeMode() === 'dark'"
+          [class.text-primary]="stateService.themeMode() === 'dark'"
           [class.shadow-sm]="stateService.themeMode() === 'dark'"
           [class.text-slate-400]="stateService.themeMode() !== 'dark'"
           class="p-1 rounded-full hover:text-slate-700 dark:hover:text-slate-200 transition-all cursor-pointer flex items-center justify-center"

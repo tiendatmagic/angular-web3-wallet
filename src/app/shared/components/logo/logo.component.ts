@@ -4,10 +4,10 @@ import { Component } from '@angular/core';
   selector: 'app-logo',
   
   template: `
-    <div class="relative w-full h-full flex items-center justify-center rounded-full bg-purple-50 dark:bg-purple-950/20 p-[9%] border border-purple-500/20 group">
+    <div class="relative w-full h-full flex items-center justify-center rounded-full bg-secondary/10 dark:bg-secondary/15 p-[9%] border border-secondary/20 group">
       <div class="absolute inset-0 bg-gradient-to-tr from-primary/10 to-secondary/10 rounded-full blur-sm group-hover:blur-md transition-all"></div>
       <svg
-        class="w-full h-full text-purple-600 dark:text-purple-400 relative z-10 animate-[spin_20s_linear_infinite] hover:animate-[spin_5s_linear_infinite] transition-all"
+        class="w-full h-full text-secondary relative z-10 animate-[spin_20s_linear_infinite] hover:animate-[spin_5s_linear_infinite] transition-all"
         viewBox="0 0 100 100"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -30,8 +30,8 @@ import { Component } from '@angular/core';
         <circle cx="50" cy="50" r="8" fill="url(#logo-grad-comp)" />
         <defs>
           <linearGradient id="logo-grad-comp" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#ff00dd" />
-            <stop offset="100%" stop-color="#8000ff" />
+            <stop offset="0%" stop-color="var(--color-primary, #ff00dd)" />
+            <stop offset="100%" stop-color="var(--color-secondary, #8000ff)" />
           </linearGradient>
         </defs>
       </svg>

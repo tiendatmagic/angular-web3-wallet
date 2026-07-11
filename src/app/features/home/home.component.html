@@ -3,7 +3,7 @@
   @if (!stateService.isConnected()) {
     <div app-card class="text-center max-w-2xl mx-auto">
       <div
-        class="w-16 h-16 bg-purple-50 dark:bg-purple-950/30 rounded-full flex items-center justify-center mx-auto mb-6 text-purple-600 dark:text-purple-400 border border-purple-500/20"
+        class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 text-primary border border-primary/20"
       >
         <app-icon name="link-chain" class="w-8 h-8" strokeWidth="1.5" />
       </div>
@@ -42,7 +42,7 @@
                 >Số dư hiện tại</span
               >
               <span
-                class="text-3xl sm:text-4xl font-black text-transparent bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text mt-0.5"
+                class="text-3xl sm:text-4xl font-black text-transparent bg-gradient-to-r from-secondary to-primary bg-clip-text mt-0.5"
               >
                 {{ stateService.balance() }} {{ stateService.chainSymbol() }}
               </span>
@@ -61,7 +61,7 @@
                 </span>
                 <button
                   (click)="copyAddress($event)"
-                  class="p-1.5 text-slate-400 hover:text-purple-600 dark:hover:text-purple-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all cursor-pointer flex-shrink-0"
+                  class="p-1.5 text-slate-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-all cursor-pointer flex-shrink-0"
                   title="Sao chép địa chỉ"
                 >
                   <app-icon name="copy" class="w-4 h-4" />
@@ -110,9 +110,8 @@
           <div class="grid grid-cols-2 gap-3">
             @for (chain of stateService.POPULAR_CHAINS; track chain.chainId) {
               <button
-                [class.!border-purple-500]="stateService.chainId() === +chain.chainId"
-                [class.!text-purple-600]="stateService.chainId() === +chain.chainId"
-                [class.dark:!text-purple-400]="stateService.chainId() === +chain.chainId"
+                [class.!border-primary]="stateService.chainId() === +chain.chainId"
+                [class.!text-primary]="stateService.chainId() === +chain.chainId"
                 (click)="stateService.switchNetwork(+chain.chainId)"
                 class="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800/60 text-xs font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-50/50 dark:hover:bg-slate-900/50 transition-all cursor-pointer"
               >
@@ -133,7 +132,7 @@
         <div app-card>
           <div class="flex items-center gap-3 mb-6">
             <div
-              class="w-10 h-10 bg-purple-50 dark:bg-purple-950/30 rounded-xl flex items-center justify-center text-purple-600 dark:text-purple-400 border border-purple-500/10"
+              class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary border border-primary/10"
             >
               <app-icon name="send" class="w-5 h-5" />
             </div>
@@ -205,7 +204,7 @@
                   <a
                     [href]="'https://sepolia.arbiscan.io/tx/' + txHash()"
                     target="_blank"
-                    class="text-xs font-mono text-purple-600 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300 truncate underline cursor-pointer"
+                    class="text-xs font-mono text-primary hover:text-primary/80 truncate underline cursor-pointer"
                   >
                     {{ txHash() }}
                   </a>
@@ -229,7 +228,7 @@
         <div app-card>
           <div class="flex items-center gap-3 mb-6">
             <div
-              class="w-10 h-10 bg-purple-50 dark:bg-purple-950/30 rounded-xl flex items-center justify-center text-purple-600 dark:text-purple-400 border border-purple-500/10"
+              class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary border border-primary/10"
             >
               <app-icon name="pen" class="w-5 h-5" />
             </div>
@@ -250,7 +249,7 @@
               <textarea
                 rows="2"
                 [(ngModel)]="messageToSign"
-                class="w-full bg-slate-50/50 dark:bg-slate-950/20 border border-slate-200/50 dark:border-slate-800/35 rounded-xl px-3.5 py-3 text-sm focus:outline-none focus:border-purple-500 transition-all text-slate-800 dark:text-slate-100 resize-none"
+                class="w-full bg-slate-50/50 dark:bg-slate-950/20 border border-slate-200/50 dark:border-slate-800/35 rounded-xl px-3.5 py-3 text-sm focus:outline-none focus:border-primary transition-all text-slate-800 dark:text-slate-100 resize-none"
               ></textarea>
             </div>
 
@@ -274,10 +273,10 @@
             <!-- Kết quả chữ ký -->
             @if (signature()) {
               <div
-                class="bg-purple-500/10 border border-purple-500/25 rounded-xl p-4 space-y-2 mt-4"
+                class="bg-primary/10 border border-primary/20 rounded-xl p-4 space-y-2 mt-4"
               >
                 <div
-                  class="flex items-center justify-between text-purple-600 dark:text-purple-400 text-xs font-bold"
+                  class="flex items-center justify-between text-primary text-xs font-bold"
                 >
                   <div class="flex items-center gap-2">
                     <app-icon name="pen" class="w-4 h-4" />
@@ -294,7 +293,7 @@
                   </span>
                   <button
                     (click)="copySignature()"
-                    class="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-500 hover:text-purple-600 dark:hover:text-purple-400 flex-shrink-0 cursor-pointer transition-all mt-0.5"
+                    class="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-500 hover:text-primary flex-shrink-0 cursor-pointer transition-all mt-0.5"
                     title="Sao chép chữ ký"
                   >
                     <app-icon name="copy" class="w-4 h-4" />
@@ -324,7 +323,7 @@
     <!-- Tiêu đề section -->
     <div class="flex items-center gap-3">
       <div
-        class="w-10 h-10 bg-pink-50 dark:bg-pink-950/30 rounded-xl flex items-center justify-center text-pink-600 dark:text-pink-400 border border-pink-500/10"
+        class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary border border-primary/10"
       >
         <app-icon name="bolt" class="w-5 h-5" [solid]="true" viewBox="0 0 20 20" />
       </div>
@@ -344,7 +343,7 @@
         >
           <app-icon
             name="bolt"
-            class="w-3.5 h-3.5 text-pink-500"
+            class="w-3.5 h-3.5 text-primary"
             [solid]="true"
             viewBox="0 0 20 20"
           />
@@ -385,7 +384,7 @@
         >
           <app-icon
             name="bolt"
-            class="w-3.5 h-3.5 text-purple-500"
+            class="w-3.5 h-3.5 text-primary"
             [solid]="true"
             viewBox="0 0 20 20"
           />
@@ -415,7 +414,7 @@
         <h4
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
         >
-          <app-icon name="shield-check" class="w-3.5 h-3.5 text-pink-500" strokeWidth="2.5" />
+          <app-icon name="shield-check" class="w-3.5 h-3.5 text-primary" strokeWidth="2.5" />
           Custom Checkbox
         </h4>
         <div class="space-y-4">
@@ -547,7 +546,7 @@
         <h4
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
         >
-          <app-icon name="chevron-down" class="w-3.5 h-3.5 text-pink-500" strokeWidth="2.5" />
+          <app-icon name="chevron-down" class="w-3.5 h-3.5 text-primary" strokeWidth="2.5" />
           Custom Accordion
         </h4>
         <div class="space-y-4">
@@ -578,7 +577,7 @@
         <h4
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
         >
-          <app-icon name="shield-check" class="w-3.5 h-3.5 text-purple-500" strokeWidth="2.5" />
+          <app-icon name="shield-check" class="w-3.5 h-3.5 text-primary" strokeWidth="2.5" />
           Badge, Kbd & Tooltip
         </h4>
         
@@ -642,7 +641,7 @@
         <h4
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
         >
-          <app-icon name="link-chain" class="w-3.5 h-3.5 text-pink-500" strokeWidth="2.5" />
+          <app-icon name="link-chain" class="w-3.5 h-3.5 text-primary" strokeWidth="2.5" />
           Custom Tab Group
         </h4>
         

@@ -71,7 +71,7 @@ export class BadgeComponent {
         break;
       case 'info':
         classes.push(
-          'bg-purple-100 dark:bg-purple-950/50 text-purple-600 dark:text-purple-400 border border-purple-200/50 dark:border-purple-800/40',
+          'bg-[var(--color-secondary)]/10 dark:bg-[var(--color-secondary)]/15 text-[var(--color-secondary)] border border-[var(--color-secondary)]/20',
         );
         break;
       case 'neutral':
@@ -81,7 +81,7 @@ export class BadgeComponent {
         break;
       case 'ultra':
         classes.push(
-          'bg-violet-500/20 dark:bg-violet-500/25 text-violet-600 dark:text-violet-400 border border-violet-500/20 dark:border-violet-500/30',
+          'bg-gradient-to-r from-[var(--color-primary)]/20 to-[var(--color-secondary)]/20 text-[var(--color-primary)] border border-[var(--color-primary)]/20 dark:text-white',
         );
         break;
     }

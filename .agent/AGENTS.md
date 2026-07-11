@@ -2,6 +2,14 @@
 
 ## Ngày 11/07/2026
 
+### Yêu cầu: Loại bỏ màu sắc gắn cứng (hardcoded colors) và đồng bộ màu sắc thương hiệu động
+- **Nội dung yêu cầu:** Đảm bảo toàn bộ trang, các trang con, component, feature đều tuân thủ màu sắc chủ đạo (primary) và màu phụ (secondary) động, không được gắn cứng một màu như `text-pink-600`, `text-purple-600`, `bg-pink-50`, v.v.
+- **Giải pháp:**
+  1. Thay thế các màu cứng `pink-600`, `pink-500`, `pink-50` sang `primary` động (`text-primary`, `bg-primary/10`, `border-primary/10`, v.v.) trong các file HTML/TS của Sidebar, Header, Home, About, Contact, App và Tx Speed Selector.
+  2. Thay thế các màu cứng `purple-600`, `purple-500`, `purple-50`, `purple-950` sang `secondary` hoặc `primary` động tùy thuộc vào ngữ cảnh.
+  3. Cập nhật `logo.component.ts` để đổi stop-color trong SVG linearGradient thành các biến CSS động `var(--color-primary)` và `var(--color-secondary)` thay vì mã màu tĩnh.
+  4. Cập nhật các biến thể badge `'info'` và `'ultra'` trong `badge.component.ts` sang màu sắc dynamic của primary và secondary.
+
 ### Yêu cầu: Đồng bộ giao diện Theme Switcher chuẩn theo mã nguồn tham khảo
 - **Nội dung yêu cầu:** Cập nhật lại giao diện và cấu trúc DOM của component `app-theme-switcher` sao cho khớp hoàn toàn với thiết kế mẫu (dạng thanh pill bo tròn chứa các nút icon hình tròn nhỏ).
 - **Giải pháp:**
