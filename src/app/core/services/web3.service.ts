@@ -15,6 +15,9 @@ import { POPULAR_CHAINS } from '../utils/blockchain.utils';
 export class Web3Service {
   private modal!: AppKit;
 
+  // Cờ kiểm tra Web3 có được bật không (từ environment)
+  public readonly isEnabled: boolean = environment.enableWeb3;
+
   // Signals quản lý trạng thái ví
   public address = signal<string | null>(null);
   public chainId = signal<number | null>(null);
@@ -52,6 +55,10 @@ export class Web3Service {
   private readonly toastService = inject(ToastService);
 
   constructor() {
+    if (!this.isEnabled) {
+      console.info('[Web3] Web3 đã bị tắt');
+      return;
+    }
     this.initAppKit();
     this.setupThemeSync();
   }
@@ -113,7 +120,7 @@ export class Web3Service {
 
       if (accountState.isConnected && accountState.address) {
         await this.updateBalanceAndNetwork();
-        
+
         // Cập nhật hiển thị modal nếu mạng hiện tại sai sau khi load account (khi reload)
         const currentChainId = this.chainId();
         if (currentChainId) {
@@ -148,7 +155,7 @@ export class Web3Service {
   private checkAndUpdateNetworkState(chainId: number, showToastAlert = true) {
     const prevChainId = this.chainId();
     const prevWrongChain = this.isWrongChain();
-    
+
     this.chainId.set(chainId);
 
     const supportedChain = this.supportedChains.find(c => Number(c.id) === chainId);
@@ -185,7 +192,7 @@ export class Web3Service {
       const popular = POPULAR_CHAINS.find(c => Number(c.chainId) === chainId);
       this.networkName.set(popular ? popular.name : 'Mạng không hỗ trợ');
       this.chainSymbol.set('ETH'); // default fallback
-      
+
       if (this.isConnected()) {
         this.showWrongChainModal.set(true);
         if (showToastAlert && (!prevWrongChain || prevChainId !== chainId)) {
@@ -196,7 +203,7 @@ export class Web3Service {
       }
 
       // Tự động điều chỉnh tốc độ gas theo mạng (Testnet -> fast, Mainnet -> default)
-      const isTestnet = popular 
+      const isTestnet = popular
         ? popular.name.toLowerCase().includes('sepolia') || popular.name.toLowerCase().includes('testnet')
         : (chainId === 421614 || chainId === 97 || chainId === 11155111);
       if (isTestnet) {
@@ -231,6 +238,7 @@ export class Web3Service {
 
   // Mở popup kết nối ví
   public async connect() {
+    if (!this.isEnabled) return;
     try {
       await this.modal.open();
     } catch (error) {
@@ -240,6 +248,7 @@ export class Web3Service {
 
   // Mở popup chuyển mạng
   public async openNetworkModal() {
+    if (!this.isEnabled) return;
     try {
       await this.modal.open({ view: 'Networks' });
     } catch (error) {
@@ -249,6 +258,7 @@ export class Web3Service {
 
   // Mở popup chi tiết ví (Account view của AppKit)
   public async openAccountModal() {
+    if (!this.isEnabled) return;
     try {
       await this.modal.open({ view: 'Account' });
     } catch (error) {
@@ -258,6 +268,7 @@ export class Web3Service {
 
   // Ngắt kết nối ví
   public async disconnect() {
+    if (!this.isEnabled) return;
     try {
       await this.modal.disconnect();
     } catch (error) {
@@ -267,6 +278,7 @@ export class Web3Service {
 
   // Chuyển sang mạng cụ thể
   public async switchNetwork(chainId: number) {
+    if (!this.isEnabled) return;
     try {
       const network = this.supportedChains.find(chain => Number(chain.id) === chainId);
       if (network) {
@@ -281,6 +293,7 @@ export class Web3Service {
 
   // Lấy Ethers Signer phục vụ giao dịch ghi
   public async getSigner() {
+    if (!this.isEnabled) throw new Error('Web3 đã bị tắt. Bật lại environment.enableWeb3 = true.');
     const walletProvider = this.modal.getWalletProvider();
     if (!walletProvider) {
       throw new Error('Ví chưa được kết nối');
@@ -304,6 +317,7 @@ export class Web3Service {
 
   // Lấy Ethers Provider phục vụ giao dịch đọc
   public getProvider() {
+    if (!this.isEnabled) throw new Error('Web3 đã bị tắt. Bật lại environment.enableWeb3 = true.');
     const walletProvider = this.modal.getWalletProvider();
     if (!walletProvider) {
       throw new Error('Ví chưa được kết nối');
@@ -321,7 +335,7 @@ export class Web3Service {
       }
       const provider = currentSigner.provider;
       if (!provider) return overrides;
-      
+
       const feeData = await provider.getFeeData();
       const speed = this.txSpeed();
       if (speed !== 'default') {

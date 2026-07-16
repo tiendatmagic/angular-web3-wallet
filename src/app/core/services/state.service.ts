@@ -35,6 +35,7 @@ export class StateService {
   // ====================================================
   // DELEGATED WEB3 STATE (ỦY THÁC TRẠNG THÁI BLOCKCHAIN)
   // ====================================================
+  public readonly isWeb3Enabled: boolean = this.web3Service.isEnabled;
   public readonly address = this.web3Service.address;
   public readonly chainId = this.web3Service.chainId;
   public readonly isConnected = this.web3Service.isConnected;
