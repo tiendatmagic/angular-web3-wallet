@@ -28,6 +28,12 @@ export class RippleDirective {
   /** Bán kính tối đa của vòng tròn ripple (nếu bằng 0 thì tự tính toán bao phủ toàn bộ container) */
   @Input('appRippleRadius') radius: number = 0;
 
+  /** Thời gian lan tỏa của hiệu ứng sóng nước (ms), mặc định là 500ms */
+  @Input('appRippleDuration') duration: number = 500;
+
+  /** Độ mờ ban đầu của sóng nước, nếu bằng null thì tự động quyết định (0.25 cho currentColor, 1.0 cho màu tùy chỉnh) */
+  @Input('appRippleOpacity') opacity: number | null = null;
+
   private lastTouchTimestamp = 0;
 
   constructor(
@@ -59,7 +65,9 @@ export class RippleDirective {
     if (computedStyle.position === 'static') {
       this.renderer.setStyle(container, 'position', 'relative');
     }
-    if (!this.unbounded && computedStyle.overflow !== 'hidden') {
+    if (this.unbounded) {
+      this.renderer.setStyle(container, 'overflow', 'visible');
+    } else if (computedStyle.overflow !== 'hidden') {
       this.renderer.setStyle(container, 'overflow', 'hidden');
     }
 
@@ -69,12 +77,15 @@ export class RippleDirective {
 
     const rect = container.getBoundingClientRect();
     
+    // Cờ centered độc lập với cờ unbounded theo phản hồi của người dùng
+    const isCentered = this.centered;
+    
     // Tính toán tọa độ tâm của sóng nước
     let x = 0;
     let y = 0;
     let size = 0;
 
-    if (this.centered) {
+    if (isCentered) {
       x = rect.width / 2;
       y = rect.height / 2;
     } else {
@@ -88,10 +99,15 @@ export class RippleDirective {
     if (this.radius > 0) {
       size = this.radius * 2;
     } else {
-      // Đường kính bằng khoảng cách xa nhất từ vị trí click đến 4 góc của container * 2
-      const maxDistX = Math.max(x, rect.width - x);
-      const maxDistY = Math.max(y, rect.height - y);
-      size = Math.sqrt(maxDistX * maxDistX + maxDistY * maxDistY) * 2;
+      if (this.unbounded) {
+        // Đối với unbounded ripple, đường kính bằng đường chéo của container để bao phủ vừa khít từ tâm ra góc
+        size = Math.sqrt(rect.width * rect.width + rect.height * rect.height);
+      } else {
+        // Bounded ripple: đường kính bằng khoảng cách xa nhất từ vị trí click đến 4 góc của container * 2
+        const maxDistX = Math.max(x, rect.width - x);
+        const maxDistY = Math.max(y, rect.height - y);
+        size = Math.sqrt(maxDistX * maxDistX + maxDistY * maxDistY) * 2;
+      }
     }
 
     // Thiết lập styles cơ bản
@@ -103,18 +119,30 @@ export class RippleDirective {
     // Thiết lập màu sắc nếu được chỉ định
     if (this.color) {
       this.renderer.setStyle(ripple, 'background-color', this.color);
-      this.renderer.setStyle(ripple, 'opacity', '1'); // Ghi đè opacity mặc định của CSS để giữ màu gốc của người dùng
     }
+
+    // Thiết lập độ mờ động (opacity)
+    let finalOpacity = 0.3;
+    if (this.color) {
+      finalOpacity = 1.0; // Giữ nguyên độ mờ của rgba/hex được truyền vào
+    }
+    if (this.opacity !== null) {
+      finalOpacity = this.opacity; // Người dùng ghi đè thủ công
+    }
+    this.renderer.setStyle(ripple, 'opacity', finalOpacity.toString());
+
+    // Thiết lập duration động (thời gian hiệu ứng)
+    this.renderer.setStyle(ripple, 'animation-duration', `${this.duration}ms`);
 
     // Đưa ripple vào DOM
     this.renderer.appendChild(container, ripple);
 
-    // Dọn dẹp ripple sau khi kết thúc hiệu ứng animation (600ms)
+    // Dọn dẹp ripple sau khi kết thúc hiệu ứng animation
     // Chạy ngoài Angular zone để tránh kích hoạt Change Detection không cần thiết
     this.ngZone.runOutsideAngular(() => {
       setTimeout(() => {
         ripple.remove();
-      }, 600);
+      }, this.duration);
     });
   }
 }

@@ -857,14 +857,16 @@
             [appRippleCentered]="demoRippleCentered()"
             [appRippleDisabled]="demoRippleDisabled()"
             [appRippleUnbounded]="demoRippleUnbounded()"
-            [appRippleColor]="demoRippleColor()"
+            [appRippleColor]="demoRippleCustomColor() || demoRippleColor()"
+            [appRippleDuration]="demoRippleDuration()"
+            [appRippleOpacity]="demoRippleOpacity()"
             class="h-32 rounded-[15px] border-2 border-dashed border-slate-200 dark:border-slate-800 flex flex-col items-center justify-center cursor-pointer select-none bg-slate-50/50 dark:bg-slate-950/20 hover:bg-slate-100/50 dark:hover:bg-slate-900/10 transition-colors duration-200"
           >
             <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Click hoặc Touch vào đây</span>
             <span class="text-[10px] text-slate-400 dark:text-slate-500 mt-1">Để trải nghiệm hiệu ứng sóng nước</span>
           </div>
 
-          <!-- Các nút điều khiển cấu hình -->
+          <!-- Các nút điều khiển cấu hình cơ bản -->
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 border-t border-slate-100 dark:border-slate-800/40 pt-4">
             <!-- Center Ripple -->
             <div class="flex items-center justify-between">
@@ -894,18 +896,18 @@
             </div>
           </div>
 
-          <!-- Cấu hình màu sắc Ripple -->
+          <!-- Cấu hình màu sắc Ripple dựng sẵn -->
           <div class="form-field">
-            <label>Màu sắc Ripple</label>
+            <label>Màu sắc Ripple dựng sẵn</label>
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
               <button
                 app-button
                 variant="cancel"
                 size="sm"
-                [class.ring-2]="demoRippleColor() === ''"
+                [class.ring-2]="demoRippleColor() === '' && !demoRippleCustomColor()"
                 [class.ring-slate-400]="demoRippleColor() === ''"
                 [class.dark:ring-slate-600]="demoRippleColor() === ''"
-                (click)="demoRippleColor.set('')"
+                (click)="demoRippleColor.set(''); demoRippleCustomColor.set('')"
                 class="!py-1.5 text-xs font-bold"
               >
                 Mặc định
@@ -914,9 +916,9 @@
                 app-button
                 variant="cancel"
                 size="sm"
-                [class.ring-2]="demoRippleColor() === 'rgba(255, 0, 221, 0.2)'"
+                [class.ring-2]="demoRippleColor() === 'rgba(255, 0, 221, 0.2)' && !demoRippleCustomColor()"
                 [class.ring-primary]="demoRippleColor() === 'rgba(255, 0, 221, 0.2)'"
-                (click)="demoRippleColor.set('rgba(255, 0, 221, 0.2)')"
+                (click)="demoRippleColor.set('rgba(255, 0, 221, 0.2)'); demoRippleCustomColor.set('')"
                 class="!py-1.5 text-xs font-bold text-primary"
               >
                 Màu Primary
@@ -925,9 +927,9 @@
                 app-button
                 variant="cancel"
                 size="sm"
-                [class.ring-2]="demoRippleColor() === 'rgba(128, 0, 255, 0.2)'"
+                [class.ring-2]="demoRippleColor() === 'rgba(128, 0, 255, 0.2)' && !demoRippleCustomColor()"
                 [class.ring-secondary]="demoRippleColor() === 'rgba(128, 0, 255, 0.2)'"
-                (click)="demoRippleColor.set('rgba(128, 0, 255, 0.2)')"
+                (click)="demoRippleColor.set('rgba(128, 0, 255, 0.2)'); demoRippleCustomColor.set('')"
                 class="!py-1.5 text-xs font-bold text-secondary"
               >
                 Màu Secondary
@@ -936,9 +938,9 @@
                 app-button
                 variant="cancel"
                 size="sm"
-                [class.ring-2]="demoRippleColor() === 'rgba(239, 68, 68, 0.2)'"
+                [class.ring-2]="demoRippleColor() === 'rgba(239, 68, 68, 0.2)' && !demoRippleCustomColor()"
                 [class.ring-red-500]="demoRippleColor() === 'rgba(239, 68, 68, 0.2)'"
-                (click)="demoRippleColor.set('rgba(239, 68, 68, 0.2)')"
+                (click)="demoRippleColor.set('rgba(239, 68, 68, 0.2)'); demoRippleCustomColor.set('')"
                 class="!py-1.5 text-xs font-bold text-red-500"
               >
                 Màu Đỏ
@@ -946,14 +948,76 @@
             </div>
           </div>
 
+          <!-- Chỉnh sửa nâng cao: Màu tự chọn, Duration, Opacity -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-slate-100 dark:border-slate-800/40 pt-4">
+            <!-- Chỉnh màu tùy chỉnh -->
+            <div class="form-field justify-start">
+              <label>Màu sắc tự chọn (Hex / Rgba / CSS Color)</label>
+              <div class="flex gap-2">
+                <app-custom-input
+                  placeholder="Ví dụ: #ff00dd hoặc rgba(0, 255, 0, 0.4)"
+                  [ngModel]="demoRippleCustomColor()"
+                  (ngModelChange)="demoRippleCustomColor.set($event)"
+                  class="flex-1"
+                />
+                <!-- Input chọn màu native -->
+                <input
+                  type="color"
+                  [value]="demoRippleCustomColor().startsWith('#') ? demoRippleCustomColor() : '#8000ff'"
+                  (input)="demoRippleCustomColor.set($any($event.target).value)"
+                  class="w-10 h-[42px] p-1 rounded-xl border border-slate-200/40 dark:border-slate-800/40 cursor-pointer bg-slate-50 dark:bg-slate-950/40"
+                />
+              </div>
+            </div>
+
+            <!-- Chỉnh thời gian (Duration) và độ mờ (Opacity) -->
+            <div class="space-y-4">
+              <!-- Slider Duration -->
+              <div class="form-field">
+                <div class="flex justify-between items-center">
+                  <label class="!mb-0">Thời gian lan tỏa (Duration)</label>
+                  <span class="text-xs font-mono font-bold text-primary">{{ demoRippleDuration() }}ms</span>
+                </div>
+                <app-custom-slider
+                  [min]="200"
+                  [max]="2000"
+                  [step]="50"
+                  [ngModel]="demoRippleDuration()"
+                  (ngModelChange)="demoRippleDuration.set($event)"
+                />
+              </div>
+
+              <!-- Slider Opacity -->
+              <div class="form-field">
+                <div class="flex justify-between items-center">
+                  <label class="!mb-0">Độ mờ ban đầu (Opacity)</label>
+                  <span class="text-xs font-mono font-bold text-secondary">{{ demoRippleOpacity() }}</span>
+                </div>
+                <app-custom-slider
+                  [min]="0.1"
+                  [max]="1"
+                  [step]="0.05"
+                  [ngModel]="demoRippleOpacity()"
+                  (ngModelChange)="demoRippleOpacity.set($event)"
+                />
+              </div>
+            </div>
+          </div>
+
           <!-- Các nút demo bổ sung gắn kèm ripple -->
-          <div class="form-field">
+          <div class="form-field border-t border-slate-100 dark:border-slate-800/40 pt-4">
             <label>Áp dụng trên Button và Icon</label>
             <div class="flex flex-wrap items-center gap-3">
               <button
                 app-button
                 variant="primary"
                 appRipple
+                [appRippleCentered]="demoRippleCentered()"
+                [appRippleDisabled]="demoRippleDisabled()"
+                [appRippleUnbounded]="demoRippleUnbounded()"
+                [appRippleColor]="demoRippleCustomColor() || demoRippleColor()"
+                [appRippleDuration]="demoRippleDuration()"
+                [appRippleOpacity]="demoRippleOpacity()"
                 class="relative"
               >
                 Primary Button
@@ -962,7 +1026,12 @@
                 app-button
                 variant="secondary"
                 appRipple
-                [appRippleColor]="'rgba(255, 255, 255, 0.35)'"
+                [appRippleCentered]="demoRippleCentered()"
+                [appRippleDisabled]="demoRippleDisabled()"
+                [appRippleUnbounded]="demoRippleUnbounded()"
+                [appRippleColor]="demoRippleCustomColor() || '#ffffff'"
+                [appRippleDuration]="demoRippleDuration()"
+                [appRippleOpacity]="demoRippleOpacity()"
                 class="relative"
               >
                 Secondary + Ripple Trắng
@@ -970,9 +1039,12 @@
               <!-- Icon button với unbounded ripple -->
               <button
                 appRipple
-                [appRippleUnbounded]="true"
-                [appRippleCentered]="true"
-                [appRippleColor]="'rgba(128, 0, 255, 0.15)'"
+                [appRippleCentered]="demoRippleCentered()"
+                [appRippleDisabled]="demoRippleDisabled()"
+                [appRippleUnbounded]="demoRippleUnbounded()"
+                [appRippleColor]="demoRippleCustomColor() || '#8000ff'"
+                [appRippleDuration]="demoRippleDuration()"
+                [appRippleOpacity]="demoRippleOpacity()"
                 class="w-10 h-10 rounded-full flex items-center justify-center bg-slate-100 hover:bg-slate-200/80 dark:bg-slate-800 dark:hover:bg-slate-700/80 text-secondary transition-colors duration-200 focus:outline-none"
                 title="Unbounded Ripple"
               >

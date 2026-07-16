@@ -115,6 +115,9 @@ export class HomeComponent {
   public demoRippleDisabled = signal(false);
   public demoRippleUnbounded = signal(false);
   public demoRippleColor = signal('');
+  public demoRippleDuration = signal(500);
+  public demoRippleOpacity = signal(0.3);
+  public demoRippleCustomColor = signal('#ffffff');
 
   /** Danh sách chain để demo custom-select */
   public readonly demoChainOptions = [
