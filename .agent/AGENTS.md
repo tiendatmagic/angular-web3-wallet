@@ -2,6 +2,15 @@
 
 ## Ngày 17/07/2026
 
+### Yêu cầu: Định tuyến liên kết Logo web về trang chủ (Desktop & Mobile Drawer)
+- **Nội dung yêu cầu:** Khi người dùng click vào logo web, kể cả trên desktop sidebar, thanh header (mobile) hay mobile drawer panel thì đều tự động chuyển hướng (route) về trang chủ `/`.
+- **Giải pháp:**
+  1. Cập nhật [header.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/layout/header/header.component.html):
+     * Đổi thẻ `div` bọc Logo & Brand ở Header ngoài cùng (hiển thị trên mobile) thành thẻ `a` có `routerLink="/"`.
+     * Đổi thẻ `div` bọc Logo & Brand ở Mobile Drawer Panel thành thẻ `a` có `routerLink="/"`, đồng thời gắn sự kiện `(click)="stateService.showMobileMenu.set(false)"` giúp tự động đóng Menu Drawer khi chuyển hướng.
+  2. Cập nhật [sidebar.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/layout/sidebar/sidebar.component.html):
+     * Đổi thẻ `div` bọc Logo & Brand ở Desktop Sidebar thành thẻ `a` có `routerLink="/"`.
+
 ### Yêu cầu: Loại bỏ Emoji, SVG nhúng trực tiếp và tích hợp chọn nhiều (Multi-Select) cho Select UI
 - **Nội dung yêu cầu:** 
   1. Thay thế tất cả các emoji và thẻ `<svg>` nhúng trực tiếp bằng component `IconComponent` dùng chung.
