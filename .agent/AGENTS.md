@@ -2,6 +2,28 @@
 
 ## Ngày 17/07/2026
 
+### Yêu cầu: Thêm cấu hình bật/tắt Web3 qua Environment
+- **Nội dung yêu cầu:** Thêm flag cấu hình `enableWeb3` trong `src/environments` để bật/tắt toàn bộ tính năng Web3 (AppKit, Ethers.js, WalletConnect). Khi tắt, ứng dụng hoạt động như Web2 thông thường.
+- **Giải pháp:**
+  1. **Cập nhật environment files:**
+     - Thêm `enableWeb3: true` vào [environment.ts](file:///d:/git/angular-web3-wallet/src/environments/environment.ts) (production) và [environment.development.ts](file:///d:/git/angular-web3-wallet/src/environments/environment.development.ts) kèm comment hướng dẫn.
+  2. **Cập nhật [web3.service.ts](file:///d:/git/angular-web3-wallet/src/app/core/services/web3.service.ts):**
+     - Thêm property `isEnabled = environment.enableWeb3`.
+     - Guard `constructor()`: khi `isEnabled = false` thì skip `initAppKit()` & `setupThemeSync()`, log info ra console.
+     - Guard tất cả public method (`connect`, `disconnect`, `openNetworkModal`, `openAccountModal`, `switchNetwork`): return sớm nếu `!isEnabled`.
+     - Guard `getSigner()` và `getProvider()`: throw Error có hướng dẫn nếu `!isEnabled`.
+  3. **Cập nhật [state.service.ts](file:///d:/git/angular-web3-wallet/src/app/core/services/state.service.ts):**
+     - Expose `isWeb3Enabled: boolean = this.web3Service.isEnabled` để các component dùng dễ dàng.
+  4. **Cập nhật [header.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/layout/header/header.component.html):**
+     - Wrap toàn bộ phần "NÚT CHỌN MẠNG + NÚT VÍ" bên phải header bằng `@if (stateService.isWeb3Enabled)`.
+     - Thêm điều kiện `stateService.isWeb3Enabled &&` vào check trạng thái mạng lưới giữa desktop.
+     - Ẩn `<app-tx-speed-selector>` trong Mobile Drawer khi Web3 tắt.
+  5. **Cập nhật [sidebar.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/layout/sidebar/sidebar.component.html):**
+     - Ẩn `<app-tx-speed-selector>` trong Desktop Sidebar khi Web3 tắt.
+  6. **Cập nhật [home.component.html](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.html):**
+     - Ẩn banner "Kết nối ví" và dashboard Web3 (thông tin ví, số dư, giao dịch) khi Web3 tắt bằng điều kiện `stateService.isWeb3Enabled &&`.
+  7. **Kiểm tra:** `npm run build` thành công, không lỗi biên dịch.
+
 ### Yêu cầu: Xây dựng và tích hợp Ripple Directive tương tự MatRipple của Angular Material
 - **Nội dung yêu cầu:** Thiết kế và phát triển Directive tạo hiệu ứng sóng nước (ripple) lan tỏa khi người dùng nhấp chuột hoặc chạm tay vào một phần tử. Hỗ trợ tùy chỉnh màu sắc, bắt đầu từ tâm (centered), vô hiệu hóa (disabled), và tràn viền tự do (unbounded), đồng thời tích hợp showcase trình diễn lên trang chủ.
 - **Giải pháp:**
