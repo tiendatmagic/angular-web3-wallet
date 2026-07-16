@@ -2,6 +2,21 @@
 
 ## Ngày 17/07/2026
 
+### Yêu cầu: Xây dựng và tích hợp Ripple Directive tương tự MatRipple của Angular Material
+- **Nội dung yêu cầu:** Thiết kế và phát triển Directive tạo hiệu ứng sóng nước (ripple) lan tỏa khi người dùng nhấp chuột hoặc chạm tay vào một phần tử. Hỗ trợ tùy chỉnh màu sắc, bắt đầu từ tâm (centered), vô hiệu hóa (disabled), và tràn viền tự do (unbounded), đồng thời tích hợp showcase trình diễn lên trang chủ.
+- **Giải pháp:**
+  1. **Tạo Directive standalone [ripple.directive.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/ripple/ripple.directive.ts):**
+     * Lắng nghe sự kiện `mousedown` và `touchstart`.
+     * Tạo phần tử span động `.app-ripple-element` khi click, tính toán tọa độ tương đối từ vị trí click/touch hoặc từ tâm (nếu `centered` là true).
+     * Xác định đường kính phủ toàn bộ bề mặt phần tử cha (hoặc dùng radius truyền vào) thông qua công thức Pythagore.
+     * Chạy logic dọn dẹp phần tử ngoài Angular Zone (`NgZone.runOutsideAngular`) bằng `setTimeout` sau 600ms để tránh trigger Change Detection không cần thiết, tối ưu hóa hiệu năng render.
+  2. **Thêm style cho ripple** tại [styles.scss](file:///d:/git/angular-web3-wallet/src/styles.scss):
+     * Khai báo `.app-ripple-element` với `position: absolute`, `border-radius: 50%` và `background-color: currentColor` để mặc định kế thừa màu sắc chữ của phần tử đang áp dụng (vẫn hỗ trợ ghi đè bằng mã màu tùy biến).
+     * Thiết lập keyframe `@keyframes app-ripple-animation` phóng to từ `scale(0)` đến `scale(1)` và mờ dần về `opacity: 0`.
+  3. **Tích hợp Showcase vào trang chủ**:
+     * Đăng ký `RippleDirective` trong `imports` của [home.component.ts](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.ts) và tạo 4 signals điều khiển cấu hình (`demoRippleCentered`, `demoRippleDisabled`, `demoRippleUnbounded`, `demoRippleColor`).
+     * Cập nhật [home.component.html](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.html): Thêm **Card 13: Custom Ripple Directive** chứa hộp tương tác dùng thử hiệu ứng sóng nước, 3 switch tùy biến thuộc tính, 4 nút chọn nhanh màu và các button mẫu (Primary, Secondary, Icon button) áp dụng directive trực quan.
+
 ### Yêu cầu: Định tuyến liên kết Logo web về trang chủ (Desktop & Mobile Drawer)
 - **Nội dung yêu cầu:** Khi người dùng click vào logo web, kể cả trên desktop sidebar, thanh header (mobile) hay mobile drawer panel thì đều tự động chuyển hướng (route) về trang chủ `/`.
 - **Giải pháp:**

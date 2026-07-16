@@ -17,6 +17,7 @@ import { AccordionComponent } from '@shared/components/accordion/accordion.compo
 import { AccordionItemComponent } from '@shared/components/accordion/accordion-item.component';
 import { KbdComponent } from '@shared/components/kbd/kbd.component';
 import { TooltipDirective } from '@shared/components/tooltip/tooltip.directive';
+import { RippleDirective } from '@shared/components/ripple/ripple.directive';
 import { CustomSliderComponent } from '@shared/components/custom-slider/custom-slider.component';
 import { TabGroupComponent, TabOption } from '@shared/components/tab-group/tab-group.component';
 import { StateService } from '@core/services/state.service';
@@ -48,6 +49,7 @@ import { parseEther } from 'ethers';
     TooltipDirective,
     TabGroupComponent,
     CustomSliderComponent,
+    RippleDirective,
   ],
   templateUrl: './home.component.html'
 })
@@ -108,7 +110,11 @@ export class HomeComponent {
     { value: 'female', label: 'Nữ' },
   ];
 
-
+  // Trạng thái Demo Ripple
+  public demoRippleCentered = signal(false);
+  public demoRippleDisabled = signal(false);
+  public demoRippleUnbounded = signal(false);
+  public demoRippleColor = signal('');
 
   /** Danh sách chain để demo custom-select */
   public readonly demoChainOptions = [

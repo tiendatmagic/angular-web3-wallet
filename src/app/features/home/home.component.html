@@ -840,6 +840,148 @@
           </div>
         </div>
       </div>
+
+      <!-- CARD 13: Custom Ripple Directive -->
+      <div app-card>
+        <h4
+          class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
+        >
+          <app-icon name="sparkles" class="w-3.5 h-3.5 text-primary" strokeWidth="2.5" />
+          Custom Ripple Directive
+        </h4>
+
+        <div class="space-y-4">
+          <!-- Hộp tương tác kiểm thử hiệu ứng Ripple -->
+          <div
+            appRipple
+            [appRippleCentered]="demoRippleCentered()"
+            [appRippleDisabled]="demoRippleDisabled()"
+            [appRippleUnbounded]="demoRippleUnbounded()"
+            [appRippleColor]="demoRippleColor()"
+            class="h-32 rounded-[15px] border-2 border-dashed border-slate-200 dark:border-slate-800 flex flex-col items-center justify-center cursor-pointer select-none bg-slate-50/50 dark:bg-slate-950/20 hover:bg-slate-100/50 dark:hover:bg-slate-900/10 transition-colors duration-200"
+          >
+            <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Click hoặc Touch vào đây</span>
+            <span class="text-[10px] text-slate-400 dark:text-slate-500 mt-1">Để trải nghiệm hiệu ứng sóng nước</span>
+          </div>
+
+          <!-- Các nút điều khiển cấu hình -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 border-t border-slate-100 dark:border-slate-800/40 pt-4">
+            <!-- Center Ripple -->
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Sóng từ tâm</span>
+              <app-custom-switch
+                [checked]="demoRippleCentered()"
+                (checkedChange)="demoRippleCentered.set($event)"
+              />
+            </div>
+
+            <!-- Disable Ripple -->
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Vô hiệu hóa</span>
+              <app-custom-switch
+                [checked]="demoRippleDisabled()"
+                (checkedChange)="demoRippleDisabled.set($event)"
+              />
+            </div>
+
+            <!-- Unbounded Ripple -->
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Không giới hạn viền</span>
+              <app-custom-switch
+                [checked]="demoRippleUnbounded()"
+                (checkedChange)="demoRippleUnbounded.set($event)"
+              />
+            </div>
+          </div>
+
+          <!-- Cấu hình màu sắc Ripple -->
+          <div class="form-field">
+            <label>Màu sắc Ripple</label>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              <button
+                app-button
+                variant="cancel"
+                size="sm"
+                [class.ring-2]="demoRippleColor() === ''"
+                [class.ring-slate-400]="demoRippleColor() === ''"
+                [class.dark:ring-slate-600]="demoRippleColor() === ''"
+                (click)="demoRippleColor.set('')"
+                class="!py-1.5 text-xs font-bold"
+              >
+                Mặc định
+              </button>
+              <button
+                app-button
+                variant="cancel"
+                size="sm"
+                [class.ring-2]="demoRippleColor() === 'rgba(255, 0, 221, 0.2)'"
+                [class.ring-primary]="demoRippleColor() === 'rgba(255, 0, 221, 0.2)'"
+                (click)="demoRippleColor.set('rgba(255, 0, 221, 0.2)')"
+                class="!py-1.5 text-xs font-bold text-primary"
+              >
+                Màu Primary
+              </button>
+              <button
+                app-button
+                variant="cancel"
+                size="sm"
+                [class.ring-2]="demoRippleColor() === 'rgba(128, 0, 255, 0.2)'"
+                [class.ring-secondary]="demoRippleColor() === 'rgba(128, 0, 255, 0.2)'"
+                (click)="demoRippleColor.set('rgba(128, 0, 255, 0.2)')"
+                class="!py-1.5 text-xs font-bold text-secondary"
+              >
+                Màu Secondary
+              </button>
+              <button
+                app-button
+                variant="cancel"
+                size="sm"
+                [class.ring-2]="demoRippleColor() === 'rgba(239, 68, 68, 0.2)'"
+                [class.ring-red-500]="demoRippleColor() === 'rgba(239, 68, 68, 0.2)'"
+                (click)="demoRippleColor.set('rgba(239, 68, 68, 0.2)')"
+                class="!py-1.5 text-xs font-bold text-red-500"
+              >
+                Màu Đỏ
+              </button>
+            </div>
+          </div>
+
+          <!-- Các nút demo bổ sung gắn kèm ripple -->
+          <div class="form-field">
+            <label>Áp dụng trên Button và Icon</label>
+            <div class="flex flex-wrap items-center gap-3">
+              <button
+                app-button
+                variant="primary"
+                appRipple
+                class="relative"
+              >
+                Primary Button
+              </button>
+              <button
+                app-button
+                variant="secondary"
+                appRipple
+                [appRippleColor]="'rgba(255, 255, 255, 0.35)'"
+                class="relative"
+              >
+                Secondary + Ripple Trắng
+              </button>
+              <!-- Icon button với unbounded ripple -->
+              <button
+                appRipple
+                [appRippleUnbounded]="true"
+                [appRippleCentered]="true"
+                [appRippleColor]="'rgba(128, 0, 255, 0.15)'"
+                class="w-10 h-10 rounded-full flex items-center justify-center bg-slate-100 hover:bg-slate-200/80 dark:bg-slate-800 dark:hover:bg-slate-700/80 text-secondary transition-colors duration-200 focus:outline-none"
+                title="Unbounded Ripple"
+              >
+                <app-icon name="bolt" class="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- NÚT MỞ MODAL DEMO -->

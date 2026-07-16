@@ -249,3 +249,22 @@ body.dark .btn-danger-light:hover {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* ==================== HIỆU ỨNG SÓNG NƯỚC (RIPPLE) ==================== */
+.app-ripple-element {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  background-color: currentColor; /* Mặc định sử dụng currentColor để kế thừa màu chữ */
+  opacity: 0.15;
+  transform: scale(0);
+  animation: app-ripple-animation 600ms cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+}
+
+@keyframes app-ripple-animation {
+  to {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
