@@ -462,22 +462,46 @@
           <app-icon name="chevron-down" class="w-3.5 h-3.5 text-emerald-500" strokeWidth="2.5" />
           Custom Select
         </h4>
-        <div class="space-y-3">
-          <app-custom-select
-            label="Chọn mạng lưới"
-            placeholder="-- Chọn mạng lưới --"
-            [options]="demoChainOptions"
-            valueKey="value"
-            labelKey="label"
-            [showSearch]="true"
-            placement="auto"
-            [value]="demoSelectValue()"
-            (valueChange)="demoSelectValue.set($event)"
-          />
-          <div
-            class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2"
-          >
-            selected={{ demoSelectValue() ?? '(chưa chọn)' }}
+        <div class="space-y-4">
+          <!-- Chọn đơn (Single-select) -->
+          <div class="form-field">
+            <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider select-none">Chọn đơn lẻ</label>
+            <app-custom-select
+              placeholder="-- Chọn mạng lưới --"
+              [options]="demoChainOptions"
+              valueKey="value"
+              labelKey="label"
+              [showSearch]="true"
+              placement="auto"
+              [value]="demoSelectValue()"
+              (valueChange)="demoSelectValue.set($event)"
+            />
+            <div
+              class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2"
+            >
+              selected = {{ demoSelectValue() ?? '(chưa chọn)' }}
+            </div>
+          </div>
+
+          <!-- Chọn nhiều (Multi-select) -->
+          <div class="form-field">
+            <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider select-none">Chọn nhiều (Toppings)</label>
+            <app-custom-select
+              placeholder="-- Chọn Toppings --"
+              [options]="demoMultiSelectOptions"
+              valueKey="id"
+              labelKey="name"
+              [multiple]="true"
+              [showSearch]="false"
+              placement="auto"
+              [value]="demoMultiSelectValue()"
+              (valueChange)="demoMultiSelectValue.set($event)"
+            />
+            <div
+              class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2"
+            >
+              selected = [ {{ demoMultiSelectValue().join(', ') || '(trống)' }} ]
+            </div>
           </div>
         </div>
       </div>

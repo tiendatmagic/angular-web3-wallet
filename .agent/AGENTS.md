@@ -2,19 +2,23 @@
 
 ## Ngày 17/07/2026
 
-### Yêu cầu: Loại bỏ Emoji và SVG trực tiếp trong source code, chuyển đổi sang dùng IconComponent
-- **Nội dung yêu cầu:** Rà soát toàn bộ source code của dự án, thay thế tất cả các emoji và các thẻ `<svg>` nhúng trực tiếp thành việc gọi qua component `IconComponent` dùng chung.
+### Yêu cầu: Loại bỏ Emoji, SVG nhúng trực tiếp và tích hợp chọn nhiều (Multi-Select) cho Select UI
+- **Nội dung yêu cầu:** 
+  1. Thay thế tất cả các emoji và thẻ `<svg>` nhúng trực tiếp bằng component `IconComponent` dùng chung.
+  2. Nâng cấp bộ chọn `CustomSelectComponent` hỗ trợ thêm chế độ chọn nhiều (Multi-select) với giao diện checkbox, đồng thời tích hợp showcase lên trang chủ.
 - **Giải pháp:**
-  1. **Nâng cấp Tooltip Directive:**
+  1. **Nâng cấp Tooltip Directive & Thay thế Emoji:**
      - Cập nhật [tooltip.directive.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/tooltip/tooltip.directive.ts) hỗ trợ nhận `@Input() tooltipIcon`. Khởi tạo động component `IconComponent` bằng `ViewContainerRef` để chèn icon thay cho emoji. Thêm CSS class `flex items-center gap-1` cho tooltip.
-     - Cập nhật [demo-modal.component.html](file:///d:/git/angular-web3-wallet/src/app/features/home/components/demo-modal/demo-modal.component.html) và [home.component.html](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.html) để gỡ bỏ emoji khỏi `appTooltip` và truyền thuộc tính `tooltipIcon` tương ứng (`save`, `sparkles`, `chevron-left`, `chevron-right`).
+     - Gỡ bỏ emoji khỏi `appTooltip` trong [demo-modal.component.html](file:///d:/git/angular-web3-wallet/src/app/features/home/components/demo-modal/demo-modal.component.html) và [home.component.html](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.html) và dùng `tooltipIcon` tương ứng.
   2. **Loại bỏ SVG nhúng trực tiếp:**
-     - Cập nhật [icon.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/icon/icon.component.html) bổ sung case `'logo'` chứa SVG của Logo.
-     - Cập nhật [logo.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/logo/logo.component.ts) import `IconComponent` và dùng `<app-icon name="logo">` trong inline template.
-     - Cập nhật [accordion-item.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/accordion/accordion-item.component.ts) & [accordion-item.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/accordion/accordion-item.component.html) thay thế thẻ `<svg>` mũi tên bằng `<app-icon name="chevron-down">`.
-     - Cập nhật [custom-checkbox.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/custom-checkbox/custom-checkbox.component.ts) & [custom-checkbox.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/custom-checkbox/custom-checkbox.component.html) thay thế thẻ `<svg>` checkmark bằng `<app-icon name="check">`.
-  3. **Dọn dẹp:** Xóa toàn bộ các script tìm kiếm tạm thời (`find_emojis.js`, `find_emojis_advanced.js`, `find_svg_usage.js`).
-  4. **Kiểm tra:** Lệnh `npm run build` thành công, không lỗi biên dịch.
+     - Tích hợp SVG logo vào [icon.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/icon/icon.component.html) làm case `'logo'`.
+     - Cập nhật [logo.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/logo/logo.component.ts), [accordion-item.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/accordion/accordion-item.component.html) và [custom-checkbox.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/custom-checkbox/custom-checkbox.component.html) gọi qua `<app-icon>` dùng chung.
+  3. **Nâng cấp Multi-Select cho Custom Select:**
+     - Cập nhật [custom-select.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/custom-select/custom-select.component.ts) bổ sung `@Input() multiple: boolean = false`, helper `isSelected()`, và logic toggle trị số mảng động mà không đóng dropdown.
+     - Cập nhật [custom-select.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/custom-select/custom-select.component.html) hiển thị checkbox bo tròn nhẹ bên trái nhãn ở mỗi tùy chọn khi `multiple` là true.
+     - Cập nhật [home.component.ts](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.ts) & [home.component.html](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.html) tích hợp biểu mẫu chọn nhiều (Toppings) cùng output realtime vào Card 5.
+  4. **Dọn dẹp:** Xóa toàn bộ các tệp script tạm thời (`find_emojis.js`, `find_emojis_advanced.js`, `find_svg_usage.js`).
+  5. **Kiểm tra:** Biên dịch bằng `npm run build` thành công, không lỗi.
 
 ## Ngày 12/07/2026
 

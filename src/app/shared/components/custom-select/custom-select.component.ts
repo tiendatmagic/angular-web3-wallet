@@ -84,6 +84,7 @@ export class CustomSelectComponent implements ControlValueAccessor, AfterViewChe
   @Input() disabled: boolean = false;
   @Input() placement: 'bottom' | 'top' | 'auto' = 'auto';
   @Input() showSearch: boolean = false;
+  @Input() multiple: boolean = false;
   @Input() containerClass: string = 'w-full';
   @Input() triggerClass: string = 'w-full form-input';
 
@@ -183,19 +184,50 @@ export class CustomSelectComponent implements ControlValueAccessor, AfterViewChe
 
   public selectOption(option: any): void {
     const val = this.getOptionValue(option);
-    this.value = val;
-    this.valueChange.emit(val);
-    this.onChange(val);
-    this.onTouched();
-    this.isOpen.set(false);
+    if (this.multiple) {
+      const currentVal = Array.isArray(this.value) ? [...this.value] : [];
+      const index = currentVal.findIndex((v: any) => String(v) === String(val));
+      if (index > -1) {
+        currentVal.splice(index, 1);
+      } else {
+        currentVal.push(val);
+      }
+      this.value = currentVal;
+      this.valueChange.emit(currentVal);
+      this.onChange(currentVal);
+      this.onTouched();
+    } else {
+      this.value = val;
+      this.valueChange.emit(val);
+      this.onChange(val);
+      this.onTouched();
+      this.isOpen.set(false);
+    }
+  }
+
+  public isSelected(option: any): boolean {
+    const optVal = this.getOptionValue(option);
+    if (this.multiple) {
+      return Array.isArray(this.value) && this.value.some((v: any) => String(v) === String(optVal));
+    }
+    return String(optVal) === String(this.value);
   }
 
   public get selectedLabel(): string {
-    const selected = this.options.find((opt) => {
-      const optVal = this.getOptionValue(opt);
-      return String(optVal) === String(this.value);
-    });
-    return selected !== undefined ? this.getOptionLabel(selected) : '';
+    if (this.multiple) {
+      if (!Array.isArray(this.value) || this.value.length === 0) return '';
+      const selectedOpts = this.options.filter((opt) => {
+        const optVal = this.getOptionValue(opt);
+        return this.value.some((v: any) => String(v) === String(optVal));
+      });
+      return selectedOpts.map((opt) => this.getOptionLabel(opt)).join(', ');
+    } else {
+      const selected = this.options.find((opt) => {
+        const optVal = this.getOptionValue(opt);
+        return String(optVal) === String(this.value);
+      });
+      return selected !== undefined ? this.getOptionLabel(selected) : '';
+    }
   }
 
   public getOptionValue(option: any): any {
@@ -233,7 +265,11 @@ export class CustomSelectComponent implements ControlValueAccessor, AfterViewChe
   private onTouched: () => void = () => {};
 
   public writeValue(value: any): void {
-    this.value = value;
+    if (this.multiple) {
+      this.value = Array.isArray(value) ? value : [];
+    } else {
+      this.value = value;
+    }
   }
 
   public registerOnChange(fn: any): void {

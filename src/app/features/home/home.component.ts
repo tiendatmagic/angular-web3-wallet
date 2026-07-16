@@ -119,6 +119,17 @@ export class HomeComponent {
     { value: '97',    label: 'BSC Testnet' },
   ];
 
+  // Trạng thái Demo Multi Select
+  public demoMultiSelectValue = signal<string[]>(['mushroom', 'onion']);
+  public readonly demoMultiSelectOptions = [
+    { id: 'cheese', name: 'Extra cheese' },
+    { id: 'mushroom', name: 'Mushroom' },
+    { id: 'onion', name: 'Onion' },
+    { id: 'pepperoni', name: 'Pepperoni' },
+    { id: 'sausage', name: 'Sausage' },
+    { id: 'tomato', name: 'Tomato' }
+  ];
+
   /** Danh sách radio options cho demo */
   public readonly demoRadioOptions = [
     { value: 'arbitrum', label: 'Arbitrum One', description: 'Layer 2 - Phí thấp, tốc độ cao' },
