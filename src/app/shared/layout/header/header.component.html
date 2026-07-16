@@ -18,9 +18,9 @@
       </button>
 
       <!-- Logo & Brand -->
-      <div
+      <a
+        routerLink="/"
         class="flex items-center gap-2 sm:gap-3 cursor-pointer select-none"
-        (click)="stateService.web3Service.updateBalanceAndNetwork()"
       >
         <app-logo class="w-9 h-9 sm:w-11 sm:h-11 shrink-0" />
         <div class="hidden md:flex flex-col">
@@ -34,7 +34,7 @@
             Web3 Template
           </span>
         </div>
-      </div>
+      </a>
     </div>
 
     <!-- PHẦN Ở GIỮA: TRẠNG THÁI MẠNG LƯỚI (CHỈ DESKTOP) -->
@@ -268,8 +268,10 @@
     class="fixed inset-y-0 left-0 z-[70] w-[280px] sm:w-[300px] bg-white dark:bg-slate-950 flex flex-col shadow-2xl transition-transform duration-300 ease-in-out"
   >
     <!-- Logo & Brand -->
-    <div
-      class="flex items-center gap-3 px-5 pt-5 pb-4 border-b border-slate-100 dark:border-slate-800/60"
+    <a
+      routerLink="/"
+      (click)="stateService.showMobileMenu.set(false)"
+      class="flex items-center gap-3 px-5 pt-5 pb-4 border-b border-slate-100 dark:border-slate-800/60 cursor-pointer"
     >
       <app-logo class="w-11 h-11 shrink-0" />
       <div class="flex flex-col select-none">
@@ -283,7 +285,7 @@
           Web3 Template
         </span>
       </div>
-    </div>
+    </a>
 
     <!-- Nav Links -->
     <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
