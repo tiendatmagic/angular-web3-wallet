@@ -2,6 +2,20 @@
 
 ## Ngày 17/07/2026
 
+### Yêu cầu: Dọn dẹp toàn bộ comment rác trong source code
+- **Nội dung yêu cầu:** Xóa tất cả comment separator `// ====`, `// ---`, comment inline thừa, comment chú thích vớ vẩn không cần thiết trong toàn bộ source TypeScript.
+- **Giải pháp:**
+  1. **[state.service.ts](file:///d:/git/angular-web3-wallet/src/app/core/services/state.service.ts):** Xóa 5 dòng separator `// ====` và các comment inline thừa trên từng delegated property/method.
+  2. **[home.component.ts](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.ts):** Xóa comment `// === DEMO STATE ===`, các comment nhóm signal thừa, comment inline trên mỗi method (copyAddress, sendTransaction, signMessage, copySignature, openDemoModal), comment trong txRequest.
+  3. **[web3.service.ts](file:///d:/git/angular-web3-wallet/src/app/core/services/web3.service.ts):** Xóa ~20 comment inline thừa trên đầu mỗi method và bên trong logic, giữ lại comment quan trọng giải thích bypass eth_accounts.
+  4. **[theme.service.ts](file:///d:/git/angular-web3-wallet/src/app/core/services/theme.service.ts):** Xóa comment thừa trên các properties và trong initTheme().
+  5. **[modal.service.ts](file:///d:/git/angular-web3-wallet/src/app/core/services/modal.service.ts):** Xóa comment thừa trong open() method.
+  6. **[custom-date-time-range.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/custom-date-time-range/custom-date-time-range.component.ts):** Xóa 3 comment separator `// ---`, các comment nhóm signals/computed, comment bên trong getHighlightClass().
+  7. **[custom-date-picker.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/custom-date-picker/custom-date-picker.component.ts):** Xóa comment inline thừa.
+  8. **[custom-select.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/custom-select/custom-select.component.ts):** Xóa comment inline thừa và comment `// ControlValueAccessor`.
+  9. **Kiểm tra:** `npm run build` thành công, không lỗi biên dịch.
+
+
 ### Yêu cầu: Thêm cấu hình bật/tắt Web3 qua Environment
 - **Nội dung yêu cầu:** Thêm flag cấu hình `enableWeb3` trong `src/environments` để bật/tắt toàn bộ tính năng Web3 (AppKit, Ethers.js, WalletConnect). Khi tắt, ứng dụng hoạt động như Web2 thông thường.
 - **Giải pháp:**

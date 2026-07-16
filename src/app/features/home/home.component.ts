@@ -58,20 +58,17 @@ export class HomeComponent {
   private readonly modalService = inject(ModalService);
   public readonly today = CustomDatePickerComponent.todayString();
   
-  // Trạng thái Form Gửi ETH Demo
   public toAddress = signal('');
   public amount = signal('');
   public txHash = signal<string | null>(null);
   public txLoading = signal(false);
   public txError = signal<string | null>(null);
 
-  // Trạng thái Form Ký tin nhắn Demo
   public messageToSign = signal('Chào mừng bạn đến với Angular Web3!');
   public signature = signal<string | null>(null);
   public signLoading = signal(false);
   public signError = signal<string | null>(null);
 
-  // === DEMO STATE: UI Components Showcase ===
   public demoSwitchChecked = signal(true);
   public demoSwitchFull = signal(false);
   public demoRadioValue = signal('arbitrum');
@@ -79,21 +76,18 @@ export class HomeComponent {
   public demoSearchQuery = signal('');
   public demoSelectValue = signal<string | null>(null);
   public demoDatePickerValue = signal('2026-07-10');
-  public limitDatePicker = signal(false); // Mặc định tắt giới hạn để chọn tự do
-  public demoDatePickerMinDate = signal('2026-07-20'); // Mốc ngày minDate tùy biến (ví dụ: ngày 20)
-  public demoDatePickerShowPresets = signal(true); // Cấu hình bật/tắt presets gợi ý chọn nhanh
+  public limitDatePicker = signal(false);
+  public demoDatePickerMinDate = signal('2026-07-20');
+  public demoDatePickerShowPresets = signal(true);
   public demoAccordionMultiple = signal(false);
 
-  // Trạng thái Demo Date Time Range Picker
   public demoRangeValue = signal<DateTimeRangeValue>({ startDate: '2026-07-10', endDate: '2026-07-15' });
   public demoRangeWithTimeValue = signal<DateTimeRangeValue>({ startDate: '2026-07-10 09:00', endDate: '2026-07-12 18:30' });
   public demoRangeLimitValue = signal<DateTimeRangeValue>({ startDate: '2026-07-12', endDate: '2026-07-15' });
 
-  // Trạng thái Demo Slider
   public demoSliderVal1 = signal(60);
   public demoSliderVal2 = signal(30);
 
-  // Trạng thái Demo Tab Group
   public demoTabValue = signal('wallet');
   public readonly demoTabOptions: TabOption[] = [
     { value: 'wallet', label: 'Ví dApp', icon: 'wallet', badge: 3 },
@@ -101,7 +95,6 @@ export class HomeComponent {
     { value: 'settings', label: 'Cấu hình', icon: 'bolt' }
   ];
 
-  // Trạng thái Demo Form Components
   public demoProfileBirthday = signal('');
   public demoProfileGender = signal('male');
   public demoProfileWallet = signal('');
@@ -110,7 +103,6 @@ export class HomeComponent {
     { value: 'female', label: 'Nữ' },
   ];
 
-  // Trạng thái Demo Ripple
   public demoRippleCentered = signal(false);
   public demoRippleDisabled = signal(false);
   public demoRippleUnbounded = signal(false);
@@ -128,7 +120,6 @@ export class HomeComponent {
     { value: '97',    label: 'BSC Testnet' },
   ];
 
-  // Trạng thái Demo Multi Select
   public demoMultiSelectValue = signal<string[]>(['mushroom', 'onion']);
   public readonly demoMultiSelectOptions = [
     { id: 'cheese', name: 'Extra cheese' },
@@ -139,14 +130,12 @@ export class HomeComponent {
     { id: 'tomato', name: 'Tomato' }
   ];
 
-  /** Danh sách radio options cho demo */
   public readonly demoRadioOptions = [
     { value: 'arbitrum', label: 'Arbitrum One', description: 'Layer 2 - Phí thấp, tốc độ cao' },
     { value: 'ethereum', label: 'Ethereum',     description: 'Mainnet - Bảo mật cao nhất' },
     { value: 'bsc',      label: 'BNB Chain',    description: 'BSC - Phí cực rẻ' },
   ];
 
-  // Sao chép địa chỉ ví nhanh
   public copyAddress(event: Event) {
     event.stopPropagation();
     const address = this.stateService.address();
@@ -156,7 +145,6 @@ export class HomeComponent {
     }
   }
 
-  // Gửi ETH thông qua Ethers v6 Signer
   public async sendTransaction() {
     const to = String(this.toAddress() || '').trim();
     const val = String(this.amount() || '').trim();
@@ -179,7 +167,7 @@ export class HomeComponent {
       const txRequest: any = {
         to,
         value: parseEther(val),
-        data: '0x', // Đảm bảo trường data luôn là '0x' để tránh lỗi của một số ví di động như Trust Wallet
+        data: '0x',
         chainId: this.stateService.chainId() ? Number(this.stateService.chainId()) : undefined,
         ...overrides
       };
@@ -193,8 +181,7 @@ export class HomeComponent {
       await tx.wait();
       await this.stateService.web3Service.updateBalanceAndNetwork();
       this.stateService.showToast(`Giao dịch chuyển ${this.stateService.chainSymbol()} đã thành công!`, 'success');
-      
-      // Reset form
+
       this.toAddress.set('');
       this.amount.set('');
     } catch (err: any) {
@@ -207,7 +194,6 @@ export class HomeComponent {
     }
   }
 
-  // Ký tin nhắn bảo mật thông qua ví
   public async signMessage() {
     const msg = String(this.messageToSign() || '').trim();
     if (!msg) {
@@ -235,7 +221,6 @@ export class HomeComponent {
     }
   }
 
-  // Sao chép chữ ký vào Clipboard
   public copySignature() {
     if (this.signature()) {
       navigator.clipboard.writeText(this.signature()!);
@@ -243,7 +228,6 @@ export class HomeComponent {
     }
   }
 
-  // Mở Modal Demo Form động
   public openDemoModal(): void {
     const ref = this.modalService.open(DemoModalComponent, {
       title: 'Demo Form Components',

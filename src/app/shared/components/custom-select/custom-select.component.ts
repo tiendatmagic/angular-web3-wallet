@@ -93,11 +93,9 @@ export class CustomSelectComponent implements ControlValueAccessor, AfterViewChe
   public readonly isOpen = signal<boolean>(false);
   public readonly searchQuery = signal<string>('');
 
-  // Tọa độ và kích thước dropdown tính theo viewport (fixed positioning)
   public dropdownStyle: { [key: string]: string } = {};
   public resolvedPlacement: 'top' | 'bottom' = 'bottom';
 
-  /** Đóng dropdown khi click ra ngoài component */
   public onClickOutside(event: MouseEvent): void {
     if (!this.elementRef.nativeElement.contains(event.target)) {
       this.isOpen.set(false);
@@ -114,16 +112,14 @@ export class CustomSelectComponent implements ControlValueAccessor, AfterViewChe
     this.isOpen.set(nextState);
   }
 
-  /** Tính toán vị trí dropdown dựa trên vị trí trigger button trong viewport */
   private updateDropdownPosition(): void {
     const triggerEl = this.triggerBtn?.nativeElement;
     if (!triggerEl) return;
 
     const rect = triggerEl.getBoundingClientRect();
     const dropdownMaxHeight = 280;
-    const gap = 6; // mt-1.5 = 6px
+    const gap = 6;
 
-    // Kiểm tra không gian phía dưới và phía trên
     const spaceBelow = window.innerHeight - rect.bottom - gap;
     const spaceAbove = rect.top - gap;
 
@@ -133,7 +129,6 @@ export class CustomSelectComponent implements ControlValueAccessor, AfterViewChe
     } else if (this.placement === 'bottom') {
       placeFinal = 'bottom';
     } else {
-      // Auto: Ưu tiên dưới nếu đủ chỗ, nếu không thì đặt bên có nhiều chỗ trống hơn
       if (spaceBelow >= dropdownMaxHeight) {
         placeFinal = 'bottom';
       } else if (spaceAbove >= dropdownMaxHeight) {
@@ -167,7 +162,6 @@ export class CustomSelectComponent implements ControlValueAccessor, AfterViewChe
     }
   }
 
-  /** Cập nhật vị trí khi scroll hoặc resize */
   ngAfterViewChecked(): void {
     if (this.isOpen() && this.triggerBtn) {
       this.updateDropdownPosition();
@@ -260,7 +254,6 @@ export class CustomSelectComponent implements ControlValueAccessor, AfterViewChe
     });
   });
 
-  // ControlValueAccessor
   private onChange: (value: any) => void = () => {};
   private onTouched: () => void = () => {};
 

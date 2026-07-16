@@ -74,7 +74,7 @@ export class CustomDatePickerComponent implements ControlValueAccessor, AfterVie
   @Input() disabled: boolean = false;
   @Input() minDate: string = ''; // YYYY-MM-DD
   @Input() maxDate: string = ''; // YYYY-MM-DD
-  @Input() showPresets: boolean = true; // Hiển thị nút quick-select
+  @Input() showPresets: boolean = true;
 
   @Output() valueChange = new EventEmitter<string>();
 
@@ -283,12 +283,10 @@ export class CustomDatePickerComponent implements ControlValueAccessor, AfterVie
     return date.getMonth() === this.currentMonth();
   }
 
-  /** Kiểm tra ngày có bị vô hiệu bởi minDate/maxDate */
   public isDateDisabled(date: Date): boolean {
     if (this.minDate) {
       const min = this.parseDate(this.minDate);
       if (min) {
-        // So sánh theo ngày (bỏ giờ phút giây)
         const minDay = new Date(min.getFullYear(), min.getMonth(), min.getDate());
         const checkDay = new Date(date.getFullYear(), date.getMonth(), date.getDate());
         if (checkDay.getTime() < minDay.getTime()) return true;

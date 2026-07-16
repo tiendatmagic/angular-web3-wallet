@@ -4,13 +4,8 @@ import { Injectable, signal } from '@angular/core';
   providedIn: 'root'
 })
 export class ThemeService {
-  // Trạng thái theme hiện tại: light | dark | auto
   public readonly themeMode = signal<'light' | 'dark' | 'auto'>('auto');
-  
-  // Trạng thái thực tế hiển thị dark mode
   public readonly isDarkMode = signal<boolean>(false);
-  
-  // Đối tượng lắng nghe thay đổi theme hệ thống
   private mediaQueryList: MediaQueryList | null = null;
 
   constructor() {
@@ -20,13 +15,8 @@ export class ThemeService {
   private initTheme() {
     if (typeof window === 'undefined') return;
     
-    // Đọc theme đã lưu từ localStorage
     const savedTheme = localStorage.getItem('theme_mode') as 'light' | 'dark' | 'auto' | null;
-    
-    // Khởi tạo MediaQuery
     this.mediaQueryList = window.matchMedia('(prefers-color-scheme: dark)');
-    
-    // Lắng nghe sự thay đổi theme của hệ thống
     this.mediaQueryList.addEventListener('change', this.handleSystemThemeChange);
 
     if (savedTheme === 'light') {
@@ -38,7 +28,6 @@ export class ThemeService {
     }
   }
 
-  // Cập nhật trạng thái class dark lên document element
   public applyDarkClass(dark: boolean) {
     this.isDarkMode.set(dark);
     if (typeof document !== 'undefined') {
@@ -55,7 +44,6 @@ export class ThemeService {
     }
   }
 
-  // Đặt chế độ theme
   public setThemeMode(mode: 'light' | 'dark' | 'auto') {
     this.themeMode.set(mode);
     if (typeof window !== 'undefined') {
@@ -71,7 +59,6 @@ export class ThemeService {
     }
   }
 
-  // Chuyển đổi qua lại giữa 3 chế độ: light -> dark -> auto
   public toggleTheme() {
     const current = this.themeMode();
     if (current === 'light') {

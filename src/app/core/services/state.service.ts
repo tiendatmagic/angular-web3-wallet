@@ -18,23 +18,14 @@ export class StateService {
   private readonly themeService = inject(ThemeService);
   private readonly toastService = inject(ToastService);
 
-  // ====================================================
-  // DELEGATED UI STATE (ỦY THÁC TRẠNG THÁI GIAO DIỆN)
-  // ====================================================
   public readonly showMobileMenu = this.uiStateService.showMobileMenu;
   public readonly showDropdown = this.uiStateService.showDropdown;
   public readonly showNetworkDropdown = this.uiStateService.showNetworkDropdown;
   public readonly isLoading = this.uiStateService.isLoading;
 
-  // ====================================================
-  // DELEGATED THEME STATE (ỦY THÁC TRẠNG THÁI THEME)
-  // ====================================================
   public readonly isDarkMode = this.themeService.isDarkMode;
   public readonly themeMode = this.themeService.themeMode;
 
-  // ====================================================
-  // DELEGATED WEB3 STATE (ỦY THÁC TRẠNG THÁI BLOCKCHAIN)
-  // ====================================================
   public readonly isWeb3Enabled: boolean = this.web3Service.isEnabled;
   public readonly address = this.web3Service.address;
   public readonly chainId = this.web3Service.chainId;
@@ -48,23 +39,16 @@ export class StateService {
   public readonly showWrongChainModal = this.web3Service.showWrongChainModal;
   public readonly POPULAR_CHAINS = this.web3Service.POPULAR_CHAINS;
 
-  // Thuộc tính tính toán rút gọn địa chỉ ví
   public readonly shortenedAddress = computed(() => {
     const addr = this.address();
     if (!addr) return '';
     return `${addr.substring(0, 6)}...${addr.substring(addr.length - 4)}`;
   });
 
-  // ====================================================
-  // DELEGATED METHODS (ỦY THÁC PHƯƠNG THỨC HÀNH ĐỘNG)
-  // ====================================================
-
-  // Thông báo Toast
   public showToast(msg: string, type: 'success' | 'error' | 'warning' = 'success') {
     this.toastService.showToast(msg, type);
   }
 
-  // Thay đổi giao diện màu
   public toggleTheme() {
     this.themeService.toggleTheme();
   }
@@ -73,7 +57,6 @@ export class StateService {
     this.themeService.setThemeMode(mode);
   }
 
-  // Tương tác ví Web3
   public async connectWallet() {
     await this.web3Service.connect();
   }

@@ -15,10 +15,8 @@ import { POPULAR_CHAINS } from '../utils/blockchain.utils';
 export class Web3Service {
   private modal!: AppKit;
 
-  // Cờ kiểm tra Web3 có được bật không (từ environment)
   public readonly isEnabled: boolean = environment.enableWeb3;
 
-  // Signals quản lý trạng thái ví
   public address = signal<string | null>(null);
   public chainId = signal<number | null>(null);
   public isConnected = signal<boolean>(false);
@@ -32,7 +30,6 @@ export class Web3Service {
 
   public readonly POPULAR_CHAINS = POPULAR_CHAINS;
 
-  // Mạng được hỗ trợ (cấu hình động RPC & Explorer từ POPULAR_CHAINS)
   public readonly supportedChains = [arbitrum, mainnet, bsc, arbitrumSepolia, bscTestnet].map(chain => {
     const popular = POPULAR_CHAINS.find(c => Number(c.chainId) === Number(chain.id));
     if (popular) {
@@ -63,7 +60,6 @@ export class Web3Service {
     this.setupThemeSync();
   }
 
-  // Tự động đồng bộ theme hệ thống/lựa chọn sang WalletConnect Modal
   private setupThemeSync() {
     effect(() => {
       const isDark = this.themeService.isDarkMode();
@@ -86,13 +82,12 @@ export class Web3Service {
       return;
     }
 
-    // Để AppKit tự động lấy cấu hình từ Reown Cloud Dashboard (Social & Email)
     const isDark = this.themeService.isDarkMode();
 
     this.modal = createAppKit({
       adapters: [new EthersAdapter()],
       networks: this.supportedChains as any,
-      defaultNetwork: this.supportedChains[0] as any, // Arbitrum One làm default
+      defaultNetwork: this.supportedChains[0] as any,
       allowUnsupportedChain: true,
       metadata: {
         name: 'Angular Web3 DApp',
@@ -112,7 +107,6 @@ export class Web3Service {
       enableCoinbase: false
     } as any);
 
-    // Lắng nghe sự thay đổi tài khoản
     this.modal.subscribeAccount(async (accountState) => {
       const prevConnected = this.isConnected();
       this.address.set(accountState.address || null);
@@ -138,7 +132,6 @@ export class Web3Service {
       }
     });
 
-    // Lắng nghe sự thay đổi mạng lưới
     this.modal.subscribeNetwork((networkState) => {
       if (networkState.chainId) {
         const id = Number(networkState.chainId);
@@ -151,7 +144,6 @@ export class Web3Service {
     });
   }
 
-  // Hàm helper tập trung kiểm tra và cập nhật trạng thái mạng lưới
   private checkAndUpdateNetworkState(chainId: number, showToastAlert = true) {
     const prevChainId = this.chainId();
     const prevWrongChain = this.isWrongChain();
@@ -164,12 +156,10 @@ export class Web3Service {
 
     if (isSupported) {
       this.networkName.set(supportedChain.name);
-      // Lấy symbol của native currency của chain
       const symbol = (supportedChain as any).nativeCurrency?.symbol || 'ETH';
       this.chainSymbol.set(symbol);
 
       this.showWrongChainModal.set(false);
-      // Chỉ tự động đóng modal nếu trước đó đang ở sai mạng lưới và nay đã chuyển về đúng mạng
       if (prevWrongChain) {
         try {
           this.modal.close();
@@ -181,7 +171,6 @@ export class Web3Service {
         this.toastService.showToast(`Đã chuyển sang mạng ${supportedChain.name}!`, 'success');
       }
 
-      // Tự động điều chỉnh tốc độ gas theo mạng (Testnet -> fast, Mainnet -> default)
       const isTestnet = !!supportedChain.testnet || supportedChain.name.toLowerCase().includes('sepolia') || supportedChain.name.toLowerCase().includes('testnet');
       if (isTestnet) {
         this.txSpeed.set('fast');
@@ -202,7 +191,6 @@ export class Web3Service {
         this.showWrongChainModal.set(false);
       }
 
-      // Tự động điều chỉnh tốc độ gas theo mạng (Testnet -> fast, Mainnet -> default)
       const isTestnet = popular
         ? popular.name.toLowerCase().includes('sepolia') || popular.name.toLowerCase().includes('testnet')
         : (chainId === 421614 || chainId === 97 || chainId === 11155111);
@@ -214,7 +202,6 @@ export class Web3Service {
     }
   }
 
-  // Cập nhật số dư và thông tin mạng thông qua Ethers BrowserProvider
   public async updateBalanceAndNetwork() {
     try {
       const walletProvider = this.modal.getWalletProvider();
@@ -224,19 +211,17 @@ export class Web3Service {
         const ethersProvider = new BrowserProvider(walletProvider as any);
         const balanceVal = await ethersProvider.getBalance(currentAddress);
         const formattedBalance = formatEther(balanceVal);
-        // Định dạng làm tròn 4 chữ số thập phân
         this.balance.set(parseFloat(formattedBalance).toFixed(4));
 
         const network = await ethersProvider.getNetwork();
         const id = Number(network.chainId);
-        this.checkAndUpdateNetworkState(id, false); // Cập nhật không phát ra Toast trùng lặp
+        this.checkAndUpdateNetworkState(id, false);
       }
     } catch (error) {
       console.error('Lỗi khi cập nhật số dư/mạng:', error);
     }
   }
 
-  // Mở popup kết nối ví
   public async connect() {
     if (!this.isEnabled) return;
     try {
@@ -246,7 +231,6 @@ export class Web3Service {
     }
   }
 
-  // Mở popup chuyển mạng
   public async openNetworkModal() {
     if (!this.isEnabled) return;
     try {
@@ -256,7 +240,6 @@ export class Web3Service {
     }
   }
 
-  // Mở popup chi tiết ví (Account view của AppKit)
   public async openAccountModal() {
     if (!this.isEnabled) return;
     try {
@@ -266,7 +249,6 @@ export class Web3Service {
     }
   }
 
-  // Ngắt kết nối ví
   public async disconnect() {
     if (!this.isEnabled) return;
     try {
@@ -276,7 +258,6 @@ export class Web3Service {
     }
   }
 
-  // Chuyển sang mạng cụ thể
   public async switchNetwork(chainId: number) {
     if (!this.isEnabled) return;
     try {
@@ -291,7 +272,6 @@ export class Web3Service {
     }
   }
 
-  // Lấy Ethers Signer phục vụ giao dịch ghi
   public async getSigner() {
     if (!this.isEnabled) throw new Error('Web3 đã bị tắt. Bật lại environment.enableWeb3 = true.');
     const walletProvider = this.modal.getWalletProvider();
@@ -315,7 +295,6 @@ export class Web3Service {
     return await ethersProvider.getSigner();
   }
 
-  // Lấy Ethers Provider phục vụ giao dịch đọc
   public getProvider() {
     if (!this.isEnabled) throw new Error('Web3 đã bị tắt. Bật lại environment.enableWeb3 = true.');
     const walletProvider = this.modal.getWalletProvider();
@@ -325,7 +304,6 @@ export class Web3Service {
     return new BrowserProvider(walletProvider as any);
   }
 
-  // Lấy gas overrides dựa trên cài đặt tốc độ giao dịch của người dùng
   public async getGasOverrides(signer?: any): Promise<any> {
     const overrides: any = {};
     try {

@@ -30,7 +30,6 @@ export class ModalService {
       }
     });
 
-    // Tạo injector riêng chứa ModalRef và MODAL_DATA để component con có thể inject
     const childInjector = Injector.create({
       providers: [
         { provide: ModalRef, useValue: modalRef },
@@ -39,13 +38,11 @@ export class ModalService {
       parent: this.injector
     });
 
-    // Tạo Wrapper component
     componentRef = createComponent(ModalWrapperComponent, {
       environmentInjector: this.appRef.injector,
       elementInjector: childInjector
     });
 
-    // Gán dữ liệu cấu hình cho Wrapper
     componentRef.instance.title = config.title;
     componentRef.instance.size = config.size || 'md';
     componentRef.instance.closeOnBackdropClick = config.closeOnBackdropClick ?? true;
@@ -53,10 +50,8 @@ export class ModalService {
     componentRef.instance.childComponent = component;
     componentRef.instance.childInjector = childInjector;
 
-    // Đăng ký View vào ApplicationRef để Angular chạy change detection
     this.appRef.attachView(componentRef.hostView);
 
-    // Append DOM của wrapper vào document.body
     const domElem = (componentRef.hostView as any).rootNodes[0] as HTMLElement;
     document.body.appendChild(domElem);
 
