@@ -7,6 +7,7 @@ import {
   signal} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { IconComponent } from '../icon/icon.component';
 
 /**
  * Custom Checkbox Component dùng chung tích hợp ControlValueAccessor.
@@ -18,7 +19,7 @@ import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/f
 @Component({
   selector: 'app-custom-checkbox',
   
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, IconComponent],
   templateUrl: './custom-checkbox.component.html',
   providers: [
     {

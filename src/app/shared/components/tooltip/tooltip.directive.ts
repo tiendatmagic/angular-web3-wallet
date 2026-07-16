@@ -1,4 +1,6 @@
-import { Directive, Input, ElementRef, HostListener, Renderer2, OnDestroy } from '@angular/core';
+import { Directive, Input, ElementRef, HostListener, Renderer2, OnDestroy, ViewContainerRef, ComponentRef } from '@angular/core';
+import { IconComponent } from '../icon/icon.component';
+
 
 /**
  * Directive appTooltip hiển thị bong bóng thông tin khi di chuột hoặc focus.
@@ -14,13 +16,16 @@ import { Directive, Input, ElementRef, HostListener, Renderer2, OnDestroy } from
 export class TooltipDirective implements OnDestroy {
   @Input('appTooltip') text: string = '';
   @Input() tooltipPlacement: 'top' | 'bottom' | 'left' | 'right' = 'top';
+  @Input() tooltipIcon: string = '';
 
   private tooltipEl: HTMLElement | null = null;
+  private iconRef: ComponentRef<IconComponent> | null = null;
   private removeListeners: (() => void)[] = [];
 
   constructor(
     private el: ElementRef,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private viewContainerRef: ViewContainerRef
   ) {}
 
   @HostListener('mouseenter')
@@ -45,7 +50,27 @@ export class TooltipDirective implements OnDestroy {
 
     // Tạo phần tử tooltip
     this.tooltipEl = this.renderer.createElement('div');
-    this.renderer.appendChild(this.tooltipEl, this.renderer.createText(this.text));
+    
+    // Thêm text
+    const textNode = this.renderer.createText(this.text);
+    this.renderer.appendChild(this.tooltipEl, textNode);
+
+    // Thêm dynamic icon nếu có cấu hình tooltipIcon
+    if (this.tooltipIcon) {
+      try {
+        this.iconRef = this.viewContainerRef.createComponent(IconComponent);
+        this.iconRef.instance.name = this.tooltipIcon;
+        const iconEl = this.iconRef.location.nativeElement;
+        this.renderer.addClass(iconEl, 'w-3.5');
+        this.renderer.addClass(iconEl, 'h-3.5');
+        this.renderer.addClass(iconEl, 'ml-1.5');
+        this.renderer.addClass(iconEl, 'text-slate-300');
+        this.renderer.addClass(iconEl, 'inline-flex');
+        this.renderer.appendChild(this.tooltipEl, iconEl);
+      } catch (e) {
+        console.error('Failed to create tooltip icon dynamically:', e);
+      }
+    }
 
     // Thêm các class style theo design system
     const classes = [
@@ -71,7 +96,10 @@ export class TooltipDirective implements OnDestroy {
       'opacity-0',
       'transition-all',
       'duration-150',
-      'ease-out'
+      'ease-out',
+      'flex',
+      'items-center',
+      'gap-1'
     ];
     classes.forEach(c => this.renderer.addClass(this.tooltipEl!, c));
 
@@ -132,6 +160,11 @@ export class TooltipDirective implements OnDestroy {
   }
 
   private destroyTooltip(): void {
+    if (this.iconRef) {
+      this.iconRef.destroy();
+      this.iconRef = null;
+    }
+
     if (!this.tooltipEl) return;
 
     // Hủy các sự kiện scroll & resize

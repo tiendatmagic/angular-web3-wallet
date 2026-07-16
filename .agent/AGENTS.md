@@ -1,5 +1,21 @@
 # Lịch sử yêu cầu và xử lý của Agent
 
+## Ngày 17/07/2026
+
+### Yêu cầu: Loại bỏ Emoji và SVG trực tiếp trong source code, chuyển đổi sang dùng IconComponent
+- **Nội dung yêu cầu:** Rà soát toàn bộ source code của dự án, thay thế tất cả các emoji và các thẻ `<svg>` nhúng trực tiếp thành việc gọi qua component `IconComponent` dùng chung.
+- **Giải pháp:**
+  1. **Nâng cấp Tooltip Directive:**
+     - Cập nhật [tooltip.directive.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/tooltip/tooltip.directive.ts) hỗ trợ nhận `@Input() tooltipIcon`. Khởi tạo động component `IconComponent` bằng `ViewContainerRef` để chèn icon thay cho emoji. Thêm CSS class `flex items-center gap-1` cho tooltip.
+     - Cập nhật [demo-modal.component.html](file:///d:/git/angular-web3-wallet/src/app/features/home/components/demo-modal/demo-modal.component.html) và [home.component.html](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.html) để gỡ bỏ emoji khỏi `appTooltip` và truyền thuộc tính `tooltipIcon` tương ứng (`save`, `sparkles`, `chevron-left`, `chevron-right`).
+  2. **Loại bỏ SVG nhúng trực tiếp:**
+     - Cập nhật [icon.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/icon/icon.component.html) bổ sung case `'logo'` chứa SVG của Logo.
+     - Cập nhật [logo.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/logo/logo.component.ts) import `IconComponent` và dùng `<app-icon name="logo">` trong inline template.
+     - Cập nhật [accordion-item.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/accordion/accordion-item.component.ts) & [accordion-item.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/accordion/accordion-item.component.html) thay thế thẻ `<svg>` mũi tên bằng `<app-icon name="chevron-down">`.
+     - Cập nhật [custom-checkbox.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/custom-checkbox/custom-checkbox.component.ts) & [custom-checkbox.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/custom-checkbox/custom-checkbox.component.html) thay thế thẻ `<svg>` checkmark bằng `<app-icon name="check">`.
+  3. **Dọn dẹp:** Xóa toàn bộ các script tìm kiếm tạm thời (`find_emojis.js`, `find_emojis_advanced.js`, `find_svg_usage.js`).
+  4. **Kiểm tra:** Lệnh `npm run build` thành công, không lỗi biên dịch.
+
 ## Ngày 12/07/2026
 
 ### Yêu cầu: Điều chỉnh màu sắc và độ tương phản của Badge (Đặc biệt là Primary Badge)
