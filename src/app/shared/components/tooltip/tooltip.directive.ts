@@ -48,14 +48,11 @@ export class TooltipDirective implements OnDestroy {
   private createTooltip(): void {
     if (this.tooltipEl) return;
 
-    // Tạo phần tử tooltip
     this.tooltipEl = this.renderer.createElement('div');
     
-    // Thêm text
     const textNode = this.renderer.createText(this.text);
     this.renderer.appendChild(this.tooltipEl, textNode);
 
-    // Thêm dynamic icon nếu có cấu hình tooltipIcon
     if (this.tooltipIcon) {
       try {
         this.iconRef = this.viewContainerRef.createComponent(IconComponent);
@@ -72,7 +69,6 @@ export class TooltipDirective implements OnDestroy {
       }
     }
 
-    // Thêm các class style theo design system
     const classes = [
       'fixed',
       'z-[9999]',
@@ -103,13 +99,10 @@ export class TooltipDirective implements OnDestroy {
     ];
     classes.forEach(c => this.renderer.addClass(this.tooltipEl!, c));
 
-    // Thêm vào document body
     this.renderer.appendChild(document.body, this.tooltipEl);
 
-    // Tính toán tọa độ ban đầu
     this.updatePosition();
 
-    // Kích hoạt animation xuất hiện (fade-in & scale)
     requestAnimationFrame(() => {
       if (this.tooltipEl) {
         this.renderer.removeClass(this.tooltipEl, 'opacity-0');
@@ -117,7 +110,6 @@ export class TooltipDirective implements OnDestroy {
       }
     });
 
-    // Lắng nghe scroll & resize để ẩn tooltip tránh bị trôi lệch vị trí
     const scrollListener = this.renderer.listen('window', 'scroll', () => this.destroyTooltip());
     const resizeListener = this.renderer.listen('window', 'resize', () => this.destroyTooltip());
     this.removeListeners.push(scrollListener, resizeListener);
@@ -167,18 +159,15 @@ export class TooltipDirective implements OnDestroy {
 
     if (!this.tooltipEl) return;
 
-    // Hủy các sự kiện scroll & resize
     this.removeListeners.forEach(fn => fn());
     this.removeListeners = [];
 
     const el = this.tooltipEl;
     this.tooltipEl = null;
 
-    // Fade-out và scale down
     this.renderer.addClass(el, 'opacity-0');
     this.renderer.setStyle(el, 'transform', el.style.transform + ' scale(0.95)');
 
-    // Xóa khỏi DOM sau khi transition hoàn thành
     setTimeout(() => {
       if (el.parentNode) {
         this.renderer.removeChild(document.body, el);

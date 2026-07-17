@@ -46,9 +46,7 @@ export class CustomSearchInputComponent implements ControlValueAccessor, OnDestr
   @Input() clearable: boolean = true;
   @Input() containerClass: string = 'w-full';
   @Input() inputClass: string = 'w-full search-input';
-  /** Thời gian debounce tính bằng ms (0 = tức thì) */
   @Input() debounce: number = 0;
-  /** Hiển thị spinner loading */
   @Input() loading: boolean = false;
 
   @Output() valueChange = new EventEmitter<string>();
@@ -85,7 +83,6 @@ export class CustomSearchInputComponent implements ControlValueAccessor, OnDestr
     this.valueSubject.next(value);
   }
 
-  // ControlValueAccessor
   public writeValue(value: any): void {
     this.val.set(value || '');
   }

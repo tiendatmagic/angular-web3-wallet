@@ -5,15 +5,18 @@
 ### Yêu cầu: Dọn dẹp toàn bộ comment rác trong source code
 - **Nội dung yêu cầu:** Xóa tất cả comment separator `// ====`, `// ---`, comment inline thừa, comment chú thích vớ vẩn không cần thiết trong toàn bộ source TypeScript.
 - **Giải pháp:**
-  1. **[state.service.ts](file:///d:/git/angular-web3-wallet/src/app/core/services/state.service.ts):** Xóa 5 dòng separator `// ====` và các comment inline thừa trên từng delegated property/method.
-  2. **[home.component.ts](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.ts):** Xóa comment `// === DEMO STATE ===`, các comment nhóm signal thừa, comment inline trên mỗi method (copyAddress, sendTransaction, signMessage, copySignature, openDemoModal), comment trong txRequest.
-  3. **[web3.service.ts](file:///d:/git/angular-web3-wallet/src/app/core/services/web3.service.ts):** Xóa ~20 comment inline thừa trên đầu mỗi method và bên trong logic, giữ lại comment quan trọng giải thích bypass eth_accounts.
-  4. **[theme.service.ts](file:///d:/git/angular-web3-wallet/src/app/core/services/theme.service.ts):** Xóa comment thừa trên các properties và trong initTheme().
-  5. **[modal.service.ts](file:///d:/git/angular-web3-wallet/src/app/core/services/modal.service.ts):** Xóa comment thừa trong open() method.
-  6. **[custom-date-time-range.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/custom-date-time-range/custom-date-time-range.component.ts):** Xóa 3 comment separator `// ---`, các comment nhóm signals/computed, comment bên trong getHighlightClass().
-  7. **[custom-date-picker.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/custom-date-picker/custom-date-picker.component.ts):** Xóa comment inline thừa.
+  1. **[state.service.ts](file:///d:/git/angular-web3-wallet/src/app/core/services/state.service.ts):** Xóa các dòng separator `// ====` và comment inline thừa trên từng property/method.
+  2. **[home.component.ts](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.ts):** Xóa `// === DEMO STATE ===`, comment nhóm signals, comment inline trên các methods.
+  3. **[web3.service.ts](file:///d:/git/angular-web3-wallet/src/app/core/services/web3.service.ts):** Xóa ~20 comment inline thừa, chỉ giữ lại logic quan trọng (bypass RPC của ví Social).
+  4. **[theme.service.ts](file:///d:/git/angular-web3-wallet/src/app/core/services/theme.service.ts):** Xóa comment thừa trên các properties và methods.
+  5. **[modal.service.ts](file:///d:/git/angular-web3-wallet/src/app/core/services/modal.service.ts):** Xóa comment thừa trong `open()`.
+  6. **[custom-date-time-range.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/custom-date-time-range/custom-date-time-range.component.ts):** Xóa comment separator `// ---` và comment inline giải thích thừa thãi.
+  7. **[custom-date-picker.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/custom-date-picker/custom-date-picker.component.ts):** Xóa comment inline đơn giản.
   8. **[custom-select.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/custom-select/custom-select.component.ts):** Xóa comment inline thừa và comment `// ControlValueAccessor`.
-  9. **Kiểm tra:** `npm run build` thành công, không lỗi biên dịch.
+  9. **[demo-modal.component.ts](file:///d:/git/angular-web3-wallet/src/app/features/home/components/demo-modal/demo-modal.component.ts):** Dọn dẹp toàn bộ comment chú thích cho các signals local.
+  10. **[ripple.directive.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/ripple/ripple.directive.ts) & [tooltip.directive.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/tooltip/tooltip.directive.ts):** Lược bỏ toàn bộ các comment chú thích thao tác DOM chi tiết thừa thãi.
+  11. **Dọn dẹp HTML:** Loại bỏ toàn bộ comment cấu trúc rườm rà `<!-- ... -->` và các separator trong [sidebar.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/layout/sidebar/sidebar.component.html), [header.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/layout/header/header.component.html), [tx-speed-selector.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/tx-speed-selector/tx-speed-selector.component.html), [toast.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/toast/toast.component.html), [tab-group.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/tab-group/tab-group.component.html), [pagination.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/pagination/pagination.component.html), [modal-wrapper.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/modal/modal-wrapper.component.html), [modal.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/modal/modal.component.html), [page-header.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/page-header/page-header.component.html) và [skeleton-loader.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/skeleton-loader/skeleton-loader.component.html).
+  12. **Kiểm tra:** `npm run build` thành công, không lỗi biên dịch.
 
 
 ### Yêu cầu: Thêm cấu hình bật/tắt Web3 qua Environment

@@ -4,9 +4,7 @@
   <div
     class="max-w-[1530px] mx-auto w-full px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between"
   >
-    <!-- PHẦN BÊN TRÁI: NÚT HAMBURGER (MOBILE) + LOGO & THƯƠNG HIỆU -->
     <div class="flex md:hidden items-center gap-2 sm:gap-3">
-      <!-- Hamburger Button - CHỈ HIỆN MOBILE -->
       <button
         app-button
         variant="cancel"
@@ -17,7 +15,6 @@
         <app-icon name="hamburger" class="w-5 h-5" />
       </button>
 
-      <!-- Logo & Brand -->
       <a
         routerLink="/"
         class="flex items-center gap-2 sm:gap-3 cursor-pointer select-none"
@@ -37,7 +34,6 @@
       </a>
     </div>
 
-    <!-- PHẦN Ở GIỮA: TRẠNG THÁI MẠNG LƯỚI (CHỈ DESKTOP) -->
     <div class="hidden md:block">
       @if (stateService.isWeb3Enabled && stateService.isConnected()) {
         <div
@@ -57,10 +53,8 @@
       }
     </div>
 
-    <!-- PHẦN BÊN PHẢI: NÚT CHỌN MẠNG + NÚT VÍ -->
     <div class="flex items-center gap-2 sm:gap-3">
       @if (stateService.isWeb3Enabled) {
-        <!-- Nút Chuyển Mạng Lưới (Globe) -->
         <div class="relative block">
           <button
             app-button
@@ -118,7 +112,6 @@
           }
         </div>
 
-        <!-- Nút Ví Web3 -->
         @if (stateService.isConnected()) {
           <div class="relative">
             <button
@@ -154,7 +147,6 @@
               <div
                 class="fixed top-[4.25rem] left-4 right-4 sm:absolute sm:top-full sm:right-0 sm:left-auto sm:mt-2 sm:w-64 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 rounded-2xl shadow-lg z-[200] overflow-hidden py-2 animate-in fade-in slide-in-from-top-2 duration-200"
               >
-                <!-- Header dropdown: thông tin ví -->
                 <div
                   class="px-4 py-2 border-b border-slate-100 dark:border-slate-800/50 mb-1 select-none"
                 >
@@ -173,7 +165,6 @@
                 </div>
 
                 <div class="px-2">
-                  <!-- Sao chép địa chỉ -->
                   <button
                     (click)="copyAddress($event)"
                     class="w-full text-left px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-all flex items-center gap-3 cursor-pointer group"
@@ -187,7 +178,6 @@
                     >
                   </button>
 
-                  <!-- Chi tiết ví (AppKit modal) -->
                   <button
                     (click)="stateService.openAccountModal(); showDropdown.set(false)"
                     class="w-full text-left px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-all flex items-center gap-3 cursor-pointer group"
@@ -199,7 +189,6 @@
                     <span class="group-hover:text-primary transition-colors">Chi tiết ví</span>
                   </button>
 
-                  <!-- Xem trên Explorer -->
                   <button
                     (click)="viewOnExplorer($event)"
                     class="w-full text-left px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-all flex items-center gap-3 cursor-pointer group"
@@ -211,10 +200,8 @@
                     <span class="group-hover:text-primary transition-colors">Xem trên Explorer</span>
                   </button>
 
-                  <!-- Đường phân cách -->
                   <div class="h-px bg-slate-100 dark:bg-slate-800/50 my-1"></div>
 
-                  <!-- Ngắt kết nối -->
                   <button
                     (click)="disconnectWallet($event)"
                     class="w-full text-left px-3 py-2 rounded-xl text-sm font-semibold text-primary hover:bg-primary/10 dark:hover:bg-primary/15 transition-all flex items-center gap-3 cursor-pointer"
@@ -243,14 +230,10 @@
   </div>
 </header>
 
-<!-- ═══════════════════════════════════════════════════ -->
-<!-- MOBILE DRAWER - TRƯỢT TỪ TRÁI SANG (< md)         -->
-<!-- ═══════════════════════════════════════════════════ -->
 <div
   [class.pointer-events-none]="!stateService.showMobileMenu()"
   class="fixed inset-0 z-[60] md:hidden select-none"
 >
-  <!-- Backdrop overlay -->
   <div
     [class.opacity-0]="!stateService.showMobileMenu()"
     [class.opacity-100]="stateService.showMobileMenu()"
@@ -261,7 +244,6 @@
     aria-hidden="true"
   ></div>
 
-  <!-- Drawer Panel -->
   <div
     [class.-translate-x-full]="!stateService.showMobileMenu()"
     [class.translate-x-0]="stateService.showMobileMenu()"
@@ -269,7 +251,6 @@
     [class.pointer-events-auto]="stateService.showMobileMenu()"
     class="fixed inset-y-0 left-0 z-[70] w-[280px] sm:w-[300px] bg-white dark:bg-slate-950 flex flex-col shadow-2xl transition-transform duration-300 ease-in-out"
   >
-    <!-- Logo & Brand -->
     <a
       routerLink="/"
       (click)="stateService.showMobileMenu.set(false)"
@@ -289,7 +270,6 @@
       </div>
     </a>
 
-    <!-- Nav Links -->
     <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
       <a
         routerLink="/home"
@@ -323,7 +303,6 @@
       </a>
     </nav>
 
-    <!-- Bottom Controls -->
     <div
       class="px-5 py-4 border-t border-slate-100 dark:border-slate-800/60 bg-slate-50/30 dark:bg-slate-900/10 space-y-4"
     >

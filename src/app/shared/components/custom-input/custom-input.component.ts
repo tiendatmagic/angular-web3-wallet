@@ -51,7 +51,6 @@ export class CustomInputComponent implements ControlValueAccessor {
     this.valueChange.emit(value);
   }
 
-  // ControlValueAccessor
   public writeValue(value: any): void {
     this.val.set(value === null || value === undefined ? '' : value);
   }

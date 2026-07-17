@@ -60,7 +60,6 @@ export class CustomCheckboxComponent implements ControlValueAccessor {
     this.onTouched();
   }
 
-  // ControlValueAccessor
   public writeValue(value: any): void {
     this.checked.set(!!value);
   }

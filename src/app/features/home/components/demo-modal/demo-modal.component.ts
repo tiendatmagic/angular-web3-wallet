@@ -54,7 +54,6 @@ import { CustomDateTimeRangeComponent, DateTimeRangeValue } from '@shared/compon
 export class DemoModalComponent {
   private readonly modalRef = inject(ModalRef);
 
-  // Form State Local
   public modalDateValue = signal('');
   public modalRangeValue = signal<DateTimeRangeValue>({ startDate: '', endDate: '' });
   public modalSelectValue = signal<string | null>(null);
@@ -63,7 +62,6 @@ export class DemoModalComponent {
   public modalCheckboxValue = signal(false);
   public modalSliderValue = signal(3);
 
-  // Trạng thái Demo Tab Group trong Modal
   public modalTabValue = signal('bsc');
   public readonly modalTabOptions: TabOption[] = [
     { value: 'ethereum', label: 'Ethereum', dotClass: 'bg-blue-500' },
@@ -71,12 +69,11 @@ export class DemoModalComponent {
     { value: 'bsc', label: 'BNB Chain', dotClass: 'bg-amber-500' }
   ];
 
-  // minDate & Presets configurations
   public readonly today = CustomDatePickerComponent.todayString();
-  public limitDatePicker = signal(true); // Mặc định bật giới hạn
-  public demoDatePickerMinDate = signal(this.today); // Mốc ngày minDate mặc định là hôm nay
-  public limitDatePickerMax = signal(false); // Bật/tắt giới hạn ngày tối đa
-  public demoDatePickerMaxDate = signal('2026-07-25'); // Mốc ngày maxDate mặc định (ví dụ: ngày 25)
+  public limitDatePicker = signal(true);
+  public demoDatePickerMinDate = signal(this.today);
+  public limitDatePickerMax = signal(false);
+  public demoDatePickerMaxDate = signal('2026-07-25');
   public demoDatePickerShowPresets = signal(true);
 
   public readonly demoChainOptions = [

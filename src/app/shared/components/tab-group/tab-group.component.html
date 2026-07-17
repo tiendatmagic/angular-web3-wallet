@@ -5,7 +5,6 @@
     containerClass
   "
 >
-  <!-- Sliding Background Slider -->
   @if (options.length > 0 && activeIndex !== -1) {
     <div
       class="absolute top-1 bottom-1 bg-white dark:bg-slate-900 rounded-lg shadow-sm transition-all duration-300 ease-out z-0"
@@ -14,7 +13,6 @@
     ></div>
   }
 
-  <!-- Tab Buttons -->
   @for (opt of options; track opt.value; let idx = $index) {
     <button
       #tabBtn
@@ -27,12 +25,10 @@
       [class.flex-1]="flex"
       [class]="'tab-item relative z-10 transition-all duration-300 cursor-pointer flex items-center justify-center gap-1.5 ' + buttonClass"
     >
-      <!-- Chấm tròn trạng thái nếu có cấu hình -->
       @if (opt.dotClass) {
         <span [class]="'w-1.5 h-1.5 rounded-full shrink-0 ' + opt.dotClass"></span>
       }
 
-      <!-- Icon của tab nếu có cấu hình -->
       @if (opt.icon) {
         <app-icon
           [name]="opt.icon"
@@ -46,7 +42,6 @@
 
       <span [class]="labelClass">{{ opt.label }}</span>
 
-      <!-- Badge số lượng bên cạnh nếu có cấu hình -->
       @if (opt.badge !== undefined && opt.badge !== null && opt.badge !== '') {
         <span
           [class]="

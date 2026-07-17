@@ -1,15 +1,11 @@
-<!-- DESKTOP SIDEBAR - Cố định bên trái (>= md) -->
 <aside
   class="fixed inset-y-0 left-0 z-50 w-72 bg-white dark:bg-slate-950 border-r border-slate-200/50 dark:border-slate-900/50 hidden md:flex flex-col shadow-sm select-none"
 >
-  <!-- LOGO & BRAND -->
   <a
     routerLink="/"
     class="flex items-center gap-3.5 px-6 py-6 border-b border-slate-100 dark:border-slate-800/60 cursor-pointer"
   >
-    <!-- Logo icon -->
     <app-logo class="w-11 h-11 shrink-0" />
-    <!-- Tiêu đề thương hiệu -->
     <div class="flex flex-col select-none">
       <span
         class="text-base font-black tracking-tight leading-none text-slate-800 dark:text-white mb-1.5"
@@ -25,9 +21,7 @@
     </div>
   </a>
 
-  <!-- MENU LINKS -->
   <nav class="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto">
-    <!-- Trang chủ -->
     <a
       routerLink="/home"
       routerLinkActive="!bg-primary/10 !text-primary !font-extrabold"
@@ -38,7 +32,6 @@
       <span>Trang chủ</span>
     </a>
 
-    <!-- Giới thiệu -->
     <a
       routerLink="/about"
       routerLinkActive="!bg-primary/10 !text-primary !font-extrabold"
@@ -48,7 +41,6 @@
       <span>Giới thiệu</span>
     </a>
 
-    <!-- Liên hệ -->
     <a
       routerLink="/contact"
       routerLinkActive="!bg-primary/10 !text-primary !font-extrabold"
@@ -59,7 +51,6 @@
     </a>
   </nav>
 
-  <!-- BOTTOM CONTROLS -->
   <div
     class="px-5 py-4 border-t border-slate-100 dark:border-slate-800/60 bg-slate-50/30 dark:bg-slate-900/10 space-y-4"
   >

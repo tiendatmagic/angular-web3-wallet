@@ -30,7 +30,6 @@ export class AccordionComponent implements AfterContentInit {
   @ContentChildren(AccordionItemComponent) items!: QueryList<AccordionItemComponent>;
 
   ngAfterContentInit(): void {
-    // Nếu không cho mở nhiều, và có nhiều item được thiết lập expanded=true, chỉ giữ lại item đầu tiên
     if (!this.multiple) {
       let alreadyExpanded = false;
       this.items.forEach(item => {
