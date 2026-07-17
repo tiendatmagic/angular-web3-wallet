@@ -7,11 +7,6 @@ import { LogoComponent } from '@shared/components/logo/logo.component';
 import { ThemeSwitcherComponent } from '@shared/components/theme-switcher/theme-switcher.component';
 import { TxSpeedSelectorComponent } from '@shared/components/tx-speed-selector/tx-speed-selector.component';
 
-/**
- * Sidebar cố định bên trái trên Desktop (>= md breakpoint).
- * Active item: nền primary/10 + text primary.
- * Hover: nền xám, text không đổi màu.
- */
 @Component({
   selector: 'app-sidebar',
   imports: [

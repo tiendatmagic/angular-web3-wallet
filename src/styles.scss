@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700;800;900&display=swap');
 @import 'tailwindcss' source('.');
 
-/* Kích hoạt cơ chế Class-based Dark Mode cho Tailwind v4 */
 @variant dark (&:where(.dark, .dark *));
 
 @theme {
@@ -44,19 +43,15 @@ body {
     color 0.3s;
 }
 
-/* Thêm Class-based Dark Mode hỗ trợ */
 html.dark body,
 body.dark {
   background-color: #030712;
   color: #f8fafc;
 }
 
-/* Hiệu ứng chuyển động mượt */
 .transition-all-300 {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
-/* Scrollbar tinh tế */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -76,7 +71,6 @@ body.dark ::-webkit-scrollbar-thumb {
   background: #94a3b8;
 }
 
-/* ==================== HỆ THỐNG TOAST THÔNG BÁO ==================== */
 @keyframes toastProgress {
   from {
     width: 100%;
@@ -110,7 +104,6 @@ body.dark ::-webkit-scrollbar-thumb {
   animation: toastSlideIn 250ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* ==================== HỆ THỐNG NÚT BẤM DÙNG CHUNG (BUTTON SYSTEM) ==================== */
 .btn {
   @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-all duration-200 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5;
 }
@@ -188,7 +181,6 @@ body.dark .btn-danger-light:hover {
   @apply w-full justify-center;
 }
 
-/* ==================== HỆ THỐNG Ô NHẬP LIỆU DÙNG CHUNG ==================== */
 .form-input {
   padding-left: 1rem !important;
   padding-right: 1rem !important;
@@ -214,7 +206,6 @@ body.dark .btn-danger-light:hover {
   @apply h-[42px] w-full text-sm font-semibold rounded-xl bg-slate-50 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 text-slate-800 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]/20 transition-all duration-200;
 }
 
-/* ==================== HỆ THỐNG TAB GROUP DÙNG CHUNG ==================== */
 .tab-group {
   @apply h-[42px] flex items-center gap-1 bg-slate-100 dark:bg-slate-950 p-1 rounded-xl border border-slate-200/40 dark:border-slate-800/40 overflow-x-auto flex-nowrap shrink-0 max-w-full;
   -ms-overflow-style: none;
@@ -231,7 +222,6 @@ body.dark .btn-danger-light:hover {
   @apply bg-white dark:bg-slate-900 text-[var(--color-primary)] dark:text-[var(--color-secondary)] shadow-sm font-bold;
 }
 
-/* ==================== HỆ THỐNG CARD DÙNG CHUNG ==================== */
 .app-card,
 .app-card-interactive {
   @apply bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-lg shadow-slate-200/50 dark:shadow-slate-900/30 rounded-[15px] p-6;
@@ -241,7 +231,6 @@ body.dark .btn-danger-light:hover {
   @apply transition-all duration-300 hover:shadow-lg hover:shadow-[var(--color-primary)]/10 hover:border-[var(--color-primary)]/30 hover:scale-[1.01] cursor-pointer;
 }
 
-/* ==================== TIỆN ÍCH BỔ SUNG ==================== */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -250,14 +239,11 @@ body.dark .btn-danger-light:hover {
   scrollbar-width: none;
 }
 
-/* ==================== HIỆU ỨNG SÓNG NƯỚC (RIPPLE) ==================== */
 .app-ripple-element {
   position: absolute;
   border-radius: 50%;
   pointer-events: none;
-  background-color: currentColor; /* Mặc định sử dụng currentColor để kế thừa màu chữ */
-  opacity: 0.3; /* Độ mờ mặc định 0.3 theo yêu cầu chốt của người dùng */
-  transform: scale(0);
+  background-color: currentColor;   opacity: 0.3;   transform: scale(0);
   animation: 
     app-ripple-scale 500ms cubic-bezier(0.1, 0.8, 0.3, 1) forwards,
     app-ripple-fade 500ms linear forwards;

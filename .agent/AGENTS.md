@@ -2644,3 +2644,31 @@
 - **Kiểm tra:**
   * Chạy `npm run build` thành công, không gặp bất cứ lỗi cú pháp hay biên dịch Angular nào.
 
+### Yêu cầu: Dọn dẹp comment rác trong tệp mới và tệp nguồn của angular-web3-wallet
+- **Nội dung yêu cầu:** Xóa sạch comment rác, dividers (`=======`) và các chú thích hiển nhiên tiếng Việt/tiếng Anh trong các thành phần mới triển khai (như Custom Date Time Range, Ripple, Emojis, Wallet Dropdown, v.v.).
+- **Giải pháp:**
+  1. **styles.scss:** Rút gọn các dòng phân cách lớn `/* ==================== ... ==================== */` thành comment tiêu đề ngắn gọn (ví dụ: `/* Toast System */`, `/* Button System */`, `/* Ripple */`). Xóa chú thích `/* Scrollbar tinh tế */`.
+  2. **icon.component.html:** Rút gọn comment phân nhóm SVG lớn thành `<!-- Navigation Icons -->` và xóa toàn bộ các comment con hiển nhiên chú thích cho từng SVG icon phía dưới.
+  3. **TypeScript (.ts):** Loại bỏ comment thừa trong `theme.service.ts` (xử lý đổi theme), `web3.service.ts` (mạng lưới và bypass send), `home.component.ts` (cấu hình Aura, đợi giao dịch mined), `custom-date-picker.component.ts` (helper ngày hôm nay), và `skeleton-loader.component.ts` (lặp `@for`).
+  4. **HTML Templates:** Xóa bỏ hơn 40 comment HTML hiển nhiên mô tả các card trạng thái ví, số dư, gửi token, form sinh nhật, giới tính... trong `home.component.html`, `demo-modal.component.html`, và các component HTML dùng chung khác.
+  5. **Kiểm tra:** Chạy `npm run build` thành công 100% không lỗi biên dịch.
+
+### Yêu cầu: Dọn dẹp bổ sung JSDoc comment cho các Inputs và Outputs của các Component trong wallet
+- **Nội dung yêu cầu:** Xóa sạch các chú thích JSDoc hiển nhiên, thừa thãi phía trên các thuộc tính `@Input` và `@Output` của directive `ripple.directive.ts` và component `tab-group.component.ts`.
+- **Giải pháp:**
+  1. **ripple.directive.ts:** Loại bỏ hoàn toàn các JSDoc thừa của các `@Input` (`color`, `centered`, `disabled`, `unbounded`, `radius`, `duration`, `opacity`), giúp code directive phẳng và tự giải thích.
+  2. **tab-group.component.ts:** Loại bỏ các JSDoc hiển nhiên của các `@Input` (`options`, `activeValue`, `containerClass`, `buttonClass`, `labelClass`, `flex`), `@Output` (`valueChange`), và signal `sliderStyle`.
+  3. **ui-state.service.ts & header.component.ts:** Dọn sạch các comment dòng đơn hiển nhiên còn sót lại.
+  4. **Kiểm tra:** Chạy `npm run build` thành công 100% không phát sinh lỗi biên dịch.
+
+### Yêu cầu: Dọn dẹp TUYỆT ĐỐI tất cả các loại comment hiển nhiên, JSDoc và HTML trong wallet
+- **Nội dung yêu cầu:** Tiến hành xóa bỏ một cách triệt để nhất các comment JSDoc giải thích component (ở Card, Accordion, Tooltip, CustomSelect...), dọn sạch 100% comment HTML trong các tệp `.html` và xóa các comment CSS/SCSS thừa.
+- **Giải pháp:**
+  1. **TypeScript (.ts):** Xóa sạch 100% các khối JSDoc (`/** ... */`) giải thích cách dùng component ở đầu các file. Chỉ giữ lại 2 comment kỹ thuật Web3 bằng tiếng Anh trong `web3.service.ts` giải thích bypass RPC và giao dịch mined. Xóa mọi comment dòng đơn `//` hiển nhiên khác trong toàn bộ source TS.
+  2. **HTML Templates:** Xóa sạch 100% các comment `<!-- ... -->` trong tất cả các tệp `.html` và dọn dẹp các dòng trống thừa phát sinh.
+  3. **CSS/SCSS:** Xóa bỏ toàn bộ các comment block và comment dòng trong `styles.scss` và các component styles.
+  4. **Kiểm tra:** Chạy `npm run build` thành công 100% không phát sinh lỗi biên dịch.
+
+
+
+

@@ -63,10 +63,10 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
 
   @Input() placeholder: string = 'Chọn khoảng thời gian...';
   @Input() disabled: boolean = false;
-  @Input() showTime: boolean = false; // Bật chế độ chọn Giờ:Phút
-  @Input() showPresets: boolean = false; // Bật thanh chọn nhanh
-  @Input() minDate: string = ''; // YYYY-MM-DD
-  @Input() maxDate: string = ''; // YYYY-MM-DD
+  @Input() showTime: boolean = false;
+  @Input() showPresets: boolean = false;
+  @Input() minDate: string = '';
+  @Input() maxDate: string = '';
 
   @Output() valueChange = new EventEmitter<DateTimeRangeValue>();
 
@@ -92,7 +92,6 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
   public readonly endHour = signal<string>('23');
   public readonly endMinute = signal<string>('59');
 
-  // Trạng thái hiển thị dropdown giờ/phút tùy chỉnh
   public readonly showStartHourDropdown = signal<boolean>(false);
   public readonly showStartMinuteDropdown = signal<boolean>(false);
   public readonly showEndHourDropdown = signal<boolean>(false);

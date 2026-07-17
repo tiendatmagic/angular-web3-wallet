@@ -12,10 +12,6 @@ import { TxSpeedSelectorComponent } from '@shared/components/tx-speed-selector/t
 import { ShortAddressPipe } from '@shared/pipes/short-address.pipe';
 import { POPULAR_CHAINS } from '@core/utils/blockchain.utils';
 
-/**
- * Header layout component: thanh điều hướng sticky trên cùng + Mobile Drawer.
- * Được đặt trong shared/layout/ để phân biệt với các shared/components/ UI atoms.
- */
 @Component({
   selector: 'app-header',
   imports: [
@@ -43,11 +39,7 @@ import { POPULAR_CHAINS } from '@core/utils/blockchain.utils';
 })
 export class HeaderComponent {
   public stateService = inject(StateService);
-
-  // Trạng thái hiển thị dropdown ví
   public showDropdown = signal(false);
-
-  // Trạng thái hiển thị dropdown chọn mạng nhanh
   public showNetworkDropdown = signal(false);
 
   public toggleDropdown(event: Event) {
@@ -89,27 +81,21 @@ export class HeaderComponent {
     await this.stateService.disconnectWallet();
     this.showDropdown.set(false);
   }
-
-  // Đóng tất cả dropdown khi click ra ngoài
   public clickOut() {
     this.showDropdown.set(false);
     this.showNetworkDropdown.set(false);
   }
 
-  // Mở modal chi tiết ví và dừng nổi bọt sự kiện
   public openAccountModal(event: Event) {
     event.stopPropagation();
-    // Đóng dropdown trước để phần tử bị loại bỏ khỏi DOM trước khi modal AppKit mở ra
     this.showDropdown.set(false);
     setTimeout(async () => {
       await this.stateService.openAccountModal();
     }, 100);
   }
 
-  // Chuyển mạng nhanh và dừng nổi bọt sự kiện
   public switchNetwork(event: Event, chainId: number) {
     event.stopPropagation();
-    // Đóng dropdown trước để tránh xung đột DOM
     this.showNetworkDropdown.set(false);
     setTimeout(async () => {
       await this.stateService.switchNetwork(chainId);

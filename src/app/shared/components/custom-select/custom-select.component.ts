@@ -22,14 +22,6 @@ export interface SelectOption {
   [key: string]: any;
 }
 
-/**
- * Custom Select Dropdown thông minh với fixed positioning thoát khỏi overflow container.
- * Hỗ trợ smart placement (trên/dưới) dựa trên không gian viewport còn lại.
- *
- * Sử dụng:
- *   <app-custom-select [options]="list" valueKey="id" labelKey="name" [(value)]="selected" />
- *   <app-custom-select [options]="list" [showSearch]="true" placement="auto" label="Chọn mạng lưới" />
- */
 @Component({
   selector: 'app-custom-select',
   standalone: true,

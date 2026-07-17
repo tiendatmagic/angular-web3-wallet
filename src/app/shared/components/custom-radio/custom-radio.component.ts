@@ -8,13 +8,6 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-/**
- * Custom Radio Button component với ControlValueAccessor.
- *
- * Sử dụng:
- *   <app-custom-radio name="plan" value="free" label="Miễn phí" [(ngModel)]="selectedPlan" />
- *   <app-custom-radio name="plan" value="pro" [checked]="selectedPlan === 'pro'" (select)="selectedPlan = $event" />
- */
 @Component({
   selector: 'app-custom-radio',
   

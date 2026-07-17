@@ -12,13 +12,6 @@ import { IconComponent } from '../icon/icon.component';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
-/**
- * Custom Search Input với debounce, loading spinner, clear button.
- *
- * Sử dụng:
- *   <app-custom-search-input [(ngModel)]="query" (valueChange)="onSearch($event)" />
- *   <app-custom-search-input placeholder="Tìm kiếm..." [debounce]="300" [loading]="isLoading" />
- */
 @Component({
   selector: 'app-custom-search-input',
   

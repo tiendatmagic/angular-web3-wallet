@@ -41,25 +41,12 @@ export interface TabOption {
     `,
   ]})
 export class TabGroupComponent implements AfterViewInit, OnChanges, OnDestroy {
-  /** Danh sách các lựa chọn tab */
   @Input() options: TabOption[] = [];
-
-  /** Giá trị active hiện tại */
   @Input() activeValue: any = null;
-
-  /** Class CSS tùy chỉnh cho container */
   @Input() containerClass: string = '';
-
-  /** Class CSS tùy chỉnh cho các nút bấm tab (để tùy chỉnh padding, width, v.v.) */
   @Input() buttonClass: string = '';
-
-  /** Class CSS tùy chỉnh cho thẻ span nhãn chữ (ví dụ ẩn chữ trên desktop) */
   @Input() labelClass: string = '';
-
-  /** Cho phép các tab tự động chia đều chiều rộng (flex-1). Mặc định là true. */
   @Input() flex: boolean = true;
-
-  /** Sự kiện phát ra khi thay đổi tab */
   @Output() valueChange = new EventEmitter<any>();
 
   @ViewChild('containerEl') containerEl!: ElementRef<HTMLDivElement>;
@@ -67,7 +54,6 @@ export class TabGroupComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   private resizeObserver?: ResizeObserver;
 
-  /** Trạng thái vị trí và kích thước của slider */
   public readonly sliderStyle = signal<{ left: string; width: string }>({
     left: '0px',
     width: '0px'});
@@ -127,7 +113,6 @@ export class TabGroupComponent implements AfterViewInit, OnChanges, OnDestroy {
         this.sliderStyle.set({ left: nextLeft, width: nextWidth });
       }
 
-      // Tự động cuộn container để hiển thị tab active nếu bị che khuất
       const container = this.containerEl.nativeElement;
       const scrollLeft = container.scrollLeft;
       const containerWidth = container.clientWidth;

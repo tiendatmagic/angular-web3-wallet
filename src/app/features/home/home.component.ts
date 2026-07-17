@@ -112,8 +112,6 @@ export class HomeComponent {
   public demoRippleDuration = signal(700);
   public demoRippleOpacity = signal(0.4);
   public demoRippleCustomColor = signal('#ffffff');
-
-  // Cấu hình Aura Showcase
   public demoAuraVariant = signal<'primary' | 'secondary' | 'dual' | 'rainbow' | 'holo' | 'gold' | 'silver' | 'glow'>('dual');
   public demoAuraSize = signal<'xs' | 'sm' | 'md' | 'lg' | 'xl'>('md');
   public demoAuraGlow = signal(true);
@@ -121,8 +119,7 @@ export class HomeComponent {
   public demoAuraSpeed = signal('4s');
   public demoAuraRadius = signal('15px');
 
-  /** Danh sách chain để demo custom-select */
-  public readonly demoChainOptions = [
+    public readonly demoChainOptions = [
     { value: '1',     label: 'Ethereum Mainnet' },
     { value: '42161', label: 'Arbitrum One' },
     { value: '56',    label: 'BNB Smart Chain' },
@@ -172,7 +169,6 @@ export class HomeComponent {
     try {
       const signer = await this.stateService.getSigner();
       
-      // Thực hiện gửi giao dịch với cấu hình phí gas động
       const overrides = await this.stateService.getGasOverrides(signer);
       const txRequest: any = {
         to,
@@ -186,8 +182,6 @@ export class HomeComponent {
       
       this.txHash.set(tx.hash);
       this.stateService.showToast('Giao dịch đã được phát đi! Đang chờ xác nhận...', 'warning');
-      
-      // Đợi giao dịch được khai thác trên mạng (mined) và cập nhật số dư mới
       await tx.wait();
       await this.stateService.web3Service.updateBalanceAndNetwork();
       this.stateService.showToast(`Giao dịch chuyển ${this.stateService.chainSymbol()} đã thành công!`, 'success');

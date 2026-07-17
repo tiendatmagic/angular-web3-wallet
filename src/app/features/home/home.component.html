@@ -1,6 +1,5 @@
 <main class="max-w-[1530px] mx-auto w-full px-4 sm:px-6 py-6 md:py-10 space-y-6 md:space-y-8">
-  <!-- BANNER CHƯA KẾT NỐI VÍ -->
-  @if (stateService.isWeb3Enabled && !stateService.isConnected()) {
+    @if (stateService.isWeb3Enabled && !stateService.isConnected()) {
     <div app-card class="text-center max-w-2xl mx-auto">
       <div
         class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 text-primary border border-primary/20"
@@ -22,12 +21,9 @@
     </div>
   }
 
-  <!-- DASHBOARD HOẠT ĐỘNG KHI ĐÃ KẾT NỐI -->
-  @if (stateService.isWeb3Enabled && stateService.isConnected()) {
+    @if (stateService.isWeb3Enabled && stateService.isConnected()) {
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 items-start">
-      <!-- CỘT TRÁI: THÔNG TIN VÍ & MẠNG LƯỚI (5/12 cột) -->
-      <div class="lg:col-span-5 space-y-5 md:space-y-6">
-        <!-- CARD TRẠNG THÁI VÍ -->
+            <div class="lg:col-span-5 space-y-5 md:space-y-6">
         <div app-card>
           <h3
             class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4"
@@ -36,7 +32,6 @@
           </h3>
 
           <div class="space-y-4">
-            <!-- Số dư lớn -->
             <div class="flex flex-col py-1">
               <span class="text-xs font-bold text-slate-400 dark:text-slate-500"
                 >Số dư hiện tại</span
@@ -48,7 +43,6 @@
               </span>
             </div>
 
-            <!-- Địa chỉ ví -->
             <div class="form-field">
               <label>Địa chỉ ví của bạn</label>
               <div
@@ -69,8 +63,7 @@
               </div>
             </div>
 
-            <!-- Mạng & Chain ID -->
-            <div
+                        <div
               class="grid grid-cols-2 gap-4 border-t border-slate-100 dark:border-slate-800/40 pt-4"
             >
               <div class="flex flex-col">
@@ -89,7 +82,6 @@
           </div>
         </div>
 
-        <!-- CARD CHUYỂN MẠNG NHANH -->
         <div app-card>
           <h3
             class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4"
@@ -97,7 +89,6 @@
             Chuyển nhanh mạng lưới
           </h3>
 
-          <!-- Cảnh báo sai mạng -->
           @if (stateService.isWrongChain()) {
             <div
               class="bg-red-500/10 border border-red-500/25 rounded-xl p-3 mb-4 text-xs font-bold text-red-500 flex items-start gap-2"
@@ -126,10 +117,8 @@
         </div>
       </div>
 
-      <!-- CỘT PHẢI: CÁC HOẠT ĐỘNG GIAO DỊCH DEMO (7/12 cột) -->
-      <div class="lg:col-span-7 space-y-6">
-        <!-- THỰC HIỆN GỬI GIAO DỊCH DEMO -->
-        <div app-card>
+            <div class="lg:col-span-7 space-y-6">
+                <div app-card>
           <div class="flex items-center gap-3 mb-6">
             <div
               class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary border border-primary/10"
@@ -147,7 +136,6 @@
           </div>
 
           <div class="space-y-4">
-            <!-- Địa chỉ nhận -->
             <div class="form-field">
               <label>Địa chỉ ví nhận</label>
               <app-custom-input
@@ -158,7 +146,6 @@
               />
             </div>
 
-            <!-- Số lượng gửi -->
             <div class="form-field">
               <label>Số lượng {{ stateService.chainSymbol() }} gửi</label>
               <app-custom-input
@@ -170,7 +157,6 @@
               />
             </div>
 
-            <!-- Nút gửi -->
             <button
               app-button
               variant="primary"
@@ -187,7 +173,6 @@
               }
             </button>
 
-            <!-- Kết quả giao dịch -->
             @if (txHash()) {
               <div
                 class="bg-emerald-500/10 border border-emerald-500/25 rounded-xl p-4 space-y-2 mt-4"
@@ -212,7 +197,6 @@
               </div>
             }
 
-            <!-- Lỗi giao dịch -->
             @if (txError()) {
               <div
                 class="bg-red-500/10 border border-red-500/25 rounded-xl p-4 text-xs font-bold text-red-500 flex items-start gap-2"
@@ -224,7 +208,6 @@
           </div>
         </div>
 
-        <!-- KÝ TIN NHẮN DEMO BẢO MẬT -->
         <div app-card>
           <div class="flex items-center gap-3 mb-6">
             <div
@@ -241,7 +224,6 @@
           </div>
 
           <div class="space-y-4">
-            <!-- Nội dung tin nhắn -->
             <div class="form-field">
               <label>Nội dung thông điệp</label>
               <textarea
@@ -251,7 +233,6 @@
               ></textarea>
             </div>
 
-            <!-- Nút ký -->
             <button
               app-button
               variant="primary"
@@ -268,7 +249,6 @@
               }
             </button>
 
-            <!-- Kết quả chữ ký -->
             @if (signature()) {
               <div
                 class="bg-primary/10 border border-primary/20 rounded-xl p-4 space-y-2 mt-4"
@@ -300,7 +280,6 @@
               </div>
             }
 
-            <!-- Lỗi ký -->
             @if (signError()) {
               <div
                 class="bg-red-500/10 border border-red-500/25 rounded-xl p-4 text-xs font-bold text-red-500 flex items-start gap-2"
@@ -314,11 +293,7 @@
       </div>
     </div>
   }
-  <!-- ══════════════════════════════════════════════════════ -->
-  <!-- UI COMPONENTS SHOWCASE - Demo các component mới       -->
-  <!-- ══════════════════════════════════════════════════════ -->
-  <div class="space-y-4">
-    <!-- Tiêu đề section -->
+        <div class="space-y-4">
     <div class="flex items-center gap-3">
       <div
         class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary border border-primary/10"
@@ -334,7 +309,6 @@
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <!-- CARD 1: Custom Switch -->
       <div app-card>
         <h4
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
@@ -348,7 +322,6 @@
           Custom Switch
         </h4>
         <div class="space-y-4">
-          <!-- Compact mode -->
           <div class="flex items-center justify-between">
             <span class="text-sm font-semibold text-slate-600 dark:text-slate-300"
               >Compact toggle</span
@@ -359,7 +332,6 @@
               label="Bật thông báo"
             />
           </div>
-          <!-- Full mode panel -->
           <app-custom-switch
             type="full"
             label="Xác nhận giao dịch"
@@ -375,7 +347,6 @@
         </div>
       </div>
 
-      <!-- CARD 2: Custom Radio -->
       <div app-card>
         <h4
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
@@ -407,7 +378,6 @@
         </div>
       </div>
 
-      <!-- CARD 3: Custom Checkbox -->
       <div app-card>
         <h4
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
@@ -430,7 +400,6 @@
         </div>
       </div>
 
-      <!-- CARD 4: Custom Search Input -->
       <div app-card>
         <h4
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
@@ -454,7 +423,6 @@
         </div>
       </div>
 
-      <!-- CARD 5: Custom Select -->
       <div app-card>
         <h4
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
@@ -463,8 +431,7 @@
           Custom Select
         </h4>
         <div class="space-y-4">
-          <!-- Chọn đơn (Single-select) -->
-          <div class="form-field">
+                    <div class="form-field">
             <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider select-none">Chọn đơn lẻ</label>
             <app-custom-select
               placeholder="-- Chọn mạng lưới --"
@@ -483,8 +450,7 @@
             </div>
           </div>
 
-          <!-- Chọn nhiều (Multi-select) -->
-          <div class="form-field">
+                    <div class="form-field">
             <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider select-none">Chọn nhiều (Toppings)</label>
             <app-custom-select
               placeholder="-- Chọn Toppings --"
@@ -506,7 +472,6 @@
         </div>
       </div>
 
-      <!-- CARD 6: Custom Date Picker -->
       <div app-card>
         <h4
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
@@ -515,8 +480,7 @@
           Custom Date Picker
         </h4>
         <div class="flex flex-col gap-3.5">
-          <!-- Bảng cấu hình mốc giới hạn minDate & Presets -->
-          <div class="flex flex-col gap-2.5 p-3 bg-slate-50/50 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 rounded-xl space-y-1.5">
+                    <div class="flex flex-col gap-2.5 p-3 bg-slate-50/50 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 rounded-xl space-y-1.5">
             <div class="flex items-center justify-between">
               <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Giới hạn ngày tối thiểu (minDate)</span>
               <app-custom-switch
@@ -563,7 +527,6 @@
         </div>
       </div>
 
-      <!-- CARD 7: Custom Accordion -->
       <div app-card>
         <h4
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
@@ -594,8 +557,7 @@
         </div>
       </div>
 
-      <!-- CARD 8: Badge, Kbd & Tooltip -->
-      <div app-card>
+            <div app-card>
         <h4
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
         >
@@ -604,7 +566,6 @@
         </h4>
         
         <div class="space-y-5">
-          <!-- Tooltip placements demo -->
           <div class="space-y-2">
             <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider select-none">Tooltip Placement (Hover me)</label>
             <div class="flex flex-wrap gap-2.5 pt-1">
@@ -623,7 +584,6 @@
             </div>
           </div>
 
-          <!-- Kbd keys demo -->
           <div class="space-y-2">
             <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider select-none">Keyboard Shortcuts (Kbd)</label>
             <div class="flex items-center gap-1.5 pt-1 text-sm font-semibold text-slate-600 dark:text-slate-350">
@@ -641,7 +601,6 @@
             </div>
           </div>
 
-          <!-- Badge variants demo -->
           <div class="space-y-2">
             <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider select-none">Badge Variants</label>
             <div class="flex flex-wrap gap-2 pt-1">
@@ -658,7 +617,6 @@
         </div>
       </div>
 
-      <!-- CARD 9: Custom Tab Group -->
       <div app-card>
         <h4
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
@@ -682,7 +640,6 @@
         </div>
       </div>
 
-      <!-- CARD 10: Custom Slider -->
       <div app-card>
         <h4
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
@@ -692,7 +649,6 @@
         </h4>
         
         <div class="space-y-4">
-          <!-- Primary color slider with marks -->
           <div class="form-field">
             <label>Mức độ ưu tiên Gas (Primary / Marks)</label>
             <app-custom-slider
@@ -711,7 +667,6 @@
             priorityVal = {{ demoSliderVal1() }} (min: 0, max: 10, step: 1)
           </div>
 
-          <!-- Neutral color slider without marks -->
           <div class="form-field">
             <label>Khối lượng Token gửi (Neutral / No Marks)</label>
             <app-custom-slider
@@ -732,7 +687,6 @@
         </div>
       </div>
 
-      <!-- CARD 11: Demo Form Components -->
       <div app-card>
         <h4
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
@@ -742,9 +696,7 @@
         </h4>
 
         <div class="space-y-4">
-          <!-- Hàng 1: Ngày sinh + Giới tính -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <!-- Ngày sinh -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div class="form-field">
               <label>Ngày sinh</label>
               <app-custom-date-picker
@@ -755,7 +707,6 @@
               />
             </div>
 
-            <!-- Giới tính -->
             <div class="form-field">
               <label>Giới tính</label>
               <app-tab-group
@@ -766,8 +717,7 @@
             </div>
           </div>
 
-          <!-- Hàng 2: Địa chỉ ví Web3 (EVM) -->
-          <div class="form-field">
+                    <div class="form-field">
             <label>Địa chỉ ví Web3 (EVM)</label>
             <app-custom-input
               placeholder="0x..."
@@ -776,7 +726,6 @@
             />
           </div>
 
-          <!-- Output debug nhỏ -->
           <div
             class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2.5 space-y-0.5"
           >
@@ -787,7 +736,6 @@
         </div>
       </div>
 
-      <!-- CARD 12: Custom Date Time Range Picker -->
       <div app-card>
         <h4
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
@@ -797,7 +745,6 @@
         </h4>
 
         <div class="space-y-4">
-          <!-- Demo 1: Chọn khoảng ngày thông thường -->
           <div class="form-field">
             <label>Khoảng ngày giao dịch (Mặc định)</label>
             <app-custom-date-time-range
@@ -807,7 +754,6 @@
             />
           </div>
 
-          <!-- Demo 2: Chọn khoảng ngày có giờ phút -->
           <div class="form-field">
             <label>Khoảng thời gian chi tiết (Kèm Giờ & Phút)</label>
             <app-custom-date-time-range
@@ -818,8 +764,7 @@
             />
           </div>
 
-          <!-- Demo 3: Chọn khoảng ngày giới hạn (Min/Max Date) -->
-          <div class="form-field">
+                    <div class="form-field">
             <label>Khoảng ngày có giới hạn (Min: 2026-07-10, Max: 2026-07-20)</label>
             <app-custom-date-time-range
               placeholder="Chọn khoảng ngày giới hạn..."
@@ -830,7 +775,6 @@
             />
           </div>
 
-          <!-- Output debug -->
           <div
             class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2.5 space-y-1"
           >
@@ -841,7 +785,6 @@
         </div>
       </div>
 
-      <!-- CARD 13: Custom Ripple Directive -->
       <div app-card>
         <h4
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
@@ -851,8 +794,7 @@
         </h4>
 
         <div class="space-y-4">
-          <!-- Hộp tương tác kiểm thử hiệu ứng Ripple -->
-          <div
+                    <div
             appRipple
             [appRippleCentered]="demoRippleCentered()"
             [appRippleDisabled]="demoRippleDisabled()"
@@ -866,9 +808,7 @@
             <span class="text-[10px] text-slate-400 dark:text-slate-500 mt-1">Để trải nghiệm hiệu ứng sóng nước</span>
           </div>
 
-          <!-- Các nút điều khiển cấu hình cơ bản -->
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 border-t border-slate-100 dark:border-slate-800/40 pt-4">
-            <!-- Center Ripple -->
             <div class="flex items-center justify-between">
               <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Sóng từ tâm</span>
               <app-custom-switch
@@ -877,7 +817,6 @@
               />
             </div>
 
-            <!-- Disable Ripple -->
             <div class="flex items-center justify-between">
               <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Vô hiệu hóa</span>
               <app-custom-switch
@@ -886,7 +825,6 @@
               />
             </div>
 
-            <!-- Unbounded Ripple -->
             <div class="flex items-center justify-between">
               <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Không giới hạn viền</span>
               <app-custom-switch
@@ -896,7 +834,6 @@
             </div>
           </div>
 
-          <!-- Cấu hình màu sắc Ripple dựng sẵn -->
           <div class="form-field">
             <label>Màu sắc Ripple dựng sẵn</label>
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -948,9 +885,7 @@
             </div>
           </div>
 
-          <!-- Chỉnh sửa nâng cao: Màu tự chọn, Duration, Opacity -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-slate-100 dark:border-slate-800/40 pt-4">
-            <!-- Chỉnh màu tùy chỉnh -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-slate-100 dark:border-slate-800/40 pt-4">
             <div class="form-field justify-start">
               <label>Màu sắc tự chọn (Hex / Rgba / CSS Color)</label>
               <div class="flex gap-2">
@@ -960,7 +895,6 @@
                   (ngModelChange)="demoRippleCustomColor.set($event)"
                   class="flex-1"
                 />
-                <!-- Input chọn màu native -->
                 <input
                   type="color"
                   [value]="demoRippleCustomColor().startsWith('#') ? demoRippleCustomColor() : '#8000ff'"
@@ -970,9 +904,7 @@
               </div>
             </div>
 
-            <!-- Chỉnh thời gian (Duration) và độ mờ (Opacity) -->
-            <div class="space-y-4">
-              <!-- Slider Duration -->
+                        <div class="space-y-4">
               <div class="form-field">
                 <div class="flex justify-between items-center">
                   <label class="!mb-0">Thời gian lan tỏa (Duration)</label>
@@ -987,7 +919,6 @@
                 />
               </div>
 
-              <!-- Slider Opacity -->
               <div class="form-field">
                 <div class="flex justify-between items-center">
                   <label class="!mb-0">Độ mờ ban đầu (Opacity)</label>
@@ -1004,7 +935,6 @@
             </div>
           </div>
 
-          <!-- Các nút demo bổ sung gắn kèm ripple -->
           <div class="form-field border-t border-slate-100 dark:border-slate-800/40 pt-4">
             <label>Áp dụng trên Button và Icon</label>
             <div class="flex flex-wrap items-center gap-3">
@@ -1036,8 +966,7 @@
               >
                 Secondary + Ripple Trắng
               </button>
-              <!-- Icon button với unbounded ripple -->
-              <button
+                            <button
                 appRipple
                 [appRippleCentered]="demoRippleCentered()"
                 [appRippleDisabled]="demoRippleDisabled()"
@@ -1055,7 +984,6 @@
         </div>
       </div>
 
-      <!-- CARD 14: Custom Aura Component -->
       <div app-card>
         <h4
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
@@ -1065,8 +993,7 @@
         </h4>
 
         <div class="space-y-6">
-          <!-- Khu vực trình diễn tương tác -->
-          <div class="flex justify-center items-center py-6 bg-slate-50/50 dark:bg-slate-950/20 rounded-[15px] border border-slate-200/20 dark:border-slate-800/20">
+                    <div class="flex justify-center items-center py-6 bg-slate-50/50 dark:bg-slate-950/20 rounded-[15px] border border-slate-200/20 dark:border-slate-800/20">
             <app-aura
               [variant]="demoAuraVariant()"
               [size]="demoAuraSize()"
@@ -1083,9 +1010,7 @@
             </app-aura>
           </div>
 
-          <!-- Bảng điều khiển cấu hình -->
-          <div class="space-y-4">
-            <!-- Chọn màu sắc Variant -->
+                    <div class="space-y-4">
             <div class="form-field">
               <label>Kiểu màu sắc (Variant)</label>
               <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -1180,7 +1105,6 @@
               </div>
             </div>
 
-            <!-- Chọn kích thước Size -->
             <div class="form-field">
               <label>Kích thước độ sáng (Size)</label>
               <div class="grid grid-cols-5 gap-2">
@@ -1200,10 +1124,8 @@
               </div>
             </div>
 
-            <!-- Các nút bật tắt cơ bản -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-slate-100 dark:border-slate-800/40 pt-4">
-              <!-- Bật/Tắt tỏa sáng ngoài -->
-              <div class="flex items-center justify-between">
+                            <div class="flex items-center justify-between">
                 <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Phát sáng tỏa rộng (Glow)</span>
                 <app-custom-switch
                   [checked]="demoAuraGlow()"
@@ -1211,7 +1133,6 @@
                 />
               </div>
 
-              <!-- Tạm dừng chuyển động -->
               <div class="flex items-center justify-between">
                 <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Tạm dừng xoay (Paused)</span>
                 <app-custom-switch
@@ -1221,8 +1142,7 @@
               </div>
             </div>
 
-            <!-- Tùy chọn nâng cao: Speed & Radius -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-slate-100 dark:border-slate-800/40 pt-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-slate-100 dark:border-slate-800/40 pt-4">
               <div class="form-field">
                 <label>Tốc độ quay (Speed)</label>
                 <div class="grid grid-cols-3 gap-2">
@@ -1262,25 +1182,21 @@
               </div>
             </div>
 
-            <!-- Ví dụ ứng dụng thực tế -->
-            <div class="form-field border-t border-slate-100 dark:border-slate-800/40 pt-4">
+                        <div class="form-field border-t border-slate-100 dark:border-slate-800/40 pt-4">
               <label>Áp dụng thực tế</label>
               <div class="flex flex-wrap items-center gap-6 justify-start py-2">
-                <!-- Aura trên Nút bấm chính -->
                 <app-aura variant="dual" size="xs" radius="12px">
                   <button app-button variant="primary" size="md" class="relative">
                     Button phát sáng
                   </button>
                 </app-aura>
 
-                <!-- Aura trên Avatar tròn -->
                 <app-aura variant="holo" size="sm" radius="9999px">
                   <div class="w-10 h-10 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center font-black text-xs text-white">
                     W3
                   </div>
                 </app-aura>
 
-                <!-- Aura trên Thẻ VIP -->
                 <app-aura variant="gold" size="xs" radius="10px">
                   <div class="bg-slate-950 text-yellow-500 px-4 py-2 text-xs font-extrabold rounded-[inherit] tracking-widest">
                     VIP DAPP
@@ -1293,7 +1209,6 @@
       </div>
     </div>
 
-    <!-- NÚT MỞ MODAL DEMO -->
     <div class="flex items-center justify-center pt-2">
       <button app-button variant="primary" size="md" (click)="openDemoModal()">
         <app-icon name="bolt" class="w-4 h-4" [solid]="true" viewBox="0 0 20 20" />

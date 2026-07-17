@@ -1,14 +1,6 @@
 import { Directive, Input, ElementRef, HostListener, Renderer2, OnDestroy, ViewContainerRef, ComponentRef } from '@angular/core';
 import { IconComponent } from '../icon/icon.component';
 
-
-/**
- * Directive appTooltip hiển thị bong bóng thông tin khi di chuột hoặc focus.
- * Định vị động fixed ở body để tránh lỗi tràn khung.
- *
- * Sử dụng:
- *   <button appTooltip="Nội dung tooltip" tooltipPlacement="top">Hover me</button>
- */
 @Directive({
   selector: '[appTooltip]',
   standalone: true

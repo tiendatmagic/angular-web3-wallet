@@ -3,7 +3,6 @@
   [class.opacity-50]="disabled"
   [class.pointer-events-none]="disabled"
 >
-  <!-- Vòng tròn radio button -->
   <div
     class="relative shrink-0 h-5 w-5 rounded-full border-2 transition-all duration-200 flex items-center justify-center"
     [ngClass]="
@@ -12,7 +11,6 @@
         : 'bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 group-hover:border-slate-400 dark:group-hover:border-slate-500'
     "
   >
-    <!-- Chấm tròn trung tâm khi được chọn -->
     @if (checked()) {
       <div class="h-2.5 w-2.5 rounded-full bg-[var(--color-primary)] animate-scale-up"></div>
     }

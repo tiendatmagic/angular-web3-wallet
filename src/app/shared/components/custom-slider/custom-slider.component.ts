@@ -10,12 +10,6 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-/**
- * Custom Slider Component dùng chung tích hợp ControlValueAccessor.
- *
- * Sử dụng:
- *   <app-custom-slider [(ngModel)]="value" [min]="0" [max]="100" [step]="5" [marks]="true" label="Độ ưu tiên" />
- */
 @Component({
   selector: 'app-custom-slider',
   imports: [CommonModule, FormsModule],

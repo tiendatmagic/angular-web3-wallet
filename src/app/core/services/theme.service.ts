@@ -69,8 +69,6 @@ export class ThemeService {
       this.setThemeMode('light');
     }
   }
-
-  // Hàm xử lý sự kiện đổi theme của hệ thống
   private handleSystemThemeChange = (e: MediaQueryListEvent) => {
     if (this.themeMode() === 'auto') {
       this.applyDarkClass(e.matches);

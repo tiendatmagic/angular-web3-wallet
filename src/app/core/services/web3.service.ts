@@ -102,7 +102,7 @@ export class Web3Service {
       },
       features: {
         analytics: false,
-        reownAuthentication: false // Vẫn giữ tắt local SIWX để an toàn
+        reownAuthentication: false
       },
       enableCoinbase: false
     } as any);
@@ -114,8 +114,6 @@ export class Web3Service {
 
       if (accountState.isConnected && accountState.address) {
         await this.updateBalanceAndNetwork();
-
-        // Cập nhật hiển thị modal nếu mạng hiện tại sai sau khi load account (khi reload)
         const currentChainId = this.chainId();
         if (currentChainId) {
           this.checkAndUpdateNetworkState(currentChainId, false);
@@ -164,7 +162,6 @@ export class Web3Service {
         try {
           this.modal.close();
         } catch (e) {
-          // ignore
         }
       }
       if (showToastAlert && prevChainId && prevChainId !== chainId) {
@@ -180,7 +177,7 @@ export class Web3Service {
     } else {
       const popular = POPULAR_CHAINS.find(c => Number(c.chainId) === chainId);
       this.networkName.set(popular ? popular.name : 'Mạng không hỗ trợ');
-      this.chainSymbol.set('ETH'); // default fallback
+      this.chainSymbol.set('ETH');
 
       if (this.isConnected()) {
         this.showWrongChainModal.set(true);
@@ -279,8 +276,6 @@ export class Web3Service {
       throw new Error('Ví chưa được kết nối');
     }
     const ethersProvider = new BrowserProvider(walletProvider as any);
-
-    // Ghi đè phương thức send để bypass cuộc gọi eth_accounts / eth_requestAccounts bị ví Social của AppKit chặn
     const currentAddress = this.address();
     const originalSend = ethersProvider.send.bind(ethersProvider);
     ethersProvider.send = async (method: string, params: any[]) => {

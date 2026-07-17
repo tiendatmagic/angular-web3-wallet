@@ -4,11 +4,6 @@ import { UiStateService } from './ui-state.service';
 import { ThemeService } from './theme.service';
 import { ToastService } from './toast.service';
 
-/**
- * StateService đóng vai trò là Facade Pattern (giống như cafe-blockchain).
- * Lớp này chịu trách nhiệm tiêm các dịch vụ con và expose (ủy thác) các tín hiệu (signals),
- * thuộc tính cũng như phương thức cần thiết ra bên ngoài để các component sử dụng thống nhất.
- */
 @Injectable({
   providedIn: 'root'
 })
