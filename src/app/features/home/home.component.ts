@@ -23,6 +23,7 @@ import { TabGroupComponent, TabOption } from '@shared/components/tab-group/tab-g
 import { StateService } from '@core/services/state.service';
 import { ModalService } from '@core/services/modal.service';
 import { DemoModalComponent } from './components/demo-modal/demo-modal.component';
+import { AuraComponent } from '@shared/components/aura/aura.component';
 import { parseEther } from 'ethers';
 
 @Component({
@@ -50,6 +51,7 @@ import { parseEther } from 'ethers';
     TabGroupComponent,
     CustomSliderComponent,
     RippleDirective,
+    AuraComponent,
   ],
   templateUrl: './home.component.html'
 })
@@ -110,6 +112,14 @@ export class HomeComponent {
   public demoRippleDuration = signal(500);
   public demoRippleOpacity = signal(0.3);
   public demoRippleCustomColor = signal('#ffffff');
+
+  // Cấu hình Aura Showcase
+  public demoAuraVariant = signal<'primary' | 'secondary' | 'dual' | 'rainbow' | 'holo' | 'gold' | 'silver' | 'glow'>('dual');
+  public demoAuraSize = signal<'xs' | 'sm' | 'md' | 'lg' | 'xl'>('md');
+  public demoAuraGlow = signal(true);
+  public demoAuraPaused = signal(false);
+  public demoAuraSpeed = signal('4s');
+  public demoAuraRadius = signal('15px');
 
   /** Danh sách chain để demo custom-select */
   public readonly demoChainOptions = [

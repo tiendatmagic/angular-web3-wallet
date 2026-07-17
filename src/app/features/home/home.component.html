@@ -1054,6 +1054,243 @@
           </div>
         </div>
       </div>
+
+      <!-- CARD 14: Custom Aura Component -->
+      <div app-card>
+        <h4
+          class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
+        >
+          <app-icon name="sparkles" class="w-3.5 h-3.5 text-primary" strokeWidth="2.5" />
+          Custom Aura Component (DaisyUI 5.6+)
+        </h4>
+
+        <div class="space-y-6">
+          <!-- Khu vực trình diễn tương tác -->
+          <div class="flex justify-center items-center py-6 bg-slate-50/50 dark:bg-slate-950/20 rounded-[15px] border border-slate-200/20 dark:border-slate-800/20">
+            <app-aura
+              [variant]="demoAuraVariant()"
+              [size]="demoAuraSize()"
+              [glow]="demoAuraGlow()"
+              [paused]="demoAuraPaused()"
+              [speed]="demoAuraSpeed()"
+              [radius]="demoAuraRadius()"
+            >
+              <div class="bg-white dark:bg-slate-900 px-8 py-6 rounded-[inherit] border border-slate-200/50 dark:border-slate-800/50 flex flex-col items-center justify-center text-center max-w-sm select-none">
+                <app-icon name="bolt" class="w-8 h-8 text-primary mb-3 animate-pulse" />
+                <span class="text-sm font-extrabold text-slate-800 dark:text-white">Aura Wrapper Active</span>
+                <span class="text-xs text-slate-400 dark:text-slate-500 mt-1">Hiệu ứng đường viền phát sáng mượt mà</span>
+              </div>
+            </app-aura>
+          </div>
+
+          <!-- Bảng điều khiển cấu hình -->
+          <div class="space-y-4">
+            <!-- Chọn màu sắc Variant -->
+            <div class="form-field">
+              <label>Kiểu màu sắc (Variant)</label>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                <button
+                  app-button
+                  variant="cancel"
+                  size="sm"
+                  [class.ring-2]="demoAuraVariant() === 'dual'"
+                  [class.ring-primary]="demoAuraVariant() === 'dual'"
+                  (click)="demoAuraVariant.set('dual')"
+                  class="!py-1.5 text-xs font-bold"
+                >
+                  Dual Accent
+                </button>
+                <button
+                  app-button
+                  variant="cancel"
+                  size="sm"
+                  [class.ring-2]="demoAuraVariant() === 'primary'"
+                  [class.ring-primary]="demoAuraVariant() === 'primary'"
+                  (click)="demoAuraVariant.set('primary')"
+                  class="!py-1.5 text-xs font-bold text-primary"
+                >
+                  Primary
+                </button>
+                <button
+                  app-button
+                  variant="cancel"
+                  size="sm"
+                  [class.ring-2]="demoAuraVariant() === 'secondary'"
+                  [class.ring-secondary]="demoAuraVariant() === 'secondary'"
+                  (click)="demoAuraVariant.set('secondary')"
+                  class="!py-1.5 text-xs font-bold text-secondary"
+                >
+                  Secondary
+                </button>
+                <button
+                  app-button
+                  variant="cancel"
+                  size="sm"
+                  [class.ring-2]="demoAuraVariant() === 'rainbow'"
+                  [class.ring-red-500]="demoAuraVariant() === 'rainbow'"
+                  (click)="demoAuraVariant.set('rainbow')"
+                  class="!py-1.5 text-xs font-bold text-transparent bg-gradient-to-r from-red-500 via-green-500 to-blue-500 bg-clip-text"
+                >
+                  Rainbow
+                </button>
+                <button
+                  app-button
+                  variant="cancel"
+                  size="sm"
+                  [class.ring-2]="demoAuraVariant() === 'holo'"
+                  [class.ring-indigo-400]="demoAuraVariant() === 'holo'"
+                  (click)="demoAuraVariant.set('holo')"
+                  class="!py-1.5 text-xs font-bold text-indigo-400"
+                >
+                  Holographic
+                </button>
+                <button
+                  app-button
+                  variant="cancel"
+                  size="sm"
+                  [class.ring-2]="demoAuraVariant() === 'gold'"
+                  [class.ring-yellow-500]="demoAuraVariant() === 'gold'"
+                  (click)="demoAuraVariant.set('gold')"
+                  class="!py-1.5 text-xs font-bold text-yellow-500"
+                >
+                  Gold Metallic
+                </button>
+                <button
+                  app-button
+                  variant="cancel"
+                  size="sm"
+                  [class.ring-2]="demoAuraVariant() === 'silver'"
+                  [class.ring-slate-400]="demoAuraVariant() === 'silver'"
+                  (click)="demoAuraVariant.set('silver')"
+                  class="!py-1.5 text-xs font-bold text-slate-400"
+                >
+                  Silver Metallic
+                </button>
+                <button
+                  app-button
+                  variant="cancel"
+                  size="sm"
+                  [class.ring-2]="demoAuraVariant() === 'glow'"
+                  [class.ring-emerald-500]="demoAuraVariant() === 'glow'"
+                  (click)="demoAuraVariant.set('glow')"
+                  class="!py-1.5 text-xs font-bold text-emerald-500"
+                >
+                  Static Glow
+                </button>
+              </div>
+            </div>
+
+            <!-- Chọn kích thước Size -->
+            <div class="form-field">
+              <label>Kích thước độ sáng (Size)</label>
+              <div class="grid grid-cols-5 gap-2">
+                @for (sz of ['xs', 'sm', 'md', 'lg', 'xl']; track sz) {
+                  <button
+                    app-button
+                    variant="cancel"
+                    size="sm"
+                    [class.ring-2]="demoAuraSize() === sz"
+                    [class.ring-primary]="demoAuraSize() === sz"
+                    (click)="demoAuraSize.set($any(sz))"
+                    class="!py-1.5 text-xs font-bold uppercase"
+                  >
+                    {{ sz }}
+                  </button>
+                }
+              </div>
+            </div>
+
+            <!-- Các nút bật tắt cơ bản -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-slate-100 dark:border-slate-800/40 pt-4">
+              <!-- Bật/Tắt tỏa sáng ngoài -->
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Phát sáng tỏa rộng (Glow)</span>
+                <app-custom-switch
+                  [checked]="demoAuraGlow()"
+                  (checkedChange)="demoAuraGlow.set($event)"
+                />
+              </div>
+
+              <!-- Tạm dừng chuyển động -->
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Tạm dừng xoay (Paused)</span>
+                <app-custom-switch
+                  [checked]="demoAuraPaused()"
+                  (checkedChange)="demoAuraPaused.set($event)"
+                />
+              </div>
+            </div>
+
+            <!-- Tùy chọn nâng cao: Speed & Radius -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-slate-100 dark:border-slate-800/40 pt-4">
+              <div class="form-field">
+                <label>Tốc độ quay (Speed)</label>
+                <div class="grid grid-cols-3 gap-2">
+                  @for (spd of ['2s', '4s', '8s']; track spd) {
+                    <button
+                      app-button
+                      variant="cancel"
+                      size="sm"
+                      [class.ring-2]="demoAuraSpeed() === spd"
+                      [class.ring-primary]="demoAuraSpeed() === spd"
+                      (click)="demoAuraSpeed.set(spd)"
+                      class="!py-1.5 text-xs font-bold"
+                    >
+                      {{ spd === '2s' ? 'Nhanh (2s)' : spd === '4s' ? 'Vừa (4s)' : 'Chậm (8s)' }}
+                    </button>
+                  }
+                </div>
+              </div>
+
+              <div class="form-field">
+                <label>Bo góc (Border Radius)</label>
+                <div class="grid grid-cols-3 gap-2">
+                  @for (rad of ['15px', '8px', '9999px']; track rad) {
+                    <button
+                      app-button
+                      variant="cancel"
+                      size="sm"
+                      [class.ring-2]="demoAuraRadius() === rad"
+                      [class.ring-primary]="demoAuraRadius() === rad"
+                      (click)="demoAuraRadius.set(rad)"
+                      class="!py-1.5 text-xs font-bold"
+                    >
+                      {{ rad === '15px' ? 'Mặc định (15px)' : rad === '8px' ? 'Nhỏ (8px)' : 'Tròn (9999px)' }}
+                    </button>
+                  }
+                </div>
+              </div>
+            </div>
+
+            <!-- Ví dụ ứng dụng thực tế -->
+            <div class="form-field border-t border-slate-100 dark:border-slate-800/40 pt-4">
+              <label>Áp dụng thực tế</label>
+              <div class="flex flex-wrap items-center gap-6 justify-start py-2">
+                <!-- Aura trên Nút bấm chính -->
+                <app-aura variant="dual" size="xs" radius="12px">
+                  <button app-button variant="primary" size="md" class="relative">
+                    Button phát sáng
+                  </button>
+                </app-aura>
+
+                <!-- Aura trên Avatar tròn -->
+                <app-aura variant="holo" size="sm" radius="9999px">
+                  <div class="w-10 h-10 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center font-black text-xs text-white">
+                    W3
+                  </div>
+                </app-aura>
+
+                <!-- Aura trên Thẻ VIP -->
+                <app-aura variant="gold" size="xs" radius="10px">
+                  <div class="bg-slate-950 text-yellow-500 px-4 py-2 text-xs font-extrabold rounded-[inherit] tracking-widest">
+                    VIP DAPP
+                  </div>
+                </app-aura>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- NÚT MỞ MODAL DEMO -->

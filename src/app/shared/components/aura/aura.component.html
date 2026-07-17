@@ -1,0 +1,19 @@
+<div
+  class="aura-wrapper"
+  [class.is-paused]="paused"
+  [style.--aura-radius]="radius"
+  [style.--aura-speed]="speed"
+  [style.--glow-inset]="sizeStyles.glowInset"
+  [style.--glow-blur]="sizeStyles.glowBlur"
+  [style.--glow-opacity]="sizeStyles.glowOpacity"
+  [style.--border-inset]="sizeStyles.borderInset"
+  [style.--border-offset]="sizeStyles.borderOffset"
+>
+  @if (glow) {
+    <div class="aura-glow" [ngClass]="'gradient-' + variant"></div>
+  }
+  <div class="aura-border" [ngClass]="'gradient-' + variant"></div>
+  <div class="aura-content">
+    <ng-content></ng-content>
+  </div>
+</div>
