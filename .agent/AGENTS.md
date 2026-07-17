@@ -2,6 +2,12 @@
 
 ## Ngày 17/07/2026
 
+### Yêu cầu: Điều chỉnh thông số mặc định của hiệu ứng Ripple (Màu sắc, Opacity, Duration)
+- **Nội dung yêu cầu:** Sửa đổi các thông số mặc định của directive `appRipple` sao cho nếu không có tham số nào được truyền vào, nó vẫn sẽ sử dụng đúng các giá trị mặc định: màu trắng (`#ffffff`), độ mờ (`0.4`), và thời gian lan tỏa (`700ms`). Đồng bộ hóa trạng thái ban đầu của showcase trên trang chủ.
+- **Giải pháp:**
+  1. Cập nhật [ripple.directive.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/ripple/ripple.directive.ts): Thay đổi màu mặc định `color` thành `'#ffffff'`, độ mờ mặc định `opacity` thành `0.4` và thời gian mặc định `duration` thành `700` (ms).
+  2. Cập nhật [home.component.ts](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.ts): Đồng bộ hóa giá trị khởi tạo của signal `demoRippleOpacity` từ `0.3` thành `0.4` và `demoRippleDuration` từ `500` thành `700` để khớp với thiết kế.
+
 ### Yêu cầu: Dọn dẹp toàn bộ comment rác trong source code
 - **Nội dung yêu cầu:** Xóa tất cả comment separator `// ====`, `// ---`, comment inline thừa, comment chú thích vớ vẩn không cần thiết trong toàn bộ source TypeScript.
 - **Giải pháp:**

@@ -109,8 +109,8 @@ export class HomeComponent {
   public demoRippleDisabled = signal(false);
   public demoRippleUnbounded = signal(false);
   public demoRippleColor = signal('');
-  public demoRippleDuration = signal(500);
-  public demoRippleOpacity = signal(0.3);
+  public demoRippleDuration = signal(700);
+  public demoRippleOpacity = signal(0.4);
   public demoRippleCustomColor = signal('#ffffff');
 
   // Cấu hình Aura Showcase

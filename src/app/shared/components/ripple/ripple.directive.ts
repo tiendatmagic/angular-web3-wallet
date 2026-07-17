@@ -14,7 +14,7 @@ import { Directive, Input, ElementRef, HostListener, Renderer2, NgZone } from '@
 })
 export class RippleDirective {
   /** Màu sắc tùy chỉnh cho ripple (ví dụ: 'rgba(255, 255, 255, 0.3)', 'var(--color-primary)') */
-  @Input('appRippleColor') color: string = '';
+  @Input('appRippleColor') color: string = '#ffffff';
 
   /** Hiển thị sóng nước lan tỏa từ tâm thay vì vị trí click */
   @Input('appRippleCentered') centered: boolean = false;
@@ -28,11 +28,11 @@ export class RippleDirective {
   /** Bán kính tối đa của vòng tròn ripple (nếu bằng 0 thì tự tính toán bao phủ toàn bộ container) */
   @Input('appRippleRadius') radius: number = 0;
 
-  /** Thời gian lan tỏa của hiệu ứng sóng nước (ms), mặc định là 500ms */
-  @Input('appRippleDuration') duration: number = 500;
+  /** Thời gian lan tỏa của hiệu ứng sóng nước (ms), mặc định là 700ms */
+  @Input('appRippleDuration') duration: number = 700;
 
   /** Độ mờ ban đầu của sóng nước, nếu bằng null thì tự động quyết định (0.25 cho currentColor, 1.0 cho màu tùy chỉnh) */
-  @Input('appRippleOpacity') opacity: number | null = null;
+  @Input('appRippleOpacity') opacity: number | null = 0.4;
 
   private lastTouchTimestamp = 0;
 
