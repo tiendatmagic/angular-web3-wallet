@@ -431,8 +431,8 @@
           Custom Select
         </h4>
         <div class="space-y-4">
-                    <div class="form-field">
-            <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider select-none">Chọn đơn lẻ</label>
+          <div class="form-field">
+            <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider select-none">Chọn đơn lẻ (5 mạng lưới)</label>
             <app-custom-select
               placeholder="-- Chọn mạng lưới --"
               [options]="demoChainOptions"
@@ -447,6 +447,25 @@
               class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2"
             >
               selected = {{ demoSelectValue() ?? '(chưa chọn)' }}
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider select-none">Chọn đơn lẻ (10 mạng lưới)</label>
+            <app-custom-select
+              placeholder="-- Chọn mạng lưới --"
+              [options]="demoTenChainOptions"
+              valueKey="value"
+              labelKey="label"
+              [showSearch]="true"
+              placement="auto"
+              [value]="demoSelectTenChainsValue()"
+              (valueChange)="demoSelectTenChainsValue.set($event)"
+            />
+            <div
+              class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2"
+            >
+              selected = {{ demoSelectTenChainsValue() ?? '(chưa chọn)' }}
             </div>
           </div>
 

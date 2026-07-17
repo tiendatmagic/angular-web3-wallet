@@ -77,6 +77,7 @@ export class HomeComponent {
   public demoCheckboxValue = signal(true);
   public demoSearchQuery = signal('');
   public demoSelectValue = signal<string | null>(null);
+  public demoSelectTenChainsValue = signal<string | null>(null);
   public demoDatePickerValue = signal('2026-07-10');
   public limitDatePicker = signal(false);
   public demoDatePickerMinDate = signal('2026-07-20');
@@ -125,6 +126,19 @@ export class HomeComponent {
     { value: '56',    label: 'BNB Smart Chain' },
     { value: '421614',label: 'Arbitrum Sepolia' },
     { value: '97',    label: 'BSC Testnet' },
+  ];
+
+  public readonly demoTenChainOptions = [
+    { value: '1',      label: 'Ethereum Mainnet' },
+    { value: '42161',  label: 'Arbitrum One' },
+    { value: '56',     label: 'BNB Smart Chain' },
+    { value: '137',    label: 'Polygon PoS' },
+    { value: '10',     label: 'Optimism' },
+    { value: '8453',   label: 'Base' },
+    { value: '43114',  label: 'Avalanche C-Chain' },
+    { value: '59144',  label: 'Linea' },
+    { value: '534352', label: 'Scroll' },
+    { value: '250',    label: 'Fantom Opera' },
   ];
 
   public demoMultiSelectValue = signal<string[]>(['mushroom', 'onion']);

@@ -2,6 +2,13 @@
 
 ## Ngày 17/07/2026
 
+### Yêu cầu: Bổ sung demo custom select hiển thị 10 mạng lưới
+- **Nội dung yêu cầu:** Thêm một bộ chọn custom select giống chọn đơn lẻ mạng lưới nhưng chứa khoảng 10 mạng lưới trên trang chủ showcase.
+- **Giải pháp:**
+  1. Cập nhật [home.component.ts](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.ts): Thêm signal `demoSelectTenChainsValue` để quản lý trạng thái chọn và mảng `demoTenChainOptions` chứa danh sách 10 mạng lưới phổ biến (Ethereum, Arbitrum, BNB Chain, Polygon PoS, Optimism, Base, Avalanche C-Chain, Linea, Scroll, Fantom Opera).
+  2. Cập nhật [home.component.html](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.html): Bổ sung thêm component `<app-custom-select>` liên kết với signal và danh sách 10 mạng lưới mới, đồng thời thay đổi nhãn của selector cũ thành "Chọn đơn lẻ (5 mạng lưới)" để phân biệt rõ ràng.
+  3. Cập nhật [custom-select.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/custom-select/custom-select.component.html): Loại bỏ class `.no-scrollbar` ở danh sách các tùy chọn của bộ chọn custom select để hiển thị thanh cuộn (scrollbar) tinh tế mặc định của hệ thống khi danh sách có nhiều tùy chọn (như 10 mạng lưới).
+
 ### Yêu cầu: Điều chỉnh thông số mặc định của hiệu ứng Ripple (Màu sắc, Opacity, Duration)
 - **Nội dung yêu cầu:** Sửa đổi các thông số mặc định của directive `appRipple` sao cho nếu không có tham số nào được truyền vào, nó vẫn sẽ sử dụng đúng các giá trị mặc định: màu trắng (`#ffffff`), độ mờ (`0.4`), và thời gian lan tỏa (`700ms`). Đồng bộ hóa trạng thái ban đầu của showcase trên trang chủ.
 - **Giải pháp:**
