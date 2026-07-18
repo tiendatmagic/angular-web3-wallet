@@ -1228,18 +1228,15 @@
       </div>
     </div>
 
-    <!-- Card 15: Custom Table Component Showcase -->
-    <div app-card class="mt-6">
+        <div app-card class="mt-6">
       <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-6 flex items-center gap-2 select-none">
         <app-icon name="tables" class="w-3.5 h-3.5 text-[var(--color-primary)] animate-pulse" strokeWidth="2.5" />
         Component Table Tùy Biến Cao Cấp (app-table)
       </h4>
 
       <div class="space-y-6">
-        <!-- Toolbar điều khiển -->
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <!-- Ô tìm kiếm và bộ lọc trạng thái -->
-          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1 max-w-2xl">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1 max-w-2xl">
             <div class="w-full sm:w-80">
               <app-custom-search-input
                 placeholder="Tìm theo TxHash, Phương thức, Địa chỉ..."
@@ -1261,8 +1258,7 @@
             </div>
           </div>
 
-          <!-- Các Switch giả lập trạng thái -->
-          <div class="flex flex-wrap items-center gap-4 bg-slate-50 dark:bg-slate-950/20 p-2.5 rounded-xl border border-slate-200/40 dark:border-slate-800/40">
+                    <div class="flex flex-wrap items-center gap-4 bg-slate-50 dark:bg-slate-950/20 p-2.5 rounded-xl border border-slate-200/40 dark:border-slate-800/40">
             <div class="flex items-center gap-2">
               <span class="text-xs font-bold text-slate-500 dark:text-slate-400 select-none">Giả lập Tải (Loading)</span>
               <app-custom-switch
@@ -1291,8 +1287,7 @@
           </div>
         </div>
 
-        <!-- Component Table thực tế -->
-        <app-table
+                <app-table
           [columns]="demoTableColumns"
           [data]="paginatedTransactions()"
           [loading]="demoTableLoading()"
@@ -1304,8 +1299,7 @@
           [sortDirection]="demoTableSortDirection()"
           (sortChange)="onSortChange($event)"
         >
-          <!-- Custom Cell cho cột txHash -->
-          <ng-template appTableCell="txHash" let-value>
+                    <ng-template appTableCell="txHash" let-value>
             <div class="flex items-center gap-2 font-mono">
               <app-icon name="link-chain" class="w-3.5 h-3.5 text-slate-400 dark:text-slate-600" />
               <a
@@ -1318,43 +1312,37 @@
             </div>
           </ng-template>
 
-          <!-- Custom Cell cho cột method -->
-          <ng-template appTableCell="method" let-value>
+                    <ng-template appTableCell="method" let-value>
             <span class="px-2.5 py-1 rounded-[8px] bg-slate-100 dark:bg-slate-800 text-xs font-extrabold text-slate-650 dark:text-slate-350 border border-slate-200/30 dark:border-slate-700/30">
               {{ value }}
             </span>
           </ng-template>
 
-          <!-- Custom Cell cho cột block -->
-          <ng-template appTableCell="block" let-value>
+                    <ng-template appTableCell="block" let-value>
             <span class="font-mono text-xs font-bold text-slate-500 dark:text-slate-400">
               #{{ value }}
             </span>
           </ng-template>
 
-          <!-- Custom Cell cho cột from -->
-          <ng-template appTableCell="from" let-value>
+                    <ng-template appTableCell="from" let-value>
             <span class="font-mono text-xs text-slate-500 dark:text-slate-500 cursor-help" [title]="value">
               {{ value.substring(0, 6) }}...{{ value.substring(value.length - 4) }}
             </span>
           </ng-template>
 
-          <!-- Custom Cell cho cột to -->
-          <ng-template appTableCell="to" let-value>
+                    <ng-template appTableCell="to" let-value>
             <span class="font-mono text-xs text-slate-500 dark:text-slate-500 cursor-help" [title]="value">
               {{ value.substring(0, 6) }}...{{ value.substring(value.length - 4) }}
             </span>
           </ng-template>
 
-          <!-- Custom Cell cho cột value -->
-          <ng-template appTableCell="value" let-value>
+                    <ng-template appTableCell="value" let-value>
             <span class="font-black text-slate-800 dark:text-white">
               {{ value }}
             </span>
           </ng-template>
 
-          <!-- Custom Cell cho cột status (Render Badge) -->
-          <ng-template appTableCell="status" let-value>
+                    <ng-template appTableCell="status" let-value>
             @if (value === 'success') {
               <app-badge variant="success" rounded="full" size="sm">Thành công</app-badge>
             } @else if (value === 'pending') {
@@ -1365,8 +1353,7 @@
           </ng-template>
         </app-table>
 
-        <!-- Thanh phân trang bên dưới Table -->
-        @if (!demoTableLoading() && filteredTransactions().length > 0) {
+                @if (!demoTableLoading() && filteredTransactions().length > 0) {
           <div class="mt-2">
             <app-pagination
               [currentPage]="demoTableCurrentPage()"
