@@ -1,5 +1,17 @@
 # Lịch sử yêu cầu và xử lý của Agent
 
+## Ngày 18/07/2026
+
+### Yêu cầu: Xây dựng và tích hợp Custom Table Component
+- **Nội dung yêu cầu:** Tạo một component Table mới tùy biến cao, hỗ trợ các cột có khả năng sắp xếp (sorting), custom templates cho từng cột thông qua directive, loading skeleton state, empty state, và tích hợp showcase kèm dữ liệu demo mẫu (Recent Transactions) trên trang chủ, hỗ trợ tìm kiếm, lọc trạng thái và phân trang đầy đủ.
+- **Giải pháp:**
+  1. **Tạo component Table mới:**
+     - Tạo [table.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/table/table.component.ts) chứa Directive `appTableCell` để trích xuất template tùy chỉnh của cột và Class `TableComponent` xử lý logic: định nghĩa columns, data, local sort (computed signal), empty state và các sự kiện sort.
+     - Tạo [table.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/table/table.component.html) dựng giao diện Table theo chuẩn thiết kế dự án: bo góc tối đa 15px, viền mỏng Glassmorphism, header uppercase màu mờ, hover row nhẹ nhàng, tích hợp `app-skeleton-loader` kiểu `table` khi loading và giao diện Empty State khi không có data.
+  2. **Tích hợp Showcase vào trang chủ:**
+     - Cập nhật [home.component.ts](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.ts): Đăng ký `TableComponent`, `TableCellDirective`, và `PaginationComponent` trong `imports`. Khai báo dữ liệu demo `demoTransactions` (12 giao dịch Web3), cấu hình `demoTableColumns` và các signals điều khiển (SearchQuery, StatusFilter, Loading, Empty, CurrentPage, SortKey, SortDirection). Khai báo `Math = Math` và import `computed` để dùng trong template.
+     - Cập nhật [home.component.html](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.html): Thêm **Card 15: Component Table Tùy Biến Cao Cấp (app-table)** hiển thị thanh Toolbar bộ lọc/Switch giả lập, render table với các custom template cell (Mã Tx Hash rút gọn và link, Method badge, Block mono, Value in đậm, Status badge thành công/đang chờ/thất bại) và tích hợp thanh phân trang.
+
 ## Ngày 17/07/2026
 
 ### Yêu cầu: Bổ sung demo custom select hiển thị 10 mạng lưới
