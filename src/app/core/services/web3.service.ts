@@ -73,13 +73,18 @@ export class Web3Service {
     });
   }
 
-  private initAppKit() {
+  private async initAppKit() {
     if (typeof window === 'undefined') return;
 
     const projectId = environment.walletConnectProjectId;
     if (!projectId) {
       console.warn('[Web3] walletConnectProjectId is missing in environment configuration.');
       return;
+    }
+
+    // Nếu chưa đăng nhập, tự động dọn rác session/proposal treo cũ trong storage
+    if (!this.isConnected()) {
+      await this.clearWalletConnectStorage();
     }
 
     const isDark = this.themeService.isDarkMode();
@@ -222,9 +227,22 @@ export class Web3Service {
   public async connect() {
     if (!this.isEnabled) return;
     try {
+      // Ngắt kết nối phiên treo cũ nếu người dùng chưa kết nối active để tránh lỗi "Connection can be declined"
+      if (!this.isConnected()) {
+        try {
+          await this.modal.disconnect();
+        } catch (e) {}
+      }
       await this.modal.open();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Lỗi kết nối ví:', error);
+      // Nếu dính lỗi Connection declined do request cũ active, tự động ngắt phiên treo và mở lại
+      if (error?.message?.includes('declined') || error?.message?.includes('active')) {
+        try {
+          await this.modal.disconnect();
+          await this.modal.open();
+        } catch (e) {}
+      }
     }
   }
 
@@ -255,37 +273,65 @@ export class Web3Service {
     }
   }
 
+  /**
+   * Tự động dọn dẹp dữ liệu kẹt trong IndexedDB & LocalStorage nếu chưa đăng nhập (Self-Healing)
+   */
+  private async clearWalletConnectStorage() {
+    if (typeof window === 'undefined') return;
+
+    try {
+      if ('indexedDB' in window) {
+        const dbs = (await indexedDB.databases?.()) || [];
+        for (const db of dbs) {
+          if (db.name && (db.name.includes('WALLET_CONNECT') || db.name.includes('walletconnect') || db.name.includes('reown') || db.name.includes('appkit'))) {
+            indexedDB.deleteDatabase(db.name);
+          }
+        }
+      }
+    } catch (e) {
+      console.warn('[Web3] Lỗi khi dọn dẹp IndexedDB:', e);
+    }
+
+    try {
+      const keysToRemove: string[] = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && (key.startsWith('wc@2') || key.startsWith('@w3m') || key.startsWith('@appkit'))) {
+          if (key.includes('proposal') || key.includes('request') || key.includes('pending')) {
+            keysToRemove.push(key);
+          }
+        }
+      }
+      keysToRemove.forEach(k => localStorage.removeItem(k));
+    } catch (e) {}
+  }
+
   public async addNetworkToWallet(chainId: number | string): Promise<boolean> {
     if (typeof window === 'undefined' || !(window as any).ethereum) return false;
     const idNum = Number(chainId);
+    const idStr = idNum.toString();
     const hexChainId = '0x' + idNum.toString(16);
 
-    const chainParamsMap: Record<number, any> = {
-      421614: {
-        chainId: hexChainId,
-        chainName: 'Arbitrum Sepolia',
-        nativeCurrency: { name: 'Arbitrum Sepolia Ether', symbol: 'ETH', decimals: 18 },
-        rpcUrls: ['https://sepolia-rollup.arbitrum.io/rpc', 'https://arbitrum-sepolia-rpc.publicnode.com'],
-        blockExplorerUrls: ['https://sepolia.arbiscan.io']
-      },
-      97: {
-        chainId: hexChainId,
-        chainName: 'BSC Testnet',
-        nativeCurrency: { name: 'BNB', symbol: 'tBNB', decimals: 18 },
-        rpcUrls: ['https://bsc-testnet-rpc.publicnode.com', 'https://data-seed-prebsc-1-s1.binance.org:8545'],
-        blockExplorerUrls: ['https://testnet.bscscan.com']
-      },
-      42161: {
-        chainId: hexChainId,
-        chainName: 'Arbitrum One',
-        nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
-        rpcUrls: ['https://arb1.arbitrum.io/rpc', 'https://arbitrum-one-rpc.publicnode.com'],
-        blockExplorerUrls: ['https://arbiscan.io']
-      }
-    };
+    const chainInfo = this.POPULAR_CHAINS.find(c => c.chainId === idStr);
+    if (!chainInfo) {
+      console.warn(`[Web3] Không tìm thấy thông tin mạng trong POPULAR_CHAINS cho chainId: ${chainId}`);
+      return false;
+    }
 
-    const params = chainParamsMap[idNum];
-    if (!params) return false;
+    let symbol = 'ETH';
+    let currencyName = 'Ether';
+    if (idStr === '56' || idStr === '97') {
+      symbol = 'BNB';
+      currencyName = 'BNB';
+    }
+
+    const params = {
+      chainId: hexChainId,
+      chainName: chainInfo.name,
+      nativeCurrency: { name: currencyName, symbol: symbol, decimals: 18 },
+      rpcUrls: [chainInfo.rpcUrl],
+      blockExplorerUrls: [chainInfo.explorerUrl]
+    };
 
     try {
       await (window as any).ethereum.request({
