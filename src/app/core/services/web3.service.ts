@@ -28,6 +28,10 @@ export class Web3Service {
   public gasMultiplier = signal<number>(2);
   public showWrongChainModal = signal<boolean>(false);
 
+  public readonly configuredChainId = signal<string>(
+    (typeof window !== 'undefined' && localStorage.getItem('angular_web3_configured_chain_id')) || environment.defaultChainId || '42161'
+  );
+
   public readonly POPULAR_CHAINS = POPULAR_CHAINS;
 
   public readonly supportedChains = [arbitrum, mainnet, bsc, arbitrumSepolia, bscTestnet].map(chain => {
@@ -58,6 +62,26 @@ export class Web3Service {
     }
     this.initAppKit();
     this.setupThemeSync();
+
+    // Tự động cập nhật UI khi chưa kết nối ví dựa theo cấu hình mạng mong muốn
+    effect(() => {
+      const isConn = this.isConnected();
+      const confId = this.configuredChainId();
+      if (!isConn) {
+        const popular = POPULAR_CHAINS.find(c => c.chainId === confId);
+        this.networkName.set(popular ? popular.name : 'Unknown Network');
+        const symbol = popular ? (popular.chainId === '56' || popular.chainId === '97' ? 'BNB' : 'ETH') : 'ETH';
+        this.chainSymbol.set(symbol);
+      }
+    }, { allowSignalWrites: true });
+
+    // Lưu cấu hình mạng mong muốn vào localStorage khi thay đổi
+    effect(() => {
+      const chain = this.configuredChainId();
+      if (typeof window !== 'undefined' && chain) {
+        localStorage.setItem('angular_web3_configured_chain_id', chain);
+      }
+    });
   }
 
   private setupThemeSync() {
@@ -92,7 +116,7 @@ export class Web3Service {
     this.modal = createAppKit({
       adapters: [new EthersAdapter()],
       networks: this.supportedChains as any,
-      defaultNetwork: this.supportedChains[0] as any,
+      defaultNetwork: this.getAppKitNetworkByChainId(this.configuredChainId()) as any,
       allowUnsupportedChain: true,
       metadata: {
         name: 'Angular Web3 DApp',
@@ -227,6 +251,17 @@ export class Web3Service {
   public async connect() {
     if (!this.isEnabled) return;
     try {
+      // Tự động kiểm tra và thêm mạng vào ví MetaMask/Extension nếu mạng cấu hình khác Arbitrum One (mạng testnet chưa được lưu trong ví)
+      // Điều này giúp tránh lỗi "unknown network" gây treo request trên MetaMask khi ví chưa lưu mạng này
+      const targetChainId = this.configuredChainId();
+      if (targetChainId !== '42161' && typeof window !== 'undefined' && (window as any).ethereum) {
+        try {
+          await this.addNetworkToWallet(targetChainId);
+        } catch (addErr) {
+          console.warn('[Web3] Thử thêm mạng trước khi kết nối ví thất bại:', addErr);
+        }
+      }
+
       // Ngắt kết nối phiên treo cũ nếu người dùng chưa kết nối active để tránh lỗi "Connection can be declined"
       if (!this.isConnected()) {
         try {
@@ -306,6 +341,18 @@ export class Web3Service {
     } catch (e) {}
   }
 
+  private getAppKitNetworkByChainId(chainId: string | number): any {
+    const id = chainId.toString().trim();
+    switch (id) {
+      case '1': return mainnet;
+      case '56': return bsc;
+      case '97': return bscTestnet;
+      case '42161': return arbitrum;
+      case '421614': return arbitrumSepolia;
+      default: return arbitrum;
+    }
+  }
+
   public async addNetworkToWallet(chainId: number | string): Promise<boolean> {
     if (typeof window === 'undefined' || !(window as any).ethereum) return false;
     const idNum = Number(chainId);
@@ -347,21 +394,40 @@ export class Web3Service {
 
   public async switchNetwork(chainId: number) {
     if (!this.isEnabled) return;
-    try {
-      const network = this.supportedChains.find(chain => Number(chain.id) === chainId);
-      if (network) {
-        try {
-          await this.modal.switchNetwork(network as any);
-        } catch (switchErr: any) {
-          console.warn(`[Web3] AppKit switchNetwork thất bại cho chain ${chainId}, thử addNetworkToWallet:`, switchErr);
-          const added = await this.addNetworkToWallet(chainId);
-          if (!added) throw switchErr;
+
+    const chainIdStr = chainId.toString();
+    this.configuredChainId.set(chainIdStr);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('angular_web3_configured_chain_id', chainIdStr);
+    }
+
+    if (this.isConnected()) {
+      try {
+        const network = this.supportedChains.find(chain => Number(chain.id) === chainId);
+        if (network) {
+          try {
+            await this.modal.switchNetwork(network as any);
+          } catch (switchErr: any) {
+            console.warn(`[Web3] AppKit switchNetwork thất bại cho chain ${chainId}, thử addNetworkToWallet:`, switchErr);
+            const added = await this.addNetworkToWallet(chainId);
+            if (added) {
+              await this.modal.switchNetwork(network as any);
+            } else {
+              throw switchErr;
+            }
+          }
+        } else {
+          console.warn(`[Web3] Mạng với chainId ${chainId} không được hỗ trợ để chuyển.`);
         }
-      } else {
-        console.warn(`[Web3] Mạng với chainId ${chainId} không được hỗ trợ để chuyển.`);
+      } catch (error) {
+        console.error(`Lỗi chuyển mạng ${chainId}:`, error);
       }
-    } catch (error) {
-      console.error(`Lỗi chuyển mạng ${chainId}:`, error);
+    } else {
+      const popular = POPULAR_CHAINS.find(c => Number(c.chainId) === chainId);
+      if (popular) {
+        this.networkName.set(popular.name);
+        this.toastService.showToast(`Đã chọn mạng mong muốn: ${popular.name}`, 'success');
+      }
     }
   }
 
