@@ -116,7 +116,7 @@ export class Web3Service {
     this.modal = createAppKit({
       adapters: [new EthersAdapter()],
       networks: this.supportedChains as any,
-      defaultNetwork: this.getAppKitNetworkByChainId(this.configuredChainId()) as any,
+      defaultNetwork: this.supportedChains[0] as any,
       allowUnsupportedChain: true,
       metadata: {
         name: 'Angular Web3 DApp',
@@ -144,7 +144,14 @@ export class Web3Service {
       if (accountState.isConnected && accountState.address) {
         await this.updateBalanceAndNetwork();
         const currentChainId = this.chainId();
-        if (currentChainId) {
+        const targetChainId = Number(this.configuredChainId());
+
+        if (currentChainId && currentChainId !== targetChainId) {
+          // Tự động chuyển sang mạng mong muốn sau khi kết nối thành công để ví không bị lỗi treo unknown network lúc chưa connect
+          setTimeout(async () => {
+            await this.switchNetwork(targetChainId);
+          }, 500);
+        } else if (currentChainId) {
           this.checkAndUpdateNetworkState(currentChainId, false);
         }
       } else {
@@ -251,17 +258,6 @@ export class Web3Service {
   public async connect() {
     if (!this.isEnabled) return;
     try {
-      // Tự động kiểm tra và thêm mạng vào ví MetaMask/Extension nếu mạng cấu hình khác Arbitrum One (mạng testnet chưa được lưu trong ví)
-      // Điều này giúp tránh lỗi "unknown network" gây treo request trên MetaMask khi ví chưa lưu mạng này
-      const targetChainId = this.configuredChainId();
-      if (targetChainId !== '42161' && typeof window !== 'undefined' && (window as any).ethereum) {
-        try {
-          await this.addNetworkToWallet(targetChainId);
-        } catch (addErr) {
-          console.warn('[Web3] Thử thêm mạng trước khi kết nối ví thất bại:', addErr);
-        }
-      }
-
       // Ngắt kết nối phiên treo cũ nếu người dùng chưa kết nối active để tránh lỗi "Connection can be declined"
       if (!this.isConnected()) {
         try {
