@@ -269,7 +269,6 @@ export class HomeComponent {
     });
   }
 
-  // === DEMO TABLE STATE & LOGIC ===
   public readonly demoTableColumns: TableColumn[] = [
     { key: 'txHash', label: 'Mã Txn (Hash)', sortable: true },
     { key: 'method', label: 'Phương thức', sortable: true },

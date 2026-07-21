@@ -1,5 +1,15 @@
 # Lịch sử yêu cầu và xử lý của Agent
 
+## Ngày 21/07/2026
+
+### Yêu cầu: Dọn dẹp tất cả các comment không cần thiết trong source code
+- **Nội dung yêu cầu:** Rà soát toàn bộ tệp nguồn (.ts, .html, .css/.scss) để xóa bỏ các comment dư thừa, giữ lại chú thích cấu hình đặc biệt trong environment và JSDoc nghiệp vụ quan trọng.
+- **Giải pháp:**
+  1. Cập nhật [custom-date-time-range.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/custom-date-time-range/custom-date-time-range.component.html): Gỡ bỏ các comment CSS `/* ... */` viết sai vị trí bên trong thẻ `<button>`.
+  2. Cập nhật [home.component.ts](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.ts): Xóa bỏ separator comment `// === DEMO TABLE STATE & LOGIC ===`.
+  3. Cập nhật [web3.service.ts](file:///d:/git/angular-web3-wallet/src/app/core/services/web3.service.ts): Gỡ bỏ các comment chú thích nghiệp vụ đơn lẻ ở các dòng logic, giữ lại JSDoc giải thích cơ chế `clearWalletConnectStorage`.
+  4. Xác thực: Chạy lệnh `npm run build` thành công mà không gặp bất kỳ lỗi biên dịch nào.
+
 ## Ngày 18/07/2026
 
 ### Yêu cầu: Xây dựng và tích hợp Custom Table Component

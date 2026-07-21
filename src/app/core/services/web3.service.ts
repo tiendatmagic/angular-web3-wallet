@@ -63,7 +63,6 @@ export class Web3Service {
     this.initAppKit();
     this.setupThemeSync();
 
-    // Tự động cập nhật UI khi chưa kết nối ví dựa theo cấu hình mạng mong muốn
     effect(() => {
       const isConn = this.isConnected();
       const confId = this.configuredChainId();
@@ -75,7 +74,6 @@ export class Web3Service {
       }
     }, { allowSignalWrites: true });
 
-    // Lưu cấu hình mạng mong muốn vào localStorage khi thay đổi
     effect(() => {
       const chain = this.configuredChainId();
       if (typeof window !== 'undefined' && chain) {
@@ -106,7 +104,6 @@ export class Web3Service {
       return;
     }
 
-    // Nếu chưa đăng nhập, tự động dọn rác session/proposal treo cũ trong storage
     if (!this.isConnected()) {
       await this.clearWalletConnectStorage();
     }
@@ -147,7 +144,6 @@ export class Web3Service {
         const targetChainId = Number(this.configuredChainId());
 
         if (currentChainId && currentChainId !== targetChainId) {
-          // Tự động chuyển sang mạng mong muốn sau khi kết nối thành công để ví không bị lỗi treo unknown network lúc chưa connect
           setTimeout(async () => {
             await this.switchNetwork(targetChainId);
           }, 500);
@@ -281,7 +277,6 @@ export class Web3Service {
         }
       }
 
-      // Ngắt kết nối phiên treo cũ nếu người dùng chưa kết nối active để tránh lỗi "Connection can be declined"
       if (!this.isConnected()) {
         try {
           await this.modal.disconnect();
@@ -290,7 +285,6 @@ export class Web3Service {
       await this.modal.open();
     } catch (error: any) {
       console.error('Lỗi kết nối ví:', error);
-      // Nếu dính lỗi Connection declined do request cũ active, tự động ngắt phiên treo và mở lại
       if (error?.message?.includes('declined') || error?.message?.includes('active')) {
         try {
           await this.modal.disconnect();
