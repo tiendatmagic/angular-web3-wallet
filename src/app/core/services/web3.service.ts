@@ -176,6 +176,20 @@ export class Web3Service {
         this.updateBalanceAndNetwork();
       }
     });
+
+    this.modal.subscribeEvents(async (event: any) => {
+      const eventName = event.data?.event;
+      const errorMsg = event.data?.properties?.message || event.data?.error || '';
+      const isConnectionError = eventName === 'CONNECT_ERROR' || errorMsg.toString().toLowerCase().includes('declined') || errorMsg.toString().toLowerCase().includes('active');
+      
+      if (isConnectionError) {
+        console.warn('[Web3] Phát hiện lỗi kết nối hoặc treo session từ AppKit, tự động giải phóng...');
+        try {
+          await this.modal.disconnect();
+          await this.clearWalletConnectStorage();
+        } catch (e) {}
+      }
+    });
   }
 
   private checkAndUpdateNetworkState(chainId: number, showToastAlert = true) {

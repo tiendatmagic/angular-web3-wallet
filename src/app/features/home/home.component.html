@@ -101,8 +101,8 @@
           <div class="grid grid-cols-2 gap-3">
             @for (chain of stateService.POPULAR_CHAINS; track chain.chainId) {
               <button
-                [class.!border-primary]="stateService.chainId() === +chain.chainId"
-                [class.!text-primary]="stateService.chainId() === +chain.chainId"
+                [class.!border-primary]="(stateService.isConnected() ? stateService.chainId() : +stateService.configuredChainId()) === +chain.chainId"
+                [class.!text-primary]="(stateService.isConnected() ? stateService.chainId() : +stateService.configuredChainId()) === +chain.chainId"
                 (click)="stateService.switchNetwork(+chain.chainId)"
                 class="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800/60 text-xs font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-50/50 dark:hover:bg-slate-900/50 transition-all cursor-pointer"
               >

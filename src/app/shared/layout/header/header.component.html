@@ -85,8 +85,8 @@
                     (click)="
                       stateService.switchNetwork(+chain.chainId); showNetworkDropdown.set(false)
                     "
-                    [class.bg-primary/10]="stateService.chainId() === +chain.chainId"
-                    [class.dark:bg-primary/20]="stateService.chainId() === +chain.chainId"
+                    [class.bg-primary/10]="(stateService.isConnected() ? stateService.chainId() : +stateService.configuredChainId()) === +chain.chainId"
+                    [class.dark:bg-primary/20]="(stateService.isConnected() ? stateService.chainId() : +stateService.configuredChainId()) === +chain.chainId"
                     class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-all cursor-pointer group"
                   >
                     <div class="flex items-center gap-3">
