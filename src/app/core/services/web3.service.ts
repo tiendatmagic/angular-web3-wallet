@@ -272,6 +272,15 @@ export class Web3Service {
   public async connect() {
     if (!this.isEnabled) return;
     try {
+      const defaultChain = this.supportedChains.find(c => !(c as any).testnet && !c.name.toLowerCase().includes('sepolia') && !c.name.toLowerCase().includes('testnet')) || this.supportedChains[0];
+      if (defaultChain) {
+        try {
+          await this.modal.switchNetwork(defaultChain as any);
+        } catch (e) {
+          console.warn('[Web3] Ép mạng mặc định trước khi mở modal thất bại:', e);
+        }
+      }
+
       // Ngắt kết nối phiên treo cũ nếu người dùng chưa kết nối active để tránh lỗi "Connection can be declined"
       if (!this.isConnected()) {
         try {
