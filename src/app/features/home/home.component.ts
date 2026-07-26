@@ -28,6 +28,7 @@ import { TableComponent, TableCellDirective, TableColumn } from '@shared/compone
 import { PaginationComponent } from '@shared/components/pagination/pagination.component';
 import { CodeBlockComponent, CodeFile } from '@shared/components/code-block/code-block.component';
 import { FileUploadComponent, UploadFileItem } from '@shared/components/file-upload/file-upload.component';
+import { InputOtpComponent } from '@shared/components/input-otp/input-otp.component';
 import { parseEther } from 'ethers';
 
 @Component({
@@ -61,6 +62,7 @@ import { parseEther } from 'ethers';
     PaginationComponent,
     CodeBlockComponent,
     FileUploadComponent,
+    InputOtpComponent
   ],
   templateUrl: './home.component.html'
 })
@@ -493,4 +495,17 @@ export function getNetworkRpc(chainId: number): string {
   const net = web3Config.networks.find(n => n.id === chainId);
   return net ? net.rpcUrl : '';
 }`;
+
+  public readonly demoOtpStandard = signal<string>('582910');
+  public readonly demoOtpPin = signal<string>('1234');
+  public readonly demoOtpAlpha = signal<string>('WEB3W7');
+  public readonly demoOtpError = signal<string>('888');
+  public readonly demoOtpDisabled = signal<string>('999111');
+  public readonly demoOtpMaskToggle = signal<boolean>(false);
+  public readonly demoOtpCountdown = signal<number>(45);
+
+  public resendOtpDemo(): void {
+    this.demoOtpStandard.set('');
+    this.demoOtpCountdown.set(60);
+  }
 }

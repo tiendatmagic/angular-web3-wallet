@@ -1,0 +1,92 @@
+<div class="relative inline-flex items-center select-none" [attr.aria-label]="ariaLabel">
+  <!-- Input ẩn để thu thập sự kiện gõ/paste từ hệ thống -->
+  <input
+    #hiddenInput
+    type="text"
+    [attr.inputmode]="type === 'numeric' ? 'numeric' : 'text'"
+    [attr.autocomplete]="type === 'numeric' ? 'one-time-code' : 'off'"
+    [value]="valueSignal()"
+    [disabled]="disabled"
+    [readOnly]="readonly"
+    [maxLength]="length"
+    (input)="onInputChange($event)"
+    (focus)="onInputFocus()"
+    (blur)="onInputBlur()"
+    (keydown)="onKeyDown($event)"
+    (paste)="onPaste($event)"
+    class="sr-only opacity-0 absolute pointer-events-none w-0 h-0"
+    tabindex="-1"
+  />
+
+  <!-- Danh sách ô nhập OTP (Slots) -->
+  <div
+    class="flex items-center"
+    [ngClass]="{
+      'gap-1.5': size === 'sm',
+      'gap-2': size === 'md',
+      'gap-2.5': size === 'lg'
+    }"
+  >
+    @for (slotIndex of slotsSignal(); track slotIndex) {
+      <!-- Individual Slot -->
+      <div
+        (click)="onSlotClick(slotIndex)"
+        class="relative flex items-center justify-center font-mono transition-all duration-150 cursor-pointer shadow-sm"
+        [ngClass]="{
+          'w-8 h-9 text-sm rounded-md': size === 'sm',
+          'w-11 h-12 text-base rounded-lg': size === 'md',
+          'w-14 h-14 text-xl rounded-xl': size === 'lg',
+          'bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700':
+            !isSlotFocused(slotIndex) && !invalid && !disabled,
+          'border-violet-500 dark:border-violet-500 ring-2 ring-violet-500/25 dark:ring-violet-500/35 bg-violet-50/30 dark:bg-violet-950/20 z-10 scale-[1.03]':
+            isSlotFocused(slotIndex) && !invalid && !disabled,
+          'font-bold border-slate-400 dark:border-slate-500':
+            hasValueAt(slotIndex) && !isSlotFocused(slotIndex) && !invalid && !disabled,
+          'border-rose-500 dark:border-rose-500 text-rose-600 dark:text-rose-400 bg-rose-50/40 dark:bg-rose-950/20 ring-2 ring-rose-500/20':
+            invalid && !disabled,
+          'opacity-50 cursor-not-allowed bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-800 text-slate-400 dark:text-slate-500 shadow-none':
+            disabled
+        }"
+      >
+        <!-- Char Content -->
+        @if (hasValueAt(slotIndex)) {
+          <span class="animate-in fade-in zoom-in-75 duration-100">
+            {{ getSlotChar(slotIndex) }}
+          </span>
+        } @else if (placeholder && !isCaretVisible(slotIndex)) {
+          <span class="text-slate-300 dark:text-slate-600 font-normal">
+            {{ placeholder }}
+          </span>
+        }
+
+        <!-- Caret Cursor Animation -->
+        @if (isCaretVisible(slotIndex) && !disabled && !readonly) {
+          <span
+            class="otp-caret-blink inline-block bg-violet-600 dark:bg-violet-400 rounded-full"
+            [ngClass]="{
+              'h-4 w-0.5': size === 'sm',
+              'h-5 w-0.5': size === 'md',
+              'h-6 w-0.5': size === 'lg'
+            }"
+          ></span>
+        }
+      </div>
+
+      <!-- Separator (Gạch nối giữa nhóm) -->
+      @if (shouldShowSeparatorAfter(slotIndex)) {
+        <div
+          class="flex items-center justify-center text-slate-400 dark:text-slate-500 font-semibold select-none transition-colors"
+          [ngClass]="{
+            'px-0.5 text-sm': size === 'sm',
+            'px-1 text-base': size === 'md',
+            'px-1.5 text-lg': size === 'lg'
+          }"
+        >
+          <svg class="w-3.5 h-3.5 stroke-[2.5]" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg>
+        </div>
+      }
+    }
+  </div>
+</div>

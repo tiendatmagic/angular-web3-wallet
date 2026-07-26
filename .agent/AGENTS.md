@@ -2,6 +2,16 @@
 
 ## Ngày 27/07/2026
 
+### Yêu cầu: Xây dựng và tích hợp Input OTP Component (app-input-otp)
+- **Nội dung yêu cầu:** Thêm component `input-otp` mới tại `src/app/shared/components/input-otp` lấy cảm hứng từ Shadcn Space Input OTP, hỗ trợ phân nhóm ô slot, gạch nối separator, mask mode (mã PIN), gõ phím di chuyển mượt mà, paste mã từ clipboard, hiệu ứng caret nhấp nháy (blinking cursor), tích hợp ControlValueAccessor và bổ sung showcase tại trang chủ.
+- **Giải pháp:**
+  1. **Tạo Component Input OTP:**
+     - [input-otp.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/input-otp/input-otp.component.ts): Standalone component tích hợp `ControlValueAccessor`, dùng `signals` (`valueSignal`, `isFocusedSignal`, `focusedIndexSignal`) quản lý trạng thái. Xử lý focus/selection bằng hidden input ảo, lắng nghe keydown (`ArrowLeft`, `ArrowRight`, `Backspace`), clean giá trị theo type (`numeric`, `alphanumeric`, `any`), tự động phát hiện khi nhập đủ độ dài `completed`.
+     - [input-otp.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/input-otp/input-otp.component.html): Render từng ô slot vuông tỉ mỉ theo các kích thước `sm`, `md`, `lg`. Hiển thị ký tự hoặc mask `●`, vạch nhấp nháy caret `span.otp-caret-blink` khi slot active và rỗng, gạch nối separator giữa các nhóm `groupSize`.
+     - [input-otp.component.css](file:///d:/git/angular-web3-wallet/src/app/shared/components/input-otp/input-otp.component.css): Đảm bảo `:host { display: block; }`, thêm keyframe animation `@keyframes otp-caret-blink` cho con trỏ caret nhấp nháy.
+  2. **Tích hợp Showcase vào trang chủ:**
+     - Cập nhật [home.component.ts](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.ts) và [home.component.html](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.html): Bổ sung **Card 18: Component Input OTP Cao Cấp (app-input-otp)** trình diễn 4 kịch bản: OTP 6 số phân nhóm 3-3, Mã PIN an toàn (Mask Mode 4 ô), Mã Voucher/Ref Code (Alphanumeric 6 ô), Trạng thái lỗi (Invalid) & Vô hiệu hóa (Disabled).
+
 ### Yêu cầu: Xây dựng và tích hợp File Upload Component (app-file-upload)
 - **Nội dung yêu cầu:** Thêm component `file-upload` mới tại `src/app/shared/components/file-upload` lấy cảm hứng từ Shadcn Space File Upload, hỗ trợ kéo thả tệp (Drag & Drop), chọn 1 hoặc nhiều tệp, giới hạn dung lượng/định dạng, giả lập upload tiến trình sinh động, xem trước hình ảnh (Modal Lightbox), tích hợp ControlValueAccessor và bổ sung showcase tại trang chủ.
 - **Giải pháp:**
