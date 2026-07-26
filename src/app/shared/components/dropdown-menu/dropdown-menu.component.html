@@ -43,6 +43,8 @@
     <div
       class="absolute z-50 {{ width }} min-w-[200px] {{ getPlacementClasses() }} dropdown-menu-popover bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-slate-200/80 dark:border-slate-800/80 shadow-2xl shadow-slate-900/10 dark:shadow-black/60 rounded-[15px] p-1.5 text-slate-800 dark:text-slate-100 focus:outline-none"
     >
+      <ng-content select="[dropdown-content]"></ng-content>
+
       <!-- Optional User Header Section -->
       @if (header) {
         <div class="px-3 py-2.5 mb-1 bg-slate-50/80 dark:bg-slate-800/40 rounded-[11px] border border-slate-100 dark:border-slate-800/50">

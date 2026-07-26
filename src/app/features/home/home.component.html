@@ -1808,6 +1808,164 @@
                 </app-dropdown-menu>
               </div>
             </div>
+
+            <!-- Demo 06: Voice Chat Pill & Participants Menu (Shadcn Space 06) -->
+            <div class="space-y-3 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60 col-span-1 lg:col-span-2">
+              <div class="flex items-center justify-between">
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">5. Dropdown Menu 06 - Voice Chat Pill & Live Room</span>
+                    <span class="px-2 py-0.5 text-[10px] font-black rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-300 border border-emerald-200/60 dark:border-emerald-800/60 animate-pulse">● LIVE VOICE</span>
+                  </div>
+                  <span class="text-[11px] text-slate-500 dark:text-slate-400">Trigger viên thuốc (Avatar Stack + Waveform) & Menu điều khiển phòng thoại Voice Chat HD</span>
+                </div>
+                <app-badge variant="success" rounded="full" size="sm">Voice Chat 06</app-badge>
+              </div>
+
+              <div class="flex flex-wrap items-center gap-4 pt-2">
+                <!-- Dropdown Menu 06 Voice Chat Component -->
+                <app-dropdown-menu
+                  [customTrigger]="true"
+                  width="w-80"
+                  placement="bottom-left"
+                >
+                  <!-- 1. Voice Chat Pill Trigger -->
+                  <div dropdown-trigger class="inline-flex items-center gap-3.5 px-4 py-2 rounded-full bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800/90 shadow-md shadow-slate-900/5 hover:border-purple-500/40 hover:shadow-lg transition-all duration-200 cursor-pointer select-none group">
+                    <div class="relative w-8 h-8 rounded-full bg-slate-950 dark:bg-slate-800 text-white flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
+                      <app-icon name="waveform" class="w-4 h-4 text-emerald-400"></app-icon>
+                      <span class="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-white dark:ring-slate-900 animate-pulse"></span>
+                    </div>
+
+                    <div class="flex items-center">
+                      <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="User 1" class="w-7 h-7 rounded-full object-cover ring-2 ring-white dark:ring-slate-900 shadow-sm" />
+                      <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&auto=format&fit=crop&q=80" alt="User 2" class="w-7 h-7 rounded-full object-cover ring-2 ring-white dark:ring-slate-900 -ml-2.5 shadow-sm" />
+                      <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80" alt="User 3" class="w-7 h-7 rounded-full object-cover ring-2 ring-white dark:ring-slate-900 -ml-2.5 shadow-sm" />
+                      
+                      <div class="w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-extrabold text-[11px] flex items-center justify-center -ml-2.5 ring-2 ring-white dark:ring-slate-900 shadow-sm">
+                        +4
+                      </div>
+                    </div>
+
+                    <app-icon name="chevron-down" class="w-4 h-4 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-200 transition-colors ml-0.5"></app-icon>
+                  </div>
+
+                  <!-- 2. Voice Chat Panel Content -->
+                  <div dropdown-content class="p-1 space-y-3">
+                    <!-- Room Header -->
+                    <div class="p-3 rounded-xl bg-slate-900 text-white dark:bg-slate-950/80 border border-slate-800 flex items-center justify-between">
+                      <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/30">
+                          <app-icon name="waveform" class="w-4.5 h-4.5"></app-icon>
+                        </div>
+                        <div>
+                          <div class="flex items-center gap-2">
+                            <h4 class="text-xs font-extrabold truncate">Web3 Dev Voice Lounge</h4>
+                            <span class="px-1.5 py-0.5 text-[9px] font-black rounded bg-emerald-500 text-slate-950 uppercase">LIVE</span>
+                          </div>
+                          <p class="text-[10px] text-slate-400">7 thành viên • 32Kbps HD Voice</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Participants List -->
+                    <div class="space-y-1 max-h-48 overflow-y-auto custom-scrollbar px-1">
+                      @for (user of demoVoiceParticipants; track user.id) {
+                        <div class="flex items-center justify-between p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors">
+                          <div class="flex items-center gap-2.5 min-w-0">
+                            <div class="relative shrink-0">
+                              <img [src]="user.avatar" [alt]="user.name" class="w-7 h-7 rounded-full object-cover ring-2 ring-purple-500/20" />
+                              @if (user.isSpeaking) {
+                                <span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-white dark:ring-slate-900"></span>
+                              }
+                            </div>
+                            <div class="flex flex-col truncate min-w-0">
+                              <div class="flex items-center gap-1.5">
+                                <span class="text-xs font-bold text-slate-800 dark:text-slate-200 truncate">{{ user.name }}</span>
+                                @if (user.role === 'Host') {
+                                  <span class="px-1 py-0.2 text-[9px] font-extrabold rounded bg-purple-100 dark:bg-purple-950 text-purple-600 dark:text-purple-300">Host</span>
+                                }
+                              </div>
+                              <span class="text-[10px] text-slate-400">
+                                {{ user.isSpeaking ? 'Đang nói...' : (user.isMuted ? 'Đã tắt mic' : user.role) }}
+                              </span>
+                            </div>
+                          </div>
+
+                          <!-- Voice Indicator / Soundwave -->
+                          <div class="flex items-center gap-2 shrink-0">
+                            @if (user.isSpeaking) {
+                              <div class="flex items-center gap-0.5 text-emerald-500 h-4 px-1">
+                                <span class="voice-wave-bar"></span>
+                                <span class="voice-wave-bar"></span>
+                                <span class="voice-wave-bar"></span>
+                                <span class="voice-wave-bar"></span>
+                              </div>
+                            } @else if (user.isMuted) {
+                              <app-icon name="mic-off" class="w-3.5 h-3.5 text-rose-500"></app-icon>
+                            } @else {
+                              <app-icon name="mic" class="w-3.5 h-3.5 text-slate-400"></app-icon>
+                            }
+                          </div>
+                        </div>
+                      }
+                    </div>
+
+                    <!-- Voice Action Bar -->
+                    <div class="pt-2 border-t border-slate-200/80 dark:border-slate-800/80 flex items-center justify-between gap-2 px-1">
+                      <div class="flex items-center gap-1.5">
+                        <button
+                          type="button"
+                          (click)="toggleVoiceMic()"
+                          class="p-2 rounded-xl border transition-colors flex items-center justify-center"
+                          [ngClass]="{
+                            'bg-rose-50 dark:bg-rose-950/60 border-rose-200 dark:border-rose-800 text-rose-600 dark:text-rose-400': demoVoiceMuted(),
+                            'bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200': !demoVoiceMuted()
+                          }"
+                          [title]="demoVoiceMuted() ? 'Bật micro' : 'Tắt micro'"
+                        >
+                          <app-icon [name]="demoVoiceMuted() ? 'mic-off' : 'mic'" class="w-4 h-4"></app-icon>
+                        </button>
+
+                        <button
+                          type="button"
+                          (click)="toggleVoiceSound()"
+                          class="p-2 rounded-xl border transition-colors flex items-center justify-center"
+                          [ngClass]="{
+                            'bg-rose-50 dark:bg-rose-950/60 border-rose-200 dark:border-rose-800 text-rose-600 dark:text-rose-400': demoVoiceDeafened(),
+                            'bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200': !demoVoiceDeafened()
+                          }"
+                          [title]="demoVoiceDeafened() ? 'Bật âm thanh' : 'Tắt âm thanh'"
+                        >
+                          <app-icon name="volume-2" class="w-4 h-4"></app-icon>
+                        </button>
+
+                        <button
+                          type="button"
+                          (click)="toggleVoiceScreenShare()"
+                          class="p-2 rounded-xl border transition-colors flex items-center justify-center"
+                          [ngClass]="{
+                            'bg-purple-100 dark:bg-purple-950 border-purple-300 text-purple-600 dark:text-purple-300': demoVoiceScreenSharing(),
+                            'bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200': !demoVoiceScreenSharing()
+                          }"
+                          title="Chia sẻ màn hình"
+                        >
+                          <app-icon name="send" class="w-4 h-4"></app-icon>
+                        </button>
+                      </div>
+
+                      <button
+                        type="button"
+                        (click)="toggleVoiceConnection()"
+                        class="px-3 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm transition-colors"
+                      >
+                        <app-icon name="phone-off" class="w-3.5 h-3.5"></app-icon>
+                        <span>Rời phòng</span>
+                      </button>
+                    </div>
+                  </div>
+                </app-dropdown-menu>
+              </div>
+            </div>
           </div>
         </div>
       </div>

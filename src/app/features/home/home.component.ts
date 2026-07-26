@@ -582,4 +582,43 @@ export function getNetworkRpc(chainId: number): string {
   public onDropdownSelect(item: DropdownMenuItem): void {
     this.demoDropdownLastAction.set(`Đã kích hoạt thao tác: "${item.label}"`);
   }
+
+  public readonly demoVoiceConnected = signal<boolean>(true);
+  public readonly demoVoiceMuted = signal<boolean>(false);
+  public readonly demoVoiceDeafened = signal<boolean>(false);
+  public readonly demoVoiceScreenSharing = signal<boolean>(false);
+
+  public readonly demoVoiceParticipants = [
+    { id: '1', name: 'Nguyễn Tiến Đạt', role: 'Host', avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80', isSpeaking: true, isMuted: false },
+    { id: '2', name: 'Elena Rostova', role: 'Co-Host', avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&auto=format&fit=crop&q=80', isSpeaking: false, isMuted: false },
+    { id: '3', name: 'Marcus Vance', role: 'Speaker', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80', isSpeaking: false, isMuted: true },
+    { id: '4', name: 'Sophia Chen', role: 'Listener', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80', isSpeaking: false, isMuted: true },
+    { id: '5', name: 'Alexander Wright', role: 'Listener', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&auto=format&fit=crop&q=80', isSpeaking: false, isMuted: true },
+    { id: '6', name: 'Liam Sterling', role: 'Listener', avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&auto=format&fit=crop&q=80', isSpeaking: false, isMuted: true },
+    { id: '7', name: 'Chloe Bennett', role: 'Listener', avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&auto=format&fit=crop&q=80', isSpeaking: false, isMuted: true }
+  ];
+
+  public toggleVoiceMic(): void {
+    this.demoVoiceMuted.update(v => !v);
+    const state = this.demoVoiceMuted() ? 'Tắt micro (Muted)' : 'Bật micro (Unmuted)';
+    this.stateService.showToast(`Voice Chat: ${state}`, this.demoVoiceMuted() ? 'warning' : 'success');
+  }
+
+  public toggleVoiceSound(): void {
+    this.demoVoiceDeafened.update(v => !v);
+    const state = this.demoVoiceDeafened() ? 'Tắt âm thanh phòng (Deafened)' : 'Bật lại âm thanh phòng';
+    this.stateService.showToast(`Voice Chat: ${state}`, this.demoVoiceDeafened() ? 'warning' : 'success');
+  }
+
+  public toggleVoiceScreenShare(): void {
+    this.demoVoiceScreenSharing.update(v => !v);
+    const state = this.demoVoiceScreenSharing() ? 'Đang chia sẻ màn hình Web3' : 'Đã dừng chia sẻ màn hình';
+    this.stateService.showToast(`Voice Chat: ${state}`, 'success');
+  }
+
+  public toggleVoiceConnection(): void {
+    this.demoVoiceConnected.update(v => !v);
+    const state = this.demoVoiceConnected() ? 'Đã tham gia phòng thoại Web3 Voice Lounge' : 'Đã ngắt kết nối Voice Chat';
+    this.stateService.showToast(state, this.demoVoiceConnected() ? 'success' : 'warning');
+  }
 }
