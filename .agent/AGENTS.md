@@ -2,16 +2,31 @@
 
 ## Ngày 27/07/2026
 
-### Yêu cầu: Xây dựng và tích hợp Dropdown Menu Component (app-dropdown-menu) & Mẫu Voice Chat 06
-- **Nội dung yêu cầu:** Thêm component `dropdown-menu` mới tại `src/app/shared/components/dropdown-menu` lấy cảm hứng từ Shadcn Space Dropdown Menu, hỗ trợ header tài khoản người dùng, submenu cấp 2 nhô mượt sang phải, Checkbox/Radio items, Shortcut badges và **Mẫu 06 Voice Chat** (Pill trigger chứa waveform logo, live indicator dot, avatar stack + count badge `+4` và Dropdown Panel phòng thoại Voice Chat HD với hiệu ứng soundwave animation nhấp nháy giọng nói, nút Bật/Tắt Mic, Sound, Share Screen, Leave Room).
+### Yêu cầu: Loại bỏ UI phím tắt macOS và tăng kích thước font-size của Dropdown Menu Component
+- **Nội dung yêu cầu:** Xóa toàn bộ các biểu tượng phím tắt kiểu macOS (`⌘P`, `⌘W`, `⌘S`, `⌘K`, `⇧⌘Q`, `⌘B`, `⌘N`, `⌘C`) khỏi các menu item và trang showcase; đồng thời xem xét lại tổng thể `dropdown-menu`, điều chỉnh kích thước chữ (font-size) to hơn và thoáng hơn để người dùng dễ đọc.
+- **Giải pháp:**
+  1. **Loại bỏ phím tắt macOS:**
+     - Cập nhật [home.component.ts](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.ts): Loại bỏ toàn bộ thuộc tính `shortcut` chứa các ký tự macOS `⌘` và `⇧` trong danh sách menu item demo (`demoProfileMenuItems`, `demoDisplayMenuItems`, `demoWeb3ActionItems`).
+     - Cập nhật [home.component.html](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.html): Loại bỏ khối `Keyboard Shortcuts (Kbd)` hiển thị phím `⌘ + K` trong Card 8 và đổi tên thẻ thành **Badge & Tooltip**. Gỡ bỏ import `KbdComponent` thừa trong `home.component.ts`.
+  2. **Tăng Font-size & kích thước tổng thể cho Dropdown Menu:**
+     - Cập nhật [dropdown-menu.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/dropdown-menu/dropdown-menu.component.ts): Tăng `width` mặc định từ `w-56` lên `w-64` để khung menu mở rộng thoải mái hơn.
+     - Cập nhật [dropdown-menu.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/dropdown-menu/dropdown-menu.component.html):
+       - Tăng kích thước chữ menu item từ `text-xs` (`12px`) lên **`text-sm` (`14px`) font-semibold**, tăng padding mỗi item lên `px-3 py-2.5 rounded-[11px]`.
+       - Tăng kích thước icon đi kèm từ `w-4 h-4` (`16px`) lên **`w-4.5 h-4.5` (`18px`)**.
+       - Tăng font-size tiêu đề header tài khoản lên `text-sm font-bold`, subtitle lên `text-xs`, kích thước avatar lên `w-10 h-10`.
+       - Tăng font-size của nhãn nhóm (Group Header) lên `text-xs font-bold uppercase tracking-wider` và mô tả item lên `text-xs`.
+  3. **Xác thực:** Chạy lệnh `npm run build` kiểm tra biên dịch thành công.
+
+### Yêu cầu: Xây dựng và tích hợp Dropdown Menu Component (app-dropdown-menu) & Component Voice Chat 06 (app-voice-chat)
+- **Nội dung yêu cầu:** Thêm component `dropdown-menu` mới tại `src/app/shared/components/dropdown-menu` lấy cảm hứng từ Shadcn Space Dropdown Menu, và xây dựng chuẩn xác 100% mẫu **Voice Chat 06 Morphing Card (`app-voice-chat`)** với hiệu ứng biến hình FLIP Morphing Transition (kích thước `width: 268px -> 360px`, `height: 60px -> 440px`, góc bo `999px -> 24px`), tính toán tọa độ di chuyển động của chuỗi Avatar (`getAvatarPosition(index)`: xếp hàng ngang đè mượt khi thu gọn, bung thành lưới 4 cột khi mở rộng), vòng viền nhấp nháy phát biểu `SpeakingRing` màu teal (`border-2 border-teal-400`), AudioWaveIcon 3 vạch sóng nhấp nháy (`animate-wave-1/2/3`) và nút Join Now / Leave Voice.
 - **Giải pháp:**
   1. **Bổ sung Icon Voice Chat:** Cập nhật [icon.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/icon/icon.component.html) bổ sung thêm các icon SVG: `credit-card`, `keyboard`, `cloud`, `github`, `life-buoy`, `message-square`, `mail`, `dot`, `mic`, `mic-off`, `volume-2`, `phone-off`, `waveform`.
-  2. **Tạo Component Dropdown Menu:**
-     - [dropdown-menu.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/dropdown-menu/dropdown-menu.component.ts): Standalone component tích hợp `signals` (`isOpen`, `activeSubmenuId`), hỗ trợ custom trigger & custom panel content slot (`<ng-content select="[dropdown-content]">`).
-     - [dropdown-menu.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/dropdown-menu/dropdown-menu.component.html): Render Popover panel Glassmorphism bo góc max 15px (`rounded-[15px]`), render Header user info, Submenu flyout cấp 2, Checkbox/Radio options và slot custom content.
-     - [dropdown-menu.component.css](file:///d:/git/angular-web3-wallet/src/app/shared/components/dropdown-menu/dropdown-menu.component.css): Đảm bảo `:host { display: block; }`, bổ sung keyframes animation `@keyframes wave-bar` cho hiệu ứng sóng âm thanh nói chuyện (speaking soundwave animation).
+  2. **Tạo Component Voice Chat (app-voice-chat):**
+     - [voice-chat.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/dropdown-menu/voice-chat.component.ts): Component standalone tính toán động vị trí Avatar `left`, `top`, `size`, `opacity`, `zIndex` và `transitionDelay` theo trạng thái `isExpanded()`.
+     - [voice-chat.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/dropdown-menu/voice-chat.component.html): Render container duy nhất biến hình mượt mà với `cubic-bezier(0.32,0.72,0,1)`, AudioWaveIcon bên trái khi thu gọn, Header + Subheader số lượng thành viên khi mở rộng, vạch phân cách, chuỗi Avatar kèm nhãn tên và nút Join Now / Leave Voice.
+     - [voice-chat.component.css](file:///d:/git/angular-web3-wallet/src/app/shared/components/dropdown-menu/voice-chat.component.css): Đảm bảo `:host { display: block; }`, bổ sung keyframes animation `@keyframes wave` cho 3 vạch sóng âm thanh trong AudioWaveIcon.
   3. **Tích hợp Showcase vào trang chủ:**
-     - Cập nhật [home.component.ts](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.ts) và [home.component.html](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.html): Bổ sung **Card 19: Component Dropdown Menu Cao Cấp (app-dropdown-menu)** trình diễn 5 kịch bản phong phú bao gồm **Demo 06: Voice Chat Pill & Live Room**.
+     - Cập nhật [home.component.ts](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.ts) và [home.component.html](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.html): Đăng ký `VoiceChatComponent` và bổ sung vào **Card 19: Component Dropdown Menu Cao Cấp (app-dropdown-menu)** trình diễn trực quan mẫu **Voice Chat 06 Morphing Card**.
 
 ### Yêu cầu: Xây dựng và tích hợp Input OTP Component (app-input-otp)
 - **Nội dung yêu cầu:** Thêm component `input-otp` mới tại `src/app/shared/components/input-otp` lấy cảm hứng từ Shadcn Space Input OTP, hỗ trợ phân nhóm ô slot, gạch nối separator, mask mode (mã PIN), gõ phím di chuyển mượt mà, paste mã từ clipboard, hiệu ứng caret nhấp nháy (blinking cursor), tích hợp ControlValueAccessor và bổ sung showcase tại trang chủ.

@@ -61,7 +61,7 @@ export class DropdownMenuComponent {
   @Input() triggerSize: 'sm' | 'md' | 'lg' = 'md';
   @Input() avatarUrl: string = '';
   @Input() placement: 'bottom-left' | 'bottom-right' | 'top-left' | 'top-right' | 'bottom-center' | 'top-center' = 'bottom-left';
-  @Input() width: string = 'w-56';
+  @Input() width: string = 'w-64';
   @Input() disabled: boolean = false;
   @Input() closeOnSelect: boolean = true;
   @Input() customTrigger: boolean = false;

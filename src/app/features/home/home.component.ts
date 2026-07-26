@@ -15,7 +15,6 @@ import { CardComponent } from '@shared/components/card/card.component';
 import { CustomInputComponent } from '@shared/components/custom-input/custom-input.component';
 import { AccordionComponent } from '@shared/components/accordion/accordion.component';
 import { AccordionItemComponent } from '@shared/components/accordion/accordion-item.component';
-import { KbdComponent } from '@shared/components/kbd/kbd.component';
 import { TooltipDirective } from '@shared/components/tooltip/tooltip.directive';
 import { RippleDirective } from '@shared/components/ripple/ripple.directive';
 import { CustomSliderComponent } from '@shared/components/custom-slider/custom-slider.component';
@@ -30,6 +29,7 @@ import { CodeBlockComponent, CodeFile } from '@shared/components/code-block/code
 import { FileUploadComponent, UploadFileItem } from '@shared/components/file-upload/file-upload.component';
 import { InputOtpComponent } from '@shared/components/input-otp/input-otp.component';
 import { DropdownMenuComponent, DropdownMenuItem, DropdownMenuHeader } from '@shared/components/dropdown-menu/dropdown-menu.component';
+import { VoiceChatComponent } from '@shared/components/dropdown-menu/voice-chat.component';
 import { parseEther } from 'ethers';
 
 @Component({
@@ -52,7 +52,6 @@ import { parseEther } from 'ethers';
     BadgeComponent,
     AccordionComponent,
     AccordionItemComponent,
-    KbdComponent,
     TooltipDirective,
     TabGroupComponent,
     CustomSliderComponent,
@@ -64,7 +63,8 @@ import { parseEther } from 'ethers';
     CodeBlockComponent,
     FileUploadComponent,
     InputOtpComponent,
-    DropdownMenuComponent
+    DropdownMenuComponent,
+    VoiceChatComponent
   ],
   templateUrl: './home.component.html'
 })
@@ -522,10 +522,10 @@ export function getNetworkRpc(chainId: number): string {
 
   public readonly demoProfileMenuItems: DropdownMenuItem[] = [
     { type: 'header', label: 'Tài khoản DApp' },
-    { id: 'profile', label: 'Trang cá nhân', icon: 'user', shortcut: '⌘P' },
-    { id: 'wallet', label: 'Ví Web3 đã kết nối', icon: 'wallet', shortcut: '⌘W', badge: 'Active', badgeColor: 'bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/50' },
-    { id: 'settings', label: 'Cài đặt hệ thống', icon: 'settings', shortcut: '⌘S' },
-    { id: 'keyboard', label: 'Phím tắt bàn phím', icon: 'keyboard', shortcut: '⌘K' },
+    { id: 'profile', label: 'Trang cá nhân', icon: 'user' },
+    { id: 'wallet', label: 'Ví Web3 đã kết nối', icon: 'wallet', badge: 'Active', badgeColor: 'bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/50' },
+    { id: 'settings', label: 'Cài đặt hệ thống', icon: 'settings' },
+    { id: 'keyboard', label: 'Phím tắt bàn phím', icon: 'keyboard' },
     { type: 'separator' },
     { type: 'header', label: 'Dịch vụ & Đội ngũ' },
     { id: 'pro', label: 'Nâng cấp Web3 VIP', icon: 'sparkles', iconColor: 'text-amber-500', badge: 'PRO', badgeColor: 'bg-amber-100 dark:bg-amber-950 text-amber-600 dark:text-amber-300 border border-amber-200 dark:border-amber-800/50' },
@@ -535,14 +535,14 @@ export function getNetworkRpc(chainId: number): string {
     { id: 'help', label: 'Trung tâm trợ giúp', icon: 'life-buoy' },
     { id: 'github', label: 'Mã nguồn GitHub', icon: 'github' },
     { type: 'separator' },
-    { id: 'logout', label: 'Đăng xuất tài khoản', icon: 'logout', variant: 'danger', shortcut: '⇧⌘Q' }
+    { id: 'logout', label: 'Đăng xuất tài khoản', icon: 'logout', variant: 'danger' }
   ];
 
   public readonly demoDisplayMenuItems: DropdownMenuItem[] = [
     { type: 'header', label: 'Thành phần giao diện' },
-    { id: 'show-sidebar', label: 'Hiển thị Thanh bên (Sidebar)', type: 'checkbox', checked: true, shortcut: '⌘B' },
+    { id: 'show-sidebar', label: 'Hiển thị Thanh bên (Sidebar)', type: 'checkbox', checked: true },
     { id: 'show-chart', label: 'Hiển thị Biểu đồ Nến Web3', type: 'checkbox', checked: false },
-    { id: 'show-tx', label: 'Thông báo Giao dịch Khối', type: 'checkbox', checked: true, shortcut: '⌘N' },
+    { id: 'show-tx', label: 'Thông báo Giao dịch Khối', type: 'checkbox', checked: true },
     { type: 'separator' },
     { type: 'header', label: 'Bố cục Danh sách (Layout)' },
     { id: 'layout-grid', label: 'Chế độ Lưới (Grid View)', type: 'radio', radioValue: 'grid' },
@@ -551,8 +551,8 @@ export function getNetworkRpc(chainId: number): string {
   ];
 
   public readonly demoWeb3ActionItems: DropdownMenuItem[] = [
-    { id: 'new-tx', label: 'Tạo giao dịch mới', icon: 'plus', iconColor: 'text-purple-500', shortcut: '⌘N' },
-    { id: 'copy-addr', label: 'Sao chép địa chỉ ví', icon: 'copy', shortcut: '⌘C' },
+    { id: 'new-tx', label: 'Tạo giao dịch mới', icon: 'plus', iconColor: 'text-purple-500' },
+    { id: 'copy-addr', label: 'Sao chép địa chỉ ví', icon: 'copy' },
     {
       id: 'share-wallet',
       label: 'Chia sẻ thông tin ví',

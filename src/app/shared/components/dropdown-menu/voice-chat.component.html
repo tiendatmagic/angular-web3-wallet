@@ -1,0 +1,162 @@
+<div
+  (click)="!isExpanded() && toggleExpand($event)"
+  class="relative overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 shadow-lg hover:shadow-xl transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] select-none"
+  [ngClass]="{ 'cursor-pointer hover:border-teal-400/50': !isExpanded() }"
+  [style.width.px]="isExpanded() ? EXPANDED_WIDTH : COLLAPSED_WIDTH"
+  [style.height.px]="isExpanded() ? EXPANDED_HEIGHT : 60"
+  [style.borderRadius.px]="isExpanded() ? 24 : 999"
+>
+  <!-- Audio Wave Icon (Left side when collapsed - h-10 w-10 with z-index 10) -->
+  <div
+    class="absolute z-10 transition-[opacity,transform] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
+    [ngClass]="isExpanded() ? 'opacity-0 pointer-events-none scale-75' : 'opacity-100 scale-100'"
+    style="left: 12px; top: 50%; transform: translateY(-50%); z-index: 10;"
+  >
+    <div class="relative flex h-10 w-10 items-center justify-center rounded-full bg-slate-950 dark:bg-slate-100 text-white dark:text-slate-950 shadow-sm">
+      <div class="flex items-center justify-center gap-0.5">
+        <span class="w-0.75 rounded-full bg-white dark:bg-slate-950 animate-wave-1"></span>
+        <span class="w-0.75 rounded-full bg-white dark:bg-slate-950 animate-wave-2"></span>
+        <span class="w-0.75 rounded-full bg-white dark:bg-slate-950 animate-wave-3"></span>
+      </div>
+      <span class="absolute -top-0.5 -right-0.5 flex h-3 w-3 z-20">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
+        <span class="relative inline-flex h-3 w-3 rounded-full bg-teal-400"></span>
+      </span>
+    </div>
+  </div>
+
+  <!-- Chevron down Icon (Right side when collapsed) -->
+  <div
+    class="absolute z-10 flex items-center text-slate-400 dark:text-slate-400 transition-opacity duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
+    [ngClass]="isExpanded() ? 'pointer-events-none opacity-0' : 'opacity-100'"
+    style="right: 16px; top: 50%; transform: translateY(-50%); z-index: 10;"
+  >
+    <app-icon name="chevron-down" class="h-4 w-4"></app-icon>
+  </div>
+
+  <!-- Header Section (When expanded) -->
+  <div
+    class="absolute inset-x-0 top-0 flex items-center justify-between px-5 pb-2 pt-4 transition-opacity duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
+    [ngClass]="isExpanded() ? 'opacity-100' : 'pointer-events-none opacity-0'"
+    [style.transitionDelay]="isExpanded() ? '100ms' : '0ms'"
+  >
+    <div class="w-8"></div>
+    <h2 class="text-base font-bold text-slate-900 dark:text-white">Voice Chat</h2>
+    <button
+      type="button"
+      (click)="closeExpand($event)"
+      class="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-200 transition-colors cursor-pointer"
+    >
+      <app-icon name="close" class="h-4 w-4"></app-icon>
+    </button>
+  </div>
+
+  <!-- Participant count subheader (When expanded) -->
+  <div
+    class="absolute inset-x-0 flex items-center justify-center gap-1.5 transition-opacity duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
+    [ngClass]="isExpanded() ? 'opacity-100' : 'pointer-events-none opacity-0'"
+    style="top: 42px;"
+    [style.transitionDelay]="isExpanded() ? '120ms' : '0ms'"
+  >
+    <span class="relative flex h-2 w-2">
+      <span class="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-teal-400 opacity-75"></span>
+      <span class="relative inline-flex h-2 w-2 rounded-full bg-teal-400"></span>
+    </span>
+    <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">
+      {{ participants.length }} participants
+    </span>
+  </div>
+
+  <!-- Horizontal Divider (When expanded) -->
+  <div
+    class="absolute left-4 right-4 h-px bg-slate-200/80 dark:bg-slate-800/80 transition-opacity duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
+    [ngClass]="isExpanded() ? 'opacity-100' : 'opacity-0'"
+    style="top: 66px;"
+  ></div>
+
+  <!-- Participants Avatars Grid & Stack -->
+  @for (p of participants; track p.id; let idx = $index) {
+    @let pos = getAvatarPosition(idx);
+    <div
+      class="absolute transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
+      [style.left.px]="pos.x"
+      [style.top.px]="pos.y"
+      [style.width.px]="pos.size"
+      [style.height.px]="isExpanded() ? pos.size + 28 : pos.size"
+      [style.opacity]="pos.opacity"
+      [style.zIndex]="pos.zIndex"
+      [style.transitionDelay.ms]="pos.delay"
+    >
+      <div class="relative flex flex-col items-center">
+        <div class="relative" [style.width.px]="pos.size" [style.height.px]="pos.size">
+          <img
+            [src]="p.avatar"
+            [alt]="p.name"
+            class="rounded-full object-cover ring-2 ring-white dark:ring-slate-950 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
+            [style.width.px]="pos.size"
+            [style.height.px]="pos.size"
+          />
+
+          <!-- Speaking Ring teal animation -->
+          <div
+            class="absolute -inset-1 rounded-full border-2 border-teal-400 transition-opacity duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
+            [ngClass]="isExpanded() && p.isSpeaking ? 'opacity-100' : 'opacity-0'"
+          ></div>
+        </div>
+
+        <!-- Participant Name Label -->
+        <span
+          class="absolute whitespace-nowrap text-xs font-semibold text-slate-600 dark:text-slate-300 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
+          [ngClass]="isExpanded() ? 'opacity-100' : 'opacity-0 pointer-events-none'"
+          [style.top.px]="pos.size + 6"
+          [style.transitionDelay.ms]="isExpanded() ? 150 + idx * 30 : 0"
+        >
+          {{ p.name }}
+        </span>
+      </div>
+    </div>
+  }
+
+  <!-- Collapsed Avatar Group Count Badge (+4) -->
+  @if (participants.length > 3) {
+    <div
+      class="absolute font-bold text-xs text-slate-700 dark:text-slate-200 bg-slate-200/90 dark:bg-slate-800/90 rounded-full flex items-center justify-center ring-2 ring-white dark:ring-slate-950 shadow-sm transition-opacity duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
+      [ngClass]="isExpanded() ? 'pointer-events-none opacity-0' : 'opacity-100'"
+      [style.left.px]="60 + 3 * (AVATAR_SIZE_COLLAPSED + AVATAR_OVERLAP)"
+      [style.width.px]="AVATAR_SIZE_COLLAPSED"
+      [style.height.px]="AVATAR_SIZE_COLLAPSED"
+      style="top: 8px; z-index: 1;"
+    >
+      +{{ participants.length - 3 }}
+    </div>
+  }
+
+  <!-- Join Now / Action Button (When expanded) -->
+  <button
+    type="button"
+    (click)="toggleJoin($event)"
+    class="absolute left-4 right-4 flex items-center justify-center gap-2 rounded-2xl py-3.5 text-sm font-bold transition-all duration-300 cursor-pointer shadow-lg"
+    [ngClass]="[
+      isJoined()
+        ? 'bg-rose-600 hover:bg-rose-700 text-white shadow-rose-500/20'
+        : 'bg-slate-950 dark:bg-slate-100 text-white dark:text-slate-950 hover:opacity-90 shadow-slate-900/20',
+      isExpanded() ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-4 opacity-0'
+    ]"
+    style="bottom: 52px;"
+    [style.transitionDelay]="isExpanded() ? '200ms' : '0ms'"
+  >
+    <app-icon [name]="isJoined() ? 'phone-off' : 'mic'" class="h-4 w-4"></app-icon>
+    <span>{{ isJoined() ? 'Leave Voice' : 'Join Now' }}</span>
+  </button>
+
+  <!-- Helper Footer Text (When expanded) -->
+  <div
+    class="absolute inset-x-0 flex items-center justify-center gap-1.5 text-center text-xs font-semibold text-slate-400 dark:text-slate-500 transition-opacity duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
+    [ngClass]="isExpanded() ? 'opacity-100' : 'pointer-events-none opacity-0'"
+    style="bottom: 18px;"
+    [style.transitionDelay]="isExpanded() ? '250ms' : '0ms'"
+  >
+    <app-icon [name]="isJoined() ? 'mic' : 'mic-off'" class="h-3.5 w-3.5"></app-icon>
+    <span>{{ isJoined() ? 'Connected with mic active' : "You'll join with mic off" }}</span>
+  </div>
+</div>
