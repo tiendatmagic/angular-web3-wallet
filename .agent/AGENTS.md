@@ -2,6 +2,17 @@
 
 ## Ngày 27/07/2026
 
+### Yêu cầu: Xây dựng và tích hợp Dropdown Menu Component (app-dropdown-menu)
+- **Nội dung yêu cầu:** Thêm component `dropdown-menu` mới tại `src/app/shared/components/dropdown-menu` lấy cảm hứng từ Shadcn Space Dropdown Menu, hỗ trợ header tài khoản người dùng (Avatar + Title + Subtitle + Badge), submenu cấp 2 nhô mượt sang phải, các mục Checkbox/Radio items, Shortcut badges (⌘P, Ctrl+S), các vị trí placement linh hoạt (`bottom-left`, `bottom-right`, `top-left`, v.v.), hiệu ứng Glassmorphism và bổ sung showcase tại trang chủ.
+- **Giải pháp:**
+  1. **Bổ sung Icon tiện ích:** Cập nhật [icon.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/icon/icon.component.html) bổ sung thêm các icon SVG: `credit-card`, `keyboard`, `cloud`, `github`, `life-buoy`, `message-square`, `mail`, `dot`.
+  2. **Tạo Component Dropdown Menu:**
+     - [dropdown-menu.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/dropdown-menu/dropdown-menu.component.ts): Standalone component tích hợp `signals` (`isOpen`, `activeSubmenuId`), quản lý cấu trúc `DropdownMenuItem[]` và `DropdownMenuHeader`. Lắng nghe sự kiện `click` bên ngoài (click-outside) và phím `Escape` để đóng menu mượt mà.
+     - [dropdown-menu.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/dropdown-menu/dropdown-menu.component.html): Render nút Trigger mặc định (các variant `outline`, `secondary`, `primary`, `ghost`, `avatar`, `icon`) hoặc Custom Trigger qua `<ng-content select="[dropdown-trigger]">`. Popover panel Glassmorphism bo góc max 15px (`rounded-[15px]`), render Header user info, Submenu flyout cấp 2, Checkbox/Radio options và các item nguy hiểm (`variant: 'danger'`).
+     - [dropdown-menu.component.css](file:///d:/git/angular-web3-wallet/src/app/shared/components/dropdown-menu/dropdown-menu.component.css): Đảm bảo `:host { display: block; }`, bổ sung keyframe animation `@keyframes dropdown-pop-in` mở với hiệu ứng scale 0.95 -> 1.
+  3. **Tích hợp Showcase vào trang chủ:**
+     - Cập nhật [home.component.ts](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.ts) và [home.component.html](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.html): Bổ sung **Card 19: Component Dropdown Menu Cao Cấp (app-dropdown-menu)** trình diễn 4 kịch bản phong phú: User Profile & Account Menu, Checkbox/Radio Config Menu, Nested Submenu cấp 2 nhô mượt, và Đa dạng Nút Trigger & Placements.
+
 ### Yêu cầu: Xây dựng và tích hợp Input OTP Component (app-input-otp)
 - **Nội dung yêu cầu:** Thêm component `input-otp` mới tại `src/app/shared/components/input-otp` lấy cảm hứng từ Shadcn Space Input OTP, hỗ trợ phân nhóm ô slot, gạch nối separator, mask mode (mã PIN), gõ phím di chuyển mượt mà, paste mã từ clipboard, hiệu ứng caret nhấp nháy (blinking cursor), tích hợp ControlValueAccessor và bổ sung showcase tại trang chủ.
 - **Giải pháp:**

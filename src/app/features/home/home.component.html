@@ -1655,6 +1655,162 @@
           </div>
         </div>
       </div>
+
+      <!-- Card 19: Component Dropdown Menu Cao Cấp (app-dropdown-menu) -->
+      <div app-card class="mt-8">
+        <div class="space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200/80 dark:border-slate-800/80">
+            <div>
+              <div class="flex items-center gap-2.5">
+                <h3 class="text-base font-extrabold text-slate-900 dark:text-white">Card 19: Component Dropdown Menu Cao Cấp (app-dropdown-menu)</h3>
+                <app-badge variant="primary" rounded="full" size="sm">Shadcn Space Dropdown</app-badge>
+              </div>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                Menu điều hướng thả xuống đa dạng: User Profile, Submenu cấp 2, Checkbox/Radio options, Trigger linh hoạt & hiệu ứng Glassmorphism.
+              </p>
+            </div>
+
+            <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-purple-50 dark:bg-purple-950/40 border border-purple-200/60 dark:border-purple-800/50">
+              <app-icon name="info" class="w-4 h-4 text-purple-500 shrink-0"></app-icon>
+              <span class="text-xs font-semibold text-purple-700 dark:text-purple-300">
+                {{ demoDropdownLastAction() }}
+              </span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Demo 1: User Profile Menu -->
+            <div class="space-y-3 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
+              <div class="flex items-center justify-between">
+                <div>
+                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">1. Menu Tài Khoản & Profile (Header + User Info)</span>
+                  <span class="text-[11px] text-slate-500 dark:text-slate-400">Tích hợp Avatar, Email, Status Badge và Đăng xuất</span>
+                </div>
+                <app-badge variant="success" rounded="full" size="sm">Profile Menu</app-badge>
+              </div>
+
+              <div class="flex items-center gap-3 pt-2">
+                <app-dropdown-menu
+                  [header]="demoProfileHeader"
+                  [items]="demoProfileMenuItems"
+                  triggerText="Nguyễn Tiến Đạt"
+                  triggerVariant="outline"
+                  triggerSize="md"
+                  width="w-64"
+                  placement="bottom-left"
+                  (itemClick)="onDropdownSelect($event)"
+                ></app-dropdown-menu>
+
+                <app-dropdown-menu
+                  [header]="demoProfileHeader"
+                  [items]="demoProfileMenuItems"
+                  triggerVariant="avatar"
+                  avatarUrl="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80"
+                  width="w-64"
+                  placement="bottom-left"
+                  (itemClick)="onDropdownSelect($event)"
+                ></app-dropdown-menu>
+              </div>
+            </div>
+
+            <!-- Demo 2: Checkbox & Radio Menu -->
+            <div class="space-y-3 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
+              <div class="flex items-center justify-between">
+                <div>
+                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">2. Checkbox & Radio Items (Cấu Hình Giao Diện)</span>
+                  <span class="text-[11px] text-slate-500 dark:text-slate-400">Bật/tắt tùy chỉnh & lựa chọn chế độ duy nhất</span>
+                </div>
+                <app-badge variant="info" rounded="full" size="sm">Config Items</app-badge>
+              </div>
+
+              <div class="flex items-center gap-3 pt-2">
+                <app-dropdown-menu
+                  [items]="demoDisplayMenuItems"
+                  triggerText="Tùy chỉnh giao diện"
+                  triggerIcon="filter"
+                  triggerVariant="secondary"
+                  triggerSize="md"
+                  width="w-64"
+                  activeRadioValue="grid"
+                  [closeOnSelect]="false"
+                  placement="bottom-left"
+                ></app-dropdown-menu>
+              </div>
+            </div>
+
+            <!-- Demo 3: Nested Submenu -->
+            <div class="space-y-3 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
+              <div class="flex items-center justify-between">
+                <div>
+                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">3. Submenu Nhánh Cấp 2 (Nested Menu)</span>
+                  <span class="text-[11px] text-slate-500 dark:text-slate-400">Menu nhô mượt sang phải khi hover hoặc click</span>
+                </div>
+                <app-badge variant="warning" rounded="full" size="sm">Nested Submenu</app-badge>
+              </div>
+
+              <div class="flex items-center gap-3 pt-2">
+                <app-dropdown-menu
+                  [items]="demoWeb3ActionItems"
+                  triggerText="Thao tác Web3 Ví"
+                  triggerIcon="bolt"
+                  triggerVariant="primary"
+                  triggerSize="md"
+                  width="w-60"
+                  placement="bottom-left"
+                  (itemClick)="onDropdownSelect($event)"
+                ></app-dropdown-menu>
+              </div>
+            </div>
+
+            <!-- Demo 4: Icon Triggers & Placements -->
+            <div class="space-y-3 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
+              <div class="flex items-center justify-between">
+                <div>
+                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">4. Nút Trigger Icon & Vị Trí Placement</span>
+                  <span class="text-[11px] text-slate-500 dark:text-slate-400">Trigger kiểu icon-only hoặc căn lề bottom-right</span>
+                </div>
+                <app-badge variant="primary" rounded="full" size="sm">Icon & Placements</app-badge>
+              </div>
+
+              <div class="flex items-center gap-4 pt-2">
+                <app-dropdown-menu
+                  [items]="demoWeb3ActionItems"
+                  triggerIcon="dots-vertical"
+                  triggerVariant="icon"
+                  triggerSize="md"
+                  width="w-56"
+                  placement="bottom-right"
+                  (itemClick)="onDropdownSelect($event)"
+                ></app-dropdown-menu>
+
+                <app-dropdown-menu
+                  [items]="demoProfileMenuItems"
+                  triggerText="Nút Ghost"
+                  triggerIcon="chevron-down"
+                  triggerVariant="ghost"
+                  triggerSize="md"
+                  width="w-56"
+                  placement="bottom-left"
+                  (itemClick)="onDropdownSelect($event)"
+                ></app-dropdown-menu>
+
+                <app-dropdown-menu
+                  [items]="demoWeb3ActionItems"
+                  [customTrigger]="true"
+                  width="w-60"
+                  placement="bottom-right"
+                  (itemClick)="onDropdownSelect($event)"
+                >
+                  <div dropdown-trigger class="px-3 py-1.5 rounded-full bg-gradient-to-r from-pink-500 to-rose-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-md hover:opacity-90">
+                    <app-icon name="sparkles" class="w-3.5 h-3.5"></app-icon>
+                    <span>Custom Trigger</span>
+                  </div>
+                </app-dropdown-menu>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="flex items-center justify-center pt-6">

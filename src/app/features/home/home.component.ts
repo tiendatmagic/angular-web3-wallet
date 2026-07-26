@@ -29,6 +29,7 @@ import { PaginationComponent } from '@shared/components/pagination/pagination.co
 import { CodeBlockComponent, CodeFile } from '@shared/components/code-block/code-block.component';
 import { FileUploadComponent, UploadFileItem } from '@shared/components/file-upload/file-upload.component';
 import { InputOtpComponent } from '@shared/components/input-otp/input-otp.component';
+import { DropdownMenuComponent, DropdownMenuItem, DropdownMenuHeader } from '@shared/components/dropdown-menu/dropdown-menu.component';
 import { parseEther } from 'ethers';
 
 @Component({
@@ -62,7 +63,8 @@ import { parseEther } from 'ethers';
     PaginationComponent,
     CodeBlockComponent,
     FileUploadComponent,
-    InputOtpComponent
+    InputOtpComponent,
+    DropdownMenuComponent
   ],
   templateUrl: './home.component.html'
 })
@@ -507,5 +509,77 @@ export function getNetworkRpc(chainId: number): string {
   public resendOtpDemo(): void {
     this.demoOtpStandard.set('');
     this.demoOtpCountdown.set(60);
+  }
+
+  public readonly demoDropdownLastAction = signal<string>('Chưa chọn thao tác nào');
+
+  public readonly demoProfileHeader: DropdownMenuHeader = {
+    title: 'Nguyễn Tiến Đạt',
+    subtitle: '0x71C...39A2 • tiendat.eth',
+    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80',
+    statusBadge: 'PRO'
+  };
+
+  public readonly demoProfileMenuItems: DropdownMenuItem[] = [
+    { type: 'header', label: 'Tài khoản DApp' },
+    { id: 'profile', label: 'Trang cá nhân', icon: 'user', shortcut: '⌘P' },
+    { id: 'wallet', label: 'Ví Web3 đã kết nối', icon: 'wallet', shortcut: '⌘W', badge: 'Active', badgeColor: 'bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/50' },
+    { id: 'settings', label: 'Cài đặt hệ thống', icon: 'settings', shortcut: '⌘S' },
+    { id: 'keyboard', label: 'Phím tắt bàn phím', icon: 'keyboard', shortcut: '⌘K' },
+    { type: 'separator' },
+    { type: 'header', label: 'Dịch vụ & Đội ngũ' },
+    { id: 'pro', label: 'Nâng cấp Web3 VIP', icon: 'sparkles', iconColor: 'text-amber-500', badge: 'PRO', badgeColor: 'bg-amber-100 dark:bg-amber-950 text-amber-600 dark:text-amber-300 border border-amber-200 dark:border-amber-800/50' },
+    { id: 'team', label: 'Quản lý thành viên', icon: 'user-plus' },
+    { id: 'referral', label: 'Mời bạn bè nhận thưởng', icon: 'gift' },
+    { type: 'separator' },
+    { id: 'help', label: 'Trung tâm trợ giúp', icon: 'life-buoy' },
+    { id: 'github', label: 'Mã nguồn GitHub', icon: 'github' },
+    { type: 'separator' },
+    { id: 'logout', label: 'Đăng xuất tài khoản', icon: 'logout', variant: 'danger', shortcut: '⇧⌘Q' }
+  ];
+
+  public readonly demoDisplayMenuItems: DropdownMenuItem[] = [
+    { type: 'header', label: 'Thành phần giao diện' },
+    { id: 'show-sidebar', label: 'Hiển thị Thanh bên (Sidebar)', type: 'checkbox', checked: true, shortcut: '⌘B' },
+    { id: 'show-chart', label: 'Hiển thị Biểu đồ Nến Web3', type: 'checkbox', checked: false },
+    { id: 'show-tx', label: 'Thông báo Giao dịch Khối', type: 'checkbox', checked: true, shortcut: '⌘N' },
+    { type: 'separator' },
+    { type: 'header', label: 'Bố cục Danh sách (Layout)' },
+    { id: 'layout-grid', label: 'Chế độ Lưới (Grid View)', type: 'radio', radioValue: 'grid' },
+    { id: 'layout-list', label: 'Chế độ Danh sách (List View)', type: 'radio', radioValue: 'list' },
+    { id: 'layout-compact', label: 'Chế độ Thu gọn (Compact View)', type: 'radio', radioValue: 'compact' }
+  ];
+
+  public readonly demoWeb3ActionItems: DropdownMenuItem[] = [
+    { id: 'new-tx', label: 'Tạo giao dịch mới', icon: 'plus', iconColor: 'text-purple-500', shortcut: '⌘N' },
+    { id: 'copy-addr', label: 'Sao chép địa chỉ ví', icon: 'copy', shortcut: '⌘C' },
+    {
+      id: 'share-wallet',
+      label: 'Chia sẻ thông tin ví',
+      icon: 'send',
+      type: 'sub',
+      children: [
+        { id: 'share-email', label: 'Gửi qua Email', icon: 'mail' },
+        { id: 'share-qr', label: 'Xuất mã QR ví', icon: 'qr-code' },
+        { id: 'share-link', label: 'Tạo liên kết nhúng', icon: 'external-link' }
+      ]
+    },
+    {
+      id: 'permissions',
+      label: 'Phân quyền tài khoản',
+      icon: 'shield',
+      type: 'sub',
+      children: [
+        { id: 'perm-read', label: 'Quyền Read-Only', icon: 'eye' },
+        { id: 'perm-multisig', label: 'Quyền Multi-Sig (2/3)', icon: 'key' },
+        { id: 'perm-admin', label: 'Quyền Administrator', icon: 'shield-check', iconColor: 'text-emerald-500' }
+      ]
+    },
+    { type: 'separator' },
+    { id: 'delete-cache', label: 'Xóa bộ nhớ đệm ví', icon: 'trash', variant: 'danger' }
+  ];
+
+  public onDropdownSelect(item: DropdownMenuItem): void {
+    this.demoDropdownLastAction.set(`Đã kích hoạt thao tác: "${item.label}"`);
   }
 }

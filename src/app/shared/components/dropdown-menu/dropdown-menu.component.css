@@ -1,0 +1,19 @@
+:host {
+  display: block;
+}
+
+.dropdown-menu-popover {
+  animation: dropdown-pop-in 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-origin: var(--tw-transform-origin, top left);
+}
+
+@keyframes dropdown-pop-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.95) translateY(-4px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
