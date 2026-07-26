@@ -27,6 +27,7 @@ import { AuraComponent } from '@shared/components/aura/aura.component';
 import { TableComponent, TableCellDirective, TableColumn } from '@shared/components/table/table.component';
 import { PaginationComponent } from '@shared/components/pagination/pagination.component';
 import { CodeBlockComponent, CodeFile } from '@shared/components/code-block/code-block.component';
+import { FileUploadComponent, UploadFileItem } from '@shared/components/file-upload/file-upload.component';
 import { parseEther } from 'ethers';
 
 @Component({
@@ -59,6 +60,7 @@ import { parseEther } from 'ethers';
     TableCellDirective,
     PaginationComponent,
     CodeBlockComponent,
+    FileUploadComponent,
   ],
   templateUrl: './home.component.html'
 })
@@ -98,6 +100,10 @@ export class HomeComponent {
 
   public demoSliderVal1 = signal(60);
   public demoSliderVal2 = signal(30);
+
+  public demoFileUploadSingle = signal<UploadFileItem[]>([]);
+  public demoFileUploadMulti = signal<UploadFileItem[]>([]);
+  public demoFileUploadAvatar = signal<UploadFileItem[]>([]);
 
   public demoTabValue = signal('wallet');
   public readonly demoTabOptions: TabOption[] = [

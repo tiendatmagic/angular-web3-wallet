@@ -1,0 +1,332 @@
+<div class="w-full space-y-3">
+  <!-- Hidden File Input -->
+  <input
+    #fileInput
+    type="file"
+    class="hidden"
+    [attr.accept]="accept"
+    [attr.multiple]="multiple ? true : null"
+    [disabled]="disabled"
+    (change)="onFileSelected($event)"
+  />
+
+  <!-- Variant 1: Horizontal Bar Layout (Default & Sleek - Like User Reference Image) -->
+  @if (effectiveVariant() === 'horizontal') {
+    <div
+      class="relative group cursor-pointer transition-all duration-200 select-none rounded-[15px] p-4 border border-dashed"
+      [ngClass]="{
+        'border-slate-300 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-900/60 hover:border-[var(--color-primary)] hover:bg-slate-100/60 dark:hover:bg-slate-900/90 shadow-sm': !isDragging() && !disabled,
+        'border-[var(--color-primary)] bg-[var(--color-primary)]/10 dark:bg-[var(--color-primary)]/20 scale-[1.01] shadow-md shadow-[var(--color-primary)]/10': isDragging() && !disabled,
+        'opacity-60 cursor-not-allowed border-slate-200 dark:border-slate-800 bg-slate-100/30 dark:bg-slate-900/20': disabled
+      }"
+      (dragover)="onDragOver($event)"
+      (dragleave)="onDragLeave($event)"
+      (drop)="onDrop($event)"
+      (click)="triggerFileInput()"
+    >
+      <div class="flex items-center justify-between gap-4">
+        <!-- Left: Upload Icon Box -->
+        <div class="flex items-center gap-3.5 min-w-0">
+          <div
+            class="w-12 h-12 rounded-[12px] flex items-center justify-center shrink-0 transition-transform group-hover:scale-105"
+            [ngClass]="{
+              'bg-[var(--color-primary)]/10 text-[var(--color-primary)] dark:bg-[var(--color-primary)]/20 border border-[var(--color-primary)]/20': !isDragging(),
+              'bg-[var(--color-primary)] text-white ring-4 ring-[var(--color-primary)]/20': isDragging()
+            }"
+          >
+            <app-icon [name]="icon" class="w-6 h-6"></app-icon>
+          </div>
+
+          <!-- Middle: Title & Subtitle -->
+          <div class="min-w-0">
+            <h4 class="text-sm font-bold text-slate-800 dark:text-slate-100 truncate group-hover:text-[var(--color-primary)] transition-colors">
+              {{ displayTitle() }}
+            </h4>
+            <p class="text-xs text-slate-500 dark:text-slate-400 truncate mt-0.5">
+              {{ displaySubtitle() }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Right: Action Button -->
+        <button
+          type="button"
+          class="px-4 py-2 rounded-[10px] border border-[var(--color-primary)]/40 text-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white font-semibold text-xs transition-all duration-200 shrink-0 shadow-sm flex items-center gap-1.5"
+          [disabled]="disabled"
+        >
+          <span>{{ buttonText }}</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Max size label under horizontal bar -->
+    <div class="flex items-center justify-between px-1 text-[11px] text-slate-400 dark:text-slate-500">
+      <span>Dung lượng tệp tối đa: <strong>{{ maxSizeMB }} MB</strong></span>
+      @if (accept !== '*') {
+        <span class="font-mono bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-slate-600 dark:text-slate-300">
+          {{ accept }}
+        </span>
+      }
+    </div>
+  }
+
+  <!-- Variant 2: Vertical Dropzone Area -->
+  @if (effectiveVariant() === 'dropzone') {
+    <div
+      class="relative group cursor-pointer transition-all duration-200 select-none rounded-[15px] p-6 text-center border border-dashed"
+      [ngClass]="{
+        'border-slate-300 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-900/60 hover:border-[var(--color-primary)] hover:bg-slate-100/60 dark:hover:bg-slate-900/90': !isDragging() && !disabled,
+        'border-[var(--color-primary)] bg-[var(--color-primary)]/10 dark:bg-[var(--color-primary)]/20 scale-[1.01] shadow-md': isDragging() && !disabled,
+        'opacity-60 cursor-not-allowed border-slate-200 dark:border-slate-800': disabled
+      }"
+      (dragover)="onDragOver($event)"
+      (dragleave)="onDragLeave($event)"
+      (drop)="onDrop($event)"
+      (click)="triggerFileInput()"
+    >
+      <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center group-hover:scale-110 transition-transform">
+        <app-icon [name]="icon" class="w-6 h-6"></app-icon>
+      </div>
+      <h4 class="text-sm font-bold text-slate-800 dark:text-slate-200">
+        {{ displayTitle() }}
+      </h4>
+      <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+        {{ displaySubtitle() }} (Tối đa {{ maxSizeMB }}MB)
+      </p>
+    </div>
+  }
+
+  <!-- Variant 3: Avatar Upload Mode -->
+  @if (effectiveVariant() === 'avatar') {
+    <div
+      class="relative group cursor-pointer transition-all duration-200 select-none rounded-[15px] p-4 flex flex-col items-center justify-center text-center border border-dashed border-slate-300 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 hover:border-[var(--color-primary)]"
+      (click)="triggerFileInput()"
+    >
+      @if (files().length > 0 && files()[0].previewUrl) {
+        <div class="relative group/avatar w-20 h-20 rounded-full overflow-hidden border-2 border-[var(--color-primary)] shadow-md">
+          <img [src]="files()[0].previewUrl" [alt]="files()[0].name" class="w-full h-full object-cover" />
+          <div class="absolute inset-0 bg-slate-900/60 opacity-0 group-hover/avatar:opacity-100 transition-opacity flex flex-col items-center justify-center text-white text-xs gap-0.5">
+            <app-icon name="edit" class="w-4 h-4"></app-icon>
+            <span>Sửa</span>
+          </div>
+        </div>
+      } @else {
+        <div class="w-16 h-16 rounded-full bg-slate-200/80 dark:bg-slate-800/80 flex items-center justify-center text-slate-400 dark:text-slate-500 mb-2 group-hover:scale-105 group-hover:text-[var(--color-primary)] transition-all">
+          <app-icon name="camera" class="w-7 h-7"></app-icon>
+        </div>
+        <p class="text-xs font-semibold text-slate-700 dark:text-slate-300">{{ displayTitle() }}</p>
+        <p class="text-[11px] text-slate-400 dark:text-slate-500 mt-0.5">{{ displaySubtitle() }}</p>
+      }
+    </div>
+  }
+
+  <!-- Global Error Message -->
+  @if (globalError()) {
+    <div class="flex items-center gap-2 p-3 rounded-[12px] bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 text-xs animate-fadeIn">
+      <app-icon name="warning-solid" class="w-4 h-4 shrink-0"></app-icon>
+      <span class="font-medium">{{ globalError() }}</span>
+    </div>
+  }
+
+  <!-- File List Container -->
+  @if (showFileList && files().length > 0) {
+    <div class="space-y-2 pt-1">
+      <!-- List Header -->
+      <div class="flex items-center justify-between px-1">
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-semibold text-slate-700 dark:text-slate-300">
+            Tệp đã chọn ({{ files().length }})
+          </span>
+          <span class="text-[11px] px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 font-mono">
+            {{ formatFileSize(totalSizeBytes()) }}
+          </span>
+        </div>
+
+        @if (files().length > 1) {
+          <button
+            type="button"
+            class="text-xs text-red-500 hover:text-red-600 dark:hover:text-red-400 font-medium transition-colors flex items-center gap-1"
+            (click)="clearAll($event)"
+            [disabled]="disabled"
+          >
+            <app-icon name="trash" class="w-3.5 h-3.5"></app-icon>
+            Xóa tất cả
+          </button>
+        }
+      </div>
+
+      <!-- File Cards Grid/Stack -->
+      <div class="space-y-2">
+        @for (file of files(); track file.id) {
+          <div
+            class="relative flex items-center gap-3 p-2.5 rounded-[12px] border border-slate-200/80 dark:border-slate-800/80 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm shadow-sm hover:shadow transition-all group/item"
+            [ngClass]="{
+              'border-red-500/40 bg-red-50/20 dark:bg-red-950/10': file.status === 'error',
+              'border-emerald-500/30 bg-emerald-50/20 dark:bg-emerald-950/10': file.status === 'completed'
+            }"
+          >
+            <!-- File Thumbnail / Icon -->
+            <div class="relative w-10 h-10 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800 flex items-center justify-center shrink-0 border border-slate-200/60 dark:border-slate-700/60">
+              @if (file.previewUrl) {
+                <img
+                  [src]="file.previewUrl"
+                  [alt]="file.name"
+                  class="w-full h-full object-cover cursor-pointer hover:scale-110 transition-transform"
+                  (click)="openPreview(file, $event)"
+                />
+              } @else {
+                <app-icon
+                  [name]="getFileIcon(file.type, file.name)"
+                  class="w-5 h-5 text-slate-500 dark:text-slate-400 group-hover/item:text-[var(--color-primary)] transition-colors"
+                ></app-icon>
+              }
+            </div>
+
+            <!-- File Info & Progress -->
+            <div class="flex-1 min-w-0 space-y-1">
+              <div class="flex items-center justify-between gap-2">
+                <p class="text-xs font-semibold text-slate-800 dark:text-slate-200 truncate" [appTooltip]="file.name">
+                  {{ file.name }}
+                </p>
+
+                <!-- Status Badges -->
+                <div class="shrink-0">
+                  @switch (file.status) {
+                    @case ('pending') {
+                      <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400">
+                        Chờ tải
+                      </span>
+                    }
+                    @case ('uploading') {
+                      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-medium bg-blue-50 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400">
+                        <app-icon name="spinner" class="w-3 h-3 animate-spin"></app-icon>
+                        {{ file.progress }}%
+                      </span>
+                    }
+                    @case ('completed') {
+                      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-medium bg-emerald-50 text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400">
+                        <app-icon name="check-circle" class="w-3 h-3"></app-icon>
+                        Hoàn tất
+                      </span>
+                    }
+                    @case ('error') {
+                      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-medium bg-red-50 text-red-600 dark:bg-red-950/50 dark:text-red-400">
+                        <app-icon name="warning" class="w-3 h-3"></app-icon>
+                        Lỗi
+                      </span>
+                    }
+                  }
+                </div>
+              </div>
+
+              <!-- Size & Error message -->
+              <div class="flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400">
+                <span>{{ formatFileSize(file.size) }}</span>
+
+                @if (file.errorMessage) {
+                  <span class="text-red-500 dark:text-red-400 truncate max-w-[200px]" [appTooltip]="file.errorMessage">
+                    {{ file.errorMessage }}
+                  </span>
+                }
+              </div>
+
+              <!-- Progress Bar -->
+              @if (file.status === 'uploading') {
+                <div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden mt-1">
+                  <div
+                    class="bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] h-full transition-all duration-200 rounded-full"
+                    [style.width.%]="file.progress"
+                  ></div>
+                </div>
+              }
+            </div>
+
+            <!-- Item Action Buttons -->
+            <div class="flex items-center gap-1.5 shrink-0">
+              @if (file.previewUrl) {
+                <button
+                  type="button"
+                  class="w-8 h-8 flex items-center justify-center rounded-[8px] text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors shrink-0"
+                  appTooltip="Xem ảnh"
+                  (click)="openPreview(file, $event)"
+                >
+                  <app-icon name="eye" class="w-4 h-4"></app-icon>
+                </button>
+              }
+
+              @if (file.status === 'error') {
+                <button
+                  type="button"
+                  class="w-8 h-8 flex items-center justify-center rounded-[8px] text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-950/40 transition-colors shrink-0"
+                  appTooltip="Thử lại"
+                  (click)="retryUpload(file)"
+                  [disabled]="disabled"
+                >
+                  <app-icon name="sync" class="w-4 h-4"></app-icon>
+                </button>
+              }
+
+              <button
+                type="button"
+                class="w-8 h-8 flex items-center justify-center rounded-[8px] text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors shrink-0"
+                appTooltip="Xóa tệp"
+                (click)="removeFile(file, $event)"
+                [disabled]="disabled"
+              >
+                <app-icon name="close" class="w-4 h-4"></app-icon>
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>
+
+<!-- Image Preview Modal Lightbox -->
+@if (previewModalFile(); as file) {
+  <div
+    class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-fadeIn"
+    (click)="closePreview()"
+  >
+    <div
+      class="relative max-w-3xl w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-[15px] p-4 shadow-2xl overflow-hidden"
+      (click)="$event.stopPropagation()"
+    >
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-200 dark:border-slate-800">
+        <div class="flex items-center gap-2 min-w-0">
+          <app-icon name="file-image" class="w-5 h-5 text-[var(--color-primary)] shrink-0"></app-icon>
+          <span class="text-sm font-semibold text-slate-800 dark:text-slate-100 truncate">
+            {{ file.name }}
+          </span>
+          <span class="text-xs text-slate-400">({{ formatFileSize(file.size) }})</span>
+        </div>
+        <button
+          type="button"
+          class="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+          (click)="closePreview()"
+        >
+          <app-icon name="close" class="w-5 h-5"></app-icon>
+        </button>
+      </div>
+
+      <!-- Modal Body (Image Container) -->
+      <div class="relative flex items-center justify-center max-h-[70vh] bg-slate-950/5 dark:bg-slate-950/50 rounded-xl overflow-hidden p-2">
+        <img [src]="file.previewUrl" [alt]="file.name" class="max-h-[65vh] max-w-full object-contain rounded-lg shadow" />
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="flex items-center justify-between pt-3 mt-3 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500">
+        <span>Định dạng: {{ file.type }}</span>
+        <button
+          type="button"
+          class="px-3 py-1.5 rounded-lg bg-[var(--color-primary)] text-white font-medium hover:opacity-90 transition-opacity flex items-center gap-1.5"
+          (click)="closePreview()"
+        >
+          Đóng cửa sổ
+        </button>
+      </div>
+    </div>
+  </div>
+}

@@ -2,6 +2,17 @@
 
 ## Ngày 27/07/2026
 
+### Yêu cầu: Xây dựng và tích hợp File Upload Component (app-file-upload)
+- **Nội dung yêu cầu:** Thêm component `file-upload` mới tại `src/app/shared/components/file-upload` lấy cảm hứng từ Shadcn Space File Upload, hỗ trợ kéo thả tệp (Drag & Drop), chọn 1 hoặc nhiều tệp, giới hạn dung lượng/định dạng, giả lập upload tiến trình sinh động, xem trước hình ảnh (Modal Lightbox), tích hợp ControlValueAccessor và bổ sung showcase tại trang chủ.
+- **Giải pháp:**
+  1. **Bổ sung Icon tệp tin:** Cập nhật [icon.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/icon/icon.component.html) bổ sung các icon định dạng tệp: `file-text`, `file-pdf`, `file-zip`, `file-image`, `file-generic`.
+  2. **Tạo Component File Upload:**
+     - [file-upload.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/file-upload/file-upload.component.ts): Standalone component tích hợp `ControlValueAccessor`, quản lý danh sách `UploadFileItem[]` với signals reactivity. Xử lý Drag & Drop (`dragover`, `dragleave`, `drop`), validate dung lượng (`maxSizeMB`) và định dạng (`accept`), mô phỏng tiến trình upload 0% -> 100%, tạo preview ảnh Base64.
+     - [file-upload.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/file-upload/file-upload.component.html): Vùng Dropzone viền nét đứt (dashed) kèm hover effect, hiển thị thẻ tệp đã chọn kèm thumbnail/icon, badge trạng thái, progress bar, nút xóa tệp/thử lại/xem trước ảnh và Modal Lightbox xem chi tiết hình ảnh. Hỗ trợ các chế độ Standard, Compact, và Avatar Mode.
+     - [file-upload.component.css](file:///d:/git/angular-web3-wallet/src/app/shared/components/file-upload/file-upload.component.css): Thiết lập `:host { display: block; }`, bo góc tối đa 15px, animation fadeIn và tùy biến scrollbar.
+  3. **Tích hợp Showcase vào trang chủ:**
+     - Cập nhật [home.component.ts](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.ts) và [home.component.html](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.html): Bổ sung **Card 17: Component File Upload Cao Cấp (app-file-upload)** trình diễn 4 chế độ: Chọn nhiều tệp drag-drop, Chọn 1 tệp hình ảnh, Chế độ thu gọn Compact Mode, và Upload ảnh đại diện Avatar Mode.
+
 ### Yêu cầu: Xây dựng, cân đối giao diện nút Wrap và tích hợp CodeBlock Component
 - **Nội dung yêu cầu:** Thêm component `code-block` mới tại `src/app/shared/components/code-block` tham khảo thiết kế từ Shadcn Space Code Block, cân đối nút Word Wrap với nút Copy, hỗ trợ đầy đủ Light Mode / Dark Mode tương ứng và bổ sung showcase tại trang chủ.
 - **Giải pháp:**

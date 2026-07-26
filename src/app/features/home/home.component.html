@@ -1414,6 +1414,91 @@
           </div>
         </div>
       </div>
+
+      <div app-card class="col-span-full">
+        <h4
+          class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
+        >
+          <app-icon name="cloud-upload" class="w-3.5 h-3.5 text-primary" strokeWidth="2.5" />
+          Component File Upload Cao Cấp (app-file-upload)
+        </h4>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Demo 1: Horizontal Bar Layout (Giao diện chuẩn theo mẫu ví dụ) -->
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-slate-700 dark:text-slate-300">1. Giao diện Thanh ngang (Horizontal Bar - Theo mẫu ví dụ)</span>
+              <app-badge variant="primary" rounded="full" size="sm">File Sao Lưu SQL</app-badge>
+            </div>
+            <app-file-upload
+              variant="horizontal"
+              title="Chọn file sao lưu SQL"
+              subtitle="Nhấn để chọn file .sql từ thiết bị của bạn"
+              buttonText="Chọn file"
+              icon="upload"
+              accept=".sql"
+              [maxSizeMB]="100"
+              [multiple]="false"
+              (filesChange)="demoFileUploadSingle.set($event)"
+            ></app-file-upload>
+          </div>
+
+          <!-- Demo 2: Horizontal Bar Multi-file -->
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-slate-700 dark:text-slate-300">2. Chọn nhiều tệp đính kèm (Multi-file Attachments)</span>
+              <app-badge variant="secondary" rounded="full" size="sm">Tối đa 20MB</app-badge>
+            </div>
+            <app-file-upload
+              variant="horizontal"
+              title="Tải lên tài liệu đính kèm"
+              subtitle="Nhấn hoặc kéo thả các tệp PDF, ZIP, Docx từ thiết bị"
+              buttonText="Duyệt tệp"
+              icon="file-text"
+              accept="image/*, application/pdf, .zip, .json, .ts, .txt"
+              [multiple]="true"
+              [maxSizeMB]="20"
+              [maxFiles]="5"
+              (filesChange)="demoFileUploadMulti.set($event)"
+            ></app-file-upload>
+          </div>
+
+          <!-- Demo 3: Dropzone & Avatar Upload Mode -->
+          <div class="col-span-full grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
+            <div class="md:col-span-2 space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-slate-700 dark:text-slate-300">3. Vùng Kéo thả hình ảnh (Vertical Dropzone)</span>
+                <app-badge variant="info" rounded="full" size="sm">Dropzone Mode</app-badge>
+              </div>
+              <app-file-upload
+                variant="dropzone"
+                title="Kéo thả hình ảnh vào đây"
+                subtitle="Hỗ trợ tải lên nhiều hình ảnh cùng lúc"
+                buttonText="Chọn ảnh"
+                accept="image/*"
+                [multiple]="true"
+                [maxSizeMB]="5"
+              ></app-file-upload>
+            </div>
+
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-slate-700 dark:text-slate-300">4. Upload Ảnh Đại Diện</span>
+                <app-badge variant="neutral" rounded="full" size="sm">Avatar Mode</app-badge>
+              </div>
+              <app-file-upload
+                variant="avatar"
+                title="Ảnh đại diện"
+                subtitle="PNG, JPG tối đa 3MB"
+                accept="image/*"
+                [multiple]="false"
+                [maxSizeMB]="3"
+                (filesChange)="demoFileUploadAvatar.set($event)"
+              ></app-file-upload>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="flex items-center justify-center pt-6">
