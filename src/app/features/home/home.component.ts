@@ -30,6 +30,7 @@ import { FileUploadComponent, UploadFileItem } from '@shared/components/file-upl
 import { InputOtpComponent } from '@shared/components/input-otp/input-otp.component';
 import { DropdownMenuComponent, DropdownMenuItem, DropdownMenuHeader } from '@shared/components/dropdown-menu/dropdown-menu.component';
 import { VoiceChatComponent } from '@shared/components/dropdown-menu/voice-chat.component';
+import { ProgressComponent, ProgressSegment } from '@shared/components/progress/progress.component';
 import { parseEther } from 'ethers';
 
 @Component({
@@ -64,7 +65,8 @@ import { parseEther } from 'ethers';
     FileUploadComponent,
     InputOtpComponent,
     DropdownMenuComponent,
-    VoiceChatComponent
+    VoiceChatComponent,
+    ProgressComponent
   ],
   templateUrl: './home.component.html'
 })
@@ -620,5 +622,18 @@ export function getNetworkRpc(chainId: number): string {
     this.demoVoiceConnected.update(v => !v);
     const state = this.demoVoiceConnected() ? 'Đã tham gia phòng thoại Web3 Voice Lounge' : 'Đã ngắt kết nối Voice Chat';
     this.stateService.showToast(state, this.demoVoiceConnected() ? 'success' : 'warning');
+  }
+
+  public readonly demoProgressValue = signal<number>(68);
+
+  public readonly demoProgressSegments: ProgressSegment[] = [
+    { value: 40, color: 'bg-purple-500', label: 'DApps Data' },
+    { value: 25, color: 'bg-emerald-500', label: 'Tokens' },
+    { value: 15, color: 'bg-amber-500', label: 'NFTs' },
+    { value: 20, color: 'bg-slate-300 dark:bg-slate-700', label: 'Free Space' }
+  ];
+
+  public adjustProgress(delta: number): void {
+    this.demoProgressValue.update(v => Math.min(100, Math.max(0, v + delta)));
   }
 }

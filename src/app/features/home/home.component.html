@@ -1813,6 +1813,232 @@
           </div>
         </div>
       </div>
+
+      <!-- Card 20: Component Progress Tiến Trình Cao Cấp (app-progress) -->
+      <div app-card class="mt-8">
+        <div class="space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200/80 dark:border-slate-800/80">
+            <div>
+              <div class="flex items-center gap-2.5">
+                <h3 class="text-base font-extrabold text-slate-900 dark:text-white">Card 20: Component Progress Tiến Trình Cao Cấp (app-progress)</h3>
+                <app-badge variant="primary" rounded="full" size="sm">Shadcn Space Progress</app-badge>
+              </div>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                Thanh tiến trình đa dạng biến thể: Linear Bar, Steps, Multi-Segment, Striped Animated, Indeterminate, Circular Ring & Semi-Circle Gauge.
+              </p>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <button app-button variant="secondary" size="sm" (click)="adjustProgress(-10)">
+                <app-icon name="minus" class="w-3.5 h-3.5 mr-1" />
+                -10%
+              </button>
+              <button app-button variant="primary" size="sm" (click)="adjustProgress(10)">
+                <app-icon name="plus" class="w-3.5 h-3.5 mr-1" />
+                +10%
+              </button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- 1. Basic & Sizes -->
+            <div class="space-y-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
+              <div class="flex items-center justify-between">
+                <div>
+                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">1. Các Kích Thước (xs, sm, md, lg, xl)</span>
+                  <span class="text-[11px] text-slate-500 dark:text-slate-400">Độ cao linh hoạt phù hợp mọi ngữ cảnh UI</span>
+                </div>
+                <app-badge variant="primary" rounded="full" size="sm">5 Sizes</app-badge>
+              </div>
+
+              <div class="space-y-3 pt-1">
+                <app-progress label="Extra Small (xs - 6px)" [value]="25" size="xs" [showValue]="true" />
+                <app-progress label="Small (sm - 10px)" [value]="45" size="sm" [showValue]="true" />
+                <app-progress label="Medium (md - 14px)" [value]="65" size="md" [showValue]="true" />
+                <app-progress label="Large (lg - 20px)" [value]="80" size="lg" [showValue]="true" valuePosition="inside" />
+                <app-progress label="Extra Large (xl - 24px)" [value]="95" size="xl" [showValue]="true" valuePosition="inside" />
+              </div>
+            </div>
+
+            <!-- 2. Variants & Colors -->
+            <div class="space-y-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
+              <div class="flex items-center justify-between">
+                <div>
+                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">2. Màu Sắc & Gradient Thương Hiệu</span>
+                  <span class="text-[11px] text-slate-500 dark:text-slate-400">Hệ màu status: Success, Warning, Danger, Info & Gradient</span>
+                </div>
+                <app-badge variant="info" rounded="full" size="sm">Variants</app-badge>
+              </div>
+
+              <div class="space-y-3.5 pt-1">
+                <app-progress label="Primary (Purple Brand)" [value]="75" variant="primary" size="sm" [showValue]="true" />
+                <app-progress label="Success (Emerald Complete)" [value]="100" variant="success" size="sm" [showValue]="true" />
+                <app-progress label="Warning (Amber Warning)" [value]="55" variant="warning" size="sm" [showValue]="true" />
+                <app-progress label="Danger (Rose Error)" [value]="30" variant="danger" size="sm" [showValue]="true" />
+                <app-progress label="Info (Sky Information)" [value]="85" variant="info" size="sm" [showValue]="true" />
+                <app-progress label="Neon Gradient (Pink to Indigo)" [value]="90" variant="gradient" size="md" [showValue]="true" />
+              </div>
+            </div>
+
+            <!-- 3. Striped, Animated & Indeterminate -->
+            <div class="space-y-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
+              <div class="flex items-center justify-between">
+                <div>
+                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">3. Striped, Animated & Indeterminate Mode</span>
+                  <span class="text-[11px] text-slate-500 dark:text-slate-400">Hiệu ứng sọc cuộn & sóng chạy không định lượng</span>
+                </div>
+                <app-badge variant="warning" rounded="full" size="sm">Animations</app-badge>
+              </div>
+
+              <div class="space-y-4 pt-1">
+                <app-progress
+                  label="Striped Static"
+                  [value]="60"
+                  variant="primary"
+                  size="md"
+                  [striped]="true"
+                  [showValue]="true"
+                />
+
+                <app-progress
+                  label="Striped Animated (Đang tải tệp lên IPFS...)"
+                  [value]="78"
+                  variant="info"
+                  size="lg"
+                  [striped]="true"
+                  [animated]="true"
+                  [showValue]="true"
+                  valuePosition="inside"
+                />
+
+                <app-progress
+                  label="Indeterminate (Đang đồng bộ khối Blockchain...)"
+                  [indeterminate]="true"
+                  variant="gradient"
+                  size="md"
+                />
+              </div>
+            </div>
+
+            <!-- 4. Steps & Multi-Segment Storage -->
+            <div class="space-y-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
+              <div class="flex items-center justify-between">
+                <div>
+                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">4. Phân Đoạn Steps & Multi-Segment Storage</span>
+                  <span class="text-[11px] text-slate-500 dark:text-slate-400">Đồng hồ quy trình 4 bước & phân bổ lưu trữ ví</span>
+                </div>
+                <app-badge variant="success" rounded="full" size="sm">Steps & Segments</app-badge>
+              </div>
+
+              <div class="space-y-4 pt-1">
+                <app-progress
+                  label="Quy trình xác nhận 4 bước (Step 3/4)"
+                  [value]="75"
+                  [steps]="4"
+                  variant="primary"
+                  size="md"
+                  [showValue]="true"
+                />
+
+                <div class="space-y-2">
+                  <app-progress
+                    label="Phân bổ dung lượng lưu trữ ví DApp"
+                    [segments]="demoProgressSegments"
+                    size="lg"
+                  />
+                  <div class="flex items-center justify-between flex-wrap gap-2 text-[11px] text-slate-500 dark:text-slate-400 pt-1">
+                    <div class="flex items-center gap-1.5">
+                      <span class="w-2.5 h-2.5 rounded-full bg-purple-500 inline-block"></span>
+                      <span>DApps (40%)</span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                      <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                      <span>Tokens (25%)</span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                      <span class="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block"></span>
+                      <span>NFTs (15%)</span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                      <span class="w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-700 inline-block"></span>
+                      <span>Trống (20%)</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 5. Interactive Real-Time Demo -->
+            <div class="space-y-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60 col-span-1">
+              <div class="flex items-center justify-between">
+                <div>
+                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">5. Điều Chỉnh Tiến Trình Real-Time</span>
+                  <span class="text-[11px] text-slate-500 dark:text-slate-400">Kéo slider để thay đổi % trực tiếp</span>
+                </div>
+                <app-badge variant="secondary" rounded="full" size="sm">Interactive</app-badge>
+              </div>
+
+              <div class="space-y-4 pt-1">
+                <app-progress
+                  label="Trạng thái tải dữ liệu Web3"
+                  [value]="demoProgressValue()"
+                  variant="primary"
+                  size="lg"
+                  [striped]="true"
+                  [animated]="demoProgressValue() < 100"
+                  [showValue]="true"
+                  valuePosition="right"
+                />
+
+                <div class="space-y-1.5">
+                  <div class="flex justify-between text-xs text-slate-500">
+                    <span>Điều chỉnh giá trị tiến trình:</span>
+                    <strong class="font-mono text-purple-600 dark:text-purple-400">{{ demoProgressValue() }}%</strong>
+                  </div>
+                  <app-custom-slider
+                    [min]="0"
+                    [max]="100"
+                    [step]="1"
+                    [ngModel]="demoProgressValue()"
+                    (ngModelChange)="demoProgressValue.set($event)"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- 6. Circular Progress & Semi-Circle Gauge -->
+            <div class="space-y-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60 col-span-1">
+              <div class="flex items-center justify-between">
+                <div>
+                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">6. Circular Ring & Semi-Circle Gauge</span>
+                  <span class="text-[11px] text-slate-500 dark:text-slate-400">Vòng tròn 360° & Bán nguyệt 180° SVG</span>
+                </div>
+                <app-badge variant="ultra" rounded="full" size="sm">SVG Gauges</app-badge>
+              </div>
+
+              <div class="grid grid-cols-2 gap-4 items-center justify-items-center pt-2">
+                <app-progress
+                  type="circle"
+                  [value]="demoProgressValue()"
+                  variant="primary"
+                  size="md"
+                  label="Vòng Tròn"
+                  [showValue]="true"
+                />
+
+                <app-progress
+                  type="semicircle"
+                  [value]="demoProgressValue()"
+                  variant="success"
+                  size="md"
+                  label="Bán Nguyệt"
+                  [showValue]="true"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="flex items-center justify-center pt-6">

@@ -2,15 +2,24 @@
 
 ## Ngày 27/07/2026
 
+### Yêu cầu: Xây dựng và tích hợp Progress Component (app-progress)
+- **Nội dung yêu cầu:** Thêm component `progress` mới tại `src/app/shared/components/progress` lấy cảm hứng từ Shadcn Space Progress, hỗ trợ nhiều biến thể tiến trình phong phú (Linear Bar, Steps, Multi-Segment Storage, Striped Animated, Indeterminate mode, Circular Ring 360° và Semi-Circle Gauge 180° SVG) và bổ sung showcase tại trang chủ.
+- **Giải pháp:**
+  1. **Tạo Progress Component:**
+     - [progress.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/progress/progress.component.ts): Standalone component với 5 size (`xs`, `sm`, `md`, `lg`, `xl`), 7 màu sắc/gradient (`primary`, `secondary`, `success`, `warning`, `danger`, `info`, `gradient`), tính toán tỉ lệ %, stroke-dasharray & stroke-dashoffset cho SVG Circular Ring và Semi-Circle Gauge.
+     - [progress.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/progress/progress.component.html): Template linh hoạt render Linear Bar với header label & % value position (`top`, `right`, `bottom`, `inside`), Multi-segment storage progress, Step divider progress, Striped Animated, Indeterminate mode và SVG Gauges.
+     - [progress.component.css](file:///d:/git/angular-web3-wallet/src/app/shared/components/progress/progress.component.css): Cấu hình `:host { display: block; }`, keyframes `@keyframes progress-stripe-move` cho hiệu ứng sọc chạy và `@keyframes progress-indeterminate` cho hiệu ứng sóng chạy.
+  2. **Tích hợp Showcase vào trang chủ:**
+     - Cập nhật [home.component.ts](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.ts) và [home.component.html](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.html): Khai báo `ProgressComponent`, tạo signal `demoProgressValue`, mảng phân bổ `demoProgressSegments` và bổ sung **Card 20: Component Progress Tiến Trình Cao Cấp (app-progress)** trình diễn 6 khu vực demo tương tác trực quan.
+
 ### Yêu cầu: Đồng bộ đường viền và màu sắc của Input OTP Component (app-input-otp) 100% theo design.md
 - **Nội dung yêu cầu:** Tinh chỉnh lại các ô nhập liệu OTP (`app-input-otp`) để khớp 100% với style ô nhập liệu hệ thống (`.form-input`), loại bỏ việc đổi đường viền thô khi điền chữ, sử dụng nền slate nhạt mượt và đường viền mảnh đồng nhất giữa ô rỗng và ô đã nhập.
 - **Giải pháp:**
   1. **Đồng bộ style theo chuẩn `.form-input` trong design.md:**
      - Cập nhật [input-otp.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/input-otp/input-otp.component.html):
-       - **Bổ sung `border-2 border-solid` bắt buộc:** Trong Tailwind v4, khi sử dụng class `border-2` nếu không có `border-solid` thì trình duyệt sẽ áp dụng `border-style: none` mặc định làm biến mất toàn bộ đường viền. Đã bổ sung `border-2 border-solid` vào thẻ container slot để hiển thị 100% đường viền nét đậm rõ ràng trên mọi trình duyệt.
-       - **Đường viền sắc nét & Nổi bật:** Sử dụng `border-slate-300 dark:border-slate-600` trên nền `bg-white dark:bg-slate-900 shadow-xs`.
+       - **Đường viền mảnh nhạt mượt (1px Soft Visible Borders):** Chuyển sang nét viền 1px mảnh thanh thoát `border border-solid border-slate-200 dark:border-slate-700` trên nền `bg-white dark:bg-slate-900 shadow-xs`. Đường viền vừa dịu nhẹ vừa vừa mắt, vừa định hình rõ từng ô OTP.
        - **Bo góc (Border Radius):** Đảm bảo tất cả các kích thước ô OTP có độ bo góc sắc nét, rõ ràng theo chuẩn 15px max của `design.md`: `size === 'sm'` dùng `rounded-[10px]`, `size === 'md'` dùng `rounded-[12px]`, `size === 'lg'` dùng `rounded-[14px]`.
-       - **Trạng thái Đang focus (Active):** Viền tím thương hiệu phát sáng nổi bật `border-purple-500 dark:border-purple-500 ring-4 ring-purple-500/20 dark:ring-purple-500/30 bg-purple-50/50 dark:bg-purple-950/40 scale-[1.03] shadow-md shadow-purple-500/15`.
+       - **Trạng thái Đang focus (Active):** Viền tím thương hiệu phát sáng mượt `border-purple-500 dark:border-purple-500 ring-4 ring-purple-500/20 dark:ring-purple-500/30 bg-purple-50/40 dark:bg-purple-950/30 scale-[1.02] shadow-sm shadow-purple-500/10`.
        - **Trạng thái Lỗi (Invalid) & Vô hiệu hóa (Disabled):** Tinh chỉnh nền `bg-rose-50/40` và `bg-slate-100 dark:bg-slate-900/40` mượt mà.
      - Cập nhật [home.component.html](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.html): Đổi class nhãn hiển thị `text-violet-600` sang `text-purple-600` cho đồng bộ.
   2. **Xác thực:** Chạy lệnh `npm run build` thành công, biên dịch ứng dụng mượt mà không có lỗi.
