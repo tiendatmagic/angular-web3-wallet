@@ -1,0 +1,127 @@
+<div class="code-block-container relative rounded-[15px] overflow-hidden border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 shadow-sm transition-all duration-300">
+  
+  <div class="code-block-header flex items-center justify-between px-4 py-2.5 bg-slate-200/60 dark:bg-slate-900/80 border-b border-slate-300/60 dark:border-slate-800/80 backdrop-blur-md select-none gap-3">
+    
+    <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5">
+      @if (files && files.length > 1) {
+        <div class="flex items-center gap-1.5 p-1 bg-slate-300/50 dark:bg-slate-900/60 rounded-lg border border-slate-300/60 dark:border-slate-800/60">
+          @for (file of files; track file.name; let i = $index) {
+            <button
+              type="button"
+              (click)="selectTab(i)"
+              class="flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-md transition-all duration-200"
+              [class.bg-purple-600]="activeIndex() === i"
+              [class.text-white]="activeIndex() === i"
+              [class.shadow-sm]="activeIndex() === i"
+              [class.text-slate-600]="activeIndex() !== i"
+              [class.dark:text-slate-400]="activeIndex() !== i"
+              [class.hover:text-slate-900]="activeIndex() !== i"
+              [class.dark:hover:text-slate-200]="activeIndex() !== i"
+              [class.hover:bg-slate-300/70]="activeIndex() !== i"
+              [class.dark:hover:bg-slate-800/80]="activeIndex() !== i"
+            >
+              <app-icon name="file-code" class="w-3.5 h-3.5"></app-icon>
+              <span>{{ file.name }}</span>
+            </button>
+          }
+        </div>
+      } @else {
+        <div class="flex items-center gap-2 text-xs font-semibold text-slate-700 dark:text-slate-300">
+          <app-icon name="file-code" class="w-4 h-4 text-purple-600 dark:text-purple-400"></app-icon>
+          @if (currentFileName()) {
+            <span class="tracking-wide">{{ currentFileName() }}</span>
+          }
+          @if (currentLanguage()) {
+            <span class="px-2 py-0.5 text-[10px] uppercase font-mono font-bold tracking-wider rounded bg-purple-500/10 dark:bg-purple-500/15 text-purple-700 dark:text-purple-300 border border-purple-500/20">
+              {{ currentLanguage() }}
+            </span>
+          }
+        </div>
+      }
+    </div>
+
+    <div class="flex items-center gap-1.5 shrink-0">
+      <button
+        type="button"
+        (click)="toggleWrap()"
+        appRipple
+        [appTooltip]="isWrapped() ? 'Tắt ngắt dòng' : 'Tự động ngắt dòng'"
+        class="flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-slate-300/60 dark:bg-slate-800/90 hover:bg-slate-300/90 dark:hover:bg-slate-700/80 border border-slate-300/80 dark:border-slate-700/60 rounded-lg transition-all active:scale-95"
+        [class.text-purple-700]="isWrapped()"
+        [class.dark:text-purple-300]="isWrapped()"
+        [class.border-purple-500/40]="isWrapped()"
+        [class.bg-purple-500/15]="isWrapped()"
+      >
+        <app-icon name="wrap-text" class="w-3.5 h-3.5" [class.text-purple-600]="isWrapped()" [class.dark:text-purple-400]="isWrapped()"></app-icon>
+        <span>Wrap</span>
+      </button>
+
+      @if (showCopyButton) {
+        <button
+          type="button"
+          (click)="copyCode()"
+          appRipple
+          [appTooltip]="copied() ? 'Đã sao chép!' : 'Sao chép mã'"
+          class="flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-slate-300/60 dark:bg-slate-800/90 hover:bg-slate-300/90 dark:hover:bg-slate-700/80 border border-slate-300/80 dark:border-slate-700/60 rounded-lg transition-all active:scale-95"
+          [class.text-emerald-700]="copied()"
+          [class.dark:text-emerald-400]="copied()"
+          [class.border-emerald-500/40]="copied()"
+          [class.bg-emerald-500/15]="copied()"
+        >
+          @if (copied()) {
+            <app-icon name="check" class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 animate-in zoom-in duration-200"></app-icon>
+            <span class="text-emerald-600 dark:text-emerald-400">Copied</span>
+          } @else {
+            <app-icon name="copy" class="w-3.5 h-3.5"></app-icon>
+            <span>Copy</span>
+          }
+        </button>
+      }
+    </div>
+  </div>
+
+  <div
+    class="code-block-body relative overflow-auto font-mono text-xs leading-relaxed"
+    [style.maxHeight]="isCollapsed() ? '140px' : maxHeight"
+    [class.whitespace-pre-wrap]="isWrapped()"
+    [class.whitespace-pre]="!isWrapped()"
+  >
+    <div class="py-3">
+      @for (line of lineList(); track line.number) {
+        <div
+          class="code-line-row flex items-baseline px-4 py-0.5 transition-colors duration-150"
+          [class.bg-purple-500/10]="line.isHighlighted"
+          [class.border-l-2]="line.isHighlighted"
+          [class.border-purple-500]="line.isHighlighted"
+          [class.pl-3.5]="line.isHighlighted"
+        >
+          @if (showLineNumbers) {
+            <span class="line-number select-none shrink-0 w-8 pr-3 text-right text-slate-400 dark:text-slate-500 font-mono text-[11px]">
+              {{ line.number }}
+            </span>
+          }
+          <span
+            class="line-content font-mono text-slate-800 dark:text-slate-200"
+            [innerHTML]="line.html"
+          ></span>
+        </div>
+      }
+    </div>
+  </div>
+
+  @if (collapsible) {
+    <div
+      class="code-block-footer relative flex items-center justify-center p-2 bg-gradient-to-t from-slate-100 via-slate-50/90 to-transparent dark:from-slate-950 dark:via-slate-900/90 dark:to-transparent border-t border-slate-200 dark:border-slate-800/60"
+    >
+      <button
+        type="button"
+        (click)="toggleCollapse()"
+        appRipple
+        class="flex items-center gap-1.5 px-3 py-1 text-xs font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-slate-200/90 dark:bg-slate-800/90 hover:bg-slate-300/80 dark:hover:bg-slate-700/80 border border-slate-300/80 dark:border-slate-700/60 rounded-full transition-all"
+      >
+        <app-icon [name]="isCollapsed() ? 'chevron-down' : 'chevron-up'" class="w-3.5 h-3.5"></app-icon>
+        <span>{{ isCollapsed() ? 'Xem đầy đủ mã' : 'Thu gọn mã' }}</span>
+      </button>
+    </div>
+  }
+</div>

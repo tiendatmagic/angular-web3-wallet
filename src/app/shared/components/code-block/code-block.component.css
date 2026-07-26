@@ -1,0 +1,105 @@
+:host {
+  display: block;
+}
+
+.code-block-body::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.code-block-body::-webkit-scrollbar-track {
+  background: rgba(241, 245, 249, 0.5);
+}
+
+:host-context(.dark) .code-block-body::-webkit-scrollbar-track,
+.dark .code-block-body::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.5);
+}
+
+.code-block-body::-webkit-scrollbar-thumb {
+  background: rgba(203, 213, 225, 0.8);
+  border-radius: 9999px;
+}
+
+:host-context(.dark) .code-block-body::-webkit-scrollbar-thumb,
+.dark .code-block-body::-webkit-scrollbar-thumb {
+  background: rgba(51, 65, 85, 0.6);
+}
+
+/* Default / Light Mode Syntax Token Colors */
+::ng-deep .tok-keyword {
+  color: #7c3aed;
+  font-weight: 600;
+}
+
+::ng-deep .tok-string {
+  color: #15803d;
+}
+
+::ng-deep .tok-comment {
+  color: #64748b;
+  font-style: italic;
+}
+
+::ng-deep .tok-number {
+  color: #c2410c;
+}
+
+::ng-deep .tok-function {
+  color: #0284c7;
+}
+
+::ng-deep .tok-decorator {
+  color: #db2777;
+  font-weight: 500;
+}
+
+::ng-deep .tok-tag {
+  color: #e11d48;
+  font-weight: 600;
+}
+
+::ng-deep .tok-attr {
+  color: #0891b2;
+}
+
+/* Dark Mode Syntax Token Colors */
+:host-context(.dark) ::ng-deep .tok-keyword,
+.dark ::ng-deep .tok-keyword {
+  color: #c084fc;
+}
+
+:host-context(.dark) ::ng-deep .tok-string,
+.dark ::ng-deep .tok-string {
+  color: #4ade80;
+}
+
+:host-context(.dark) ::ng-deep .tok-comment,
+.dark ::ng-deep .tok-comment {
+  color: #64748b;
+}
+
+:host-context(.dark) ::ng-deep .tok-number,
+.dark ::ng-deep .tok-number {
+  color: #fb923c;
+}
+
+:host-context(.dark) ::ng-deep .tok-function,
+.dark ::ng-deep .tok-function {
+  color: #38bdf8;
+}
+
+:host-context(.dark) ::ng-deep .tok-decorator,
+.dark ::ng-deep .tok-decorator {
+  color: #f472b6;
+}
+
+:host-context(.dark) ::ng-deep .tok-tag,
+.dark ::ng-deep .tok-tag {
+  color: #f43f5e;
+}
+
+:host-context(.dark) ::ng-deep .tok-attr,
+.dark ::ng-deep .tok-attr {
+  color: #22d3ee;
+}

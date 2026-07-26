@@ -1,5 +1,18 @@
 # Lịch sử yêu cầu và xử lý của Agent
 
+## Ngày 27/07/2026
+
+### Yêu cầu: Xây dựng, cân đối giao diện nút Wrap và tích hợp CodeBlock Component
+- **Nội dung yêu cầu:** Thêm component `code-block` mới tại `src/app/shared/components/code-block` tham khảo thiết kế từ Shadcn Space Code Block, cân đối nút Word Wrap với nút Copy, hỗ trợ đầy đủ Light Mode / Dark Mode tương ứng và bổ sung showcase tại trang chủ.
+- **Giải pháp:**
+  1. **Bổ sung Icon:** Cập nhật [icon.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/icon/icon.component.html) bổ sung các icon `file-code`, `wrap-text`, và `terminal`.
+  2. **Tạo & Tinh chỉnh CodeBlock Component:**
+     - [code-block.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/code-block/code-block.component.ts): Tạo component standalone hỗ trợ single file code và multi-file tabs (`CodeFile[]`), các inputs `showLineNumbers`, `highlightLines`, `showCopyButton`, `collapsible`, `maxHeight`, `wrapLines`. Viết tokenizer Lexer chính xác tô màu cú pháp (TS, HTML, SCSS/CSS, JSON, Bash) mà không bị lỗi đè thẻ HTML string.
+     - [code-block.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/code-block/code-block.component.html): Tự động chuyển đổi giao diện hoàn hảo ở cả Light Mode (`bg-slate-50`, viền `border-slate-200`, text `text-slate-800`) và Dark Mode (`dark:bg-slate-950`, viền `dark:border-slate-800`, text `dark:text-slate-100`). Nút Word Wrap (`border`, `bg-slate-800/90`, nhãn `Wrap`, chiều cao/padding) hoàn toàn cân đối với nút Copy.
+     - [code-block.component.css](file:///d:/git/angular-web3-wallet/src/app/shared/components/code-block/code-block.component.css): Đảm bảo `:host { display: block; }`, tùy biến scrollbar và bộ màu syntax tokens sắc nét riêng biệt cho cả Light Mode (`#7c3aed`, `#15803d`, `#c2410c`, `#0284c7`, `#db2777`) và Dark Mode (`#c084fc`, `#4ade80`, `#fb923c`, `#38bdf8`, `#f472b6`).
+  3. **Tích hợp Showcase vào trang chủ:**
+     - Cập nhật [home.component.ts](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.ts) và [home.component.html](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.html): Bổ sung **Card 16: Component Code Block Cao Cấp (app-code-block)** trình diễn 3 dạng: Tệp đơn lẻ kèm highlight line, Nhiều tệp tabbed, và Thu gọn/Mở rộng.
+
 ## Ngày 21/07/2026
 
 ### Yêu cầu: Dọn dẹp tất cả các comment không cần thiết trong source code

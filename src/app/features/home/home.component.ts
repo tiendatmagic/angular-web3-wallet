@@ -26,6 +26,7 @@ import { DemoModalComponent } from './components/demo-modal/demo-modal.component
 import { AuraComponent } from '@shared/components/aura/aura.component';
 import { TableComponent, TableCellDirective, TableColumn } from '@shared/components/table/table.component';
 import { PaginationComponent } from '@shared/components/pagination/pagination.component';
+import { CodeBlockComponent, CodeFile } from '@shared/components/code-block/code-block.component';
 import { parseEther } from 'ethers';
 
 @Component({
@@ -57,6 +58,7 @@ import { parseEther } from 'ethers';
     TableComponent,
     TableCellDirective,
     PaginationComponent,
+    CodeBlockComponent,
   ],
   templateUrl: './home.component.html'
 })
@@ -392,4 +394,97 @@ export class HomeComponent {
     this.demoTableLoading.set(false);
     this.demoTableCurrentPage.set(1);
   }
+
+  public readonly demoSingleCode = `import { Component, signal } from '@angular/core';
+
+@Component({
+  selector: 'app-web3-connect',
+  standalone: true,
+  template: \`<button (click)="connect()">Connect Wallet</button>\`
+})
+export class Web3ConnectComponent {
+  readonly isConnected = signal(false);
+
+  async connect(): Promise<void> {
+    console.log('Connecting to Web3 Wallet...');
+    this.isConnected.set(true);
+  }
+}`;
+
+  public readonly demoMultiCodeFiles: CodeFile[] = [
+    {
+      name: 'web3.service.ts',
+      language: 'typescript',
+      highlightLines: [4, 9],
+      code: `import { Injectable, signal } from '@angular/core';
+import { BrowserProvider, Signer } from 'ethers';
+
+@Injectable({ providedIn: 'root' })
+export class Web3Service {
+  readonly account = signal<string | null>(null);
+  readonly chainId = signal<number | null>(null);
+
+  async connectWallet(): Promise<string> {
+    if (!window.ethereum) throw new Error('No crypto wallet found');
+    const provider = new BrowserProvider(window.ethereum);
+    const signer: Signer = await provider.getSigner();
+    const address = await signer.getAddress();
+    this.account.set(address);
+    return address;
+  }
+}`
+    },
+    {
+      name: 'wallet.component.html',
+      language: 'html',
+      code: `<div class="wallet-card border rounded-xl p-4 bg-slate-900">
+  <div class="flex items-center justify-between">
+    <h3 class="text-sm font-semibold">Ví Web3 của tôi</h3>
+    <span class="badge text-xs bg-emerald-500/20 text-emerald-400">Connected</span>
+  </div>
+  <p class="mt-2 text-mono text-xs text-slate-400">{{ account() }}</p>
+</div>`
+    },
+    {
+      name: 'styles.scss',
+      language: 'scss',
+      code: `.wallet-card {
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}`
+    }
+  ];
+
+  public readonly demoCollapsibleCode = `// Config script example
+const web3Config = {
+  appName: 'Angular Web3 Wallet',
+  version: '2.5.0',
+  networks: [
+    { id: 1, name: 'Ethereum Mainnet', rpcUrl: 'https://eth-mainnet.g.alchemy.com/v2/demo' },
+    { id: 42161, name: 'Arbitrum One', rpcUrl: 'https://arb1.arbitrum.io/rpc' },
+    { id: 56, name: 'BNB Smart Chain', rpcUrl: 'https://bsc-dataseed.binance.org' },
+    { id: 137, name: 'Polygon PoS', rpcUrl: 'https://polygon-rpc.com' },
+    { id: 10, name: 'Optimism', rpcUrl: 'https://mainnet.optimism.io' }
+  ],
+  tokens: [
+    { symbol: 'ETH', decimals: 18, address: '0x0000000000000000000000000000000000000000' },
+    { symbol: 'USDT', decimals: 6, address: '0xdAC17F958D2ee523a2206206994597C13D831ec7' },
+    { symbol: 'USDC', decimals: 6, address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48' }
+  ],
+  features: {
+    enableGasEstimator: true,
+    enableTxHistory: true,
+    enableNFTViewer: false
+  }
+};
+
+export function getNetworkRpc(chainId: number): string {
+  const net = web3Config.networks.find(n => n.id === chainId);
+  return net ? net.rpcUrl : '';
+}`;
 }
