@@ -2,6 +2,18 @@
 
 ## Ngày 27/07/2026
 
+### Yêu cầu: Đồng bộ đường viền và màu sắc của Input OTP Component (app-input-otp) theo design.md
+- **Nội dung yêu cầu:** Xem xét lại các đường viền và hiệu ứng trạng thái của ô nhập OTP (`app-input-otp`) để đảm bảo khớp 100% với quy chuẩn thiết kế trong `design.md` (đường viền mảnh glassmorphism, màu sắc dynamic primary theme purple thay vì violet cứng, hiệu ứng ô đã điền chữ gọn gàng tinh tế).
+- **Giải pháp:**
+  1. **Tối ưu hóa đường viền & màu sắc theo design.md:**
+     - Cập nhật [input-otp.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/input-otp/input-otp.component.html):
+       - **Trạng thái rỗng (Idle):** Đổi từ `border-slate-300 dark:border-slate-700` sang `border border-slate-200/80 dark:border-slate-800/80 hover:border-purple-400/60 dark:hover:border-purple-600/60 hover:bg-purple-50/20 dark:hover:bg-purple-950/20` giúp đường viền mượt hơn, đồng bộ với các ô nhập liệu khác trong hệ thống.
+       - **Trạng thái đã điền chữ (Filled):** Thay thế đường viền đậm thô `border-slate-400 dark:border-slate-500` bằng `border border-slate-300 dark:border-slate-700 shadow-sm text-slate-900 dark:text-white font-bold bg-white dark:bg-slate-900`.
+       - **Trạng thái Đang focus (Active):** Đổi từ màu `violet-500` cứng sang `purple-500` (`border-purple-500 dark:border-purple-500 ring-2 ring-purple-500/25 dark:ring-purple-500/35 bg-purple-50/40 dark:bg-purple-950/25 z-10 scale-[1.03] shadow-md shadow-purple-500/10`) để ăn theo đúng hệ màu Dynamic Primary Theme của ứng dụng.
+       - **Con trỏ Caret nhấp nháy:** Chuyển từ `bg-violet-600 dark:bg-violet-400` sang `bg-purple-600 dark:bg-purple-400`.
+     - Cập nhật [home.component.html](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.html): Đổi class nhãn hiển thị `text-violet-600` sang `text-purple-600` cho đồng bộ.
+  2. **Xác thực:** Chạy lệnh `npm run build` thành công, biên dịch ứng dụng không phát sinh bất kỳ lỗi nào.
+
 ### Yêu cầu: Loại bỏ UI phím tắt macOS và tăng kích thước font-size của Dropdown Menu Component
 - **Nội dung yêu cầu:** Xóa toàn bộ các biểu tượng phím tắt kiểu macOS (`⌘P`, `⌘W`, `⌘S`, `⌘K`, `⇧⌘Q`, `⌘B`, `⌘N`, `⌘C`) khỏi các menu item và trang showcase; đồng thời xem xét lại tổng thể `dropdown-menu`, điều chỉnh kích thước chữ (font-size) to hơn và thoáng hơn để người dùng dễ đọc.
 - **Giải pháp:**

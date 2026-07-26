@@ -31,20 +31,20 @@
       <!-- Individual Slot -->
       <div
         (click)="onSlotClick(slotIndex)"
-        class="relative flex items-center justify-center font-mono transition-all duration-150 cursor-pointer shadow-sm"
+        class="relative flex items-center justify-center font-mono transition-all duration-200 cursor-pointer shadow-xs"
         [ngClass]="{
-          'w-8 h-9 text-sm rounded-md': size === 'sm',
-          'w-11 h-12 text-base rounded-lg': size === 'md',
+          'w-8 h-9 text-sm rounded-lg': size === 'sm',
+          'w-11 h-12 text-base rounded-xl': size === 'md',
           'w-14 h-14 text-xl rounded-xl': size === 'lg',
-          'bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700':
-            !isSlotFocused(slotIndex) && !invalid && !disabled,
-          'border-violet-500 dark:border-violet-500 ring-2 ring-violet-500/25 dark:ring-violet-500/35 bg-violet-50/30 dark:bg-violet-950/20 z-10 scale-[1.03]':
-            isSlotFocused(slotIndex) && !invalid && !disabled,
-          'font-bold border-slate-400 dark:border-slate-500':
+          'bg-white dark:bg-slate-900/60 text-slate-900 dark:text-slate-100 border border-slate-200/80 dark:border-slate-800/80 hover:border-purple-400/60 dark:hover:border-purple-600/60 hover:bg-purple-50/20 dark:hover:bg-purple-950/20':
+            !hasValueAt(slotIndex) && !isSlotFocused(slotIndex) && !invalid && !disabled,
+          'bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-bold border border-slate-300 dark:border-slate-700 shadow-sm':
             hasValueAt(slotIndex) && !isSlotFocused(slotIndex) && !invalid && !disabled,
-          'border-rose-500 dark:border-rose-500 text-rose-600 dark:text-rose-400 bg-rose-50/40 dark:bg-rose-950/20 ring-2 ring-rose-500/20':
+          'border-purple-500 dark:border-purple-500 ring-2 ring-purple-500/25 dark:ring-purple-500/35 bg-purple-50/40 dark:bg-purple-950/25 z-10 scale-[1.03] shadow-md shadow-purple-500/10':
+            isSlotFocused(slotIndex) && !invalid && !disabled,
+          'border-rose-500 dark:border-rose-500 text-rose-600 dark:text-rose-400 bg-rose-50/40 dark:bg-rose-950/20 ring-2 ring-rose-500/20 z-10':
             invalid && !disabled,
-          'opacity-50 cursor-not-allowed bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-800 text-slate-400 dark:text-slate-500 shadow-none':
+          'opacity-50 cursor-not-allowed bg-slate-100 dark:bg-slate-800/50 border border-slate-200/60 dark:border-slate-800/60 text-slate-400 dark:text-slate-500 shadow-none':
             disabled
         }"
       >
@@ -62,7 +62,7 @@
         <!-- Caret Cursor Animation -->
         @if (isCaretVisible(slotIndex) && !disabled && !readonly) {
           <span
-            class="otp-caret-blink inline-block bg-violet-600 dark:bg-violet-400 rounded-full"
+            class="otp-caret-blink inline-block bg-purple-600 dark:bg-purple-400 rounded-full"
             [ngClass]="{
               'h-4 w-0.5': size === 'sm',
               'h-5 w-0.5': size === 'md',
