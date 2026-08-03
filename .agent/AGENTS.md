@@ -1,5 +1,13 @@
 # Lịch sử yêu cầu và xử lý của Agent
 
+## Ngày 03/08/2026
+
+### Yêu cầu: Thay đổi RPC mặc định của BSC Testnet
+- **Nội dung yêu cầu:** Thay đổi URL RPC chain BSC Testnet (Chain ID 97) mặc định thành `https://bsc-testnet.rpc.sentio.xyz`.
+- **Giải pháp:**
+  1. Cập nhật [blockchain.utils.ts](file:///d:/git/angular-web3-wallet/src/app/core/utils/blockchain.utils.ts): Cập nhật `rpcUrl` của BSC Testnet trong mảng `POPULAR_CHAINS` và ưu tiên đầu bảng trong hàm `getBackupRpcUrls` thành `https://bsc-testnet.rpc.sentio.xyz`.
+  2. **Xác thực:** Chạy lệnh `npm run build` để kiểm tra biên dịch thành công.
+
 ## Ngày 27/07/2026
 
 ### Yêu cầu: Xây dựng và tích hợp Progress Component (app-progress)
