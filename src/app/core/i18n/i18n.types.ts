@@ -61,6 +61,37 @@ export interface TranslationDictionary {
     months_count: string;
     years_count: string;
   };
+  date: {
+    mon_short: string;
+    tue_short: string;
+    wed_short: string;
+    thu_short: string;
+    fri_short: string;
+    sat_short: string;
+    sun_short: string;
+    select: string;
+    select_range: string;
+    today: string;
+    yesterday: string;
+    last_7_days: string;
+    last_30_days: string;
+    this_month: string;
+    days_7: string;
+    month_1: string;
+    months_3: string;
+    months_6: string;
+    year_1: string;
+    time_config: string;
+    start_time: string;
+    end_time: string;
+    hour: string;
+  };
+  action: {
+    cancel: string;
+    apply: string;
+    done: string;
+  };
+
   file_upload_ui: {
     select_files: string;
     select_avatar: string;
@@ -288,5 +319,7 @@ export interface TranslationDictionary {
     cancel: string;
     confirm: string;
     all: string;
+    clear_date_range: string;
+    apply: string;
   };
 }

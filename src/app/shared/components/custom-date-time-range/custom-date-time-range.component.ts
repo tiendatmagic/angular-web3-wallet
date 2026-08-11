@@ -4,6 +4,7 @@ import {
   Output,
   EventEmitter,
   ElementRef,
+  HostListener,
   inject,
   signal,
   computed,
@@ -17,8 +18,8 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormsModule, NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { IconComponent } from '../icon/icon.component';
-import { TranslationService } from '@core/services/translation.service';
 import { TranslatePipe } from '@shared/pipes/translate.pipe';
+import { TranslationService } from '@core/services/translation.service';
 
 export interface DateTimeRangeValue {
   startDate: string;
@@ -30,7 +31,6 @@ export interface DateTimeRangeValue {
   host: {
     '(document:click)': 'onClickOutside($event)'
   },
-  standalone: true,
   imports: [CommonModule, FormsModule, IconComponent, TranslatePipe],
   templateUrl: './custom-date-time-range.component.html',
   styleUrl: './custom-date-time-range.component.css',
@@ -45,14 +45,14 @@ export interface DateTimeRangeValue {
 export class CustomDateTimeRangeComponent implements ControlValueAccessor, AfterViewChecked, OnInit, OnDestroy {
   private readonly elementRef = inject(ElementRef);
   private readonly cdr = inject(ChangeDetectorRef);
-  private readonly translationService = inject(TranslationService);
-
-  private scrollListener: (() => void) | null = null;
+  public readonly lang = inject(TranslationService);
+  private scrollListener: any;
 
   ngOnInit(): void {
     this.scrollListener = () => {
       if (this.isOpen()) {
-        this.updatePosition();
+        this.updatePopoverPosition();
+        this.cdr.detectChanges();
       }
     };
     window.addEventListener('scroll', this.scrollListener, true);
@@ -66,15 +66,14 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
 
   @Input() placeholder: string = '';
   @Input() disabled: boolean = false;
-  @Input() showPresets: boolean = true;
-  @Input() showTime: boolean = true;
+  @Input() showTime: boolean = false;
+  @Input() showPresets: boolean = false;
   @Input() minDate: string = '';
   @Input() maxDate: string = '';
 
   @Output() valueChange = new EventEmitter<DateTimeRangeValue>();
 
   @ViewChild('triggerDiv', { static: false }) triggerDiv!: ElementRef<HTMLDivElement>;
-
   public readonly value = signal<DateTimeRangeValue>({ startDate: '', endDate: '' });
   public readonly isOpen = signal<boolean>(false);
 
@@ -89,7 +88,7 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
 
   public readonly hoursArray = Array.from({ length: 24 }, (_, i) => String(i).padStart(2, '0'));
   public readonly minutesArray = Array.from({ length: 60 }, (_, i) => String(i).padStart(2, '0'));
-  
+
   public readonly startHour = signal<string>('00');
   public readonly startMinute = signal<string>('00');
   public readonly endHour = signal<string>('23');
@@ -100,39 +99,38 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
   public readonly showEndHourDropdown = signal<boolean>(false);
   public readonly showEndMinuteDropdown = signal<boolean>(false);
 
-  public readonly weekdays = computed(() => {
-    return this.translationService.currentLang() === 'en'
-      ? ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-      : ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'];
-  });
-
-  public popoverStyle: { [key: string]: string } = {};
-
-  public readonly presets = computed(() => {
+  public get weekdays(): string[] {
     return [
-      { label: this.translationService.t('date_picker_ui.today'), id: 'today' },
-      { label: this.translationService.t('date_picker_ui.yesterday'), id: 'yesterday' },
-      { label: this.translationService.t('date_picker_ui.last_7_days'), id: 'last_7_days' },
-      { label: this.translationService.t('date_picker_ui.last_30_days'), id: 'last_30_days' },
-      { label: this.translationService.t('date_picker_ui.this_month'), id: 'this_month' }
+      'date.mon_short',
+      'date.tue_short',
+      'date.wed_short',
+      'date.thu_short',
+      'date.fri_short',
+      'date.sat_short',
+      'date.sun_short'
+    ].map(key => this.lang.translate(key));
+  }
+  public popoverStyle: { [key: string]: string } = {};
+  public get presets() {
+    return [
+      { label: this.lang.translate('date.today'), id: 'today' },
+      { label: this.lang.translate('date.yesterday'), id: 'yesterday' },
+      { label: this.lang.translate('date.last_7_days'), id: 'last_7_days' },
+      { label: this.lang.translate('date.last_30_days'), id: 'last_30_days' },
+      { label: this.lang.translate('date.this_month'), id: 'this_month' }
     ];
-  });
-
-  public readonly displayPlaceholder = computed(() => {
-    if (this.placeholder) return this.placeholder;
-    return this.translationService.t('date_picker_ui.select_range');
-  });
+  }
 
   public readonly displayValue = computed(() => {
     const val = this.value();
     if (!val.startDate) return '';
-    
+
     const formatStr = (str: string) => {
       if (!str) return '';
       const parts = str.split(' ');
       const datePart = parts[0];
       const timePart = parts[1] || '';
-      
+
       const dParts = datePart.split('-');
       if (dParts.length === 3) {
         const dateFormatted = `${dParts[2]}/${dParts[1]}/${dParts[0]}`;
@@ -166,16 +164,9 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
   });
 
   public readonly currentMonthName = computed(() => {
-    const isEn = this.translationService.currentLang() === 'en';
-    const monthNamesEn = [
-      'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December'
-    ];
-    const monthNamesVi = [
-      'Tháng 01', 'Tháng 02', 'Tháng 03', 'Tháng 04', 'Tháng 05', 'Tháng 06',
-      'Tháng 07', 'Tháng 08', 'Tháng 09', 'Tháng 10', 'Tháng 11', 'Tháng 12'
-    ];
-    return isEn ? monthNamesEn[this.currentMonth()] : monthNamesVi[this.currentMonth()];
+    this.lang.currentLang();
+    return new Intl.DateTimeFormat(this.lang.currentLang(), { month: 'long' })
+      .format(new Date(this.currentYear(), this.currentMonth(), 1));
   });
 
   public onClickOutside(event: MouseEvent): void {
@@ -183,8 +174,7 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
       const popover = document.querySelector('.date-time-range-popover');
       if (popover && popover.contains(event.target as Node)) return;
       if (this.isOpen()) {
-        this.closeDropdowns();
-        this.isOpen.set(false);
+        this.cancel();
       }
     }
   }
@@ -192,143 +182,162 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
   public toggleOpen(): void {
     if (this.disabled) return;
     const nextState = !this.isOpen();
-    this.isOpen.set(nextState);
     if (nextState) {
-      const current = this.value();
-      let startDateStr = current.startDate ? current.startDate.split(' ')[0] : '';
-      let endDateStr = current.endDate ? current.endDate.split(' ')[0] : '';
+      this.openPopover();
+    } else {
+      this.cancel();
+    }
+  }
 
-      this.tempStartDate.set(startDateStr);
-      this.tempEndDate.set(endDateStr);
+  private openPopover(): void {
+    const val = this.value();
+    if (val.startDate) {
+      const startParts = val.startDate.split(' ');
+      this.tempStartDate.set(startParts[0]);
+      if (startParts[1]) {
+        this.tempStartTime.set(startParts[1]);
+        const timeParts = startParts[1].split(':');
+        this.startHour.set(timeParts[0] || '00');
+        this.startMinute.set(timeParts[1] || '00');
+      } else {
+        this.tempStartTime.set('00:00');
+        this.startHour.set('00');
+        this.startMinute.set('00');
+      }
 
-      if (this.showTime) {
-        if (current.startDate && current.startDate.includes(' ')) {
-          const time = current.startDate.split(' ')[1];
-          const [h, m] = time.split(':');
-          this.startHour.set(h || '00');
-          this.startMinute.set(m || '00');
+      if (val.endDate) {
+        const endParts = val.endDate.split(' ');
+        this.tempEndDate.set(endParts[0]);
+        if (endParts[1]) {
+          this.tempEndTime.set(endParts[1]);
+          const timeParts = endParts[1].split(':');
+          this.endHour.set(timeParts[0] || '23');
+          this.endMinute.set(timeParts[1] || '59');
         } else {
-          this.startHour.set('00');
-          this.startMinute.set('00');
-        }
-
-        if (current.endDate && current.endDate.includes(' ')) {
-          const time = current.endDate.split(' ')[1];
-          const [h, m] = time.split(':');
-          this.endHour.set(h || '23');
-          this.endMinute.set(m || '59');
-        } else {
+          this.tempEndTime.set('23:59');
           this.endHour.set('23');
           this.endMinute.set('59');
         }
+      } else {
+        this.tempEndDate.set('');
+        this.tempEndTime.set('23:59');
+        this.endHour.set('23');
+        this.endMinute.set('59');
       }
-
-      const baseDateStr = startDateStr || this.formatDate(new Date());
-      const baseDate = this.parseDate(baseDateStr) || new Date();
-      this.currentYear.set(baseDate.getFullYear());
-      this.currentMonth.set(baseDate.getMonth());
-
-      this.updatePosition();
+    } else {
+      this.tempStartDate.set('');
+      this.tempEndDate.set('');
+      this.tempStartTime.set('00:00');
+      this.tempEndTime.set('23:59');
+      this.startHour.set('00');
+      this.startMinute.set('00');
+      this.endHour.set('23');
+      this.endMinute.set('59');
     }
+
+    const baseDateStr = this.tempStartDate() || this.formatDate(new Date());
+    const baseDate = this.parseDate(baseDateStr) || new Date();
+    this.currentYear.set(baseDate.getFullYear());
+    this.currentMonth.set(baseDate.getMonth());
+    this.hoveredDate.set(null);
+    this.closeAllTimeDropdowns();
+    this.isOpen.set(true);
+    this.updatePopoverPosition();
+  }
+
+  private updatePopoverPosition(): void {
+    const triggerEl = this.triggerDiv?.nativeElement;
+    if (!triggerEl) return;
+
+    const rect = triggerEl.getBoundingClientRect();
+    const popoverHeight = this.showTime ? 510 : 440;
+    const popoverWidth = 320;
+    const gap = 6;
+
+    const spaceBelow = window.innerHeight - rect.bottom - gap;
+    const spaceAbove = rect.top - gap;
+
+    let placeBottom = true;
+    if (spaceBelow >= popoverHeight) {
+      placeBottom = true;
+    } else if (spaceAbove >= popoverHeight) {
+      placeBottom = false;
+    } else {
+      placeBottom = spaceBelow >= spaceAbove;
+    }
+
+    let left = rect.left;
+    if (left + popoverWidth > window.innerWidth - 8) {
+      left = rect.right - popoverWidth;
+    }
+    if (left < 8) left = 8;
+
+    let top = 0;
+    if (placeBottom) {
+      top = rect.bottom + gap;
+      if (top + popoverHeight > window.innerHeight - 8) {
+        top = window.innerHeight - 8 - popoverHeight;
+      }
+      if (top < 8) top = 8;
+    } else {
+      top = rect.top - gap - popoverHeight;
+      if (top < 8) {
+        top = 8;
+      }
+      if (top + popoverHeight > window.innerHeight - 8) {
+        top = window.innerHeight - 8 - popoverHeight;
+      }
+    }
+
+    this.popoverStyle = {
+      position: 'fixed',
+      top: `${top}px`,
+      left: `${left}px`,
+      width: `${popoverWidth}px`,
+      zIndex: '9999',
+    };
   }
 
   ngAfterViewChecked(): void {
+    if (this.isOpen() && this.triggerDiv) {
+      this.updatePopoverPosition();
+    }
+  }
+
+  @HostListener('window:scroll')
+  @HostListener('window:resize')
+  onWindowChange(): void {
     if (this.isOpen()) {
-      this.updatePosition();
+      this.updatePopoverPosition();
     }
   }
 
-  private updatePosition(): void {
-    if (!this.triggerDiv || !this.triggerDiv.nativeElement) return;
-    const rect = this.triggerDiv.nativeElement.getBoundingClientRect();
-    const popoverHeight = 440;
-    const margin = 8;
-    const viewportHeight = window.innerHeight;
-
-    let top = rect.bottom + margin;
-
-    if (rect.bottom + popoverHeight + margin > viewportHeight) {
-      top = rect.top - popoverHeight - margin;
-      if (top < margin) {
-        top = Math.max(margin, viewportHeight - popoverHeight - margin);
-      }
-    }
-
-    const popoverWidth = Math.min(Math.max(rect.width, 320), 340);
-    const left = rect.width > popoverWidth ? rect.right - popoverWidth : rect.left;
-
-    const newStyle = {
-      top: `${top}px`,
-      left: `${left}px`,
-      width: `${popoverWidth}px`
-    };
-
-    if (JSON.stringify(this.popoverStyle) !== JSON.stringify(newStyle)) {
-      this.popoverStyle = newStyle;
-      this.cdr.detectChanges();
-    }
-  }
-
-  public closeDropdowns(): void {
-    this.showStartHourDropdown.set(false);
-    this.showStartMinuteDropdown.set(false);
-    this.showEndHourDropdown.set(false);
-    this.showEndMinuteDropdown.set(false);
-  }
-
-  public toggleDropdown(type: 'startHour' | 'startMinute' | 'endHour' | 'endMinute', event: MouseEvent): void {
+  public prevMonth(event: Event): void {
     event.stopPropagation();
-    const states = {
-      startHour: this.showStartHourDropdown(),
-      startMinute: this.showStartMinuteDropdown(),
-      endHour: this.showEndHourDropdown(),
-      endMinute: this.showEndMinuteDropdown()
-    };
-
-    this.closeDropdowns();
-
-    if (!states[type]) {
-      if (type === 'startHour') this.showStartHourDropdown.set(true);
-      if (type === 'startMinute') this.showStartMinuteDropdown.set(true);
-      if (type === 'endHour') this.showEndHourDropdown.set(true);
-      if (type === 'endMinute') this.showEndMinuteDropdown.set(true);
-    }
-  }
-
-  public selectTimeValue(type: 'startHour' | 'startMinute' | 'endHour' | 'endMinute', val: string, event: MouseEvent): void {
-    event.stopPropagation();
-    if (type === 'startHour') this.startHour.set(val);
-    if (type === 'startMinute') this.startMinute.set(val);
-    if (type === 'endHour') this.endHour.set(val);
-    if (type === 'endMinute') this.endMinute.set(val);
-
-    this.closeDropdowns();
-  }
-
-  public prevMonth(event: MouseEvent): void {
-    event.stopPropagation();
-    if (this.currentMonth() === 0) {
+    const current = this.currentMonth();
+    if (current === 0) {
       this.currentMonth.set(11);
-      this.currentYear.update((y) => y - 1);
+      this.currentYear.update(y => y - 1);
     } else {
-      this.currentMonth.update((m) => m - 1);
+      this.currentMonth.set(current - 1);
     }
+    this.closeAllTimeDropdowns();
   }
 
-  public nextMonth(event: MouseEvent): void {
+  public nextMonth(event: Event): void {
     event.stopPropagation();
-    if (this.currentMonth() === 11) {
+    const current = this.currentMonth();
+    if (current === 11) {
       this.currentMonth.set(0);
-      this.currentYear.update((y) => y + 1);
+      this.currentYear.update(y => y + 1);
     } else {
-      this.currentMonth.update((m) => m + 1);
+      this.currentMonth.set(current + 1);
     }
+    this.closeAllTimeDropdowns();
   }
 
-  public selectDate(date: Date, event: MouseEvent): void {
+  public selectDate(date: Date, event: Event): void {
     event.stopPropagation();
-    this.closeDropdowns();
-
     if (this.isDateDisabled(date)) return;
 
     const formatted = this.formatDate(date);
@@ -338,15 +347,16 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
     if (!start || (start && end)) {
       this.tempStartDate.set(formatted);
       this.tempEndDate.set('');
-    } else if (start && !end) {
-      const startDate = this.parseDate(start);
-      if (startDate && date < startDate) {
+    } else {
+      const startDateObj = this.parseDate(start);
+      if (startDateObj && date >= startDateObj) {
+        this.tempEndDate.set(formatted);
+      } else {
         this.tempStartDate.set(formatted);
         this.tempEndDate.set('');
-      } else {
-        this.tempEndDate.set(formatted);
       }
     }
+    this.closeAllTimeDropdowns();
   }
 
   public onDateHover(date: Date): void {
@@ -357,219 +367,346 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
     }
   }
 
-  public selectPreset(id: string, event: MouseEvent): void {
+  public toggleDropdown(type: 'startHour' | 'startMinute' | 'endHour' | 'endMinute', event: Event): void {
     event.stopPropagation();
-    this.closeDropdowns();
 
-    const today = new Date();
-    let startD = new Date();
-    let endD = new Date();
+    const showSH = this.showStartHourDropdown();
+    const showSM = this.showStartMinuteDropdown();
+    const showEH = this.showEndHourDropdown();
+    const showEM = this.showEndMinuteDropdown();
 
-    if (id === 'today') {
-      startD = today;
-      endD = today;
-    } else if (id === 'yesterday') {
-      startD = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1);
-      endD = startD;
-    } else if (id === 'last_7_days') {
-      startD = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 6);
-      endD = today;
-    } else if (id === 'last_30_days') {
-      startD = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 29);
-      endD = today;
-    } else if (id === 'this_month') {
-      startD = new Date(today.getFullYear(), today.getMonth(), 1);
-      endD = today;
-    }
+    this.closeAllTimeDropdowns();
 
-    const startStr = this.formatDate(startD);
-    const endStr = this.formatDate(endD);
-
-    this.tempStartDate.set(startStr);
-    this.tempEndDate.set(endStr);
-
-    if (this.showTime) {
-      this.startHour.set('00');
-      this.startMinute.set('00');
-      this.endHour.set('23');
-      this.endMinute.set('59');
-    }
-
-    this.apply(event);
+    if (type === 'startHour') this.showStartHourDropdown.set(!showSH);
+    if (type === 'startMinute') this.showStartMinuteDropdown.set(!showSM);
+    if (type === 'endHour') this.showEndHourDropdown.set(!showEH);
+    if (type === 'endMinute') this.showEndMinuteDropdown.set(!showEM);
   }
 
-  public apply(event?: MouseEvent): void {
+  public closeAllTimeDropdowns(): void {
+    this.showStartHourDropdown.set(false);
+    this.showStartMinuteDropdown.set(false);
+    this.showEndHourDropdown.set(false);
+    this.showEndMinuteDropdown.set(false);
+  }
+
+  public selectTimeValue(type: 'startHour' | 'startMinute' | 'endHour' | 'endMinute', val: string, event: Event): void {
+    event.stopPropagation();
+    if (type === 'startHour') this.startHour.set(val);
+    if (type === 'startMinute') this.startMinute.set(val);
+    if (type === 'endHour') this.endHour.set(val);
+    if (type === 'endMinute') this.endMinute.set(val);
+
+    this.onTimeChange();
+    this.closeAllTimeDropdowns();
+  }
+
+  public onTimeChange(): void {
+    this.tempStartTime.set(`${this.startHour()}:${this.startMinute()}`);
+    this.tempEndTime.set(`${this.endHour()}:${this.endMinute()}`);
+  }
+
+  public apply(event?: Event): void {
     if (event) event.stopPropagation();
-    this.closeDropdowns();
 
-    const startStr = this.tempStartDate();
-    let endStr = this.tempEndDate() || startStr;
+    const start = this.tempStartDate();
+    let end = this.tempEndDate();
 
-    if (!startStr) return;
+    if (!start) return;
+    if (!end) end = start;
 
-    let finalStart = startStr;
-    let finalEnd = endStr;
+    let finalStart = start;
+    let finalEnd = end;
 
     if (this.showTime) {
-      const startTime = `${this.startHour()}:${this.startMinute()}`;
-      const endTime = `${this.endHour()}:${this.endMinute()}`;
-
-      finalStart = `${startStr} ${startTime}`;
-      finalEnd = `${endStr} ${endTime}`;
+      this.onTimeChange();
+      finalStart = `${start} ${this.tempStartTime()}`;
+      finalEnd = `${end} ${this.tempEndTime()}`;
     }
 
-    const val: DateTimeRangeValue = { startDate: finalStart, endDate: finalEnd };
+    const newValue: DateTimeRangeValue = {
+      startDate: finalStart,
+      endDate: finalEnd
+    };
 
-    this.value.set(val);
-    this.onChange(val);
+    this.value.set(newValue);
+    this.valueChange.emit(newValue);
+    this.onChange(newValue);
     this.onTouched();
-    this.valueChange.emit(val);
+    this.closeAllTimeDropdowns();
     this.isOpen.set(false);
   }
 
-  public cancel(event?: MouseEvent): void {
+  public cancel(event?: Event): void {
     if (event) event.stopPropagation();
-    this.closeDropdowns();
+    this.closeAllTimeDropdowns();
     this.isOpen.set(false);
   }
 
-  public clear(event: MouseEvent): void {
+  public clear(event: Event): void {
     event.stopPropagation();
-    this.closeDropdowns();
-    const val: DateTimeRangeValue = { startDate: '', endDate: '' };
+    if (this.disabled) return;
+
+    const emptyValue: DateTimeRangeValue = { startDate: '', endDate: '' };
+    this.value.set(emptyValue);
+    this.valueChange.emit(emptyValue);
+    this.onChange(emptyValue);
+    this.onTouched();
+
     this.tempStartDate.set('');
     this.tempEndDate.set('');
-    this.value.set(val);
-    this.onChange(val);
-    this.onTouched();
-    this.valueChange.emit(val);
+    this.closeAllTimeDropdowns();
+    this.isOpen.set(false);
+  }
+
+  public selectPreset(presetId: string, event: Event): void {
+    event.stopPropagation();
+    const today = new Date();
+    let start = new Date();
+    let end = new Date();
+
+    switch (presetId) {
+      case 'today':
+        start = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+        end = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+        this.startHour.set('00');
+        this.startMinute.set('00');
+        this.endHour.set('23');
+        this.endMinute.set('59');
+        this.tempStartTime.set('00:00');
+        this.tempEndTime.set('23:59');
+        break;
+      case 'yesterday':
+        start = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1);
+        end = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1);
+        this.startHour.set('00');
+        this.startMinute.set('00');
+        this.endHour.set('23');
+        this.endMinute.set('59');
+        this.tempStartTime.set('00:00');
+        this.tempEndTime.set('23:59');
+        break;
+      case 'last_7_days':
+        start = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 6);
+        end = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+        this.startHour.set('00');
+        this.startMinute.set('00');
+        this.endHour.set('23');
+        this.endMinute.set('59');
+        this.tempStartTime.set('00:00');
+        this.tempEndTime.set('23:59');
+        break;
+      case 'last_30_days':
+        start = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 29);
+        end = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+        this.startHour.set('00');
+        this.startMinute.set('00');
+        this.endHour.set('23');
+        this.endMinute.set('59');
+        this.tempStartTime.set('00:00');
+        this.tempEndTime.set('23:59');
+        break;
+      case 'this_month':
+        start = new Date(today.getFullYear(), today.getMonth(), 1);
+        end = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+        this.startHour.set('00');
+        this.startMinute.set('00');
+        this.endHour.set('23');
+        this.endMinute.set('59');
+        this.tempStartTime.set('00:00');
+        this.tempEndTime.set('23:59');
+        break;
+    }
+
+    this.tempStartDate.set(this.formatDate(start));
+    this.tempEndDate.set(this.formatDate(end));
+
+    this.apply();
+  }
+
+  public isToday(date: Date): boolean {
+    const today = new Date();
+    return date.getDate() === today.getDate() &&
+      date.getMonth() === today.getMonth() &&
+      date.getFullYear() === today.getFullYear();
+  }
+
+  public isStart(date: Date): boolean {
+    return this.tempStartDate() === this.formatDate(date);
+  }
+
+  public isEnd(date: Date): boolean {
+    return this.tempEndDate() === this.formatDate(date);
+  }
+
+  public isInRange(date: Date): boolean {
+    const start = this.tempStartDate();
+    const end = this.tempEndDate();
+    if (!start || !end) return false;
+
+    const checkTime = this.clearTime(date).getTime();
+    const startTime = this.parseDate(start)!.getTime();
+    const endTime = this.parseDate(end)!.getTime();
+
+    return checkTime > startTime && checkTime < endTime;
+  }
+
+  public isHoverRange(date: Date): boolean {
+    const start = this.tempStartDate();
+    const end = this.tempEndDate();
+    const hover = this.hoveredDate();
+    if (!start || end || !hover) return false;
+
+    const checkTime = this.clearTime(date).getTime();
+    const startTime = this.parseDate(start)!.getTime();
+    const hoverTime = this.clearTime(hover).getTime();
+
+    if (hoverTime >= startTime) {
+      return checkTime > startTime && checkTime < hoverTime;
+    } else {
+      return checkTime > hoverTime && checkTime < startTime;
+    }
+  }
+
+  public isHoverEndDate(date: Date): boolean {
+    const start = this.tempStartDate();
+    const end = this.tempEndDate();
+    const hover = this.hoveredDate();
+    if (!start || end || !hover) return false;
+
+    const checkTime = this.clearTime(date).getTime();
+    const startTime = this.parseDate(start)!.getTime();
+    const hoverTime = this.clearTime(hover).getTime();
+
+    return checkTime === hoverTime && hoverTime > startTime;
+  }
+
+  public isHoverStartDate(date: Date): boolean {
+    const start = this.tempStartDate();
+    const end = this.tempEndDate();
+    const hover = this.hoveredDate();
+    if (!start || end || !hover) return false;
+
+    const checkTime = this.clearTime(date).getTime();
+    const startTime = this.parseDate(start)!.getTime();
+    const hoverTime = this.clearTime(hover).getTime();
+
+    return checkTime === hoverTime && hoverTime < startTime;
+  }
+
+  private clearTime(date: Date): Date {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  }
+
+  public getHighlightClass(date: Date): string {
+    const start = this.tempStartDate();
+    const end = this.tempEndDate();
+    const hover = this.hoveredDate();
+
+    if (!start) return 'hidden';
+
+    const dTime = this.clearTime(date).getTime();
+    const sTime = this.parseDate(start)!.getTime();
+    const eTime = end ? this.parseDate(end)!.getTime() : null;
+    const hTime = hover ? this.clearTime(hover).getTime() : null;
+
+    let rangeStart = sTime;
+    let rangeEnd = eTime;
+
+    if (!end && hTime !== null) {
+      if (hTime >= sTime) {
+        rangeEnd = hTime;
+      } else {
+        rangeStart = hTime;
+        rangeEnd = sTime;
+      }
+    }
+
+    if (rangeEnd === null) {
+      if (dTime !== sTime) return 'hidden';
+    } else {
+      if (dTime < rangeStart || dTime > rangeEnd) return 'hidden';
+    }
+
+    if (rangeEnd === null || rangeStart === rangeEnd) {
+      return 'rounded-full w-full';
+    }
+
+    if (dTime === rangeStart) {
+      return 'rounded-l-full w-full';
+    }
+
+    if (dTime === rangeEnd) {
+      return 'rounded-r-full w-full';
+    }
+
+    return 'w-full';
   }
 
   public isCurrentMonth(date: Date): boolean {
     return date.getMonth() === this.currentMonth();
   }
 
-  public isToday(date: Date): boolean {
-    const today = new Date();
-    return (
-      date.getDate() === today.getDate() &&
-      date.getMonth() === today.getMonth() &&
-      date.getFullYear() === today.getFullYear()
-    );
-  }
-
-  public isStartDate(date: Date): boolean {
-    if (!this.tempStartDate()) return false;
-    const start = this.parseDate(this.tempStartDate());
-    if (!start) return false;
-    return (
-      date.getDate() === start.getDate() &&
-      date.getMonth() === start.getMonth() &&
-      date.getFullYear() === start.getFullYear()
-    );
-  }
-
-  public isEndDate(date: Date): boolean {
-    if (!this.tempEndDate()) return false;
-    const end = this.parseDate(this.tempEndDate());
-    if (!end) return false;
-    return (
-      date.getDate() === end.getDate() &&
-      date.getMonth() === end.getMonth() &&
-      date.getFullYear() === end.getFullYear()
-    );
-  }
-
-  public isInRange(date: Date): boolean {
-    const startStr = this.tempStartDate();
-    const endStr = this.tempEndDate();
-    const hover = this.hoveredDate();
-
-    if (!startStr) return false;
-    const start = this.parseDate(startStr);
-    if (!start) return false;
-
-    const targetTime = date.getTime();
-    const startTime = new Date(start.getFullYear(), start.getMonth(), start.getDate()).getTime();
-
-    if (endStr) {
-      const end = this.parseDate(endStr);
-      if (!end) return false;
-      const endTime = new Date(end.getFullYear(), end.getMonth(), end.getDate()).getTime();
-      return targetTime > startTime && targetTime < endTime;
-    } else if (hover) {
-      const hoverTime = new Date(hover.getFullYear(), hover.getMonth(), hover.getDate()).getTime();
-      if (hoverTime > startTime) {
-        return targetTime > startTime && targetTime < hoverTime;
-      }
-    }
-
-    return false;
-  }
-
   public isDateDisabled(date: Date): boolean {
-    const targetTime = new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
-
     if (this.minDate) {
       const min = this.parseDate(this.minDate);
       if (min) {
-        const minTime = new Date(min.getFullYear(), min.getMonth(), min.getDate()).getTime();
-        if (targetTime < minTime) return true;
+        const minDay = new Date(min.getFullYear(), min.getMonth(), min.getDate());
+        const checkDay = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+        if (checkDay.getTime() < minDay.getTime()) return true;
       }
     }
-
     if (this.maxDate) {
       const max = this.parseDate(this.maxDate);
       if (max) {
-        const maxTime = new Date(max.getFullYear(), max.getMonth(), max.getDate()).getTime();
-        if (targetTime > maxTime) return true;
+        const maxDay = new Date(max.getFullYear(), max.getMonth(), max.getDate());
+        const checkDay = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+        if (checkDay.getTime() > maxDay.getTime()) return true;
       }
     }
-
     return false;
   }
 
-  private onChange: (val: DateTimeRangeValue) => void = () => {};
-  private onTouched: () => void = () => {};
-
-  writeValue(val: DateTimeRangeValue): void {
-    if (val && typeof val === 'object') {
-      this.value.set({
-        startDate: val.startDate || '',
-        endDate: val.endDate || ''
-      });
-    } else {
-      this.value.set({ startDate: '', endDate: '' });
-    }
-  }
-
-  registerOnChange(fn: (val: DateTimeRangeValue) => void): void {
-    this.onChange = fn;
-  }
-
-  registerOnTouched(fn: () => void): void {
-    this.onTouched = fn;
-  }
-
-  setDisabledState(isDisabled: boolean): void {
-    this.disabled = isDisabled;
-  }
-
-  private formatDate(d: Date): string {
-    const year = d.getFullYear();
-    const month = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
+  private formatDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   }
 
   private parseDate(str: string): Date | null {
     if (!str) return null;
-    const parts = str.split(' ')[0].split('-');
-    if (parts.length !== 3) return null;
-    const year = parseInt(parts[0], 10);
-    const month = parseInt(parts[1], 10) - 1;
-    const day = parseInt(parts[2], 10);
-    if (isNaN(year) || isNaN(month) || isNaN(day)) return null;
-    return new Date(year, month, day);
+    const parts = str.split('-');
+    if (parts.length === 3) {
+      const year = parseInt(parts[0], 10);
+      const month = parseInt(parts[1], 10) - 1;
+      const day = parseInt(parts[2], 10);
+      const d = new Date(year, month, day);
+      if (!isNaN(d.getTime())) return d;
+    }
+    return null;
+  }
+
+  private onChange: (value: any) => void = () => {};
+  private onTouched: () => void = () => {};
+
+  public writeValue(value: any): void {
+    if (value && typeof value === 'object' && 'startDate' in value && 'endDate' in value) {
+      this.value.set(value);
+    } else {
+      this.value.set({ startDate: '', endDate: '' });
+    }
+  }
+
+  public registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  public registerOnTouched(fn: any): void {
+    this.onTouched = fn;
+  }
+
+  public setDisabledState(isDisabled: boolean): void {
+    this.disabled = isDisabled;
   }
 }

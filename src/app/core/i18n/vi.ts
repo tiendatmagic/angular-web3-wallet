@@ -54,6 +54,37 @@ export const VI_TRANSLATIONS: TranslationDictionary = {
     months_count: '{months} tháng',
     years_count: '{years} năm'
   },
+  date: {
+    mon_short: 'T2',
+    tue_short: 'T3',
+    wed_short: 'T4',
+    thu_short: 'T5',
+    fri_short: 'T6',
+    sat_short: 'T7',
+    sun_short: 'CN',
+    select: 'Chọn ngày',
+    select_range: 'Chọn khoảng thời gian...',
+    today: 'Hôm nay',
+    yesterday: 'Hôm qua',
+    last_7_days: '7 ngày qua',
+    last_30_days: '30 ngày qua',
+    this_month: 'Tháng này',
+    days_7: '7 ngày',
+    month_1: '1 tháng',
+    months_3: '3 tháng',
+    months_6: '6 tháng',
+    year_1: '1 năm',
+    time_config: 'CẤU HÌNH THỜI GIAN',
+    start_time: 'Thời gian bắt đầu',
+    end_time: 'Thời gian kết thúc',
+    hour: 'Giờ'
+  },
+  action: {
+    cancel: 'Hủy bỏ',
+    apply: 'Áp dụng',
+    done: 'Xong'
+  },
+
   file_upload_ui: {
     select_files: 'Chọn tệp',
     select_avatar: 'Tải lên ảnh đại diện',
@@ -280,6 +311,8 @@ export const VI_TRANSLATIONS: TranslationDictionary = {
     save: 'Lưu',
     cancel: 'Hủy',
     confirm: 'Xác nhận',
-    all: 'Tất cả'
+    all: 'Tất cả',
+    clear_date_range: 'Xóa khoảng thời gian',
+    apply: 'Áp dụng'
   }
 };

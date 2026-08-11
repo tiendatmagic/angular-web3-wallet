@@ -54,6 +54,37 @@ export const EN_TRANSLATIONS: TranslationDictionary = {
     months_count: '{months} months',
     years_count: '{years} years'
   },
+  date: {
+    mon_short: 'Mon',
+    tue_short: 'Tue',
+    wed_short: 'Wed',
+    thu_short: 'Thu',
+    fri_short: 'Fri',
+    sat_short: 'Sat',
+    sun_short: 'Sun',
+    select: 'Select date',
+    select_range: 'Select date range...',
+    today: 'Today',
+    yesterday: 'Yesterday',
+    last_7_days: 'Last 7 days',
+    last_30_days: 'Last 30 days',
+    this_month: 'This month',
+    days_7: '7 days',
+    month_1: '1 month',
+    months_3: '3 months',
+    months_6: '6 months',
+    year_1: '1 year',
+    time_config: 'TIME CONFIG',
+    start_time: 'Start time',
+    end_time: 'End time',
+    hour: 'Hour'
+  },
+  action: {
+    cancel: 'Cancel',
+    apply: 'Apply',
+    done: 'Done'
+  },
+
   file_upload_ui: {
     select_files: 'Select files',
     select_avatar: 'Upload avatar',
@@ -280,6 +311,8 @@ export const EN_TRANSLATIONS: TranslationDictionary = {
     save: 'Save',
     cancel: 'Cancel',
     confirm: 'Confirm',
-    all: 'All'
+    all: 'All',
+    clear_date_range: 'Clear date range',
+    apply: 'Apply'
   }
 };
