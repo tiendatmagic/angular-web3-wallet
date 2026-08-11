@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+﻿import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -7,8 +7,8 @@ import { FormsModule } from '@angular/forms';
   
   imports: [CommonModule, FormsModule],
   templateUrl: './custom-switch.component.html',
+  host: { 'class': 'inline-flex items-center' },
   
-  styleUrl: './custom-switch.component.scss',
 })
 export class CustomSwitchComponent {
   @Input() checked: boolean = false;

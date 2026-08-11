@@ -132,7 +132,15 @@ export const VI_TRANSLATIONS: TranslationDictionary = {
     explore_btn: 'Khám Phá Showcase',
     connect_now_btn: 'Kết Nối Ví Ngay',
     showcase_title: 'Bộ Thư viện Component & Giao Diện Cao Cấp',
-    showcase_subtitle: 'Tổng hợp các thành phần UI/UX được thiết kế chuẩn mực theo design.md, hỗ trợ Dark Mode và tương tác mượt mà.'
+    showcase_subtitle: 'Tổng hợp các thành phần UI/UX được thiết kế chuẩn mực theo design.md, hỗ trợ Dark Mode và tương tác mượt mà.',
+    wrong_network_desc: 'Bạn đang ở mạng không được hỗ trợ. Vui lòng chuyển sang mạng dưới đây.',
+    tx_recipient_address: 'Địa chỉ ví nhận',
+    tx_amount_label: 'Số lượng {symbol} gửi',
+    tx_success_title: 'Giao dịch thành công',
+    sign_demo_title: 'Demo Ký tin nhắn',
+    sign_message_content: 'Nội dung thông điệp',
+    sign_success_title: 'Đã tạo chữ ký số',
+    error_prefix: 'Lỗi'
   },
   cards: {
     buttons: {
@@ -152,7 +160,8 @@ export const VI_TRANSLATIONS: TranslationDictionary = {
       pending: 'Đang Chờ',
       error: 'Thất Bại',
       info: 'Thông Tin',
-      hover_tooltip: 'Rê chuột xem Tooltip'
+      hover_tooltip: 'Rê chuột xem Tooltip',
+      variant_title: 'Biến thể Badge (Variants)'
     },
     inputs: {
       title: 'Các Ô Nhập Liệu Chuẩn (Form Inputs)',
@@ -162,14 +171,25 @@ export const VI_TRANSLATIONS: TranslationDictionary = {
       label_search: 'TÌM KIẾM DỮ LIỆU',
       placeholder_address: 'Nhập địa chỉ ví 0x...',
       placeholder_amount: '0.00',
-      placeholder_search: 'Nhập từ khóa tìm kiếm...'
+      placeholder_search: 'Nhập từ khóa tìm kiếm...',
+      birthday: 'Ngày sinh',
+      gender: 'Giới tính',
+      wallet_address: 'Địa chỉ ví Web3 (EVM)',
+      male: 'Nam',
+      female: 'Nữ',
+      other_gender: 'Khác',
+      not_selected: '(chưa chọn)',
+      not_entered: '(chưa nhập)'
     },
     selects: {
       title: 'Bộ Chọn Tùy Biến (Custom Select & Multi-Select)',
       subtitle: 'Hỗ trợ chọn đơn lẻ, chọn nhiều tùy chọn với giao diện Checkbox và danh sách 10 mạng lưới.',
       label_single: 'CHỌN ĐƠN LẺ (5 MẠNG LƯỚI)',
       label_ten: 'CHỌN ĐƠN LẺ (10 MẠNG LƯỚI)',
-      label_multi: 'CHỌN NHIỀU (MULTI-SELECT)'
+      label_multi: 'CHỌN NHIỀU (MULTI-SELECT)',
+      opt_wallet: 'Ví dApp',
+      opt_history: 'Lịch sử',
+      opt_settings: 'Cấu hình'
     },
     controls: {
       title: 'Công Tắc, Checkbox & Radio Button',
@@ -184,7 +204,9 @@ export const VI_TRANSLATIONS: TranslationDictionary = {
     slider: {
       title: 'Thanh Trượt Giá Trị (Custom Slider)',
       subtitle: 'Kéo trượt khoảng giá trị với mốc định vị trực quan.',
-      label: 'GIAO DỊCH SLIPPAGE (%)'
+      label: 'GIAO DỊCH SLIPPAGE (%)',
+      gas_priority: 'Mức độ ưu tiên Gas (Primary / Marks)',
+      token_amount: 'Khối lượng Token gửi (Neutral / No Marks)'
     },
     modal_demo: {
       title: 'Hệ Thống Hộp Thoại Modal Động',
@@ -196,12 +218,28 @@ export const VI_TRANSLATIONS: TranslationDictionary = {
       subtitle: 'Custom Date Picker & Custom Date Time Range Picker cao cấp bám sát viewport.',
       single_date: 'CHỌN NGÀY SINH',
       range_date: 'CHỌN KHOẢNG THỜI GIAN',
-      range_time: 'KHOẢNG THỜI GIAN KÈM GIỜ & PHÚT'
+      range_time: 'KHOẢNG THỜI GIAN KÈM GIỜ & PHÚT',
+      option_min_date: 'Giới hạn ngày tối thiểu (minDate)',
+      option_presets: 'Hiển thị gợi ý chọn nhanh (presets)',
+      label_min_date: 'Mốc ngày tối thiểu (YYYY-MM-DD)',
+      default_range: 'Khoảng ngày giao dịch (Mặc định)',
+      detail_range: 'Khoảng thời gian chi tiết (Kèm Giờ & Phút)',
+      limited_range: 'Khoảng ngày có giới hạn'
     },
     ripple: {
       title: 'Hiệu Ứng Sóng Nước (Ripple Directive)',
       subtitle: 'Lan tỏa hiệu ứng sóng nước mượt mà khi nhấp chuột.',
-      interactive_box: 'Nhấp chuột vào đây để thử hiệu ứng Ripple'
+      interactive_box: 'Nhấp chuột vào đây để thử hiệu ứng Ripple',
+      click_touch_here: 'Click hoặc Touch vào đây',
+      experience_ripple: 'Để trải nghiệm hiệu ứng sóng nước',
+      center_ripple: 'Sóng từ tâm',
+      disabled: 'Vô hiệu hóa',
+      unbounded: 'Không giới hạn viền',
+      preset_colors: 'Màu sắc Ripple dựng sẵn',
+      custom_color: 'Màu sắc tự chọn (Hex / Rgba / CSS Color)',
+      duration: 'Thời gian lan tỏa (Duration)',
+      opacity: 'Độ mờ ban đầu (Opacity)',
+      apply_button_icon: 'Áp dụng trên Button và Icon'
     },
     accordion: {
       title: 'Khung Thu Gọn Nội Dung (Accordion Component)',
@@ -209,7 +247,8 @@ export const VI_TRANSLATIONS: TranslationDictionary = {
       item1_title: '1. Ví Web3 hỗ trợ những mạng lưới nào?',
       item1_content: 'Hệ thống hỗ trợ Ethereum, Arbitrum, BNB Chain, Polygon PoS, Optimism, Base, Avalanche C-Chain và các mạng EVM phổ biến.',
       item2_title: '2. Làm thế nào để thay đổi chủ đề giao diện?',
-      item2_content: 'Bạn có thể chuyển đổi giữa chế độ Sáng, Tối và Tự động ở góc dưới Sidebar hoặc trong cài đặt Header.'
+      item2_content: 'Bạn có thể chuyển đổi giữa chế độ Sáng, Tối và Tự động ở góc dưới Sidebar hoặc trong cài đặt Header.',
+      option_multiple: 'Cho phép mở nhiều mục cùng lúc'
     },
     table: {
       title: 'Bảng Dữ Liệu Tùy Biến (Custom Table & Sorting)',
@@ -220,12 +259,23 @@ export const VI_TRANSLATIONS: TranslationDictionary = {
       col_method: 'PHƯƠNG THỨC',
       col_block: 'BLOCK',
       col_value: 'GIÁ TRỊ',
-      col_status: 'TRẠNG THÁI'
+      col_status: 'TRẠNG THÁI',
+      col_time: 'THỜI GIAN',
+      col_from: 'TỪ',
+      col_to: 'ĐẾN',
+      status_all: 'Tất cả trạng thái',
+      status_success: 'Thành công',
+      status_pending: 'Đang chờ',
+      status_failed: 'Thất bại',
+      sim_loading: 'Giả lập Tải (Loading)',
+      sim_empty: 'Giả lập Rỗng (Empty)'
     },
     code_block: {
       title: 'Khung Hiển Thị Mã Nguồn (Code Block Component)',
       subtitle: 'Tô màu cú pháp Syntax Highlighting cho TypeScript, HTML, CSS, JSON và Bash.',
-      copy_btn: 'Sao Chép Code'
+      copy_btn: 'Sao Chép Code',
+      show_full_code: 'Xem đầy đủ mã',
+      collapse_code: 'Thu gọn mã'
     },
     file_upload: {
       title: 'Tải Lên Tệp Tin (File Upload Drag & Drop)',
@@ -287,7 +337,53 @@ export const VI_TRANSLATIONS: TranslationDictionary = {
       demo4_desc: 'Trigger kiểu icon-only hoặc căn lề bottom-right',
       customize_ui: 'Tùy chỉnh giao diện',
       web3_actions: 'Thao tác Web3 Ví',
-      ghost_btn: 'Nút Ghost'
+      ghost_btn: 'Nút Ghost',
+      no_action_yet: 'Chưa chọn thao tác nào',
+      action_triggered: 'Đã kích hoạt thao tác: "{label}"',
+      header_dapp: 'Tài khoản DApp',
+      profile: 'Trang cá nhân',
+      connected_wallet: 'Ví Web3 đã kết nối',
+      system_settings: 'Cài đặt hệ thống',
+      keyboard_shortcuts: 'Phím tắt bàn phím',
+      header_services: 'Dịch vụ & Đội ngũ',
+      upgrade_vip: 'Nâng cấp Web3 VIP',
+      manage_members: 'Quản lý thành viên',
+      invite_friends: 'Mời bạn bè nhận thưởng',
+      help_center: 'Trung tâm trợ giúp',
+      github_source: 'Mã nguồn GitHub',
+      logout: 'Đăng xuất tài khoản',
+      header_ui: 'Thành phần giao diện',
+      show_sidebar: 'Hiển thị Thanh bên (Sidebar)',
+      show_chart: 'Hiển thị Biểu đồ Nến Web3',
+      tx_notif: 'Thông báo Giao dịch Khối',
+      header_layout: 'Bố cục Danh sách (Layout)',
+      grid_view: 'Chế độ Lưới (Grid View)',
+      list_view: 'Chế độ Danh sách (List View)',
+      compact_view: 'Chế độ Thu gọn (Compact View)',
+      new_tx: 'Tạo giao dịch mới',
+      copy_address: 'Sao chép địa chỉ ví',
+      share_wallet: 'Chia sẻ thông tin ví',
+      share_email: 'Gửi qua Email',
+      share_qr: 'Xuất mã QR ví',
+      share_link: 'Tạo liên kết nhúng',
+      permissions: 'Phân quyền tài khoản',
+      perm_read: 'Quyền Read-Only',
+      perm_multisig: 'Quyền Multi-Sig (2/3)',
+      perm_admin: 'Quyền Administrator',
+      clear_cache: 'Xóa bộ nhớ đệm ví'
+    },
+    aura: {
+      title: 'Hiệu Ứng Phát Sáng Aura (Aura Glow Wrapper)',
+      subtitle: 'Đường viền vi tính sáng rực phát sáng bao bọc container và nút bấm.',
+      wrapper_active: 'Aura Wrapper Active',
+      glow_border_effect: 'Hiệu ứng đường viền phát sáng mượt mà',
+      variant_type: 'Kiểu màu sắc (Variant)',
+      glow_size: 'Kích thước độ sáng (Size)',
+      glow_wide: 'Phát sáng tỏa rộng (Glow)',
+      paused: 'Tạm dừng xoay (Paused)',
+      speed: 'Tốc độ quay (Speed)',
+      border_radius: 'Bo góc (Border Radius)',
+      practical_application: 'Áp dụng thực tế'
     },
     voice_chat: {
       title: 'Dropdown Menu & Voice Chat Morphing Card',
@@ -446,6 +542,7 @@ export const VI_TRANSLATIONS: TranslationDictionary = {
     close: 'Đóng',
     copy: 'Sao chép',
     copied: 'Đã sao chép!',
+    copied_to_clipboard: 'Đã sao chép vào bộ nhớ tạm!',
     success: 'Thành công',
     error: 'Lỗi',
     loading: 'Đang tải...',

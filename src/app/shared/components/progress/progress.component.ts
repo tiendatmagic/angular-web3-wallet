@@ -17,7 +17,7 @@ export type ProgressValuePosition = 'right' | 'top' | 'inside' | 'bottom' | 'non
   standalone: true,
   imports: [CommonModule],
   templateUrl: './progress.component.html',
-  styleUrl: './progress.component.scss',
+  host: { 'class': 'block' },
 })
 export class ProgressComponent {
   @Input() set value(val: number) {

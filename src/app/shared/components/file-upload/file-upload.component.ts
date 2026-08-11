@@ -1,4 +1,4 @@
-﻿import {
+import {
   Component,
   Input,
   Output,
@@ -34,7 +34,8 @@ export interface UploadFileItem {
   standalone: true,
   imports: [CommonModule, IconComponent, TooltipDirective, TranslatePipe],
   templateUrl: './file-upload.component.html',
-  styleUrls: ['./file-upload.component.css'],
+  host: { 'class': 'block' },
+  styleUrl: './file-upload.component.scss',
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -205,7 +206,7 @@ export class FileUploadComponent implements ControlValueAccessor {
 
     const currentFiles = this.files();
     if (this.multiple && currentFiles.length + selected.length > this.maxFiles) {
-      this.globalError.set(`Tá»‘i Ä‘a chá»‰ Ä‘Æ°á»£c táº£i lÃªn ${this.maxFiles} tá»‡p tin.`);
+      this.globalError.set(`Tối đa chỉ được tải lên ${this.maxFiles} tệp tin.`);
       selected = selected.slice(0, this.maxFiles - currentFiles.length);
     }
 
@@ -213,12 +214,12 @@ export class FileUploadComponent implements ControlValueAccessor {
 
     for (const file of selected) {
       if (!this.validateFileType(file)) {
-        this.globalError.set(`Äá»‹nh dáº¡ng tá»‡p "${file.name}" khÃ´ng Ä‘Æ°á»£c há»— trá»£.`);
+        this.globalError.set(`Định dạng tệp "${file.name}" không được hỗ trợ.`);
         continue;
       }
 
       if (!this.validateFileSize(file)) {
-        this.globalError.set(`Dung lÆ°á»£ng tá»‡p "${file.name}" vÆ°á»£t quÃ¡ giá»›i háº¡n ${this.maxSizeMB}MB.`);
+        this.globalError.set(`Dung lượng tệp "${file.name}" vượt quá giới hạn ${this.maxSizeMB}MB.`);
         continue;
       }
 

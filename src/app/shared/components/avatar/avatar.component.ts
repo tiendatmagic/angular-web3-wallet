@@ -12,7 +12,7 @@ export interface AvatarItem {
   standalone: true,
   imports: [CommonModule],
   templateUrl: './avatar.component.html',
-  styleUrl: './avatar.component.scss',
+  host: { 'class': 'inline-block' },
 })
 export class AvatarComponent {
   @Input() src: string = '';

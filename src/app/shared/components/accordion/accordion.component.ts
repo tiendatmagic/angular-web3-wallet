@@ -1,4 +1,4 @@
-import { Component, Input, ContentChildren, QueryList, AfterContentInit } from '@angular/core';
+﻿import { Component, Input, ContentChildren, QueryList, AfterContentInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AccordionItemComponent } from './accordion-item.component';
 
@@ -6,7 +6,7 @@ import { AccordionItemComponent } from './accordion-item.component';
   selector: 'app-accordion',
   imports: [CommonModule],
   templateUrl: './accordion.component.html',
-  styleUrl: './accordion.component.scss',
+  host: { 'class': 'block' },
 })
 export class AccordionComponent implements AfterContentInit {
     @Input() multiple = false;

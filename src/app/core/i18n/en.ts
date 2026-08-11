@@ -132,7 +132,15 @@ export const EN_TRANSLATIONS: TranslationDictionary = {
     explore_btn: 'Explore Showcase',
     connect_now_btn: 'Connect Wallet Now',
     showcase_title: 'Premium Component Library & UI Showcase',
-    showcase_subtitle: 'Curated collection of UI/UX components crafted following design.md, featuring Dark Mode & smooth interactions.'
+    showcase_subtitle: 'Curated collection of UI/UX components crafted following design.md, featuring Dark Mode & smooth interactions.',
+    wrong_network_desc: 'You are on an unsupported network. Please switch to one of the networks below.',
+    tx_recipient_address: 'Recipient Wallet Address',
+    tx_amount_label: 'Amount of {symbol} to send',
+    tx_success_title: 'Transaction Successful',
+    sign_demo_title: 'Message Signing Demo',
+    sign_message_content: 'Message Content',
+    sign_success_title: 'Digital Signature Created',
+    error_prefix: 'Error'
   },
   cards: {
     buttons: {
@@ -152,7 +160,8 @@ export const EN_TRANSLATIONS: TranslationDictionary = {
       pending: 'Pending',
       error: 'Failed',
       info: 'Information',
-      hover_tooltip: 'Hover to view Tooltip'
+      hover_tooltip: 'Hover to view Tooltip',
+      variant_title: 'Badge Variants'
     },
     inputs: {
       title: 'Standard Form Inputs',
@@ -162,14 +171,25 @@ export const EN_TRANSLATIONS: TranslationDictionary = {
       label_search: 'SEARCH DATA',
       placeholder_address: 'Enter wallet address 0x...',
       placeholder_amount: '0.00',
-      placeholder_search: 'Type search keywords...'
+      placeholder_search: 'Type search keywords...',
+      birthday: 'Date of birth',
+      gender: 'Gender',
+      wallet_address: 'Web3 Wallet Address (EVM)',
+      male: 'Male',
+      female: 'Female',
+      other_gender: 'Other',
+      not_selected: '(not selected)',
+      not_entered: '(not entered)'
     },
     selects: {
       title: 'Custom Select & Multi-Select',
       subtitle: 'Supports single selection, multi-select with Checkbox UI, and 10 network dropdown.',
       label_single: 'SINGLE SELECT (5 NETWORKS)',
       label_ten: 'SINGLE SELECT (10 NETWORKS)',
-      label_multi: 'MULTI-SELECT (TOPPINGS)'
+      label_multi: 'MULTI-SELECT (TOPPINGS)',
+      opt_wallet: 'dApp Wallet',
+      opt_history: 'History',
+      opt_settings: 'Settings'
     },
     controls: {
       title: 'Switches, Checkboxes & Radio Buttons',
@@ -184,7 +204,9 @@ export const EN_TRANSLATIONS: TranslationDictionary = {
     slider: {
       title: 'Custom Value Slider',
       subtitle: 'Draggable value slider with clear step marks.',
-      label: 'TRANSACTION SLIPPAGE (%)'
+      label: 'TRANSACTION SLIPPAGE (%)',
+      gas_priority: 'Gas Priority (Primary / Marks)',
+      token_amount: 'Token Transfer Volume (Neutral / No Marks)'
     },
     modal_demo: {
       title: 'Dynamic Modal Dialog System',
@@ -196,12 +218,28 @@ export const EN_TRANSLATIONS: TranslationDictionary = {
       subtitle: 'Premium Custom Date Picker & Date Time Range Picker pinned to viewport.',
       single_date: 'SELECT BIRTHDATE',
       range_date: 'SELECT DATE RANGE',
-      range_time: 'DATE RANGE WITH TIME'
+      range_time: 'DATE RANGE WITH TIME',
+      option_min_date: 'Minimum date restriction (minDate)',
+      option_presets: 'Display quick selection presets',
+      label_min_date: 'Minimum Date (YYYY-MM-DD)',
+      default_range: 'Transaction Date Range (Default)',
+      detail_range: 'Detailed Time Range (With Hour & Minute)',
+      limited_range: 'Restricted Date Range'
     },
     ripple: {
       title: 'Ripple Wave Directive',
       subtitle: 'Smooth fluid wave animation expanding outward on click.',
-      interactive_box: 'Click inside this area to test the Ripple effect'
+      interactive_box: 'Click inside this area to test the Ripple effect',
+      click_touch_here: 'Click or Touch here',
+      experience_ripple: 'To experience the fluid ripple effect',
+      center_ripple: 'Center Ripple',
+      disabled: 'Disabled',
+      unbounded: 'Unbounded',
+      preset_colors: 'Preset Ripple Colors',
+      custom_color: 'Custom Color (Hex / Rgba / CSS Color)',
+      duration: 'Ripple Duration',
+      opacity: 'Initial Opacity',
+      apply_button_icon: 'Apply on Buttons & Icons'
     },
     accordion: {
       title: 'Collapsible Accordion Component',
@@ -209,7 +247,8 @@ export const EN_TRANSLATIONS: TranslationDictionary = {
       item1_title: '1. Which networks does this Web3 Wallet support?',
       item1_content: 'Supports Ethereum, Arbitrum, BNB Chain, Polygon PoS, Optimism, Base, Avalanche C-Chain, and major EVM chains.',
       item2_title: '2. How do I switch the theme color mode?',
-      item2_content: 'You can toggle Light, Dark, and Auto modes at the bottom of the Sidebar or in the Header settings.'
+      item2_content: 'You can toggle Light, Dark, and Auto modes at the bottom of the Sidebar or in the Header settings.',
+      option_multiple: 'Allow expanding multiple items simultaneously'
     },
     table: {
       title: 'Custom Table & Sorting',
@@ -220,12 +259,23 @@ export const EN_TRANSLATIONS: TranslationDictionary = {
       col_method: 'METHOD',
       col_block: 'BLOCK',
       col_value: 'VALUE',
-      col_status: 'STATUS'
+      col_status: 'STATUS',
+      col_time: 'TIME',
+      col_from: 'FROM',
+      col_to: 'TO',
+      status_all: 'All Statuses',
+      status_success: 'Successful',
+      status_pending: 'Pending',
+      status_failed: 'Failed',
+      sim_loading: 'Simulate Loading',
+      sim_empty: 'Simulate Empty'
     },
     code_block: {
       title: 'Code Block Component',
       subtitle: 'Syntax Highlighting tokenizer for TypeScript, HTML, CSS, JSON, and Bash.',
-      copy_btn: 'Copy Code'
+      copy_btn: 'Copy Code',
+      show_full_code: 'Show full code',
+      collapse_code: 'Collapse code'
     },
     file_upload: {
       title: 'File Upload Drag & Drop',
@@ -287,7 +337,53 @@ export const EN_TRANSLATIONS: TranslationDictionary = {
       demo4_desc: 'Icon-only trigger or bottom-right alignment',
       customize_ui: 'Customize UI',
       web3_actions: 'Web3 Wallet Actions',
-      ghost_btn: 'Ghost Button'
+      ghost_btn: 'Ghost Button',
+      no_action_yet: 'No action selected yet',
+      action_triggered: 'Triggered action: "{label}"',
+      header_dapp: 'DApp Account',
+      profile: 'User Profile',
+      connected_wallet: 'Connected Web3 Wallet',
+      system_settings: 'System Settings',
+      keyboard_shortcuts: 'Keyboard Shortcuts',
+      header_services: 'Services & Team',
+      upgrade_vip: 'Upgrade Web3 VIP',
+      manage_members: 'Manage Members',
+      invite_friends: 'Invite Friends & Earn Rewards',
+      help_center: 'Help Center',
+      github_source: 'GitHub Source Code',
+      logout: 'Logout Account',
+      header_ui: 'UI Components',
+      show_sidebar: 'Show Sidebar Menu',
+      show_chart: 'Show Web3 Candlestick Chart',
+      tx_notif: 'Block Transaction Notifications',
+      header_layout: 'List Layout Options',
+      grid_view: 'Grid View Mode',
+      list_view: 'List View Mode',
+      compact_view: 'Compact View Mode',
+      new_tx: 'Create New Transaction',
+      copy_address: 'Copy Wallet Address',
+      share_wallet: 'Share Wallet Information',
+      share_email: 'Send via Email',
+      share_qr: 'Export Wallet QR Code',
+      share_link: 'Generate Embed Link',
+      permissions: 'Account Permissions',
+      perm_read: 'Read-Only Permission',
+      perm_multisig: 'Multi-Sig Permission (2/3)',
+      perm_admin: 'Administrator Permission',
+      clear_cache: 'Clear Wallet Cache'
+    },
+    aura: {
+      title: 'Aura Glow Effect (Aura Glow Wrapper)',
+      subtitle: 'Cyberpunk animated glowing border wrapping containers and buttons.',
+      wrapper_active: 'Aura Wrapper Active',
+      glow_border_effect: 'Smooth glowing border effect',
+      variant_type: 'Color Variant',
+      glow_size: 'Glow Size',
+      glow_wide: 'Wide Glow Effect',
+      paused: 'Pause Rotation (Paused)',
+      speed: 'Rotation Speed',
+      border_radius: 'Border Radius',
+      practical_application: 'Practical Application'
     },
     voice_chat: {
       title: 'Dropdown Menu & Voice Chat Morphing Card',
@@ -446,6 +542,7 @@ export const EN_TRANSLATIONS: TranslationDictionary = {
     close: 'Close',
     copy: 'Copy',
     copied: 'Copied!',
+    copied_to_clipboard: 'Copied to clipboard!',
     success: 'Success',
     error: 'Error',
     loading: 'Loading...',

@@ -1,8 +1,4 @@
-:host {
-  display: block;
-}
-
-.dropdown-menu-popover {
+﻿.dropdown-menu-popover {
   animation: dropdown-pop-in 0.15s cubic-bezier(0.16, 1, 0.3, 1);
   transform-origin: var(--tw-transform-origin, top left);
 }

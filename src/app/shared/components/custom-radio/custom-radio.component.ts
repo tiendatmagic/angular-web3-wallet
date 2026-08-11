@@ -1,4 +1,4 @@
-import {
+﻿import {
   Component,
   Input,
   Output,
@@ -13,13 +13,13 @@ import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/f
   
   imports: [CommonModule, FormsModule],
   templateUrl: './custom-radio.component.html',
+  host: { 'class': 'block' },
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => CustomRadioComponent),
       multi: true},
   ],
-  styleUrl: './custom-radio.component.scss',
 })
 export class CustomRadioComponent implements ControlValueAccessor {
   public readonly checked = signal<boolean>(false);

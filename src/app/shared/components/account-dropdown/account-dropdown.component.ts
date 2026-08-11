@@ -13,7 +13,7 @@ import { POPULAR_CHAINS } from '@core/utils/blockchain.utils';
   standalone: true,
   imports: [CommonModule, IconComponent, ButtonComponent, ShortAddressPipe, TranslatePipe],
   templateUrl: './account-dropdown.component.html',
-  styleUrls: ['./account-dropdown.component.css']
+  host: { 'class': 'block' },
 })
 export class AccountDropdownComponent {
   public stateService = inject(StateService);

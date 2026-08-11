@@ -11,7 +11,7 @@ import { TranslatePipe } from '@shared/pipes/translate.pipe';
   standalone: true,
   imports: [CommonModule, FormsModule, TabGroupComponent, TranslatePipe],
   templateUrl: './tx-speed-selector.component.html',
-  styleUrl: './tx-speed-selector.component.scss'
+  host: { 'class': 'block' },
 })
 export class TxSpeedSelectorComponent {
   public stateService = inject(StateService);

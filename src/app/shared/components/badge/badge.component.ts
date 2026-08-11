@@ -5,7 +5,6 @@ import { CommonModule } from '@angular/common';
   selector: 'app-badge, [app-badge]',
   imports: [CommonModule],
   templateUrl: './badge.component.html',
-  styleUrl: './badge.component.scss',
   host: {
     '[class]': 'hostClasses',
     '[class.animate-pulse]': 'pulse',
@@ -31,7 +30,7 @@ export class BadgeComponent {
   @Input() interactive = false;
 
   get hostClasses(): string {
-    const classes: string[] = ['select-none'];
+    const classes: string[] = ['inline-flex', 'items-center', 'justify-center', 'font-extrabold', 'leading-none', 'select-none'];
 
     switch (this.variant) {
       case 'primary':

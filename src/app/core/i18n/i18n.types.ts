@@ -140,6 +140,14 @@ export interface TranslationDictionary {
     connect_now_btn: string;
     showcase_title: string;
     showcase_subtitle: string;
+    wrong_network_desc: string;
+    tx_recipient_address: string;
+    tx_amount_label: string;
+    tx_success_title: string;
+    sign_demo_title: string;
+    sign_message_content: string;
+    sign_success_title: string;
+    error_prefix: string;
   };
   cards: {
     buttons: {
@@ -160,6 +168,7 @@ export interface TranslationDictionary {
       error: string;
       info: string;
       hover_tooltip: string;
+      variant_title: string;
     };
     inputs: {
       title: string;
@@ -170,6 +179,14 @@ export interface TranslationDictionary {
       placeholder_address: string;
       placeholder_amount: string;
       placeholder_search: string;
+      birthday: string;
+      gender: string;
+      wallet_address: string;
+      male: string;
+      female: string;
+      other_gender: string;
+      not_selected: string;
+      not_entered: string;
     };
     selects: {
       title: string;
@@ -177,6 +194,9 @@ export interface TranslationDictionary {
       label_single: string;
       label_ten: string;
       label_multi: string;
+      opt_wallet: string;
+      opt_history: string;
+      opt_settings: string;
     };
     controls: {
       title: string;
@@ -192,6 +212,8 @@ export interface TranslationDictionary {
       title: string;
       subtitle: string;
       label: string;
+      gas_priority: string;
+      token_amount: string;
     };
     modal_demo: {
       title: string;
@@ -204,11 +226,27 @@ export interface TranslationDictionary {
       single_date: string;
       range_date: string;
       range_time: string;
+      option_min_date: string;
+      option_presets: string;
+      label_min_date: string;
+      default_range: string;
+      detail_range: string;
+      limited_range: string;
     };
     ripple: {
       title: string;
       subtitle: string;
       interactive_box: string;
+      click_touch_here: string;
+      experience_ripple: string;
+      center_ripple: string;
+      disabled: string;
+      unbounded: string;
+      preset_colors: string;
+      custom_color: string;
+      duration: string;
+      opacity: string;
+      apply_button_icon: string;
     };
     accordion: {
       title: string;
@@ -217,6 +255,7 @@ export interface TranslationDictionary {
       item1_content: string;
       item2_title: string;
       item2_content: string;
+      option_multiple: string;
     };
     table: {
       title: string;
@@ -228,11 +267,22 @@ export interface TranslationDictionary {
       col_block: string;
       col_value: string;
       col_status: string;
+      col_time: string;
+      col_from: string;
+      col_to: string;
+      status_all: string;
+      status_success: string;
+      status_pending: string;
+      status_failed: string;
+      sim_loading: string;
+      sim_empty: string;
     };
     code_block: {
       title: string;
       subtitle: string;
       copy_btn: string;
+      show_full_code: string;
+      collapse_code: string;
     };
     file_upload: {
       title: string;
@@ -295,6 +345,52 @@ export interface TranslationDictionary {
       customize_ui: string;
       web3_actions: string;
       ghost_btn: string;
+      no_action_yet: string;
+      action_triggered: string;
+      header_dapp: string;
+      profile: string;
+      connected_wallet: string;
+      system_settings: string;
+      keyboard_shortcuts: string;
+      header_services: string;
+      upgrade_vip: string;
+      manage_members: string;
+      invite_friends: string;
+      help_center: string;
+      github_source: string;
+      logout: string;
+      header_ui: string;
+      show_sidebar: string;
+      show_chart: string;
+      tx_notif: string;
+      header_layout: string;
+      grid_view: string;
+      list_view: string;
+      compact_view: string;
+      new_tx: string;
+      copy_address: string;
+      share_wallet: string;
+      share_email: string;
+      share_qr: string;
+      share_link: string;
+      permissions: string;
+      perm_read: string;
+      perm_multisig: string;
+      perm_admin: string;
+      clear_cache: string;
+    };
+    aura: {
+      title: string;
+      subtitle: string;
+      wrapper_active: string;
+      glow_border_effect: string;
+      variant_type: string;
+      glow_size: string;
+      glow_wide: string;
+      paused: string;
+      speed: string;
+      border_radius: string;
+      practical_application: string;
     };
     voice_chat: {
       title: string;
@@ -453,6 +549,7 @@ export interface TranslationDictionary {
     close: string;
     copy: string;
     copied: string;
+    copied_to_clipboard: string;
     success: string;
     error: string;
     loading: string;

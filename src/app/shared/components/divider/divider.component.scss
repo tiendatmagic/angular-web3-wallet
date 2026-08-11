@@ -1,8 +1,4 @@
-:host {
-  display: block;
-}
-
-:host([orientation='vertical']) {
+﻿:host([orientation='vertical']) {
   display: inline-block;
   align-self: stretch;
 }

@@ -1,4 +1,4 @@
-import {
+﻿import {
   Component,
   Input,
   Output,
@@ -27,6 +27,7 @@ export interface SelectOption {
   selector: 'app-custom-select',
   standalone: true,
   host: {
+    'class': 'block',
     '(document:click)': 'onClickOutside($event)'
   },
 
@@ -39,7 +40,6 @@ export interface SelectOption {
       useExisting: forwardRef(() => CustomSelectComponent),
       multi: true},
   ],
-  styleUrl: './custom-select.component.scss',
 })
 export class CustomSelectComponent implements ControlValueAccessor, AfterViewChecked, OnInit, OnDestroy {
   private readonly elementRef = inject(ElementRef);
@@ -68,7 +68,7 @@ export class CustomSelectComponent implements ControlValueAccessor, AfterViewChe
   @Input() options: any[] = [];
   @Input() valueKey: string = '';
   @Input() labelKey: string = '';
-  @Input() placeholder: string = 'Chọn...';
+  @Input() placeholder: string = 'Chá»n...';
   @Input() disabled: boolean = false;
   @Input() placement: 'bottom' | 'top' | 'auto' = 'auto';
   @Input() showSearch: boolean = false;

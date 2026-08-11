@@ -1,4 +1,4 @@
-﻿import {
+import {
   Component,
   Input,
   Output,
@@ -43,8 +43,8 @@ export interface DropdownMenuHeader {
   standalone: true,
   imports: [CommonModule, IconComponent],
   templateUrl: './dropdown-menu.component.html',
-  styleUrls: ['./dropdown-menu.component.css'],
   host: {
+    'class': 'block',
     '(document:click)': 'onClickOutside($event)',
     '(document:keydown.escape)': 'onEscape()'
   }

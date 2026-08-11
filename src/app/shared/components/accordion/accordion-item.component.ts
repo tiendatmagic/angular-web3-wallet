@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, inject, forwardRef } from '@angular/core';
+﻿import { Component, Input, Output, EventEmitter, inject, forwardRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AccordionComponent } from './accordion.component';
 import { IconComponent } from '../icon/icon.component';
@@ -7,7 +7,7 @@ import { IconComponent } from '../icon/icon.component';
   selector: 'app-accordion-item',
   imports: [CommonModule, IconComponent],
   templateUrl: './accordion-item.component.html',
-  styleUrl: './accordion-item.component.scss',
+  host: { 'class': 'block' },
 })
 export class AccordionItemComponent {
   @Input() title: string = '';

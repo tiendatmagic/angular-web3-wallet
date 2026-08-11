@@ -18,6 +18,7 @@ export interface CodeFile {
   standalone: true,
   imports: [CommonModule, IconComponent, RippleDirective, TooltipDirective, TranslatePipe],
   templateUrl: './code-block.component.html',
+  host: { 'class': 'block' },
   styleUrl: './code-block.component.scss'
 })
 export class CodeBlockComponent {

@@ -10,7 +10,7 @@ import { TranslatePipe } from '@shared/pipes/translate.pipe';
   standalone: true,
   imports: [CommonModule, IconComponent, ButtonComponent, TranslatePipe],
   templateUrl: './network-selector.component.html',
-  styleUrls: ['./network-selector.component.css']
+  host: { 'class': 'block' },
 })
 export class NetworkSelectorComponent {
   public stateService = inject(StateService);

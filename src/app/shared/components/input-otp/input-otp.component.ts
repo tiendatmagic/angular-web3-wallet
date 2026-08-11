@@ -1,4 +1,4 @@
-﻿import {
+import {
   Component,
   Input,
   Output,
@@ -22,7 +22,7 @@ export type OtpInputSize = 'sm' | 'md' | 'lg';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './input-otp.component.html',
-  styleUrl: './input-otp.component.scss',
+  host: { 'class': 'block' },
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
@@ -44,7 +44,7 @@ export class InputOtpComponent implements ControlValueAccessor, AfterViewInit {
   @Input() size: OtpInputSize = 'md';
   @Input() autoFocus: boolean = false;
   @Input() placeholder: string = '';
-  @Input() ariaLabel: string = 'MÃ£ OTP';
+  @Input() ariaLabel: string = 'Mã OTP';
 
   @Output() valueChange = new EventEmitter<string>();
   @Output() completed = new EventEmitter<string>();
@@ -164,7 +164,7 @@ export class InputOtpComponent implements ControlValueAccessor, AfterViewInit {
   getSlotChar(index: number): string {
     const val = this.valueSignal();
     if (index < val.length) {
-      return this.mask ? 'â—' : val[index];
+      return this.mask ? '●' : val[index];
     }
     return '';
   }

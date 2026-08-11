@@ -1,4 +1,4 @@
-﻿import {
+import {
   Component,
   Input,
   Output,
@@ -29,11 +29,11 @@ export interface DateTimeRangeValue {
 @Component({
   selector: 'app-custom-date-time-range',
   host: {
+    'class': 'block',
     '(document:click)': 'onClickOutside($event)'
   },
   imports: [CommonModule, FormsModule, IconComponent, TranslatePipe],
   templateUrl: './custom-date-time-range.component.html',
-  styleUrl: './custom-date-time-range.component.scss',
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

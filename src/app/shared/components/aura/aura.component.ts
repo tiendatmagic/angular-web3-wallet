@@ -5,7 +5,8 @@ import { CommonModule } from '@angular/common';
   selector: 'app-aura, [app-aura]',
   imports: [CommonModule],
   templateUrl: './aura.component.html',
-  styleUrls: ['./aura.component.css']
+  host: { 'class': 'inline-block relative z-0' },
+  styleUrl: './aura.component.scss'
 })
 export class AuraComponent {
   @Input() variant: 'primary' | 'secondary' | 'dual' | 'rainbow' | 'holo' | 'gold' | 'silver' | 'glow' = 'dual';

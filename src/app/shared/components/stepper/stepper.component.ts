@@ -15,7 +15,7 @@ export interface StepItem {
   standalone: true,
   imports: [CommonModule, IconComponent],
   templateUrl: './stepper.component.html',
-  styleUrl: './stepper.component.scss',
+  host: { 'class': 'block w-full' },
 })
 export class StepperComponent {
   @Input() steps: StepItem[] = [];

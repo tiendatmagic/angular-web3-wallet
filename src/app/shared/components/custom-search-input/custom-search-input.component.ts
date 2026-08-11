@@ -1,4 +1,4 @@
-import {
+﻿import {
   Component,
   Input,
   Output,
@@ -20,13 +20,13 @@ import { TranslationService } from '../../../core/services/translation.service';
   
   imports: [CommonModule, FormsModule, IconComponent],
   templateUrl: './custom-search-input.component.html',
+  host: { 'class': 'block' },
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => CustomSearchInputComponent),
       multi: true},
   ],
-  styleUrl: './custom-search-input.component.scss',
 })
 export class CustomSearchInputComponent implements ControlValueAccessor, OnDestroy {
   public translationService = inject(TranslationService);

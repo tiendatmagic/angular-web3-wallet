@@ -1,8 +1,4 @@
-:host {
-  display: block;
-}
-
-@keyframes scaleUp {
+﻿@keyframes scaleUp {
   from { transform: scale(0); }
   to   { transform: scale(1); }
 }

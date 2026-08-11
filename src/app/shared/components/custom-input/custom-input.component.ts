@@ -7,7 +7,7 @@ import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/f
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './custom-input.component.html',
-  styleUrls: ['./custom-input.component.css'],
+  host: { 'class': 'block' },
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

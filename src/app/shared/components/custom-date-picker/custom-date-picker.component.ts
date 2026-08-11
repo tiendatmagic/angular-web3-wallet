@@ -1,4 +1,4 @@
-import {
+﻿import {
   Component,
   Input,
   Output,
@@ -24,6 +24,7 @@ import { TranslatePipe } from '@shared/pipes/translate.pipe';
 @Component({
   selector: 'app-custom-date-picker',
   host: {
+    'class': 'block',
     '(document:click)': 'onClickOutside($event)'
   },
   imports: [CommonModule, FormsModule, IconComponent, TranslatePipe],
@@ -35,7 +36,6 @@ import { TranslatePipe } from '@shared/pipes/translate.pipe';
       multi: true
     }
   ],
-  styleUrl: './custom-date-picker.component.scss',
 })
 export class CustomDatePickerComponent implements ControlValueAccessor, AfterViewChecked, OnInit, OnDestroy {
   private readonly elementRef = inject(ElementRef);

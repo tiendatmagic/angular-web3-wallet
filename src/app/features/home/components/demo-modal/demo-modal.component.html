@@ -4,7 +4,7 @@
   >
     <div class="flex items-center justify-between">
       <span class="text-xs font-bold text-slate-500 dark:text-slate-400"
-        >Giới hạn ngày tối thiểu (minDate)</span
+        >{{ 'cards.date_picker.option_min_date' | translate }}</span
       >
       <app-custom-switch
         [checked]="limitDatePicker()"
@@ -14,7 +14,7 @@
 
     <div class="flex items-center justify-between">
       <span class="text-xs font-bold text-slate-500 dark:text-slate-400"
-        >Giới hạn ngày tối đa (maxDate)</span
+        >{{ 'cards.date_picker.option_max_date' | translate }}</span
       >
       <app-custom-switch
         [checked]="limitDatePickerMax()"
@@ -24,7 +24,7 @@
 
     <div class="flex items-center justify-between">
       <span class="text-xs font-bold text-slate-500 dark:text-slate-400"
-        >Hiển thị gợi ý chọn nhanh (presets)</span
+        >{{ 'cards.date_picker.option_presets' | translate }}</span
       >
       <app-custom-switch
         [checked]="demoDatePickerShowPresets()"
@@ -36,7 +36,7 @@
       <div
         class="form-field pt-1.5 border-t border-slate-200/30 dark:border-slate-800/30 animate-in fade-in duration-200"
       >
-        <label>Mốc ngày tối thiểu (YYYY-MM-DD)</label>
+        <label>{{ 'cards.date_picker.label_min_date' | translate }}</label>
         <app-custom-input
           type="text"
           [ngModel]="demoDatePickerMinDate()"
@@ -50,7 +50,7 @@
       <div
         class="form-field pt-1.5 border-t border-slate-200/30 dark:border-slate-800/30 animate-in fade-in duration-200"
       >
-        <label>Mốc ngày tối đa (YYYY-MM-DD)</label>
+        <label>{{ 'cards.date_picker.label_max_date' | translate }}</label>
         <app-custom-input
           type="text"
           [ngModel]="demoDatePickerMaxDate()"
@@ -76,7 +76,7 @@
   <div class="form-field">
     <label>{{ 'modal_demo.date_range' | translate }}</label>
     <app-custom-date-time-range
-      placeholder="Chọn khoảng ngày và giờ..."
+      placeholder="-- {{ 'cards.date_picker.range_time' | translate }} --"
       [showTime]="true"
       [minDate]="limitDatePicker() ? demoDatePickerMinDate() : ''"
       [maxDate]="limitDatePickerMax() ? demoDatePickerMaxDate() : ''"
@@ -89,7 +89,7 @@
   <div class="form-field">
     <label>{{ 'modal_demo.chain' | translate }}</label>
     <app-custom-select
-      placeholder="-- Chọn mạng --"
+      placeholder="-- {{ 'cards.selects.title' | translate }} --"
       [options]="demoChainOptions"
       valueKey="value"
       labelKey="label"
@@ -103,14 +103,14 @@
     <app-custom-switch
       type="full"
       [label]="'modal_demo.enable_notif' | translate"
-      description="Bỏ qua bước xác nhận thủ công khi gửi ETH"
+      [description]="'cards.switch.desc' | translate"
       [checked]="modalSwitchValue()"
       (checkedChange)="modalSwitchValue.set($event)"
     />
   </div>
 
   <div class="form-field">
-    <label>CHỌN MẠNG ƯU TIÊN</label>
+    <label>{{ 'modal_demo.chain' | translate }} (RADIO)</label>
     <div class="space-y-2.5">
       @for (opt of demoRadioOptions; track opt.value) {
         <app-custom-radio
@@ -130,26 +130,26 @@
       [ngModel]="modalCheckboxValue()"
       (ngModelChange)="modalCheckboxValue.set($event)"
       [label]="'cards.controls.checkbox_agree' | translate"
-      description="Xác nhận rằng bạn đã đọc và chấp nhận toàn bộ điều khoản."
+      [description]="'cards.checkbox.desc' | translate"
     />
   </div>
 
   <div class="border-t border-slate-100 dark:border-slate-800/40 pt-4.5 space-y-4">
     <div class="flex items-center justify-between">
       <h5 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">
-        Components Mới (Demo Modal)
+        Components (Demo Modal)
       </h5>
-      <app-badge variant="ultra" [pulse]="true">Mới</app-badge>
+      <app-badge variant="ultra" [pulse]="true">NEW</app-badge>
     </div>
 
     <div class="text-xs font-semibold text-slate-500 dark:text-slate-400 flex items-center gap-1">
-      <span>Mẹo: Nhấn</span>
+      <span>Tip: Press</span>
       <kbd app-kbd appTooltip="Phím thoát" tooltipPlacement="top">ESC</kbd>
-      <span>để đóng nhanh modal này bất kỳ lúc nào.</span>
+      <span>to close.</span>
     </div>
 
     <div class="form-field">
-      <label>CHỌN MẠNG ƯU TIÊN (TAB GROUP)</label>
+      <label>{{ 'cards.tab_group.title' | translate }}</label>
       <app-tab-group
         [options]="modalTabOptions"
         [activeValue]="modalTabValue()"
@@ -158,7 +158,7 @@
     </div>
 
     <div class="form-field">
-      <label>THIẾT LẬP TỐC ĐỘ TRƯỢT (GAS LIMIT PRIORITY / SECONDARY)</label>
+      <label>{{ 'cards.slider.title' | translate }}</label>
       <app-custom-slider
         [min]="1"
         [max]="5"

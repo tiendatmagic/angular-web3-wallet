@@ -1,4 +1,4 @@
-﻿import { Component, Input, signal } from '@angular/core';
+import { Component, Input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '../icon/icon.component';
 
@@ -14,7 +14,8 @@ export interface VoiceParticipant {
   standalone: true,
   imports: [CommonModule, IconComponent],
   templateUrl: './voice-chat.component.html',
-  styleUrls: ['./voice-chat.component.css']
+  styleUrl: './voice-chat.component.scss',
+  host: { 'class': 'block' },
 })
 export class VoiceChatComponent {
   @Input() participants: VoiceParticipant[] = [

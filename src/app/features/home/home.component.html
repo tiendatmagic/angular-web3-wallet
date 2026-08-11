@@ -94,7 +94,7 @@
               class="bg-red-500/10 border border-red-500/25 rounded-xl p-3 mb-4 text-xs font-bold text-red-500 flex items-start gap-2"
             >
               <app-icon name="warning" class="w-4 h-4 mt-0.5 flex-shrink-0" />
-              <span>Bạn đang ở mạng không được hỗ trợ. Vui lòng chuyển sang mạng dưới đây.</span>
+              <span>{{ 'home.wrong_network_desc' | translate }}</span>
             </div>
           }
 
@@ -137,7 +137,7 @@
 
           <div class="space-y-4">
             <div class="form-field">
-              <label>Địa chỉ ví nhận</label>
+              <label>{{ 'home.tx_recipient_address' | translate }}</label>
               <app-custom-input
                 type="text"
                 placeholder="0x..."
@@ -147,7 +147,7 @@
             </div>
 
             <div class="form-field">
-              <label>Số lượng {{ stateService.chainSymbol() }} gửi</label>
+              <label>{{ 'home.tx_amount_label' | translate : { symbol: stateService.chainSymbol() } }}</label>
               <app-custom-input
                 type="number"
                 placeholder="0.01"
@@ -166,10 +166,10 @@
             >
               @if (txLoading()) {
                 <app-icon name="loading" class="w-4 h-4 animate-spin" />
-                Đang xử lý giao dịch...
+                {{ 'common.loading' | translate }}
               } @else {
                 <app-icon name="send" class="w-4 h-4" />
-                Xác nhận gửi {{ stateService.chainSymbol() }}
+                {{ 'wallet.switch_network_btn' | translate }}
               }
             </button>
 
@@ -179,7 +179,7 @@
               >
                 <div class="flex items-center gap-2 text-emerald-500 text-xs font-bold">
                   <app-icon name="check-circle" class="w-4 h-4" />
-                  <span>Giao dịch thành công</span>
+                  <span>{{ 'home.tx_success_title' | translate }}</span>
                 </div>
                 <div class="flex items-center justify-between gap-4">
                   <span
@@ -202,7 +202,7 @@
                 class="bg-red-500/10 border border-red-500/25 rounded-xl p-4 text-xs font-bold text-red-500 flex items-start gap-2"
               >
                 <app-icon name="warning" class="w-4 h-4 mt-0.5 flex-shrink-0" />
-                <span class="break-words min-w-0">Lỗi: {{ txError() }}</span>
+                <span class="break-words min-w-0">{{ 'home.error_prefix' | translate }}: {{ txError() }}</span>
               </div>
             }
           </div>
@@ -216,7 +216,7 @@
               <app-icon name="pen" class="w-5 h-5" />
             </div>
             <div>
-              <h3 class="text-base font-black text-slate-800 dark:text-white">Demo Ký tin nhắn</h3>
+              <h3 class="text-base font-black text-slate-800 dark:text-white">{{ 'home.sign_demo_title' | translate }}</h3>
               <p class="text-xs text-slate-400 dark:text-slate-500">
                 Xác thực thông điệp không mất phí gas
               </p>
@@ -225,7 +225,7 @@
 
           <div class="space-y-4">
             <div class="form-field">
-              <label>Nội dung thông điệp</label>
+              <label>{{ 'home.sign_message_content' | translate }}</label>
               <textarea
                 rows="2"
                 [(ngModel)]="messageToSign"
@@ -242,10 +242,10 @@
             >
               @if (signLoading()) {
                 <app-icon name="loading" class="w-4 h-4 animate-spin" />
-                Đang xử lý chữ ký...
+                {{ 'common.loading' | translate }}
               } @else {
                 <app-icon name="pen" class="w-4 h-4" />
-                Ký thông điệp này
+                {{ 'home.sign_demo_title' | translate }}
               }
             </button>
 
@@ -258,7 +258,7 @@
                 >
                   <div class="flex items-center gap-2">
                     <app-icon name="pen" class="w-4 h-4" />
-                    <span>Đã tạo chữ ký số</span>
+                    <span>{{ 'home.sign_success_title' | translate }}</span>
                   </div>
                 </div>
                 <div
@@ -432,9 +432,9 @@
         </h4>
         <div class="space-y-4">
           <div class="form-field">
-            <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider select-none">Chọn đơn lẻ (5 mạng lưới)</label>
+            <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider select-none">{{ 'cards.selects.label_single' | translate }}</label>
             <app-custom-select
-              placeholder="-- Chọn mạng lưới --"
+              placeholder="-- {{ 'cards.selects.title' | translate }} --"
               [options]="demoChainOptions"
               valueKey="value"
               labelKey="label"
@@ -446,14 +446,14 @@
             <div
               class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2"
             >
-              selected = {{ demoSelectValue() ?? '(chưa chọn)' }}
+              selected = {{ demoSelectValue() ?? ('cards.inputs.not_selected' | translate) }}
             </div>
           </div>
 
           <div class="form-field">
-            <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider select-none">Chọn đơn lẻ (10 mạng lưới)</label>
+            <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider select-none">{{ 'cards.selects.label_ten' | translate }}</label>
             <app-custom-select
-              placeholder="-- Chọn mạng lưới --"
+              placeholder="-- {{ 'cards.selects.title' | translate }} --"
               [options]="demoTenChainOptions"
               valueKey="value"
               labelKey="label"
@@ -465,14 +465,14 @@
             <div
               class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2"
             >
-              selected = {{ demoSelectTenChainsValue() ?? '(chưa chọn)' }}
+              selected = {{ demoSelectTenChainsValue() ?? ('cards.inputs.not_selected' | translate) }}
             </div>
           </div>
 
                     <div class="form-field">
-            <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider select-none">Chọn nhiều (Toppings)</label>
+            <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider select-none">{{ 'cards.selects.label_multi' | translate }}</label>
             <app-custom-select
-              placeholder="-- Chọn Toppings --"
+              placeholder="-- {{ 'cards.selects.title' | translate }} --"
               [options]="demoMultiSelectOptions"
               valueKey="id"
               labelKey="name"
@@ -485,7 +485,7 @@
             <div
               class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2"
             >
-              selected = [ {{ demoMultiSelectValue().join(', ') || '(trống)' }} ]
+              selected = [ {{ demoMultiSelectValue().join(', ') || ('cards.input_otp.empty_val' | translate) }} ]
             </div>
           </div>
         </div>
@@ -501,7 +501,7 @@
         <div class="flex flex-col gap-3.5">
                     <div class="flex flex-col gap-2.5 p-3 bg-slate-50/50 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 rounded-xl space-y-1.5">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Giới hạn ngày tối thiểu (minDate)</span>
+              <span class="text-xs font-bold text-slate-500 dark:text-slate-400">{{ 'cards.date_picker.option_min_date' | translate }}</span>
               <app-custom-switch
                 [checked]="limitDatePicker()"
                 (checkedChange)="limitDatePicker.set($event)"
@@ -509,7 +509,7 @@
             </div>
             
             <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Hiển thị gợi ý chọn nhanh (presets)</span>
+              <span class="text-xs font-bold text-slate-500 dark:text-slate-400">{{ 'cards.date_picker.option_presets' | translate }}</span>
               <app-custom-switch
                 [checked]="demoDatePickerShowPresets()"
                 (checkedChange)="demoDatePickerShowPresets.set($event)"
@@ -518,7 +518,7 @@
 
             @if (limitDatePicker()) {
               <div class="form-field pt-1 border-t border-slate-200/30 dark:border-slate-800/30 animate-in fade-in duration-200">
-                <label>Mốc ngày tối thiểu (YYYY-MM-DD)</label>
+                <label>{{ 'cards.date_picker.label_min_date' | translate }}</label>
                 <input
                   type="text"
                   [ngModel]="demoDatePickerMinDate()"
@@ -555,7 +555,7 @@
         </h4>
         <div class="space-y-4">
           <div class="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800/40">
-            <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Cho phép mở nhiều mục cùng lúc</span>
+            <span class="text-xs font-bold text-slate-500 dark:text-slate-400">{{ 'cards.accordion.option_multiple' | translate }}</span>
             <app-custom-switch
               [checked]="demoAccordionMultiple()"
               (checkedChange)="demoAccordionMultiple.set($event)"
@@ -629,7 +629,7 @@
         
         <div class="space-y-4">
           <app-tab-group
-            [options]="demoTabOptions"
+            [options]="demoTabOptions()"
             [activeValue]="demoTabValue()"
             (valueChange)="demoTabValue.set($event)"
           ></app-tab-group>
@@ -652,7 +652,7 @@
         
         <div class="space-y-4">
           <div class="form-field">
-            <label>Mức độ ưu tiên Gas (Primary / Marks)</label>
+            <label>{{ 'cards.slider.gas_priority' | translate }}</label>
             <app-custom-slider
               [min]="0"
               [max]="10"
@@ -670,7 +670,7 @@
           </div>
 
           <div class="form-field">
-            <label>Khối lượng Token gửi (Neutral / No Marks)</label>
+            <label>{{ 'cards.slider.token_amount' | translate }}</label>
             <app-custom-slider
               [min]="0"
               [max]="100"
@@ -700,9 +700,9 @@
         <div class="space-y-4">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div class="form-field">
-              <label>Ngày sinh</label>
+              <label>{{ 'cards.inputs.birthday' | translate }}</label>
               <app-custom-date-picker
-                placeholder="Chọn ngày sinh"
+                placeholder="-- {{ 'cards.inputs.birthday' | translate }} --"
                 [showPresets]="false"
                 [ngModel]="demoProfileBirthday()"
                 (ngModelChange)="demoProfileBirthday.set($event)"
@@ -710,9 +710,9 @@
             </div>
 
             <div class="form-field">
-              <label>Giới tính</label>
+              <label>{{ 'cards.inputs.gender' | translate }}</label>
               <app-tab-group
-                [options]="genderOptions"
+                [options]="genderOptions()"
                 [activeValue]="demoProfileGender()"
                 (valueChange)="demoProfileGender.set($event)"
               />
@@ -720,7 +720,7 @@
           </div>
 
                     <div class="form-field">
-            <label>Địa chỉ ví Web3 (EVM)</label>
+            <label>{{ 'cards.inputs.wallet_address' | translate }}</label>
             <app-custom-input
               placeholder="0x..."
               [ngModel]="demoProfileWallet()"
@@ -731,9 +731,9 @@
           <div
             class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2.5 space-y-0.5"
           >
-            <div>birthday = "{{ demoProfileBirthday() || '(chưa chọn)' }}"</div>
+            <div>birthday = "{{ demoProfileBirthday() || ('cards.inputs.not_selected' | translate) }}"</div>
             <div>gender = "{{ demoProfileGender() }}"</div>
-            <div>wallet = "{{ demoProfileWallet() || '(chưa nhập)' }}"</div>
+            <div>wallet = "{{ demoProfileWallet() || ('cards.inputs.not_entered' | translate) }}"</div>
           </div>
         </div>
       </div>
@@ -748,18 +748,18 @@
 
         <div class="space-y-4">
           <div class="form-field">
-            <label>Khoảng ngày giao dịch (Mặc định)</label>
+            <label>{{ 'cards.date_picker.default_range' | translate }}</label>
             <app-custom-date-time-range
-              placeholder="Chọn khoảng ngày..."
+              placeholder="-- {{ 'cards.date_picker.range_date' | translate }} --"
               [ngModel]="demoRangeValue()"
               (ngModelChange)="demoRangeValue.set($event)"
             />
           </div>
 
           <div class="form-field">
-            <label>Khoảng thời gian chi tiết (Kèm Giờ & Phút)</label>
+            <label>{{ 'cards.date_picker.detail_range' | translate }}</label>
             <app-custom-date-time-range
-              placeholder="Chọn khoảng ngày và giờ..."
+              placeholder="-- {{ 'cards.date_picker.range_time' | translate }} --"
               [showTime]="true"
               [ngModel]="demoRangeWithTimeValue()"
               (ngModelChange)="demoRangeWithTimeValue.set($event)"
@@ -767,7 +767,7 @@
           </div>
 
                     <div class="form-field">
-            <label>Khoảng ngày có giới hạn (Min: 2026-07-10, Max: 2026-07-20)</label>
+            <label>{{ 'cards.date_picker.limited_range' | translate }} (Min: 2026-07-10, Max: 2026-07-20)</label>
             <app-custom-date-time-range
               placeholder="Chọn khoảng ngày giới hạn..."
               minDate="2026-07-10"
@@ -806,13 +806,13 @@
             [appRippleOpacity]="demoRippleOpacity()"
             class="h-32 rounded-[15px] border-2 border-dashed border-slate-200 dark:border-slate-800 flex flex-col items-center justify-center cursor-pointer select-none bg-slate-50/50 dark:bg-slate-950/20 hover:bg-slate-100/50 dark:hover:bg-slate-900/10 transition-colors duration-200"
           >
-            <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Click hoặc Touch vào đây</span>
-            <span class="text-[10px] text-slate-400 dark:text-slate-500 mt-1">Để trải nghiệm hiệu ứng sóng nước</span>
+            <span class="text-xs font-bold text-slate-500 dark:text-slate-400">{{ 'cards.ripple.click_touch_here' | translate }}</span>
+            <span class="text-[10px] text-slate-400 dark:text-slate-500 mt-1">{{ 'cards.ripple.experience_ripple' | translate }}</span>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 border-t border-slate-100 dark:border-slate-800/40 pt-4">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Sóng từ tâm</span>
+              <span class="text-xs font-bold text-slate-500 dark:text-slate-400">{{ 'cards.ripple.center_ripple' | translate }}</span>
               <app-custom-switch
                 [checked]="demoRippleCentered()"
                 (checkedChange)="demoRippleCentered.set($event)"
@@ -820,7 +820,7 @@
             </div>
 
             <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Vô hiệu hóa</span>
+              <span class="text-xs font-bold text-slate-500 dark:text-slate-400">{{ 'cards.ripple.disabled' | translate }}</span>
               <app-custom-switch
                 [checked]="demoRippleDisabled()"
                 (checkedChange)="demoRippleDisabled.set($event)"
@@ -828,7 +828,7 @@
             </div>
 
             <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Không giới hạn viền</span>
+              <span class="text-xs font-bold text-slate-500 dark:text-slate-400">{{ 'cards.ripple.unbounded' | translate }}</span>
               <app-custom-switch
                 [checked]="demoRippleUnbounded()"
                 (checkedChange)="demoRippleUnbounded.set($event)"
@@ -837,7 +837,7 @@
           </div>
 
           <div class="form-field">
-            <label>Màu sắc Ripple dựng sẵn</label>
+            <label>{{ 'cards.ripple.preset_colors' | translate }}</label>
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
               <button
                 app-button
@@ -849,7 +849,7 @@
                 (click)="demoRippleColor.set(''); demoRippleCustomColor.set('')"
                 class="!py-1.5 text-xs font-bold"
               >
-                Mặc định
+                {{ 'tx_speed.default' | translate }}
               </button>
               <button
                 app-button
@@ -860,7 +860,7 @@
                 (click)="demoRippleColor.set('rgba(255, 0, 221, 0.2)'); demoRippleCustomColor.set('')"
                 class="!py-1.5 text-xs font-bold text-primary"
               >
-                Màu Primary
+                Primary
               </button>
               <button
                 app-button
@@ -871,7 +871,7 @@
                 (click)="demoRippleColor.set('rgba(128, 0, 255, 0.2)'); demoRippleCustomColor.set('')"
                 class="!py-1.5 text-xs font-bold text-secondary"
               >
-                Màu Secondary
+                Secondary
               </button>
               <button
                 app-button
@@ -882,14 +882,14 @@
                 (click)="demoRippleColor.set('rgba(239, 68, 68, 0.2)'); demoRippleCustomColor.set('')"
                 class="!py-1.5 text-xs font-bold text-red-500"
               >
-                Màu Đỏ
+                Danger
               </button>
             </div>
           </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-slate-100 dark:border-slate-800/40 pt-4">
             <div class="form-field justify-start">
-              <label>Màu sắc tự chọn (Hex / Rgba / CSS Color)</label>
+              <label>{{ 'cards.ripple.custom_color' | translate }}</label>
               <div class="flex gap-2">
                 <app-custom-input
                   placeholder="Ví dụ: #ff00dd hoặc rgba(0, 255, 0, 0.4)"
@@ -909,7 +909,7 @@
                         <div class="space-y-4">
               <div class="form-field">
                 <div class="flex justify-between items-center">
-                  <label class="!mb-0">Thời gian lan tỏa (Duration)</label>
+                  <label class="!mb-0">{{ 'cards.ripple.duration' | translate }}</label>
                   <span class="text-xs font-mono font-bold text-primary">{{ demoRippleDuration() }}ms</span>
                 </div>
                 <app-custom-slider
@@ -923,7 +923,7 @@
 
               <div class="form-field">
                 <div class="flex justify-between items-center">
-                  <label class="!mb-0">Độ mờ ban đầu (Opacity)</label>
+                  <label class="!mb-0">{{ 'cards.ripple.opacity' | translate }}</label>
                   <span class="text-xs font-mono font-bold text-secondary">{{ demoRippleOpacity() }}</span>
                 </div>
                 <app-custom-slider
@@ -938,7 +938,7 @@
           </div>
 
           <div class="form-field border-t border-slate-100 dark:border-slate-800/40 pt-4">
-            <label>Áp dụng trên Button và Icon</label>
+            <label>{{ 'cards.ripple.apply_button_icon' | translate }}</label>
             <div class="flex flex-wrap items-center gap-3">
               <button
                 app-button
@@ -1006,15 +1006,15 @@
             >
               <div class="bg-white dark:bg-slate-900 px-8 py-6 rounded-[inherit] border border-slate-200/50 dark:border-slate-800/50 flex flex-col items-center justify-center text-center max-w-sm select-none">
                 <app-icon name="bolt" class="w-8 h-8 text-primary mb-3 animate-pulse" />
-                <span class="text-sm font-extrabold text-slate-800 dark:text-white">Aura Wrapper Active</span>
-                <span class="text-xs text-slate-400 dark:text-slate-500 mt-1">Hiệu ứng đường viền phát sáng mượt mà</span>
+                <span class="text-sm font-extrabold text-slate-800 dark:text-white">{{ 'cards.aura.wrapper_active' | translate }}</span>
+                <span class="text-xs text-slate-400 dark:text-slate-500 mt-1">{{ 'cards.aura.glow_border_effect' | translate }}</span>
               </div>
             </app-aura>
           </div>
 
                     <div class="space-y-4">
             <div class="form-field">
-              <label>Kiểu màu sắc (Variant)</label>
+              <label>{{ 'cards.aura.variant_type' | translate }}</label>
               <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 <button
                   app-button
@@ -1108,7 +1108,7 @@
             </div>
 
             <div class="form-field">
-              <label>Kích thước độ sáng (Size)</label>
+              <label>{{ 'cards.aura.glow_size' | translate }}</label>
               <div class="grid grid-cols-5 gap-2">
                 @for (sz of ['xs', 'sm', 'md', 'lg', 'xl']; track sz) {
                   <button
@@ -1128,7 +1128,7 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-slate-100 dark:border-slate-800/40 pt-4">
                             <div class="flex items-center justify-between">
-                <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Phát sáng tỏa rộng (Glow)</span>
+                <span class="text-xs font-bold text-slate-500 dark:text-slate-400">{{ 'cards.aura.glow_wide' | translate }}</span>
                 <app-custom-switch
                   [checked]="demoAuraGlow()"
                   (checkedChange)="demoAuraGlow.set($event)"
@@ -1136,7 +1136,7 @@
               </div>
 
               <div class="flex items-center justify-between">
-                <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Tạm dừng xoay (Paused)</span>
+                <span class="text-xs font-bold text-slate-500 dark:text-slate-400">{{ 'cards.aura.paused' | translate }}</span>
                 <app-custom-switch
                   [checked]="demoAuraPaused()"
                   (checkedChange)="demoAuraPaused.set($event)"
@@ -1146,7 +1146,7 @@
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-slate-100 dark:border-slate-800/40 pt-4">
               <div class="form-field">
-                <label>Tốc độ quay (Speed)</label>
+                <label>{{ 'cards.aura.speed' | translate }}</label>
                 <div class="grid grid-cols-3 gap-2">
                   @for (spd of ['2s', '4s', '8s']; track spd) {
                     <button
@@ -1158,14 +1158,14 @@
                       (click)="demoAuraSpeed.set(spd)"
                       class="!py-1.5 text-xs font-bold"
                     >
-                      {{ spd === '2s' ? 'Nhanh (2s)' : spd === '4s' ? 'Vừa (4s)' : 'Chậm (8s)' }}
+                      {{ spd === '2s' ? ('tx_speed.fast' | translate) + ' (2s)' : spd === '4s' ? ('tx_speed.default' | translate) + ' (4s)' : ('cards.controls.radio_slow' | translate) + ' (8s)' }}
                     </button>
                   }
                 </div>
               </div>
 
               <div class="form-field">
-                <label>Bo góc (Border Radius)</label>
+                <label>{{ 'cards.aura.border_radius' | translate }}</label>
                 <div class="grid grid-cols-3 gap-2">
                   @for (rad of ['15px', '8px', '9999px']; track rad) {
                     <button
@@ -1177,7 +1177,7 @@
                       (click)="demoAuraRadius.set(rad)"
                       class="!py-1.5 text-xs font-bold"
                     >
-                      {{ rad === '15px' ? 'Mặc định (15px)' : rad === '8px' ? 'Nhỏ (8px)' : 'Tròn (9999px)' }}
+                      {{ rad === '15px' ? ('tx_speed.default' | translate) + ' (15px)' : rad === '8px' ? 'Small (8px)' : 'Circle (9999px)' }}
                     </button>
                   }
                 </div>
@@ -1185,7 +1185,7 @@
             </div>
 
                         <div class="form-field border-t border-slate-100 dark:border-slate-800/40 pt-4">
-              <label>Áp dụng thực tế</label>
+              <label>{{ 'cards.aura.practical_application' | translate }}</label>
               <div class="flex flex-wrap items-center gap-6 justify-start py-2">
                 <app-aura variant="dual" size="xs" radius="12px">
                   <button app-button variant="primary" size="md" class="relative">
@@ -1214,7 +1214,7 @@
         <div app-card class="mt-6">
       <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-6 flex items-center gap-2 select-none">
         <app-icon name="tables" class="w-3.5 h-3.5 text-[var(--color-primary)] animate-pulse" strokeWidth="2.5" />
-        Component Table Tùy Biến Cao Cấp (app-table)
+        {{ 'cards.table.title' | translate }}
       </h4>
 
       <div class="space-y-6">
@@ -1222,7 +1222,7 @@
             <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1 max-w-2xl">
               <div class="w-full sm:w-80">
                 <app-custom-search-input
-                  placeholder="Tìm theo TxHash, Phương thức, Địa chỉ..."
+                  [placeholder]="'cards.table.search_placeholder' | translate"
                   [debounce]="200"
                   [clearable]="true"
                   [ngModel]="demoTableSearchQuery()"
@@ -1231,19 +1231,19 @@
               </div>
               <div class="w-full sm:w-56">
                 <app-custom-select
-                  [options]="tableStatusOptions"
+                  [options]="tableStatusOptions()"
                   valueKey="value"
                   labelKey="label"
                   [(value)]="demoTableStatusFilter"
                   (valueChange)="demoTableCurrentPage.set(1)"
-                  placeholder="Lọc trạng thái"
+                  [placeholder]="'cards.table.filter_all' | translate"
                 />
               </div>
             </div>
 
             <div class="flex flex-wrap items-center gap-x-4 gap-y-2.5 bg-slate-50 dark:bg-slate-950/20 p-2.5 rounded-xl border border-slate-200/40 dark:border-slate-800/40 max-w-full">
               <div class="flex items-center gap-2">
-                <span class="text-xs font-bold text-slate-500 dark:text-slate-400 select-none whitespace-nowrap">Giả lập Tải (Loading)</span>
+                <span class="text-xs font-bold text-slate-500 dark:text-slate-400 select-none whitespace-nowrap">{{ 'cards.table.sim_loading' | translate }}</span>
                 <app-custom-switch
                   [checked]="demoTableLoading()"
                   (checkedChange)="demoTableLoading.set($event)"
@@ -1251,7 +1251,7 @@
               </div>
               <div class="hidden sm:block h-4 w-px bg-slate-200 dark:bg-slate-800"></div>
               <div class="flex items-center gap-2">
-                <span class="text-xs font-bold text-slate-500 dark:text-slate-400 select-none whitespace-nowrap">Giả lập Rỗng (Empty)</span>
+                <span class="text-xs font-bold text-slate-500 dark:text-slate-400 select-none whitespace-nowrap">{{ 'cards.table.sim_empty' | translate }}</span>
                 <app-custom-switch
                   [checked]="demoTableEmpty()"
                   (checkedChange)="demoTableEmpty.set($event)"
@@ -1271,7 +1271,7 @@
           </div>
 
                 <app-table
-          [columns]="demoTableColumns"
+          [columns]="demoTableColumns()"
           [data]="paginatedTransactions()"
           [loading]="demoTableLoading()"
           [emptyText]="demoTableEmpty() ? 'Danh sách trống theo yêu cầu giả lập.' : 'Không có giao dịch nào khớp với bộ lọc tìm kiếm.'"
@@ -1675,7 +1675,7 @@
               <div class="flex flex-wrap items-center gap-3 pt-2">
                 <app-dropdown-menu
                   [header]="demoProfileHeader"
-                  [items]="demoProfileMenuItems"
+                  [items]="demoProfileMenuItems()"
                   triggerText="Nguyễn Tiến Đạt"
                   triggerVariant="outline"
                   triggerSize="md"
@@ -1686,7 +1686,7 @@
 
                 <app-dropdown-menu
                   [header]="demoProfileHeader"
-                  [items]="demoProfileMenuItems"
+                  [items]="demoProfileMenuItems()"
                   triggerVariant="avatar"
                   avatarUrl="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80"
                   width="w-64"
@@ -1708,7 +1708,7 @@
 
               <div class="flex flex-wrap items-center gap-3 pt-2">
                 <app-dropdown-menu
-                  [items]="demoDisplayMenuItems"
+                  [items]="demoDisplayMenuItems()"
                   [triggerText]="'cards.dropdown.customize_ui' | translate"
                   triggerIcon="filter"
                   triggerVariant="secondary"
@@ -1733,7 +1733,7 @@
 
               <div class="flex flex-wrap items-center gap-3 pt-2">
                 <app-dropdown-menu
-                  [items]="demoWeb3ActionItems"
+                  [items]="demoWeb3ActionItems()"
                   [triggerText]="'cards.dropdown.web3_actions' | translate"
                   triggerIcon="bolt"
                   triggerVariant="primary"
@@ -1757,7 +1757,7 @@
 
               <div class="flex flex-wrap items-center gap-3 pt-2">
                 <app-dropdown-menu
-                  [items]="demoWeb3ActionItems"
+                  [items]="demoWeb3ActionItems()"
                   triggerIcon="dots-vertical"
                   triggerVariant="icon"
                   triggerSize="md"
@@ -1767,7 +1767,7 @@
                 ></app-dropdown-menu>
 
                 <app-dropdown-menu
-                  [items]="demoProfileMenuItems"
+                  [items]="demoProfileMenuItems()"
                   [triggerText]="'cards.dropdown.ghost_btn' | translate"
                   triggerIcon="chevron-down"
                   triggerVariant="ghost"
@@ -1778,7 +1778,7 @@
                 ></app-dropdown-menu>
 
                 <app-dropdown-menu
-                  [items]="demoWeb3ActionItems"
+                  [items]="demoWeb3ActionItems()"
                   [customTrigger]="true"
                   width="w-60"
                   placement="bottom-right"

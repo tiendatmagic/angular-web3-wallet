@@ -2,6 +2,33 @@
 
 ## Ngày 12/08/2026
 
+### Yêu cầu: Chuẩn Hóa & Phủ Kín 100% Đa Ngôn Ngữ (i18n) Cho Tất Cả Các File HTML và TypeScript trong Dự Án
+- **Nội dung yêu cầu:** Rà soát toàn bộ các file `.html` và `.ts` trong ứng dụng, chuyển đổi tất cả các chuỗi văn bản Tiếng Việt hardcoded (bao gồm cả các tùy chọn mảng dữ liệu, tiêu đề modal, nhãn card showcase...) sang các key dịch i18n chuẩn sử dụng `TranslatePipe` và `computed()` Signal phản ứng theo ngôn ngữ hiện tại `TranslationService.currentLang()`.
+- **Giải pháp:**
+  1. **Mở Rộng Từ Điển i18n (`i18n.types.ts`, `vi.ts`, `en.ts`):**
+     - Bổ sung hơn 50 key dịch mới cho các nhóm `home`, `cards.inputs`, `cards.selects`, `cards.slider`, `cards.date_picker`, `cards.ripple`, `cards.accordion`, `cards.table`, `cards.dropdown`, `cards.aura`, `cards.switch`, `cards.checkbox`, `cards.tab_group`.
+  2. **Tối Ưu Phản Ứng Đổi Ngôn Ngữ Ngay Lập Tức Trong TS (`home.component.ts`):**
+     - Chuyển `demoTabOptions`, `genderOptions`, `demoTableColumns`, `tableStatusOptions`, `demoProfileMenuItems`, `demoDisplayMenuItems`, `demoWeb3ActionItems` thành các `computed()` Signal liên kết với `this.translationService.currentLang()`, giúp toàn bộ menu dropdown, bảng dữ liệu và tab group tự động cập nhật ngôn ngữ ngay lập tức khi người dùng chuyển đổi giữa Tiếng Việt và Tiếng Anh.
+  3. **Chuẩn Hóa Phủ Kín File HTML (`home.component.html`, `demo-modal.component.html`, `code-block.component.html`):**
+     - Thay thế 100% các nhãn text cứng trong 30 Card Showcase và Demo Modal thành `{{ 'key' | translate }}` và `[placeholder]="'key' | translate"`.
+  4. **Xác thực:** Runs `npx tsc --noEmit` đạt 0 lỗi type. Runs `npm run build` đóng gói Production thành công 100% (771 kB bundle).
+
+
+### Yêu cầu: Khắc Phục Lỗi Dịch Đa Ngôn Ngữ & Chuẩn Hóa Mã Hóa UTF-8 Cho Toast Notification
+- **Nội dung yêu cầu:** Khắc phục lỗi hiển thị văn bản mã hóa lỗi (double-encoded UTF-8 gibberish: `ÄÃE sao chÃ¢p...`) ở Toast notification khi người dùng bấm nút sao chép (Copy to Clipboard), đồng thời rà soát và khắc phục toàn bộ các chuỗi văn bản bị lỗi mã hóa tiếng Việt trong dự án.
+- **Giải pháp:**
+  1. **Tạo Key Dịch Mới `common.copied_to_clipboard` (`i18n.types.ts`, `vi.ts`, `en.ts`):**
+     - Đã bổ sung `copied_to_clipboard: 'Đã sao chép vào bộ nhớ tạm!'` trong `vi.ts` và `'Copied to clipboard!'` trong `en.ts`.
+  2. **Chuẩn Hóa Component Copy to Clipboard (`copy-to-clipboard.component.ts`):**
+     - Thay thế chuỗi fallback bị lỗi mã hóa `Ä Ã£ sao chÃ©p...` bằng gọi động `this.translationService.t('common.copied_to_clipboard')`, đảm bảo hiển thị đúng chuẩn tiếng Việt khi chọn Tiếng Việt và tiếng Anh khi chọn English.
+  3. **Chuẩn Hóa Component Language Selector (`language-selector.component.ts`):**
+     - Thay thế chuỗi thông báo toast bị mã hóa lỗi bằng `this.translationService.t('language.change_success')`.
+  4. **Khắc Phục Chuỗi Mã Hóa Lỗi Ở Các Component Shared Khác (`input-otp.component.ts`, `file-upload.component.ts`):**
+     - Sửa `ariaLabel` thành `'Mã OTP'` và ký tự mask thành `'●'` chuẩn U+25CF trong `InputOtpComponent`.
+     - Sửa các thông báo lỗi `globalError` tiếng Việt chuẩn trong `FileUploadComponent`.
+  5. **Xác thực:** Runs `npx tsc --noEmit` đạt 0 lỗi type. Runs `npm run build` đóng gói bản Production hoàn hảo.
+
+
 ### Yêu cầu: Chuyển Đổi Toàn Bộ CSS → SCSS & Tách File Riêng Cho Shared Components
 
 - **Nội dung yêu cầu:** Tất cả các component trong `src/app/shared/components` phải chuyển từ `.css` sang `.scss`, đồng thời tách inline `template` và `styles` trong file `.ts` ra thành file riêng `.html` và `.scss`.
@@ -13,6 +40,20 @@
   5. **Cập nhật tất cả `.ts`** sử dụng `templateUrl`/`styleUrl` thay vì `template`/`styles` inline.
   6. **Xóa 23 file `.css` gốc** sau khi xác nhận build thành công.
   7. **Xác thực:** `npx tsc --noEmit` đạt 0 lỗi. `npm run build` đóng gói Production thành công.
+
+### Yêu cầu: Tối Ưu Loại Bỏ CSS/SCSS → Thay Bằng Tailwind Class Cho Toàn Bộ Shared Components
+
+- **Nội dung yêu cầu:** Chỗ nào có thể thay CSS/SCSS bằng class Tailwind thì dùng luôn, mục tiêu loại bỏ CSS/SCSS càng nhiều càng tốt.
+- **Giải pháp:**
+  1. **Xóa 25+ file SCSS** chỉ chứa `:host { display: ... }` bằng Angular `host: { 'class': '...' }` binding trong TS decorator.
+  2. **Xóa `:host` block khỏi SCSS** còn giữ lại và chuyển vào host class trong TS (drawer, voice-chat, aura, ...).
+  3. **Badge**: Thêm `inline-flex items-center justify-center font-extrabold leading-none` vào `hostClasses` getter.
+  4. **Aura**: Thêm `relative z-0` vào host class, xóa khỏi SCSS.
+  5. **Voice-chat**: Thay `.w-0\.75 { width: 3px }` bằng `w-[3px]` trong HTML template.
+  6. **12 SCSS còn lại** bắt buộc giữ (keyframes, pseudo-selectors đặc biệt, vendor prefixes, `::ng-deep`, `::webkit-scrollbar`): aura, card, code-block, custom-date-time-range, custom-radio, divider, drawer, dropdown-menu, file-upload, input-otp, progress, voice-chat.
+  7. **Kết quả:** 0 file `.css`, 0 inline `styles: []` trong toàn bộ shared components.
+  8. **Xác thực:** `npx tsc --noEmit` đạt 0 lỗi. `npm run build` thành công.
+
 
 
 

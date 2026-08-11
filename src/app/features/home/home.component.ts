@@ -136,19 +136,25 @@ export class HomeComponent {
   public demoFileUploadAvatar = signal<UploadFileItem[]>([]);
 
   public demoTabValue = signal('wallet');
-  public readonly demoTabOptions: TabOption[] = [
-    { value: 'wallet', label: 'Ví dApp', icon: 'wallet', badge: 3 },
-    { value: 'history', label: 'Lịch sử', icon: 'link-chain' },
-    { value: 'settings', label: 'Cấu hình', icon: 'bolt' }
-  ];
+  public readonly demoTabOptions = computed<TabOption[]>(() => {
+    this.translationService.currentLang();
+    return [
+      { value: 'wallet', label: this.translationService.t('cards.selects.opt_wallet'), icon: 'wallet', badge: 3 },
+      { value: 'history', label: this.translationService.t('cards.selects.opt_history'), icon: 'link-chain' },
+      { value: 'settings', label: this.translationService.t('cards.selects.opt_settings'), icon: 'bolt' }
+    ];
+  });
 
   public demoProfileBirthday = signal('');
   public demoProfileGender = signal('male');
   public demoProfileWallet = signal('');
-  public readonly genderOptions: TabOption[] = [
-    { value: 'male', label: 'Nam' },
-    { value: 'female', label: 'Nữ' },
-  ];
+  public readonly genderOptions = computed<TabOption[]>(() => {
+    this.translationService.currentLang();
+    return [
+      { value: 'male', label: this.translationService.t('cards.inputs.male') },
+      { value: 'female', label: this.translationService.t('cards.inputs.female') }
+    ];
+  });
 
   public demoRippleCentered = signal(false);
   public demoRippleDisabled = signal(false);
@@ -307,23 +313,29 @@ export class HomeComponent {
     });
   }
 
-  public readonly demoTableColumns: TableColumn[] = [
-    { key: 'txHash', label: 'Mã Txn (Hash)', sortable: true },
-    { key: 'method', label: 'Phương thức', sortable: true },
-    { key: 'block', label: 'Khối', sortable: true, align: 'center' },
-    { key: 'time', label: 'Thời gian', sortable: true },
-    { key: 'from', label: 'Từ', sortable: false },
-    { key: 'to', label: 'Đến', sortable: false },
-    { key: 'value', label: 'Giá trị', sortable: true, align: 'right' },
-    { key: 'status', label: 'Trạng thái', sortable: true, align: 'center' }
-  ];
+  public readonly demoTableColumns = computed<TableColumn[]>(() => {
+    this.translationService.currentLang();
+    return [
+      { key: 'txHash', label: this.translationService.t('cards.table.col_tx'), sortable: true },
+      { key: 'method', label: this.translationService.t('cards.table.col_method'), sortable: true },
+      { key: 'block', label: this.translationService.t('cards.table.col_block'), sortable: true, align: 'center' },
+      { key: 'time', label: this.translationService.t('cards.table.col_time'), sortable: true },
+      { key: 'from', label: this.translationService.t('cards.table.col_from'), sortable: false },
+      { key: 'to', label: this.translationService.t('cards.table.col_to'), sortable: false },
+      { key: 'value', label: this.translationService.t('cards.table.col_value'), sortable: true, align: 'right' },
+      { key: 'status', label: this.translationService.t('cards.table.col_status'), sortable: true, align: 'center' }
+    ];
+  });
 
-  public readonly tableStatusOptions = [
-    { value: 'all', label: 'Tất cả trạng thái' },
-    { value: 'success', label: 'Thành công' },
-    { value: 'pending', label: 'Đang chờ' },
-    { value: 'failed', label: 'Thất bại' }
-  ];
+  public readonly tableStatusOptions = computed(() => {
+    this.translationService.currentLang();
+    return [
+      { value: 'all', label: this.translationService.t('cards.table.status_all') },
+      { value: 'success', label: this.translationService.t('cards.table.status_success') },
+      { value: 'pending', label: this.translationService.t('cards.table.status_pending') },
+      { value: 'failed', label: this.translationService.t('cards.table.status_failed') }
+    ];
+  });
 
   public readonly demoTransactions = [
     { id: '1', txHash: '0x3a4b9c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b', method: 'Transfer', block: 18459201, time: '2026-07-18 22:45', from: '0x71C7656EC7ab88b098defB751B7401B5f6d8976F', to: '0x3c494A5011111222223333344444555556666677', value: '1.45 ETH', status: 'success' },
@@ -537,7 +549,7 @@ export function getNetworkRpc(chainId: number): string {
     this.demoOtpCountdown.set(60);
   }
 
-  public readonly demoDropdownLastAction = signal<string>('Chưa chọn thao tác nào');
+  public readonly demoDropdownLastAction = signal<string>(this.translationService.t('cards.dropdown.no_action_yet'));
 
   public readonly demoProfileHeader: DropdownMenuHeader = {
     title: 'Nguyễn Tiến Đạt',
@@ -546,67 +558,77 @@ export function getNetworkRpc(chainId: number): string {
     statusBadge: 'PRO'
   };
 
-  public readonly demoProfileMenuItems: DropdownMenuItem[] = [
-    { type: 'header', label: 'Tài khoản DApp' },
-    { id: 'profile', label: 'Trang cá nhân', icon: 'user' },
-    { id: 'wallet', label: 'Ví Web3 đã kết nối', icon: 'wallet', badge: 'Active', badgeColor: 'bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/50' },
-    { id: 'settings', label: 'Cài đặt hệ thống', icon: 'settings' },
-    { id: 'keyboard', label: 'Phím tắt bàn phím', icon: 'keyboard' },
-    { type: 'separator' },
-    { type: 'header', label: 'Dịch vụ & Đội ngũ' },
-    { id: 'pro', label: 'Nâng cấp Web3 VIP', icon: 'sparkles', iconColor: 'text-amber-500', badge: 'PRO', badgeColor: 'bg-amber-100 dark:bg-amber-950 text-amber-600 dark:text-amber-300 border border-amber-200 dark:border-amber-800/50' },
-    { id: 'team', label: 'Quản lý thành viên', icon: 'user-plus' },
-    { id: 'referral', label: 'Mời bạn bè nhận thưởng', icon: 'gift' },
-    { type: 'separator' },
-    { id: 'help', label: 'Trung tâm trợ giúp', icon: 'life-buoy' },
-    { id: 'github', label: 'Mã nguồn GitHub', icon: 'github' },
-    { type: 'separator' },
-    { id: 'logout', label: 'Đăng xuất tài khoản', icon: 'logout', variant: 'danger' }
-  ];
+  public readonly demoProfileMenuItems = computed<DropdownMenuItem[]>(() => {
+    this.translationService.currentLang();
+    return [
+      { type: 'header', label: this.translationService.t('cards.dropdown.header_dapp') },
+      { id: 'profile', label: this.translationService.t('cards.dropdown.profile'), icon: 'user' },
+      { id: 'wallet', label: this.translationService.t('cards.dropdown.connected_wallet'), icon: 'wallet', badge: 'Active', badgeColor: 'bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/50' },
+      { id: 'settings', label: this.translationService.t('cards.dropdown.system_settings'), icon: 'settings' },
+      { id: 'keyboard', label: this.translationService.t('cards.dropdown.keyboard_shortcuts'), icon: 'keyboard' },
+      { type: 'separator' },
+      { type: 'header', label: this.translationService.t('cards.dropdown.header_services') },
+      { id: 'pro', label: this.translationService.t('cards.dropdown.upgrade_vip'), icon: 'sparkles', iconColor: 'text-amber-500', badge: 'PRO', badgeColor: 'bg-amber-100 dark:bg-amber-950 text-amber-600 dark:text-amber-300 border border-amber-200 dark:border-amber-800/50' },
+      { id: 'team', label: this.translationService.t('cards.dropdown.manage_members'), icon: 'user-plus' },
+      { id: 'referral', label: this.translationService.t('cards.dropdown.invite_friends'), icon: 'gift' },
+      { type: 'separator' },
+      { id: 'help', label: this.translationService.t('cards.dropdown.help_center'), icon: 'life-buoy' },
+      { id: 'github', label: this.translationService.t('cards.dropdown.github_source'), icon: 'github' },
+      { type: 'separator' },
+      { id: 'logout', label: this.translationService.t('cards.dropdown.logout'), icon: 'logout', variant: 'danger' }
+    ];
+  });
 
-  public readonly demoDisplayMenuItems: DropdownMenuItem[] = [
-    { type: 'header', label: 'Thành phần giao diện' },
-    { id: 'show-sidebar', label: 'Hiển thị Thanh bên (Sidebar)', type: 'checkbox', checked: true },
-    { id: 'show-chart', label: 'Hiển thị Biểu đồ Nến Web3', type: 'checkbox', checked: false },
-    { id: 'show-tx', label: 'Thông báo Giao dịch Khối', type: 'checkbox', checked: true },
-    { type: 'separator' },
-    { type: 'header', label: 'Bố cục Danh sách (Layout)' },
-    { id: 'layout-grid', label: 'Chế độ Lưới (Grid View)', type: 'radio', radioValue: 'grid' },
-    { id: 'layout-list', label: 'Chế độ Danh sách (List View)', type: 'radio', radioValue: 'list' },
-    { id: 'layout-compact', label: 'Chế độ Thu gọn (Compact View)', type: 'radio', radioValue: 'compact' }
-  ];
+  public readonly demoDisplayMenuItems = computed<DropdownMenuItem[]>(() => {
+    this.translationService.currentLang();
+    return [
+      { type: 'header', label: this.translationService.t('cards.dropdown.header_ui') },
+      { id: 'show-sidebar', label: this.translationService.t('cards.dropdown.show_sidebar'), type: 'checkbox', checked: true },
+      { id: 'show-chart', label: this.translationService.t('cards.dropdown.show_chart'), type: 'checkbox', checked: false },
+      { id: 'show-tx', label: this.translationService.t('cards.dropdown.tx_notif'), type: 'checkbox', checked: true },
+      { type: 'separator' },
+      { type: 'header', label: this.translationService.t('cards.dropdown.header_layout') },
+      { id: 'layout-grid', label: this.translationService.t('cards.dropdown.grid_view'), type: 'radio', radioValue: 'grid' },
+      { id: 'layout-list', label: this.translationService.t('cards.dropdown.list_view'), type: 'radio', radioValue: 'list' },
+      { id: 'layout-compact', label: this.translationService.t('cards.dropdown.compact_view'), type: 'radio', radioValue: 'compact' }
+    ];
+  });
 
-  public readonly demoWeb3ActionItems: DropdownMenuItem[] = [
-    { id: 'new-tx', label: 'Tạo giao dịch mới', icon: 'plus', iconColor: 'text-purple-500' },
-    { id: 'copy-addr', label: 'Sao chép địa chỉ ví', icon: 'copy' },
-    {
-      id: 'share-wallet',
-      label: 'Chia sẻ thông tin ví',
-      icon: 'send',
-      type: 'sub',
-      children: [
-        { id: 'share-email', label: 'Gửi qua Email', icon: 'mail' },
-        { id: 'share-qr', label: 'Xuất mã QR ví', icon: 'qr-code' },
-        { id: 'share-link', label: 'Tạo liên kết nhúng', icon: 'external-link' }
-      ]
-    },
-    {
-      id: 'permissions',
-      label: 'Phân quyền tài khoản',
-      icon: 'shield',
-      type: 'sub',
-      children: [
-        { id: 'perm-read', label: 'Quyền Read-Only', icon: 'eye' },
-        { id: 'perm-multisig', label: 'Quyền Multi-Sig (2/3)', icon: 'key' },
-        { id: 'perm-admin', label: 'Quyền Administrator', icon: 'shield-check', iconColor: 'text-emerald-500' }
-      ]
-    },
-    { type: 'separator' },
-    { id: 'delete-cache', label: 'Xóa bộ nhớ đệm ví', icon: 'trash', variant: 'danger' }
-  ];
+  public readonly demoWeb3ActionItems = computed<DropdownMenuItem[]>(() => {
+    this.translationService.currentLang();
+    return [
+      { id: 'new-tx', label: this.translationService.t('cards.dropdown.new_tx'), icon: 'plus', iconColor: 'text-purple-500' },
+      { id: 'copy-addr', label: this.translationService.t('cards.dropdown.copy_address'), icon: 'copy' },
+      {
+        id: 'share-wallet',
+        label: this.translationService.t('cards.dropdown.share_wallet'),
+        icon: 'send',
+        type: 'sub',
+        children: [
+          { id: 'share-email', label: this.translationService.t('cards.dropdown.share_email'), icon: 'mail' },
+          { id: 'share-qr', label: this.translationService.t('cards.dropdown.share_qr'), icon: 'qr-code' },
+          { id: 'share-link', label: this.translationService.t('cards.dropdown.share_link'), icon: 'external-link' }
+        ]
+      },
+      {
+        id: 'permissions',
+        label: this.translationService.t('cards.dropdown.permissions'),
+        icon: 'shield',
+        type: 'sub',
+        children: [
+          { id: 'perm-read', label: this.translationService.t('cards.dropdown.perm_read'), icon: 'eye' },
+          { id: 'perm-multisig', label: this.translationService.t('cards.dropdown.perm_multisig'), icon: 'key' },
+          { id: 'perm-admin', label: this.translationService.t('cards.dropdown.perm_admin'), icon: 'shield-check', iconColor: 'text-emerald-500' }
+        ]
+      },
+      { type: 'separator' },
+      { id: 'delete-cache', label: this.translationService.t('cards.dropdown.clear_cache'), icon: 'trash', variant: 'danger' }
+    ];
+  });
 
   public onDropdownSelect(item: DropdownMenuItem): void {
-    this.demoDropdownLastAction.set(`Đã kích hoạt thao tác: "${item.label}"`);
+    const template = this.translationService.t('cards.dropdown.action_triggered');
+    this.demoDropdownLastAction.set(template.replace('{label}', item.label || ''));
   }
 
   public readonly demoVoiceConnected = signal<boolean>(true);

@@ -15,7 +15,7 @@ export interface BreadcrumbItem {
   standalone: true,
   imports: [CommonModule, RouterModule, IconComponent, TranslatePipe],
   templateUrl: './breadcrumb.component.html',
-  styleUrl: './breadcrumb.component.scss',
+  host: { 'class': 'block' },
 })
 export class BreadcrumbComponent {
   @Input() items: BreadcrumbItem[] = [];

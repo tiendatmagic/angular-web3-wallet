@@ -1,4 +1,4 @@
-﻿import { Component, Input, inject } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '../icon/icon.component';
 import { ToastService } from '../../../core/services/toast.service';
@@ -10,7 +10,7 @@ import { TranslatePipe } from '../../pipes/translate.pipe';
   standalone: true,
   imports: [CommonModule, IconComponent, TranslatePipe],
   templateUrl: './copy-to-clipboard.component.html',
-  styleUrl: './copy-to-clipboard.component.scss',
+  host: { 'class': 'inline-block' },
 })
 export class CopyToClipboardComponent {
   private toastService = inject(ToastService);
@@ -32,7 +32,7 @@ export class CopyToClipboardComponent {
       this.copied = true;
 
       if (this.showToast) {
-        const msg = this.successMessage || (this.translationService.currentLang() === 'vi' ? 'ÄÃ£ sao chÃ©p vÃ o bá»™ nhá»› táº¡m!' : 'Copied to clipboard!');
+        const msg = this.successMessage || this.translationService.t('common.copied_to_clipboard');
         this.toastService.success(msg);
       }
 

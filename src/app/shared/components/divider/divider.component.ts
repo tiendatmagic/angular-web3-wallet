@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './divider.component.html',
-  styleUrl: './divider.component.scss',
+  host: { 'class': 'block' },
 })
 export class DividerComponent {
   @Input() orientation: 'horizontal' | 'vertical' = 'horizontal';

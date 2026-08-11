@@ -1,13 +1,7 @@
-@property --aura-angle {
+﻿@property --aura-angle {
   syntax: '<angle>';
   initial-value: 0deg;
   inherits: false;
-}
-
-:host {
-  display: inline-block;
-  position: relative;
-  z-index: 0;
 }
 
 .aura-wrapper {

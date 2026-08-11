@@ -9,7 +9,7 @@ import { TranslationService } from '../../../core/services/translation.service';
   standalone: true,
   imports: [CommonModule, IconComponent, ButtonComponent],
   templateUrl: './empty-state.component.html',
-  styleUrl: './empty-state.component.scss',
+  host: { 'class': 'block w-full' },
 })
 export class EmptyStateComponent {
   public translationService = inject(TranslationService);

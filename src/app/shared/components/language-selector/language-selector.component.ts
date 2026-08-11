@@ -1,4 +1,4 @@
-﻿import { Component, Input, signal, inject, ElementRef, HostListener } from '@angular/core';
+import { Component, Input, signal, inject, ElementRef, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslationService } from '@core/services/translation.service';
 import { StateService } from '@core/services/state.service';
@@ -12,7 +12,7 @@ import { SafeHtmlPipe } from '@shared/pipes/safe-html.pipe';
   standalone: true,
   imports: [CommonModule, IconComponent, TranslatePipe, SafeHtmlPipe],
   templateUrl: './language-selector.component.html',
-  styleUrls: ['./language-selector.component.css']
+  host: { 'class': 'block' },
 })
 export class LanguageSelectorComponent {
   @Input() variant: 'compact' | 'full' = 'compact';
@@ -33,7 +33,7 @@ export class LanguageSelectorComponent {
     event.stopPropagation();
     if (this.translationService.currentLang() !== code) {
       this.translationService.setLanguage(code);
-      const msg = code === 'vi' ? 'ÄÃ£ chuyá»ƒn Ä‘á»•i sang Tiáº¿ng Viá»‡t!' : 'Switched language to English!';
+      const msg = this.translationService.t('language.change_success');
       this.stateService.showToast(msg, 'success');
     }
     this.isOpen.set(false);

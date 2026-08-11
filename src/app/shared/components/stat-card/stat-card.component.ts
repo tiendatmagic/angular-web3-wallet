@@ -7,7 +7,7 @@ import { IconComponent } from '../icon/icon.component';
   standalone: true,
   imports: [CommonModule, IconComponent],
   templateUrl: './stat-card.component.html',
-  styleUrl: './stat-card.component.scss',
+  host: { 'class': 'block w-full' },
 })
 export class StatCardComponent {
   @Input() title: string = '';

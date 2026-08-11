@@ -1,4 +1,4 @@
-import {
+﻿import {
   Component,
   Input,
   Output,
@@ -14,13 +14,13 @@ import { IconComponent } from '../icon/icon.component';
   
   imports: [CommonModule, FormsModule, IconComponent],
   templateUrl: './custom-checkbox.component.html',
+  host: { 'class': 'block' },
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => CustomCheckboxComponent),
       multi: true},
   ],
-  styleUrl: './custom-checkbox.component.scss',
 })
 export class CustomCheckboxComponent implements ControlValueAccessor {
   public readonly checked = signal<boolean>(false);

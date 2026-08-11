@@ -7,7 +7,7 @@ import { IconComponent } from '../icon/icon.component';
   standalone: true,
   imports: [CommonModule, IconComponent],
   templateUrl: './alert.component.html',
-  styleUrl: './alert.component.scss',
+  host: { 'class': 'block w-full' },
 })
 export class AlertComponent {
   @Input() type: 'info' | 'success' | 'warning' | 'error' = 'info';

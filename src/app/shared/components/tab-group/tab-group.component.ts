@@ -1,4 +1,4 @@
-import {
+﻿import {
   Component,
   Input,
   Output,
@@ -27,13 +27,13 @@ export interface TabOption {
 @Component({
   selector: 'app-tab-group',
   host: {
+    'class': 'block',
     '(window:resize)': 'onResize()'
   },
   
   imports: [CommonModule, IconComponent],
   templateUrl: './tab-group.component.html',
   
-  styleUrl: './tab-group.component.scss',
 })
 export class TabGroupComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() options: TabOption[] = [];

@@ -9,7 +9,7 @@ import { TranslatePipe } from '@shared/pipes/translate.pipe';
   standalone: true,
   imports: [CommonModule, IconComponent, TranslatePipe],
   templateUrl: './theme-switcher.component.html',
-  styleUrl: './theme-switcher.component.scss'
+  host: { 'class': 'block' },
 })
 export class ThemeSwitcherComponent {
   public stateService = inject(StateService);

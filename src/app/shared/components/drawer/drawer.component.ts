@@ -1,4 +1,4 @@
-﻿import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '../icon/icon.component';
 
@@ -8,6 +8,7 @@ import { IconComponent } from '../icon/icon.component';
   imports: [CommonModule, IconComponent],
   templateUrl: './drawer.component.html',
   styleUrl: './drawer.component.scss',
+  host: { 'class': 'block' },
 })
 export class DrawerComponent {
   @Input() isOpen: boolean = false;
