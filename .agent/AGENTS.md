@@ -2,6 +2,26 @@
 
 ## Ngày 11/08/2026
 
+### Yêu cầu: Khắc phục Lỗi Thanh Ngang Trắng Không Đồng Bộ Trong Code Block Component (app-code-block)
+- **Nội dung yêu cầu:** Sửa lỗi thanh vạch kẻ ngang xám/trắng không đồng bộ với giao diện Light Mode và Dark Mode xuất hiện ở phía dưới vùng code khi bấm Thu gọn hoặc Xem đầy đủ mã nguồn trong `app-code-block`.
+- **Giải pháp:**
+  1. **Tối Ưu Giao Diện Code Block Footer (`code-block.component.html`):**
+     - Loại bỏ hoàn toàn các class `border-t`, `border-slate-300/50`, `dark:border-slate-800/60` khỏi footer để phẳng hóa giao diện, tuân thủ nguyên tắc "Border Elimination" trong `design.md`.
+     - Đồng bộ dải màu Gradient mờ khi thu gọn (`isCollapsed() = true`): Chuyển `from-slate-100 via-slate-100/90` sang `from-slate-50 via-slate-50/90` khớp 100% với màu nền `bg-slate-50` ở Light Mode, giữ `dark:from-slate-950 dark:via-slate-950/90` cho Dark Mode.
+     - Phủ nền mờ Glassmorphism mượt mà `bg-slate-100/50 dark:bg-slate-900/40` ở trạng thái mở rộng, kết hợp nút capsule floating pill `rounded-full` nổi bật với hover hiệu ứng tím thương hiệu `hover:text-purple-600 dark:hover:text-purple-300`.
+  2. **Xác thực:** Chạy lệnh `npm run build` thành công 100%, không phát sinh bất kỳ lỗi biên dịch nào.
+
+### Yêu cầu: Đồng bộ 100% Component Custom Date Picker & Custom Date Time Range từ fvia79
+- **Nội dung yêu cầu:** Đồng bộ toàn bộ cấu trúc UI, logic vị trí floating popover, preset buttons, và hệ thống đa ngôn ngữ i18n của 2 component `custom-date-picker` và `custom-date-time-range` chuẩn theo dự án fvia79.
+- **Giải pháp:**
+  1. **Đồng bộ mã nguồn từ fvia79:**
+     - Sao chép chính xác logic xử lý floating popover position (`fixed`, tính toán khoảng trống viền màn hình top/bottom/left/right), tự động theo dõi sự kiện `scroll`/`resize` trong `custom-date-picker` & `custom-date-time-range`.
+     - Đồng bộ HTML/CSS giao diện 100% chuẩn fvia79 (dải chọn ngày highlight mượt, preset buttons, dropdown chọn giờ/phút).
+  2. **Đồng bộ Đa ngôn ngữ i18n:**
+     - Bổ sung namespace `date` (mon_short, tue_short, wed_short, thu_short, fri_short, sat_short, sun_short, select, select_range, today, yesterday, last_7_days, last_30_days, this_month, days_7, month_1, months_3, months_6, year_1, time_config, start_time, end_time, hour) và `action` (cancel, apply, done), `common` (clear_date_range, apply) vào `i18n.types.ts`, `vi.ts`, `en.ts`.
+     - Tích hợp `TranslationService` vào 2 component date picker giúp tự động chuyển ngôn ngữ Tiếng Việt / Tiếng Anh tức thì khi người dùng đổi ngôn ngữ hệ thống.
+  3. **Xác thực:** Chạy lệnh `npm run build` thành công 100%, không còn bất kỳ lỗi biên dịch nào.
+
 ### Yêu cầu: Khắc phục Lỗi Hiển Thị Tương Phản Màu Chữ Datetime Range Picker Trong Dark Mode
 - **Nội dung yêu cầu:** Sửa lỗi chữ số ngày trong dải chọn khoảng thời gian (`custom-date-time-range`) bị tối đen trùng màu nền tím tối trong Dark Mode làm người dùng không đọc được số ngày (ví dụ các ngày 11, 12, 13, 14 trong khoảng chọn 10/07 - 15/07).
 - **Giải pháp:**
