@@ -94,7 +94,7 @@ export class VoiceChatComponent {
         size: this.AVATAR_SIZE_COLLAPSED,
         opacity: isVisible ? 1 : 0,
         zIndex: 4 - index,
-        delay: (6 - index) * 20
+        delay: (6 - index) * 10
       };
     }
 
@@ -112,7 +112,7 @@ export class VoiceChatComponent {
       size: this.AVATAR_SIZE_EXPANDED,
       opacity: 1,
       zIndex: 1,
-      delay: index * 30
+      delay: index * 12
     };
   }
 

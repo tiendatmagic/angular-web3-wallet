@@ -4,12 +4,11 @@ import { IconComponent } from '@shared/components/icon/icon.component';
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { MODAL_DATA, ModalRef } from '@core/services/modal-ref';
 import { TranslationService } from '@core/services/translation.service';
-import { TranslatePipe } from '@shared/pipes/translate.pipe';
 
 @Component({
   selector: 'app-confirm-modal',
   standalone: true,
-  imports: [CommonModule, IconComponent, ButtonComponent, TranslatePipe],
+  imports: [CommonModule, IconComponent, ButtonComponent],
   templateUrl: './confirm-modal.component.html'
 })
 export class ConfirmModalComponent implements OnInit {

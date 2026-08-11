@@ -2,6 +2,23 @@
 
 ## Ngày 11/08/2026
 
+### Yêu cầu: Loại bỏ cảnh báo NG8113 TranslatePipe thừa trong ConfirmModalComponent
+- **Nội dung yêu cầu:** Sửa cảnh báo biên dịch `NG8113: TranslatePipe is not used within the template of ConfirmModalComponent`.
+- **Giải pháp:**
+  1. Cập nhật [confirm-modal.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/confirm-modal/confirm-modal.component.ts): Loại bỏ `TranslatePipe` khỏi mảng `imports` của `@Component` và gỡ bỏ `import { TranslatePipe }` dư thừa do component đã tự xử lý dịch thuật qua `TranslationService` trong class code.
+  2. **Xác thực:** Chạy lệnh `npm run build` thành công, dọn sạch cảnh báo `NG8113`.
+
+### Yêu cầu: Đồng bộ UI & Màu sắc Voice Chat Morphing Card theo Design System DApp
+- **Nội dung yêu cầu:** Tinh chỉnh lại component Voice Chat Morphing Card (`app-voice-chat`) để kế thừa 100% hệ màu chủ đạo Tím Neon Dynamic (`#7c3aed`), bo góc cap tối đa `15px` (`rounded-[15px]`), nền mờ Glassmorphism, nút bấm Gradient và Speaking Ring hiệu ứng phát sáng Tím theo đúng tài liệu `design.md`.
+- **Giải pháp:**
+  1. **Cập nhật `voice-chat.component.html`:**
+     - Thay thế toàn bộ tông màu xanh teal lá cũ bằng tông màu Tím Neon thương hiệu (`purple-500` / `purple-600` / `violet-600` / `indigo-600`).
+     - Đổi độ bo góc container mở rộng từ `24px` xuống `15px` (`rounded-[15px]`) tuân thủ tuyệt đối quy định bo góc tối đa 15px trong `design.md`.
+     - Nút Join Now sử dụng Gradient màu tím neon `bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600` mượt mà với bóng đổ `shadow-purple-500/25` và hiệu ứng `active:scale-[0.98]`.
+     - Icon Wave thu gọn sử dụng gradient tròn nổi bật,Speaking Ring teal đổi thành đường viền Tím phát sáng pulse `border-purple-500 dark:border-purple-400 shadow-[0_0_10px_rgba(168,85,247,0.5)]`.
+     - Badge đếm số thành viên khi thu gọn đổi sang màu tím nhạt sang trọng `bg-purple-100/90 dark:bg-purple-950/90 text-purple-700 dark:text-purple-300`.
+  2. **Xác thực:** Chạy `npm run build` biên dịch thành công 100%.
+
 ### Yêu cầu: Mô đun hóa & Tách độc lập các Component Header (Đa ngôn ngữ, Đa chain, Thông tin tài khoản)
 - **Nội dung yêu cầu:** Tách các khối giao diện trên Header (dropdown Đa ngôn ngữ, bộ chọn Mạng Đa chain, Dropdown Thông tin tài khoản / Ví) thành các Standalone UI Component độc lập để có thể dễ dàng tái sử dụng hoặc lược bỏ cho các dự án Web2 không dùng Blockchain.
 - **Giải pháp:**
