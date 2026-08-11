@@ -2,6 +2,19 @@
 
 ## Ngày 12/08/2026
 
+### Yêu cầu: Khắc Phục Lỗi Component Voice Chat (`<app-voice-chat>`) Không Hiển Thị & Thu Nhỏ Thành Vạch Dọc (`|`)
+- **Nội dung yêu cầu:** Rà soát và sửa lỗi trong bức ảnh chụp màn hình UI: ở Card 5 (`Dropdown Menu 06 - Card Voice Chat Biến Hình`), giao diện bên dưới bị rỗng và thu nhỏ dẹt lại thành 1 vạch line dọc mỏng `|` màu xám tối.
+- **Phân tích nguyên nhân:**
+  1. **Lỗi Sụp Đổ Kích Thước (Width Collapse):** Trong `voice-chat.component.html`, container dùng `[style.width]="isExpanded() ? 'min(' + EXPANDED_WIDTH + 'px, 100%)' : 'min(' + COLLAPSED_WIDTH + 'px, 100%)'"`. Truyền hàm CSS complex `'min(268px, 100%)'` trực tiếp vào `[style.width]` bị DomSanitizer của Angular loại bỏ / strip, khiến `width` bị `undefined`/`auto`.
+  2. Vì 100% các phần tử con bên trong `VoiceChatComponent` đều có `position: absolute`, khi container ngoài có `width: auto` và không chứa phần tử flex/block static nào, độ rộng của component sụp đổ hoàn toàn về `0px`.
+  3. Kết hợp với `height: 60px` và `border border-slate-800`, thẻ `<app-voice-chat>` bị ép dẹt thành đúng 1 vạch viền dọc `1px` (`|`) nằm giữa khung card.
+  4. **Lệch Tông Màu Dark Mode:** Thuộc tính `dark:bg-slate-950/90` là màu cực đen đậm, khi hiển thị trên nền card dark mode `slate-900` bị tối sẫm không nổi bật.
+- **Giải pháp:**
+  1. **Sửa Style Width Binding (`voice-chat.component.html`):** Chuyển sang `[style.width.px]="isExpanded() ? EXPANDED_WIDTH : COLLAPSED_WIDTH"` kết hợp class Tailwind `max-w-full mx-auto`, đảm bảo Angular binding kích thước chính xác 268px / 360px và tự co giãn 100% trên màn mobile.
+  2. **Đồng Bộ Nền Dark Mode Glassmorphism (`voice-chat.component.html`):** Đổi từ `dark:bg-slate-950/90` sang `bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl`.
+  3. **Tối Ưu Host Layout Centering (`voice-chat.component.ts`):** Đổi `host: { 'class': 'block' }` thành `host: { 'class': 'block w-full flex justify-center' }`.
+- **Xác thực:** Runs `npx tsc --noEmit` đạt 0 lỗi type. Runs `npm run build` đóng gói Production thành công 100%.
+
 ### Yêu cầu: Tối Ưu & Đồng Bộ Tông Màu Dark Mode Cho Component CustomDatePicker & CustomDateTimeRange
 - **Nội dung yêu cầu:** Đánh giá và khắc phục tình trạng lệch tông màu nền Dark Mode của Popover DatePicker và DateTimeRange khi đang bị quá đen đậm (`dark:bg-slate-950` / `#020617`), lệch hẳn so với tổng thể theme Dark Mode xanh/tím đậm (`slate-900` / `#0f172a` / `#0e1022`).
 - **Phân tích:**

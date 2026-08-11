@@ -16,7 +16,7 @@
       {{ value().startDate ? displayValue() : (placeholder || lang.translate('date.select_range')) }}
     </span>
 
-    <div class="flex items-center gap-2 flex-shrink-0 ml-2">
+    <div class="flex items-center gap-2 shrink-0 ml-2">
       @if (value().startDate && !disabled) {
         <button
           type="button"
@@ -24,15 +24,11 @@
           class="w-5 h-5 flex items-center justify-center shrink-0 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors cursor-pointer"
           [title]="'common.clear_date_range' | translate"
         >
-          <div class="w-3.5 h-3.5">
-            <app-icon name="close" />
-          </div>
+          <app-icon name="close" class="w-3.5 h-3.5 shrink-0" />
         </button>
       }
 
-      <div class="w-4 h-4 text-slate-400 dark:text-slate-500">
-        <app-icon name="calendar" />
-      </div>
+      <app-icon name="calendar" class="w-4 h-4 text-slate-400 dark:text-slate-500 shrink-0" />
     </div>
   </div>
 
@@ -65,9 +61,7 @@
             (click)="prevMonth($event)"
             class="w-7 h-7 flex items-center justify-center shrink-0 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-500 hover:text-[var(--color-primary)] active:scale-90 transition-all cursor-pointer"
           >
-            <div class="w-4 h-4">
-              <app-icon name="chevron-left" />
-            </div>
+            <app-icon name="chevron-left" class="w-4 h-4 shrink-0" />
           </button>
           <span class="text-sm font-extrabold text-slate-800 dark:text-slate-200 tracking-wide">
             {{ currentMonthName() }}, {{ currentYear() }}
@@ -77,9 +71,7 @@
             (click)="nextMonth($event)"
             class="w-7 h-7 flex items-center justify-center shrink-0 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-500 hover:text-[var(--color-primary)] active:scale-90 transition-all cursor-pointer"
           >
-            <div class="w-4 h-4">
-              <app-icon name="chevron-right" />
-            </div>
+            <app-icon name="chevron-right" class="w-4 h-4 shrink-0" />
           </button>
         </div>
 

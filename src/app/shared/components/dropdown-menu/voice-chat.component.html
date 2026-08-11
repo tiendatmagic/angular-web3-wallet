@@ -1,8 +1,8 @@
-﻿<div
+<div
   (click)="!isExpanded() && toggleExpand($event)"
-  class="relative overflow-hidden border border-slate-200/80 dark:border-slate-800/80 bg-white/90 dark:bg-slate-950/90 backdrop-blur-md text-slate-900 dark:text-slate-100 shadow-lg hover:shadow-xl transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] select-none max-w-full"
+  class="relative overflow-hidden border border-slate-200/80 dark:border-slate-800/80 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl text-slate-900 dark:text-slate-100 shadow-lg hover:shadow-xl transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] select-none max-w-full mx-auto"
   [ngClass]="{ 'cursor-pointer hover:border-purple-500/40 dark:hover:border-purple-400/40 hover:shadow-purple-500/10': !isExpanded() }"
-  [style.width]="isExpanded() ? 'min(' + EXPANDED_WIDTH + 'px, 100%)' : 'min(' + COLLAPSED_WIDTH + 'px, 100%)'"
+  [style.width.px]="isExpanded() ? EXPANDED_WIDTH : COLLAPSED_WIDTH"
   [style.height.px]="isExpanded() ? EXPANDED_HEIGHT : 60"
   [style.borderRadius.px]="isExpanded() ? 15 : 999"
 >

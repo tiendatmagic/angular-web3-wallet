@@ -568,6 +568,11 @@ export function getNetworkRpc(chainId: number): string {
   }
 
   public readonly demoDropdownLastAction = signal<string>(this.translationService.t('cards.dropdown.no_action_yet'));
+  public readonly demoVoiceMuted = signal<boolean>(false);
+  public readonly demoVoiceDeafened = signal<boolean>(false);
+  public readonly demoVoiceScreenSharing = signal<boolean>(false);
+  public readonly demoVoiceConnected = signal<boolean>(true);
+
   private readonly syncDropdownLanguage = effect(() => {
     this.translationService.currentLang();
     this.demoDropdownLastAction.set(this.translationService.t('cards.dropdown.no_action_yet'));
@@ -624,7 +629,7 @@ export function getNetworkRpc(chainId: number): string {
       {
         id: 'share-wallet',
         label: this.translationService.t('cards.dropdown.share_wallet'),
-        icon: 'send',
+        icon: 'share',
         type: 'sub',
         children: [
           { id: 'share-email', label: this.translationService.t('cards.dropdown.share_email'), icon: 'mail' },
@@ -652,11 +657,6 @@ export function getNetworkRpc(chainId: number): string {
     const template = this.translationService.t('cards.dropdown.action_triggered');
     this.demoDropdownLastAction.set(template.replace('{label}', item.label || ''));
   }
-
-  public readonly demoVoiceConnected = signal<boolean>(true);
-  public readonly demoVoiceMuted = signal<boolean>(false);
-  public readonly demoVoiceDeafened = signal<boolean>(false);
-  public readonly demoVoiceScreenSharing = signal<boolean>(false);
 
   public readonly demoVoiceParticipants = computed(() => {
     this.translationService.currentLang();

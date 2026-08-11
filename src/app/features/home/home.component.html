@@ -1629,6 +1629,7 @@
         </div>
       </div>
 
+
       <div app-card class="mt-8">
         <div class="space-y-6">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200/80 dark:border-slate-800/80">
@@ -1651,6 +1652,7 @@
           </div>
 
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Demo 1: Menu Tài Khoản & Profile -->
             <div class="space-y-3 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
               <div class="flex flex-wrap items-center justify-between gap-2">
                 <div>
@@ -1684,6 +1686,7 @@
               </div>
             </div>
 
+            <!-- Demo 2: Checkbox & Radio Items -->
             <div class="space-y-3 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
               <div class="flex flex-wrap items-center justify-between gap-2">
                 <div>
@@ -1697,7 +1700,7 @@
                 <app-dropdown-menu
                   [items]="demoDisplayMenuItems()"
                   [triggerText]="'cards.dropdown.customize_ui' | translate"
-                  triggerIcon="filter"
+                  leadingIcon="filter"
                   triggerVariant="secondary"
                   triggerSize="md"
                   width="w-64"
@@ -1708,6 +1711,7 @@
               </div>
             </div>
 
+            <!-- Demo 3: Submenu Nhánh Cấp 2 -->
             <div class="space-y-3 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
               <div class="flex flex-wrap items-center justify-between gap-2">
                 <div>
@@ -1721,7 +1725,7 @@
                 <app-dropdown-menu
                   [items]="demoWeb3ActionItems()"
                   [triggerText]="'cards.dropdown.web3_actions' | translate"
-                  triggerIcon="bolt"
+                  leadingIcon="bolt"
                   triggerVariant="primary"
                   triggerSize="md"
                   width="w-60"
@@ -1731,6 +1735,7 @@
               </div>
             </div>
 
+            <!-- Demo 4: Nút Trigger Icon & Vị Trí Placement -->
             <div class="space-y-3 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
               <div class="flex flex-wrap items-center justify-between gap-2">
                 <div>
@@ -1777,12 +1782,13 @@
               </div>
             </div>
 
+            <!-- Demo 5: Voice Chat Morphing -->
             <div class="space-y-3 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60 col-span-1 lg:col-span-2">
               <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2">
                 <div class="space-y-1 min-w-0 flex-1">
                   <div class="flex flex-wrap items-center gap-2">
-                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'showcase.voice_demo_title' | translate }}</span>
-                  <span class="px-2 py-0.5 text-[10px] font-black rounded-full bg-teal-100 dark:bg-teal-950 text-teal-600 dark:text-teal-300 border border-teal-200/60 dark:border-teal-800/60 animate-pulse shrink-0">{{ 'showcase.morphing_animation' | translate }}</span>
+                    <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'showcase.voice_demo_title' | translate }}</span>
+                    <span class="px-2 py-0.5 text-[10px] font-black rounded-full bg-teal-100 dark:bg-teal-950 text-teal-600 dark:text-teal-300 border border-teal-200/60 dark:border-teal-800/60 animate-pulse shrink-0">{{ 'showcase.morphing_animation' | translate }}</span>
                   </div>
                   <span class="text-[11px] text-slate-500 dark:text-slate-400 block leading-snug">{{ 'cards.voice_chat.morphing_desc' | translate }}</span>
                 </div>

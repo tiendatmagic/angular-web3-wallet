@@ -57,7 +57,9 @@ export class DropdownMenuComponent {
   @Input() items: DropdownMenuItem[] = [];
   @Input() header: DropdownMenuHeader | null = null;
   @Input() triggerText: string = 'Menu';
+  @Input() leadingIcon: string = '';
   @Input() triggerIcon: string = 'chevron-down';
+  @Input() showChevron: boolean = true;
   @Input() triggerVariant: 'default' | 'outline' | 'ghost' | 'primary' | 'secondary' | 'avatar' | 'icon' = 'outline';
   @Input() triggerSize: 'sm' | 'md' | 'lg' = 'md';
   @Input() avatarUrl: string = '';

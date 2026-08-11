@@ -6,7 +6,7 @@ import { Component, Input } from '@angular/core';
   templateUrl: './icon.component.html',
   
   host: {
-    style: 'display: inline-flex; align-items: center; justify-content: center;'
+    'class': 'inline-flex items-center justify-center shrink-0 leading-none align-middle'
   }
 })
 export class IconComponent {
