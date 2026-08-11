@@ -17,6 +17,7 @@
      - Bổ sung signal `activePresetId` highlight nút Preset active theo màu chủ đạo `bg-[var(--color-primary)]/15 border-[var(--color-primary)]/30 text-[var(--color-primary)] font-extrabold`.
      - Chuẩn hóa lưới ô lịch thành `grid grid-cols-7 gap-0.5` đồng bộ với DatePicker.
      - Đổi nút "Áp dụng" (`common.apply`) từ dải màu gradient cũ sang **màu chủ đạo thuần `bg-[var(--color-primary)] hover:opacity-90 active:scale-95`**.
+     - Loại bỏ dòng tiêu đề chữ hoa dư thừa **"CẤU HÌNH THỜI GIAN"** (`date.time_config`) bên trong Popover để giao diện chọn giờ gọn gàng, tinh tế hơn.
   3. **Đồng Bộ Thuộc Tính `showPresets` Trên Trang Chủ (`home.component.html`):**
      - Đã liên kết `[showPresets]="demoDatePickerShowPresets()"` cho tất cả các ô DatePicker & DateTimeRange ở Card 15 ("Demo Form Components") và Card 17 ("Custom Date Time Range"), chuyển trạng thái mặc định sang **Mặc định TẮT (`demoDatePickerShowPresets = signal(false)`)**. Khi cần hiển thị Presets, người dùng bật công tắc switch điều khiển.
 - **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Build production đóng gói Angular thành công.
