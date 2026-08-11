@@ -453,7 +453,7 @@ html.dark .alert-error-bordered {
 .date-time-range-popover {
   -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
   backdrop-filter: blur(20px) saturate(180%) !important;
-  background-color: rgba(255, 255, 255, 0.65) !important;
+  background-color: rgba(255, 255, 255, 0.75) !important;
   will-change: backdrop-filter;
 }
 
@@ -463,7 +463,7 @@ html.dark .date-time-range-popover,
 .dark .dropdown-menu-popover,
 .dark .date-picker-popover,
 .dark .date-time-range-popover {
-  background-color: rgba(15, 23, 42, 0.65) !important;
+  background-color: rgba(15, 23, 42, 0.75) !important;
 }
 
 
