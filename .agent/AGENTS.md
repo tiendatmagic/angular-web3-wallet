@@ -2,6 +2,25 @@
 
 ## Ngày 12/08/2026
 
+### Yêu cầu: Chuẩn Hóa & Cân Đối Kích Thước Width/Height Cho Các Nút Icon, Avatar Trigger & Copy Button
+- **Nội dung yêu cầu:** Rà soát và sửa các nút bấm trigger avatar, icon button, copy-to-clipboard button... bị mất cân đối kích thước (bị dẹt/bị hình bầu dục oval do `px-4 py-2` hoặc padding không đồng đều khi chỉ có icon mà không có text), đảm bảo tất cả các nút icon/avatar được set width & height bằng nhau (`aspect-square` / `w-X h-X` cân đối).
+- **Phân tích:**
+  1. Trong `DropdownMenuComponent`, khi `triggerVariant` là `'avatar'` hoặc `'icon'`, button vẫn bị dán các class padding `px-4 py-2` (từ `triggerSize="md"`), dẫn đến khung nền quanh avatar hoặc icon bị dãn ngang thành hình quả trứng/ellipse thay vì hình tròn/hình vuông chuẩn.
+  2. Trong `CopyToClipboardComponent`, khi `label` không được truyền vào (`!label`), nút vẫn dùng `px-3 py-1.5`, làm nền nút copy icon bị dẹt ngang hình oval.
+  3. Các nút xóa tìm kiếm (`CustomSearchInput`), chuyển tháng (`CustomDatePicker`, `CustomDateTimeRange`), nút đóng modal (`FileUpload`) chưa có chiều rộng/chiều cao bằng nhau cố định.
+- **Giải pháp:**
+  1. **Nâng Cấp `DropdownMenuComponent` (`dropdown-menu.component.html`):**
+     - Đưa logic Sizing phân biệt rõ: với nút text thì giữ `px-3 py-1.5`, `px-4 py-2`, `px-5 py-2.5`; với `triggerVariant === 'avatar'` hoặc `'icon'`, ép width/height chuẩn vuông `w-8 h-8 !p-0` (sm), `w-10 h-10 !p-0` (md), `w-12 h-12 !p-0` (lg) kết hợp `flex items-center justify-center shrink-0`.
+     - Với variant `avatar`, thẻ `<img>` đổi thành `w-full h-full rounded-full object-cover ring-2 ring-purple-500/30`.
+  2. **Nâng Cấp `CopyToClipboardComponent` (`copy-to-clipboard.component.html`):**
+     - Khi `!label` (chỉ có icon copy), chuyển sang kích thước vuông chuẩn `w-7 h-7 !p-0` (sm), `w-8.5 h-8.5 !p-0` (md), `w-10 h-10 !p-0` (lg).
+  3. **Đồng Bộ Các Icon Button Phụ Thuộc Khác:**
+     - `CustomSearchInputComponent`: Nút clear search `X` bổ sung `w-6 h-6 flex items-center justify-center shrink-0` (24px x 24px).
+     - `CustomDatePickerComponent` & `CustomDateTimeRangeComponent`: Nút chevron `<` `>` chuyển tháng bổ sung `w-7 h-7 flex items-center justify-center shrink-0` (28px x 28px); nút clear date bổ sung `w-5 h-5`.
+     - `FileUploadComponent`: Nút đóng modal preview bổ sung `w-8 h-8 flex items-center justify-center shrink-0` (32px x 32px).
+- **Xác thực:** Runs `npx tsc --noEmit` đạt 0 lỗi type. Runs `npm run build` đóng gói Production thành công.
+
+
 ### Yêu cầu: Kiểm Tra & Nâng Cấp Hiệu Ứng Animation Nền Trượt (Sliding Pill Animation) Cho Component Theme Switcher
 - **Nội dung yêu cầu:** Kiểm tra xem `app-theme-switcher` có còn hiệu ứng animation giống như `app-tab-group` không, và đồng bộ lại trải nghiệm trượt mượt mà giữa các lựa chọn theme (Light / Auto / Dark).
 - **Phân tích:** Trước đây `theme-switcher` đã bỏ `app-tab-group` và dùng việc chuyển class `bg-white` / `dark:bg-slate-800` trực tiếp trên từng button độc lập, làm mất đi hiệu ứng thanh pill trượt (sliding animation) di chuyển mượt từ nút này sang nút khác như của `tab-group`.

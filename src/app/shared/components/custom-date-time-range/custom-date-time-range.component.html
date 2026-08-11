@@ -21,7 +21,7 @@
         <button
           type="button"
           (click)="clear($event)"
-          class="p-0.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors cursor-pointer"
+          class="w-5 h-5 flex items-center justify-center shrink-0 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors cursor-pointer"
           [title]="'common.clear_date_range' | translate"
         >
           <div class="w-3.5 h-3.5">
@@ -63,7 +63,7 @@
           <button
             type="button"
             (click)="prevMonth($event)"
-            class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-900 rounded-lg text-slate-500 hover:text-[var(--color-primary)] active:scale-90 transition-all cursor-pointer"
+            class="w-7 h-7 flex items-center justify-center shrink-0 hover:bg-slate-100 dark:hover:bg-slate-900 rounded-lg text-slate-500 hover:text-[var(--color-primary)] active:scale-90 transition-all cursor-pointer"
           >
             <div class="w-4 h-4">
               <app-icon name="chevron-left" />
@@ -75,7 +75,7 @@
           <button
             type="button"
             (click)="nextMonth($event)"
-            class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-900 rounded-lg text-slate-500 hover:text-[var(--color-primary)] active:scale-90 transition-all cursor-pointer"
+            class="w-7 h-7 flex items-center justify-center shrink-0 hover:bg-slate-100 dark:hover:bg-slate-900 rounded-lg text-slate-500 hover:text-[var(--color-primary)] active:scale-90 transition-all cursor-pointer"
           >
             <div class="w-4 h-4">
               <app-icon name="chevron-right" />

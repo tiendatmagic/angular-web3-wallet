@@ -8,24 +8,31 @@
       type="button"
       [disabled]="disabled"
       (click)="toggleOpen($event)"
-      class="inline-flex items-center justify-between gap-2 transition-all duration-200 focus:outline-none select-none font-semibold rounded-[12px]"
+      class="inline-flex items-center transition-all duration-200 focus:outline-none select-none font-semibold"
       [ngClass]="{
-        'px-3 py-1.5 text-xs': triggerSize === 'sm',
-        'px-4 py-2 text-sm': triggerSize === 'md',
-        'px-5 py-2.5 text-base': triggerSize === 'lg',
+        'px-3 py-1.5 text-xs rounded-[12px] justify-between gap-2': triggerVariant !== 'icon' && triggerVariant !== 'avatar' && triggerSize === 'sm',
+        'px-4 py-2 text-sm rounded-[12px] justify-between gap-2': triggerVariant !== 'icon' && triggerVariant !== 'avatar' && triggerSize === 'md',
+        'px-5 py-2.5 text-base rounded-[12px] justify-between gap-2': triggerVariant !== 'icon' && triggerVariant !== 'avatar' && triggerSize === 'lg',
+
+        'w-8 h-8 !p-0 text-xs justify-center shrink-0': (triggerVariant === 'icon' || triggerVariant === 'avatar') && triggerSize === 'sm',
+        'w-10 h-10 !p-0 text-sm justify-center shrink-0': (triggerVariant === 'icon' || triggerVariant === 'avatar') && triggerSize === 'md',
+        'w-12 h-12 !p-0 text-base justify-center shrink-0': (triggerVariant === 'icon' || triggerVariant === 'avatar') && triggerSize === 'lg',
+
         'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/80 shadow-sm': triggerVariant === 'outline' || triggerVariant === 'default',
         'bg-slate-100 dark:bg-slate-800/60 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700/70': triggerVariant === 'secondary',
         'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md shadow-purple-500/20 hover:opacity-95': triggerVariant === 'primary',
         'hover:bg-slate-100 dark:hover:bg-slate-800/60 text-slate-700 dark:text-slate-200': triggerVariant === 'ghost',
-        'p-1.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800': triggerVariant === 'avatar',
-        'p-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/80': triggerVariant === 'icon',
+        'rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 !p-0 overflow-hidden': triggerVariant === 'avatar',
+        'rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/80': triggerVariant === 'icon',
         'opacity-50 cursor-not-allowed': disabled
       }"
     >
       @if (triggerVariant === 'avatar' && avatarUrl) {
-        <img [src]="avatarUrl" [alt]="'showcase.avatar_alt' | translate" class="w-8 h-8 rounded-full object-cover ring-2 ring-purple-500/30" />
+        <img [src]="avatarUrl" [alt]="'showcase.avatar_alt' | translate" class="w-full h-full rounded-full object-cover ring-2 ring-purple-500/30" />
       } @else {
-        <span class="truncate">{{ triggerText }}</span>
+        @if (triggerVariant !== 'icon') {
+          <span class="truncate">{{ triggerText }}</span>
+        }
         @if (triggerIcon) {
           <app-icon
             [name]="triggerIcon"
