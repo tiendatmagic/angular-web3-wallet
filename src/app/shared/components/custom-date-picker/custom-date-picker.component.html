@@ -10,16 +10,16 @@
     [class.ring-[var(--color-primary)]/20]="isOpen()"
   >
     <span [class.text-slate-400]="!value()" class="truncate">
-      {{ value() ? displayValue() : placeholder }}
+      {{ value() ? displayValue() : displayPlaceholder() }}
     </span>
     <div class="w-4 h-4 text-slate-400 dark:text-slate-500 flex-shrink-0 ml-2">
       <app-icon name="calendar" />
     </div>
   </div>
 
-    @if (showPresets) {
+  @if (showPresets) {
     <div class="flex flex-wrap gap-2 mt-2">
-      @for (p of presets; track p.days) {
+      @for (p of presets(); track p.days) {
         <button
           type="button"
           (click)="selectPreset(p.days, $event)"
@@ -31,7 +31,7 @@
     </div>
   }
 
-    @if (isOpen()) {
+  @if (isOpen()) {
     <div
       [ngStyle]="popoverStyle"
       class="date-picker-popover bg-white dark:bg-slate-950 border border-slate-200/50 dark:border-slate-800/50 shadow-lg rounded-xl p-4"
@@ -62,7 +62,7 @@
       </div>
 
       <div class="grid grid-cols-7 gap-0.5 text-center mb-2 select-none">
-        @for (day of weekdays; track day) {
+        @for (day of weekdays(); track day) {
           <span class="text-xs font-bold text-[var(--color-primary)]/70 py-1">
             {{ day }}
           </span>

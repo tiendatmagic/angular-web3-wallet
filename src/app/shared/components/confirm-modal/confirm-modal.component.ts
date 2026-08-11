@@ -1,27 +1,31 @@
-import { Component, Input, Output, EventEmitter, Inject, Optional, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Inject, Optional, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '@shared/components/icon/icon.component';
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { MODAL_DATA, ModalRef } from '@core/services/modal-ref';
+import { TranslationService } from '@core/services/translation.service';
+import { TranslatePipe } from '@shared/pipes/translate.pipe';
 
 @Component({
   selector: 'app-confirm-modal',
-  
-  imports: [CommonModule, IconComponent, ButtonComponent],
-  
-  templateUrl: './confirm-modal.component.html'})
+  standalone: true,
+  imports: [CommonModule, IconComponent, ButtonComponent, TranslatePipe],
+  templateUrl: './confirm-modal.component.html'
+})
 export class ConfirmModalComponent implements OnInit {
   @Input() isOpen = false;
-  @Input() title = 'Xác nhận hành động';
-  @Input() description = 'Bạn có chắc chắn muốn thực hiện hành động này không?';
+  @Input() title = '';
+  @Input() description = '';
   @Input() descriptionHtml = '';
-  @Input() confirmText = 'Xác nhận';
-  @Input() cancelText = 'Hủy bỏ';
+  @Input() confirmText = '';
+  @Input() cancelText = '';
   @Input() confirmButtonClass = 'btn-danger';
   @Input() isSubmitting = false;
 
   @Output() confirm = new EventEmitter<void>();
   @Output() cancel = new EventEmitter<void>();
+
+  private translationService = inject(TranslationService);
 
   isDynamic = false;
 
@@ -35,6 +39,10 @@ export class ConfirmModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (!this.title) this.title = this.translationService.t('common.confirm');
+    if (!this.confirmText) this.confirmText = this.translationService.t('common.confirm');
+    if (!this.cancelText) this.cancelText = this.translationService.t('common.cancel');
+
     if (this.isDynamic && this.modalData) {
       this.title = this.modalData.title || this.title;
       this.description = this.modalData.description || this.description;

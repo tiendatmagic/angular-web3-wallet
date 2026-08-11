@@ -18,6 +18,7 @@ import { BadgeComponent } from '@shared/components/badge/badge.component';
 import { TabGroupComponent, TabOption } from '@shared/components/tab-group/tab-group.component';
 import { CustomSliderComponent } from '@shared/components/custom-slider/custom-slider.component';
 import { CustomDateTimeRangeComponent, DateTimeRangeValue } from '@shared/components/custom-date-time-range/custom-date-time-range.component';
+import { TranslatePipe } from '@shared/pipes/translate.pipe';
 
 @Component({
   selector: 'app-demo-modal',
@@ -40,7 +41,8 @@ import { CustomDateTimeRangeComponent, DateTimeRangeValue } from '@shared/compon
     BadgeComponent,
     TabGroupComponent,
     CustomSliderComponent,
-    CustomDateTimeRangeComponent
+    CustomDateTimeRangeComponent,
+    TranslatePipe
   ],
   templateUrl: './demo-modal.component.html',
   styles: [

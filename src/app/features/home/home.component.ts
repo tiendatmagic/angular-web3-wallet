@@ -31,6 +31,9 @@ import { InputOtpComponent } from '@shared/components/input-otp/input-otp.compon
 import { DropdownMenuComponent, DropdownMenuItem, DropdownMenuHeader } from '@shared/components/dropdown-menu/dropdown-menu.component';
 import { VoiceChatComponent } from '@shared/components/dropdown-menu/voice-chat.component';
 import { ProgressComponent, ProgressSegment } from '@shared/components/progress/progress.component';
+import { LanguageSelectorComponent } from '@shared/components/language-selector/language-selector.component';
+import { TranslatePipe } from '@shared/pipes/translate.pipe';
+import { TranslationService } from '@core/services/translation.service';
 import { parseEther } from 'ethers';
 
 @Component({
@@ -66,12 +69,15 @@ import { parseEther } from 'ethers';
     InputOtpComponent,
     DropdownMenuComponent,
     VoiceChatComponent,
-    ProgressComponent
+    ProgressComponent,
+    LanguageSelectorComponent,
+    TranslatePipe
   ],
   templateUrl: './home.component.html'
 })
 export class HomeComponent {
   public stateService = inject(StateService);
+  public translationService = inject(TranslationService);
   private readonly modalService = inject(ModalService);
   public readonly today = CustomDatePickerComponent.todayString();
   public readonly Math = Math;

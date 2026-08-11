@@ -1,22 +1,25 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { StateService } from '@core/services/state.service';
+import { TranslationService } from '@core/services/translation.service';
 import { TabGroupComponent, TabOption } from '@shared/components/tab-group/tab-group.component';
+import { TranslatePipe } from '@shared/pipes/translate.pipe';
 
 @Component({
   selector: 'app-tx-speed-selector',
   standalone: true,
-  imports: [CommonModule, FormsModule, TabGroupComponent],
+  imports: [CommonModule, FormsModule, TabGroupComponent, TranslatePipe],
   templateUrl: './tx-speed-selector.component.html',
   styleUrl: './tx-speed-selector.component.css'
 })
 export class TxSpeedSelectorComponent {
   public stateService = inject(StateService);
+  private translationService = inject(TranslationService);
 
-  public readonly speedOptions: TabOption[] = [
-    { value: 'default', label: 'Mặc định' },
-    { value: 'fast', label: 'Nhanh' },
-    { value: 'custom', label: 'Tùy chọn' }
-  ];
+  public readonly speedOptions = computed<TabOption[]>(() => [
+    { value: 'default', label: this.translationService.t('tx_speed.default') },
+    { value: 'fast', label: this.translationService.t('tx_speed.fast') },
+    { value: 'custom', label: this.translationService.t('tx_speed.custom') }
+  ]);
 }

@@ -1,5 +1,51 @@
 # Lịch sử yêu cầu và xử lý của Agent
 
+## Ngày 11/08/2026
+
+### Yêu cầu: Viết lại tài liệu ARCHITECTURE.md và design.md cho bộ Web3 Template Source Code
+- **Nội dung yêu cầu:** Viết lại 2 tài liệu `ARCHITECTURE.md` và `design.md` (đồng bộ tại thư mục gốc và thư mục `.agent/`), loại bỏ thông tin bán hàng cũ nhưng **giữ lại đầy đủ phần 2: Kiến trúc Backend (Laravel API DDD, CQRS, Data Mapper, Event-driven Queue, Cookie auth)**, đồng thời **bổ sung cơ chế đăng nhập JWT Dual Token (Access Token lưu RAM 30 phút, Refresh Token lưu HttpOnly Cookie 7 ngày)** và chuẩn hóa theo đúng bộ Web3 DApp Starter Kit của Angular Web3 Wallet.
+- **Giải pháp:**
+  1. Cập nhật [ARCHITECTURE.md](file:///d:/git/angular-web3-wallet/ARCHITECTURE.md) & [/.agent/ARCHITECTURE.md](file:///d:/git/angular-web3-wallet/.agent/ARCHITECTURE.md):
+     - **Tổng quan Kiến trúc:** Đặc tả đầy đủ cả Backend (Laravel API) và Frontend (Angular 22 Web3 Starter Kit & DApp Component Showcase).
+     - **Kiến trúc Backend (Laravel API):** Giữ nguyên cấu trúc 4 lớp DDD (`Domain/`, `Infrastructure/`, `Application/`, `Http/`), Data Mapper Pattern, Form Request Validation, CQRS Command Bus, Event-driven Queue (`ShouldQueue`), **JWT Dual Token Authentication (Access Token RAM 30m, Refresh Token HttpOnly Cookie 7d)**, API Versioning (`/api/v1/`).
+     - **Cơ chế Token Frontend:** Đặc tả quy tắc lưu Access Token hoàn toàn trong RAM (`AuthService` state), tự động Silent Refresh Token qua `AuthInterceptor` đọc cookie `refresh_token` khi Access Token hết hạn.
+     - **Cấu trúc Frontend:** Chi tiết hóa sơ đồ `src/app/core/`, `src/app/shared/` (35+ Standalone UI components), `src/app/features/` (home 21 cards, about, contact).
+     - **Quy tắc Lập trình:** Path Aliases, Flat Features, Signal ví Web3, Dynamic Modal Service không animation delay, Failover RPC backup (`POPULAR_CHAINS`), `:host { display: block; }` chuẩn hóa.
+  2. Cập nhật [design.md](file:///d:/git/angular-web3-wallet/design.md) & [/.agent/design.md](file:///d:/git/angular-web3-wallet/.agent/design.md):
+     - **Typography:** Phông chữ `Quicksand` local, font scale hierarchy.
+     - **Dynamic Color Palette:** Primary Accent `#ff00dd` / `#7c3aed`, Secondary Accent `#8000ff` / `#c084fc`, Tailwind v4 `@theme` mappings.
+     - **Layout & Container:** Giới hạn khung chứa `max-w-[1530px]`, nhãn form chuẩn `.form-field`.
+     - **Bo góc & Đường viền:** Bo góc cap tối đa 15px (`--radius-xl` -> `--radius-4xl`), viền 1px mờ Glassmorphism, phẳng hóa bỏ horizontal borders thừa.
+     - **UI Component Specs:** Dynamic Modals, Button gradients, SVG vector icons (100% no raw emojis), i18n language selector, progress bar, file upload, OTP input, code block, table, voice chat morphing card, theme switcher.
+  3. **Xác thực:** Chạy `npm run build` thành công 100%, biên dịch ứng dụng không phát sinh bất kỳ lỗi nào.
+
+### Yêu cầu: Xây dựng và tích hợp hệ thống Đa Ngôn Ngữ i18n (Multi-Language Dropdown)
+- **Nội dung yêu cầu:** Bổ sung dropdown đa ngôn ngữ, sử dụng hệ thống i18n với file ngôn ngữ TypeScript tách riêng (vi.ts / en.ts), lưu key riêng biệt. Áp dụng cho toàn bộ source code, component, page.
+- **Giải pháp:**
+  1. **Tạo cấu trúc i18n core:**
+     - [i18n.types.ts](file:///d:/git/angular-web3-wallet/src/app/core/i18n/i18n.types.ts): Khai báo type `SupportedLang`, interface `LanguageOption` và `TranslationDictionary`.
+     - [vi.ts](file:///d:/git/angular-web3-wallet/src/app/core/i18n/vi.ts): Từ điển Tiếng Việt chuẩn hóa phân cấp key (`nav`, `header`, `wallet`, `home`, `cards`, `about`, `contact`, `modal_demo`, `common`).
+     - [en.ts](file:///d:/git/angular-web3-wallet/src/app/core/i18n/en.ts): Từ điển Tiếng Anh đồng bộ 100% key.
+  2. **Tạo Core Service & Pipe:**
+     - [translation.service.ts](file:///d:/git/angular-web3-wallet/src/app/core/services/translation.service.ts): `TranslationService` quản lý state ngôn ngữ bằng Angular Signals, lưu/khôi phục localStorage, hỗ trợ `translate(key, params)` truy xuất key lồng nhau.
+     - [translate.pipe.ts](file:///d:/git/angular-web3-wallet/src/app/shared/pipes/translate.pipe.ts): `TranslatePipe` standalone `{{ 'key' | translate }}`.
+     - [safe-html.pipe.ts](file:///d:/git/angular-web3-wallet/src/app/shared/pipes/safe-html.pipe.ts): `SafeHtmlPipe` để render SVG cờ quốc gia an toàn.
+  3. **Tạo Component Dropdown Ngôn Ngữ:**
+     - [language-selector.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/language-selector/language-selector.component.ts): Component standalone `app-language-selector` hỗ trợ variant `compact`/`full` và direction `up`/`down`.
+     - [language-selector.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/language-selector/language-selector.component.html): Template dropdown với cờ SVG Việt Nam/Mỹ, tick mark active, bo góc Glassmorphic.
+     - [language-selector.component.css](file:///d:/git/angular-web3-wallet/src/app/shared/components/language-selector/language-selector.component.css): `:host { display: block; }`.
+  4. **Tích hợp vào Layout chính:**
+     - Cập nhật [header.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/layout/header/header.component.ts) & [header.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/layout/header/header.component.html): Import `LanguageSelectorComponent`, `TranslatePipe`, `TranslationService`. Dịch toàn bộ menu navigation, dropdown ví, toast, nút kết nối ví, network selector.
+     - Cập nhật [sidebar.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/layout/sidebar/sidebar.component.ts) & [sidebar.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/layout/sidebar/sidebar.component.html): Tích hợp `app-language-selector` variant `full` direction `up` bên cạnh theme-switcher.
+  5. **Dịch toàn bộ các trang:**
+     - [about.component.ts](file:///d:/git/angular-web3-wallet/src/app/features/about/about.component.ts) & [about.component.html](file:///d:/git/angular-web3-wallet/src/app/features/about/about.component.html): Dịch tiêu đề, mô tả, 3 feature card.
+     - [contact.component.ts](file:///d:/git/angular-web3-wallet/src/app/features/contact/contact.component.ts) & [contact.component.html](file:///d:/git/angular-web3-wallet/src/app/features/contact/contact.component.html): Dịch form liên hệ, nhãn trường, nút gửi, toast thành công.
+     - [home.component.ts](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.ts) & [home.component.html](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.html): Dịch banner kết nối ví, dashboard, showcase header, nút Demo Modal.
+     - [demo-modal.component.ts](file:///d:/git/angular-web3-wallet/src/app/features/home/components/demo-modal/demo-modal.component.ts): Import `TranslatePipe`.
+  6. **Tích hợp Showcase:**
+     - Bổ sung **Card 21: Dropdown Đa Ngôn Ngữ (i18n Showcase)** trên trang chủ trình diễn 2 chế độ Full/Compact, bảng debug key -> value tức thì và thông tin kiến trúc i18n.
+  7. **Xác thực:** Chạy lệnh `npm run build` thành công, không lỗi biên dịch.
+
 ## Ngày 03/08/2026
 
 ### Yêu cầu: Thay đổi RPC mặc định của BSC Testnet

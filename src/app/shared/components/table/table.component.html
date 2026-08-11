@@ -10,9 +10,11 @@
       >
         <app-icon [name]="emptyIcon" class="w-6 h-6" />
       </div>
-      <h3 class="text-sm font-bold text-slate-700 dark:text-slate-350">{{ emptyText }}</h3>
+      <h3 class="text-sm font-bold text-slate-700 dark:text-slate-350">
+        {{ emptyText || ('table_ui.empty_title' | translate) }}
+      </h3>
       <p class="text-xs text-slate-400 dark:text-slate-550 mt-1">
-        Vui lòng kiểm tra lại bộ lọc hoặc điều kiện tìm kiếm.
+        {{ 'table_ui.empty_desc' | translate }}
       </p>
     </div>
   } @else {

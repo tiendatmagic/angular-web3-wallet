@@ -1,8 +1,21 @@
-import { Component, Input, Output, EventEmitter, forwardRef, signal, computed, ElementRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  signal,
+  computed,
+  inject,
+  ElementRef,
+  ViewChild,
+  forwardRef
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { IconComponent } from '../icon/icon.component';
-import { TooltipDirective } from '../tooltip/tooltip.directive';
+import { IconComponent } from '@shared/components/icon/icon.component';
+import { TooltipDirective } from '@shared/components/tooltip/tooltip.directive';
+import { TranslatePipe } from '@shared/pipes/translate.pipe';
+import { TranslationService } from '@core/services/translation.service';
 
 export interface UploadFileItem {
   id: string;
@@ -19,9 +32,9 @@ export interface UploadFileItem {
 @Component({
   selector: 'app-file-upload',
   standalone: true,
-  imports: [CommonModule, IconComponent, TooltipDirective],
+  imports: [CommonModule, IconComponent, TooltipDirective, TranslatePipe],
   templateUrl: './file-upload.component.html',
-  styleUrl: './file-upload.component.css',
+  styleUrls: ['./file-upload.component.css'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -31,9 +44,7 @@ export interface UploadFileItem {
   ]
 })
 export class FileUploadComponent implements ControlValueAccessor {
-  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
-
-  @Input() variant: 'horizontal' | 'dropzone' | 'avatar' = 'horizontal';
+  @Input() variant: 'dropzone' | 'horizontal' | 'avatar' = 'horizontal';
   @Input() accept: string = '*';
   @Input() multiple: boolean = true;
   @Input() maxSizeMB: number = 10;
@@ -46,7 +57,7 @@ export class FileUploadComponent implements ControlValueAccessor {
   
   @Input() title: string = '';
   @Input() subtitle: string = '';
-  @Input() buttonText: string = 'Chọn tệp';
+  @Input() buttonText: string = '';
   @Input() icon: string = 'cloud-upload';
 
   @Output() filesChange = new EventEmitter<UploadFileItem[]>();
@@ -54,6 +65,10 @@ export class FileUploadComponent implements ControlValueAccessor {
   @Output() fileRemoved = new EventEmitter<UploadFileItem>();
   @Output() uploadComplete = new EventEmitter<UploadFileItem[]>();
   @Output() uploadError = new EventEmitter<{ file: UploadFileItem; error: string }>();
+
+  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
+
+  private translationService = inject(TranslationService);
 
   readonly files = signal<UploadFileItem[]>([]);
   readonly isDragging = signal<boolean>(false);
@@ -65,16 +80,25 @@ export class FileUploadComponent implements ControlValueAccessor {
     return this.variant;
   });
 
+  readonly displayButtonText = computed(() => {
+    if (this.buttonText) return this.buttonText;
+    return this.translationService.t('file_upload_ui.select_files');
+  });
+
   readonly displayTitle = computed(() => {
     if (this.title) return this.title;
-    if (this.effectiveVariant() === 'avatar') return 'Tải lên ảnh đại diện';
-    return 'Chọn file từ thiết bị';
+    if (this.effectiveVariant() === 'avatar') {
+      return this.translationService.t('file_upload_ui.select_avatar');
+    }
+    return this.translationService.t('file_upload_ui.select_from_device');
   });
 
   readonly displaySubtitle = computed(() => {
     if (this.subtitle) return this.subtitle;
-    if (this.effectiveVariant() === 'avatar') return `PNG, JPG tối đa ${this.maxSizeMB}MB`;
-    return `Kéo và thả hoặc nhấn để chọn file từ thiết bị của bạn`;
+    if (this.effectiveVariant() === 'avatar') {
+      return `PNG, JPG max ${this.maxSizeMB}MB`;
+    }
+    return this.translationService.t('file_upload_ui.drag_drop_files');
   });
 
   readonly totalSizeBytes = computed(() => {
@@ -83,7 +107,8 @@ export class FileUploadComponent implements ControlValueAccessor {
 
   readonly isAllCompleted = computed(() => {
     const list = this.files();
-    return list.length > 0 && list.every(f => f.status === 'completed');
+    if (list.length === 0) return false;
+    return list.every((f) => f.status === 'completed');
   });
 
   private onChange: (value: any) => void = () => {};
@@ -91,7 +116,25 @@ export class FileUploadComponent implements ControlValueAccessor {
 
   writeValue(value: any): void {
     if (Array.isArray(value)) {
-      // Intentionally handle external value binding if needed
+      const formatted: UploadFileItem[] = value.map((f: any, idx: number) => {
+        if (f instanceof File) {
+          return this.createFileItem(f);
+        } else if (typeof f === 'object' && f.name) {
+          return {
+            id: f.id || `file_${Date.now()}_${idx}`,
+            file: f.file || (new File([], f.name)),
+            name: f.name,
+            size: f.size || 0,
+            type: f.type || 'application/octet-stream',
+            progress: f.progress ?? 100,
+            status: f.status || 'completed',
+            previewUrl: f.previewUrl || f.url
+          };
+        }
+        return null;
+      }).filter((item): item is UploadFileItem => item !== null);
+
+      this.files.set(formatted);
     } else if (!value) {
       this.files.set([]);
     }
@@ -105,44 +148,48 @@ export class FileUploadComponent implements ControlValueAccessor {
     this.onTouched = fn;
   }
 
-  setDisabledState(isDisabled: boolean): void {
+  setDisabledState?(isDisabled: boolean): void {
     this.disabled = isDisabled;
   }
 
-  triggerFileInput(): void {
+  public triggerFileInput(): void {
     if (this.disabled) return;
-    this.fileInput?.nativeElement?.click();
-  }
-
-  onFileSelected(event: Event): void {
-    const target = event.target as HTMLInputElement;
-    if (target.files && target.files.length > 0) {
-      this.handleFiles(Array.from(target.files));
-      target.value = '';
+    this.onTouched();
+    if (this.fileInput && this.fileInput.nativeElement) {
+      this.fileInput.nativeElement.click();
     }
   }
 
-  onDragOver(event: DragEvent): void {
-    event.preventDefault();
-    event.stopPropagation();
-    if (this.disabled) return;
-    this.isDragging.set(true);
+  public onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.handleFiles(Array.from(input.files));
+      input.value = '';
+    }
   }
 
-  onDragLeave(event: DragEvent): void {
+  public onDragOver(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    if (!this.disabled) {
+      this.isDragging.set(true);
+    }
+  }
+
+  public onDragLeave(event: DragEvent): void {
     event.preventDefault();
     event.stopPropagation();
     this.isDragging.set(false);
   }
 
-  onDrop(event: DragEvent): void {
+  public onDrop(event: DragEvent): void {
     event.preventDefault();
     event.stopPropagation();
     this.isDragging.set(false);
 
     if (this.disabled) return;
 
-    if (event.dataTransfer?.files && event.dataTransfer.files.length > 0) {
+    if (event.dataTransfer && event.dataTransfer.files && event.dataTransfer.files.length > 0) {
       this.handleFiles(Array.from(event.dataTransfer.files));
     }
   }
@@ -150,45 +197,37 @@ export class FileUploadComponent implements ControlValueAccessor {
   private handleFiles(incomingFiles: File[]): void {
     this.globalError.set(null);
 
-    let filesToProcess = incomingFiles;
+    let selected = incomingFiles;
+
     if (!this.multiple) {
-      filesToProcess = incomingFiles.slice(0, 1);
+      selected = incomingFiles.slice(0, 1);
     }
 
     const currentFiles = this.files();
-    if (this.multiple && currentFiles.length + filesToProcess.length > this.maxFiles) {
-      this.globalError.set(`Bạn chỉ được phép tải lên tối đa ${this.maxFiles} tệp.`);
-      filesToProcess = filesToProcess.slice(0, this.maxFiles - currentFiles.length);
+    if (this.multiple && currentFiles.length + selected.length > this.maxFiles) {
+      this.globalError.set(`Tối đa chỉ được tải lên ${this.maxFiles} tệp tin.`);
+      selected = selected.slice(0, this.maxFiles - currentFiles.length);
     }
 
     const newItems: UploadFileItem[] = [];
 
-    for (const file of filesToProcess) {
-      const errorMsg = this.validateFile(file);
-      const id = 'file_' + Math.random().toString(36).substring(2, 9) + '_' + Date.now();
-      
-      const item: UploadFileItem = {
-        id,
-        file,
-        name: file.name,
-        size: file.size,
-        type: file.type || this.getFallbackType(file.name),
-        progress: 0,
-        status: errorMsg ? 'error' : (this.autoUpload ? 'uploading' : 'pending'),
-        errorMessage: errorMsg || undefined
-      };
-
-      if (item.type.startsWith('image/')) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          item.previewUrl = e.target?.result as string;
-          this.files.update(list => [...list]);
-        };
-        reader.readAsDataURL(file);
+    for (const file of selected) {
+      if (!this.validateFileType(file)) {
+        this.globalError.set(`Định dạng tệp "${file.name}" không được hỗ trợ.`);
+        continue;
       }
 
+      if (!this.validateFileSize(file)) {
+        this.globalError.set(`Dung lượng tệp "${file.name}" vượt quá giới hạn ${this.maxSizeMB}MB.`);
+        continue;
+      }
+
+      const item = this.createFileItem(file);
       newItems.push(item);
+      this.fileAdded.emit(item);
     }
+
+    if (newItems.length === 0) return;
 
     let updatedList: UploadFileItem[];
     if (this.multiple) {
@@ -198,147 +237,151 @@ export class FileUploadComponent implements ControlValueAccessor {
     }
 
     this.files.set(updatedList);
-    this.notifyChanges();
+    this.emitChange(updatedList);
 
-    newItems.forEach(item => {
-      this.fileAdded.emit(item);
-      if (item.status === 'error') {
-        this.uploadError.emit({ file: item, error: item.errorMessage || 'Lỗi không xác định' });
-      } else if (this.autoUpload) {
-        this.simulateUpload(item);
+    if (this.autoUpload) {
+      newItems.forEach((item) => this.simulateUpload(item));
+    }
+  }
+
+  private createFileItem(file: File): UploadFileItem {
+    const id = `file_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+    const item: UploadFileItem = {
+      id,
+      file,
+      name: file.name,
+      size: file.size,
+      type: file.type || 'application/octet-stream',
+      progress: 0,
+      status: 'pending'
+    };
+
+    if (file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        item.previewUrl = e.target?.result as string;
+        this.files.update((list) => [...list]);
+      };
+      reader.readAsDataURL(file);
+    }
+
+    return item;
+  }
+
+  private validateFileType(file: File): boolean {
+    if (this.accept === '*' || !this.accept) return true;
+    const rules = this.accept.split(',').map((s) => s.trim().toLowerCase());
+    const fileName = file.name.toLowerCase();
+    const mimeType = file.type.toLowerCase();
+
+    return rules.some((rule) => {
+      if (rule.startsWith('.')) {
+        return fileName.endsWith(rule);
+      } else if (rule.endsWith('/*')) {
+        const typePrefix = rule.replace('/*', '');
+        return mimeType.startsWith(typePrefix);
       }
+      return mimeType === rule;
     });
   }
 
-  private validateFile(file: File): string | null {
-    const maxSizeBytes = this.maxSizeMB * 1024 * 1024;
-    if (file.size > maxSizeBytes) {
-      return `Dung lượng tệp vượt quá ${this.maxSizeMB} MB`;
-    }
-
-    if (this.accept && this.accept !== '*') {
-      const acceptedTypes = this.accept.split(',').map(t => t.trim().toLowerCase());
-      const fileName = file.name.toLowerCase();
-      const fileType = file.type.toLowerCase();
-
-      const isMatch = acceptedTypes.some(type => {
-        if (type.startsWith('.')) {
-          return fileName.endsWith(type);
-        }
-        if (type.endsWith('/*')) {
-          const mainType = type.split('/')[0];
-          return fileType.startsWith(mainType + '/');
-        }
-        return fileType === type;
-      });
-
-      if (!isMatch) {
-        return `Định dạng tệp không được hỗ trợ (${file.name.split('.').pop()})`;
-      }
-    }
-
-    return null;
+  private validateFileSize(file: File): boolean {
+    const maxBytes = this.maxSizeMB * 1024 * 1024;
+    return file.size <= maxBytes;
   }
 
-  simulateUpload(item: UploadFileItem): void {
-    item.status = 'uploading';
-    item.progress = 0;
-    item.errorMessage = undefined;
-    this.files.update(list => [...list]);
+  private simulateUpload(item: UploadFileItem): void {
+    this.updateFileStatus(item.id, { status: 'uploading', progress: 10 });
 
+    let currentProgress = 10;
     const interval = setInterval(() => {
-      if (item.status !== 'uploading') {
-        clearInterval(interval);
-        return;
-      }
+      currentProgress += Math.floor(Math.random() * 25) + 15;
 
-      const increment = Math.floor(Math.random() * 25) + 15;
-      item.progress = Math.min(item.progress + increment, 100);
-      this.files.update(list => [...list]);
-
-      if (item.progress >= 100) {
-        item.status = 'completed';
+      if (currentProgress >= 100) {
+        currentProgress = 100;
         clearInterval(interval);
-        this.files.update(list => [...list]);
-        this.notifyChanges();
+        this.updateFileStatus(item.id, { status: 'completed', progress: 100 });
         
-        if (this.isAllCompleted()) {
-          this.uploadComplete.emit(this.files());
-        }
+        const completedList = this.files().filter((f) => f.status === 'completed');
+        this.uploadComplete.emit(completedList);
+      } else {
+        this.updateFileStatus(item.id, { progress: currentProgress });
       }
-    }, 180);
+    }, 250);
   }
 
-  retryUpload(item: UploadFileItem): void {
+  private updateFileStatus(id: string, patch: Partial<UploadFileItem>): void {
+    this.files.update((list) =>
+      list.map((item) => (item.id === id ? { ...item, ...patch } : item))
+    );
+    this.emitChange(this.files());
+  }
+
+  public retryUpload(item: UploadFileItem): void {
     if (this.disabled) return;
     this.simulateUpload(item);
   }
 
-  removeFile(item: UploadFileItem, event?: Event): void {
+  public removeFile(item: UploadFileItem, event?: Event): void {
     if (event) event.stopPropagation();
     if (this.disabled) return;
 
-    this.files.update(list => list.filter(f => f.id !== item.id));
+    const filtered = this.files().filter((f) => f.id !== item.id);
+    this.files.set(filtered);
     this.fileRemoved.emit(item);
-    this.notifyChanges();
+    this.emitChange(filtered);
+
+    if (this.previewModalFile()?.id === item.id) {
+      this.closePreview();
+    }
   }
 
-  clearAll(event?: Event): void {
+  public clearAll(event?: Event): void {
     if (event) event.stopPropagation();
     if (this.disabled) return;
 
     this.files.set([]);
-    this.notifyChanges();
+    this.emitChange([]);
+    this.closePreview();
   }
 
-  openPreview(item: UploadFileItem, event?: Event): void {
+  public openPreview(item: UploadFileItem, event?: Event): void {
     if (event) event.stopPropagation();
-    this.previewModalFile.set(item);
+    if (item.previewUrl) {
+      this.previewModalFile.set(item);
+    }
   }
 
-  closePreview(): void {
+  public closePreview(): void {
     this.previewModalFile.set(null);
   }
 
-  getFileIcon(type: string, name: string): string {
-    const ext = name.split('.').pop()?.toLowerCase() || '';
-    if (type.startsWith('image/') || ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'].includes(ext)) {
+  public formatFileSize(bytes: number): string {
+    if (bytes === 0) return '0 B';
+    const k = 1024;
+    const sizes = ['B', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+  }
+
+  public getFileIcon(mimeType: string, fileName: string): string {
+    if (mimeType.startsWith('image/') || /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(fileName)) {
       return 'file-image';
     }
-    if (type === 'application/pdf' || ext === 'pdf') {
+    if (mimeType.includes('pdf') || fileName.endsWith('.pdf')) {
       return 'file-pdf';
     }
-    if (['zip', 'rar', '7z', 'tar', 'gz'].includes(ext)) {
+    if (mimeType.includes('zip') || mimeType.includes('rar') || mimeType.includes('tar') || /\.(zip|rar|7z|tar|gz)$/i.test(fileName)) {
       return 'file-zip';
     }
-    if (['ts', 'js', 'html', 'css', 'scss', 'json', 'py', 'java', 'cpp', 'c', 'php', 'sql'].includes(ext)) {
-      return 'file-code';
-    }
-    if (['txt', 'md', 'doc', 'docx', 'rtf'].includes(ext)) {
+    if (mimeType.includes('text') || mimeType.includes('json') || mimeType.includes('code') || /\.(ts|js|html|css|json|txt|md)$/i.test(fileName)) {
       return 'file-text';
     }
     return 'file-generic';
   }
 
-  formatFileSize(bytes: number): string {
-    if (bytes === 0) return '0 B';
-    const k = 1024;
-    const sizes = ['B', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-  }
-
-  private getFallbackType(filename: string): string {
-    const ext = filename.split('.').pop()?.toLowerCase() || '';
-    if (['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'].includes(ext)) return 'image/' + ext;
-    if (ext === 'pdf') return 'application/pdf';
-    return 'application/octet-stream';
-  }
-
-  private notifyChanges(): void {
-    const currentList = this.files();
-    this.filesChange.emit(currentList);
-    this.onChange(currentList);
-    this.onTouched();
+  private emitChange(list: UploadFileItem[]): void {
+    this.filesChange.emit(list);
+    this.onChange(list.map((item) => item.file));
   }
 }

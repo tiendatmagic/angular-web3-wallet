@@ -12,6 +12,10 @@ import { TxSpeedSelectorComponent } from '@shared/components/tx-speed-selector/t
 import { ShortAddressPipe } from '@shared/pipes/short-address.pipe';
 import { POPULAR_CHAINS } from '@core/utils/blockchain.utils';
 
+import { LanguageSelectorComponent } from '@shared/components/language-selector/language-selector.component';
+import { TranslatePipe } from '@shared/pipes/translate.pipe';
+import { TranslationService } from '@core/services/translation.service';
+
 @Component({
   selector: 'app-header',
   imports: [
@@ -23,7 +27,9 @@ import { POPULAR_CHAINS } from '@core/utils/blockchain.utils';
     LogoComponent,
     ThemeSwitcherComponent,
     TxSpeedSelectorComponent,
+    LanguageSelectorComponent,
     ShortAddressPipe,
+    TranslatePipe,
   ],
   templateUrl: './header.component.html',
   host: {
@@ -39,6 +45,7 @@ import { POPULAR_CHAINS } from '@core/utils/blockchain.utils';
 })
 export class HeaderComponent {
   public stateService = inject(StateService);
+  public translationService = inject(TranslationService);
   public showDropdown = signal(false);
   public showNetworkDropdown = signal(false);
 
@@ -59,7 +66,7 @@ export class HeaderComponent {
     const address = this.stateService.address();
     if (address) {
       navigator.clipboard.writeText(address);
-      this.stateService.showToast('Đã sao chép địa chỉ ví vào bộ nhớ tạm!', 'success');
+      this.stateService.showToast(this.translationService.t('header.copied_address_toast'), 'success');
       this.showDropdown.set(false);
     }
   }

@@ -1,0 +1,94 @@
+<div class="relative inline-block text-left select-none">
+  <!-- Trigger Button -->
+  @if (variant === 'compact') {
+    <button
+      type="button"
+      (click)="toggleDropdown($event)"
+      class="h-10 px-3 rounded-xl bg-slate-100/80 dark:bg-slate-900/80 hover:bg-slate-200/80 dark:hover:bg-slate-800/80 border border-slate-200/50 dark:border-slate-800/50 text-slate-700 dark:text-slate-200 text-xs font-bold transition-all duration-200 flex items-center gap-2 cursor-pointer shadow-xs active:scale-95"
+      [attr.aria-expanded]="isOpen()"
+      [title]="'language.select_language' | translate"
+    >
+      <span
+        class="w-5 h-3.5 rounded-xs overflow-hidden shrink-0 shadow-xs border border-slate-200/50 dark:border-slate-700/50 flex items-center justify-center"
+        [innerHTML]="translationService.getCurrentLanguageOption().flagSvg | safeHtml"
+      ></span>
+      <span class="font-extrabold uppercase text-[11px] tracking-wider">
+        {{ translationService.currentLang() }}
+      </span>
+      <app-icon
+        name="chevron-down"
+        class="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 transition-transform duration-200"
+        [class.rotate-180]="isOpen()"
+        strokeWidth="2.5"
+      />
+    </button>
+  } @else {
+    <button
+      type="button"
+      (click)="toggleDropdown($event)"
+      class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/80 hover:bg-slate-100 dark:hover:bg-slate-800/80 border border-slate-200/60 dark:border-slate-800/60 text-slate-800 dark:text-slate-200 text-sm font-semibold transition-all duration-200 flex items-center justify-between cursor-pointer active:scale-[0.99]"
+      [attr.aria-expanded]="isOpen()"
+    >
+      <div class="flex items-center gap-3">
+        <span
+          class="w-6 h-4 rounded-xs overflow-hidden shrink-0 shadow-xs border border-slate-200/50 dark:border-slate-700/50 flex items-center justify-center"
+          [innerHTML]="translationService.getCurrentLanguageOption().flagSvg | safeHtml"
+        ></span>
+        <span class="font-bold text-slate-800 dark:text-slate-100">
+          {{ translationService.getCurrentLanguageOption().nativeName }}
+        </span>
+      </div>
+      <app-icon
+        name="chevron-down"
+        class="w-4 h-4 text-slate-400 transition-transform duration-200"
+        [class.rotate-180]="isOpen()"
+        strokeWidth="2.5"
+      />
+    </button>
+  }
+
+  <!-- Dropdown Popover Panel -->
+  @if (isOpen()) {
+    <div
+      [class.bottom-full]="direction === 'up'"
+      [class.mb-2]="direction === 'up'"
+      [class.top-full]="direction === 'down'"
+      [class.mt-2]="direction === 'down'"
+      class="absolute right-0 w-48 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-slate-200/60 dark:border-slate-800/60 rounded-2xl shadow-xl z-[250] overflow-hidden py-1.5 animate-in fade-in slide-in-from-top-1 duration-150"
+    >
+      <div class="px-3 py-1.5 mb-1 border-b border-slate-100 dark:border-slate-800/60">
+        <span class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest block">
+          {{ 'language.select_language' | translate }}
+        </span>
+      </div>
+
+      <div class="px-1.5 space-y-0.5">
+        @for (opt of translationService.availableLanguages; track opt.code) {
+          <button
+            type="button"
+            (click)="selectLanguage(opt.code, $event)"
+            [class.bg-primary/10]="translationService.currentLang() === opt.code"
+            [class.text-primary]="translationService.currentLang() === opt.code"
+            [class.dark:bg-primary/20]="translationService.currentLang() === opt.code"
+            [class.font-extrabold]="translationService.currentLang() === opt.code"
+            class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100/80 dark:hover:bg-slate-800/60 transition-all cursor-pointer group"
+          >
+            <div class="flex items-center gap-3">
+              <span
+                class="w-5 h-3.5 rounded-xs overflow-hidden shrink-0 shadow-xs border border-slate-200/50 dark:border-slate-700/50 flex items-center justify-center"
+                [innerHTML]="opt.flagSvg | safeHtml"
+              ></span>
+              <span class="group-hover:text-primary transition-colors">
+                {{ opt.nativeName }}
+              </span>
+            </div>
+
+            @if (translationService.currentLang() === opt.code) {
+              <app-icon name="check" class="w-4 h-4 text-primary shrink-0" strokeWidth="3" />
+            }
+          </button>
+        }
+      </div>
+    </div>
+  }
+</div>

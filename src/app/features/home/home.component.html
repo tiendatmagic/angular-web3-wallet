@@ -7,16 +7,16 @@
         <app-icon name="link-chain" class="w-8 h-8" strokeWidth="1.5" />
       </div>
       <h2 class="text-2xl md:text-3xl font-black text-slate-800 dark:text-white mb-4">
-        Khung ứng dụng Web3 cao cấp
+        {{ 'wallet.connect_prompt_title' | translate }}
       </h2>
       <p
         class="text-slate-500 dark:text-slate-400 text-sm sm:text-base mb-8 max-w-md mx-auto leading-relaxed"
       >
-        Để bắt đầu trải nghiệm các tính năng tương tác blockchain, vui lòng kết nối ví của bạn.
+        {{ 'wallet.connect_prompt_desc' | translate }}
       </p>
       <button app-button variant="primary" size="md" (click)="stateService.connectWallet()">
         <app-icon name="wallet" class="w-5 h-5" strokeWidth="2" />
-        Kết nối ví của bạn
+        {{ 'header.connect_wallet' | translate }}
       </button>
     </div>
   }
@@ -28,13 +28,13 @@
           <h3
             class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4"
           >
-            Trạng thái tài khoản
+            {{ 'wallet.account_address' | translate }}
           </h3>
 
           <div class="space-y-4">
             <div class="flex flex-col py-1">
               <span class="text-xs font-bold text-slate-400 dark:text-slate-500"
-                >Số dư hiện tại</span
+                >{{ 'wallet.balance' | translate }}</span
               >
               <span
                 class="text-3xl sm:text-4xl font-black text-transparent bg-gradient-to-r from-secondary to-primary bg-clip-text mt-0.5"
@@ -44,7 +44,7 @@
             </div>
 
             <div class="form-field">
-              <label>Địa chỉ ví của bạn</label>
+              <label>{{ 'wallet.account_address' | translate }}</label>
               <div
                 class="form-input flex items-center justify-between !pl-4 !pr-1.5 py-0"
               >
@@ -67,7 +67,7 @@
               class="grid grid-cols-2 gap-4 border-t border-slate-100 dark:border-slate-800/40 pt-4"
             >
               <div class="flex flex-col">
-                <span class="text-[10px] font-bold text-slate-400 uppercase">Mạng kết nối</span>
+                <span class="text-[10px] font-bold text-slate-400 uppercase">{{ 'wallet.network' | translate }}</span>
                 <span class="text-sm font-extrabold text-slate-700 dark:text-slate-200 truncate">
                   {{ stateService.networkName() }}
                 </span>
@@ -86,7 +86,7 @@
           <h3
             class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4"
           >
-            Chuyển nhanh mạng lưới
+            {{ 'wallet.switch_network_btn' | translate }}
           </h3>
 
           @if (stateService.isWrongChain()) {
@@ -301,9 +301,9 @@
         <app-icon name="bolt" class="w-5 h-5" [solid]="true" viewBox="0 0 20 20" />
       </div>
       <div>
-        <h3 class="text-base font-black text-slate-800 dark:text-white">UI Components Showcase</h3>
+        <h3 class="text-base font-black text-slate-800 dark:text-white">{{ 'home.showcase_title' | translate }}</h3>
         <p class="text-xs text-slate-400 dark:text-slate-500">
-          Demo tất cả các shared components đã được xây dựng
+          {{ 'home.showcase_subtitle' | translate }}
         </p>
       </div>
     </div>
@@ -2044,8 +2044,98 @@
     <div class="flex items-center justify-center pt-6">
       <button app-button variant="primary" size="md" (click)="openDemoModal()">
         <app-icon name="bolt" class="w-4 h-4" [solid]="true" viewBox="0 0 20 20" />
-        Mở Modal Demo Form
+        {{ 'cards.modal_demo.open_btn' | translate }}
       </button>
+    </div>
+
+    <!-- Card 21: Dropdown Đa Ngôn Ngữ Showcase -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div app-card class="lg:col-span-2">
+        <h4
+          class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 flex items-center gap-2"
+        >
+          <app-icon name="globe" class="w-3.5 h-3.5 text-primary" />
+          {{ 'cards.lang_showcase.title' | translate }}
+        </h4>
+        <p class="text-xs text-slate-400 dark:text-slate-500 mb-5">
+          {{ 'cards.lang_showcase.subtitle' | translate }}
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Bộ chọn ngôn ngữ dạng Full -->
+          <div class="space-y-4">
+            <div class="form-field">
+              <label>{{ 'cards.lang_showcase.select_placeholder' | translate }}</label>
+              <app-language-selector variant="full" direction="down" />
+            </div>
+
+            <div
+              class="bg-slate-50/60 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 rounded-xl p-4 space-y-2"
+            >
+              <h5
+                class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-2"
+              >
+                {{ 'cards.lang_showcase.active_lang' | translate }}
+              </h5>
+              <div class="flex items-center gap-3">
+                <span class="text-sm font-extrabold text-primary">
+                  {{ translationService.getCurrentLanguageOption().nativeName }}
+                </span>
+                <app-badge variant="primary">
+                  {{ translationService.currentLang() | uppercase }}
+                </app-badge>
+              </div>
+              <div class="text-xs font-mono text-slate-500 dark:text-slate-400 mt-2 space-y-1">
+                <div>nav.home = "{{ 'nav.home' | translate }}"</div>
+                <div>nav.about = "{{ 'nav.about' | translate }}"</div>
+                <div>nav.contact = "{{ 'nav.contact' | translate }}"</div>
+                <div>header.connect_wallet = "{{ 'header.connect_wallet' | translate }}"</div>
+                <div>common.save = "{{ 'common.save' | translate }}"</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bộ chọn ngôn ngữ dạng Compact + info -->
+          <div class="space-y-4">
+            <div class="form-field">
+              <label>COMPACT MODE (HEADER)</label>
+              <div class="flex items-center gap-3">
+                <app-language-selector variant="compact" direction="down" />
+                <span class="text-xs text-slate-400 dark:text-slate-500 font-semibold">
+                  &larr; {{ 'language.select_language' | translate }}
+                </span>
+              </div>
+            </div>
+
+            <div
+              class="bg-gradient-to-br from-primary/5 to-secondary/5 border border-primary/10 rounded-xl p-4 space-y-3"
+            >
+              <h5 class="text-xs font-extrabold text-slate-700 dark:text-slate-200 flex items-center gap-2">
+                <app-icon name="code" class="w-4 h-4 text-primary" />
+                i18n Architecture
+              </h5>
+              <ul class="text-xs text-slate-500 dark:text-slate-400 space-y-1.5 font-semibold">
+                <li class="flex items-center gap-2">
+                  <span class="w-1.5 h-1.5 rounded-full bg-primary shrink-0"></span>
+                  Angular Signals reactive state
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span>
+                  Separate vi.ts / en.ts translation files
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0"></span>
+                  TranslatePipe {{ "'key' | translate" }}
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0"></span>
+                  localStorage persistence
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </main>
