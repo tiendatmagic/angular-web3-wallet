@@ -1,4 +1,4 @@
-﻿import { Component, signal, inject, ElementRef, HostListener } from '@angular/core';
+import { Component, Input, signal, inject, ElementRef, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StateService } from '@core/services/state.service';
 import { TranslationService } from '@core/services/translation.service';
@@ -16,6 +16,9 @@ import { POPULAR_CHAINS } from '@core/utils/blockchain.utils';
   host: { 'class': 'block' },
 })
 export class AccountDropdownComponent {
+  @Input() avatarUrl?: string;
+  @Input() statusBadge?: string;
+
   public stateService = inject(StateService);
   public translationService = inject(TranslationService);
   private elementRef = inject(ElementRef);

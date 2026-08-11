@@ -53,43 +53,41 @@
   @if (isOpen()) {
     <div
       [ngClass]="{
-        'fixed top-[3.75rem] left-3 right-3 sm:absolute sm:top-full sm:mt-2 sm:right-0 sm:left-auto sm:w-48': variant === 'compact',
+        'fixed top-[3.75rem] left-3 right-3 sm:absolute sm:top-full sm:mt-2 sm:right-0 sm:left-auto sm:w-52': variant === 'compact',
         'absolute left-0 right-0 w-full': variant === 'full',
         'bottom-full mb-2': direction === 'up',
         'top-full mt-2': direction === 'down' && variant === 'full'
       }"
-      class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-slate-200/60 dark:border-slate-800/60 rounded-2xl shadow-lg shadow-slate-900/10 dark:shadow-slate-950/50 z-[250] overflow-hidden py-1.5 animate-in fade-in slide-in-from-top-1 duration-150"
+      class="dropdown-menu-popover bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-slate-200/80 dark:border-slate-800/80 shadow-lg shadow-slate-900/10 dark:shadow-slate-950/50 rounded-[15px] p-2 text-slate-800 dark:text-slate-100 focus:outline-none z-[250] animate-in fade-in slide-in-from-top-1 duration-150"
     >
-      <div class="px-3 py-1.5 mb-1 border-b border-slate-100 dark:border-slate-800/60">
-        <span class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest block">
-          {{ 'language.select_language' | translate }}
-        </span>
+      <div class="px-3 py-2 text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 select-none">
+        {{ 'language.select_language' | translate }}
       </div>
 
-      <div class="px-1.5 space-y-0.5">
+      <div class="space-y-0.5">
         @for (opt of translationService.availableLanguages; track opt.code) {
           <button
             type="button"
             (click)="selectLanguage(opt.code, $event)"
-            [class.bg-primary/10]="translationService.currentLang() === opt.code"
-            [class.text-primary]="translationService.currentLang() === opt.code"
-            [class.dark:bg-primary/20]="translationService.currentLang() === opt.code"
-            [class.font-extrabold]="translationService.currentLang() === opt.code"
-            class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100/80 dark:hover:bg-slate-800/60 transition-all cursor-pointer group"
+            class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-colors text-left cursor-pointer"
+            [ngClass]="{
+              'bg-purple-50 dark:bg-purple-950/40 text-purple-600 dark:text-purple-300 font-bold': translationService.currentLang() === opt.code,
+              'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80': translationService.currentLang() !== opt.code
+            }"
           >
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-3 truncate min-w-0">
               <app-icon
                 [name]="opt.flagIcon"
                 viewBox="0 0 640 480"
                 class="w-5 h-3.5 rounded-xs overflow-hidden shrink-0 shadow-xs border border-slate-200/50 dark:border-slate-700/50"
               />
-              <span class="group-hover:text-primary transition-colors">
+              <span class="truncate">
                 {{ opt.nativeName }}
               </span>
             </div>
 
             @if (translationService.currentLang() === opt.code) {
-              <app-icon name="check" class="w-4 h-4 text-primary shrink-0" strokeWidth="3" />
+              <app-icon name="check" class="w-4 h-4 text-purple-600 dark:text-purple-400 shrink-0 stroke-[3]" />
             }
           </button>
         }

@@ -2,6 +2,24 @@
 
 ## Ngày 12/08/2026
 
+### Yêu cầu: Bổ Sung Tùy Chọn Hiển Thị Avatar & Badge Cho Component AccountDropdown (`app-account-dropdown`)
+- **Nội dung yêu cầu:** Mặc định component thông tin cá nhân `app-account-dropdown` sẽ KHÔNG hiển thị ảnh đại diện hay gói cước (badge PRO) trừ khi được truyền tùy chọn (avatarUrl mặc định là bỏ trống).
+- **Giải pháp:**
+  1. Thêm 2 thuộc tính `@Input() avatarUrl?: string;` và `@Input() statusBadge?: string;` trong `AccountDropdownComponent`.
+  2. Bổ sung điều kiện `@if (avatarUrl)` và `@if (statusBadge)` trong `account-dropdown.component.html`.
+- **Xác thực:** Runs `npx tsc --noEmit` đạt 0 lỗi type. Runs `npm run build` thành công 100%.
+
+### Yêu cầu: Đồng Bộ UI Popover Cho Các Component Dropdown (Đa Ngôn Ngữ, Đa Chain & Thông Tin Cá Nhân) Theo Chuẩn DropdownMenu (Shadcn Space)
+- **Nội dung yêu cầu:** Chuẩn hóa thiết kế Popover Dropdown của các component Đa ngôn ngữ (`app-language-selector`), Đa chain (`app-network-selector`) và Dropdown thông tin ví cá nhân (`app-account-dropdown`) khớp 100% với phong cách UI sang trọng của `app-dropdown-menu` (Dropdown tạo giao dịch mới / profile menu ở Card 1 & Card 19):
+  1. Sử dụng bo góc `rounded-[15px] p-2 backdrop-blur-xl border-slate-200/80 dark:border-slate-800/80`.
+  2. Bỏ các viền kẻ ngang `border-b` thô kiểu cũ ở header section title, thay bằng font uppercase nhỏ gọn `text-xs font-bold tracking-wider text-slate-400 dark:text-slate-500`.
+  3. Đưa các nút bấm lựa chọn về chuẩn padding `px-3 py-2.5 rounded-[11px] text-sm font-semibold`.
+  4. Trạng thái active/selected hiển thị màu tím dịu mượt `bg-purple-50 dark:bg-purple-950/40 text-purple-600 dark:text-purple-300 font-bold` kèm icon tích check sắc nét.
+  5. Header profile trong Popover của `app-account-dropdown` thiết kế GIỐNG BÊN TRÁI: Có Avatar hình tròn (`ring-2 ring-purple-500/20`), ShortAddress, Badge trạng thái `PRO`, Subtitle hiển thị Balance + Chain Network. Nút "Ngắt kết nối ví" là nút danger màu đỏ mượt (`text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40`).
+- **Giải pháp:**
+  - Cập nhật `language-selector.component.html`, `network-selector.component.html` và `account-dropdown.component.html`.
+- **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Build production đóng gói Angular thành công.
+
 ### Yêu cầu: Khắc Phục Lỗi Component Voice Chat (`<app-voice-chat>`) Không Hiển Thị & Thu Nhỏ Thành Vạch Dọc (`|`)
 - **Nội dung yêu cầu:** Rà soát và sửa lỗi trong bức ảnh chụp màn hình UI: ở Card 5 (`Dropdown Menu 06 - Card Voice Chat Biến Hình`), giao diện bên dưới bị rỗng và thu nhỏ dẹt lại thành 1 vạch line dọc mỏng `|` màu xám tối.
 - **Phân tích nguyên nhân:**
