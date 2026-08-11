@@ -38,7 +38,7 @@
             type="text"
             [ngModel]="searchQuery()"
             (ngModelChange)="searchQuery.set($event)"
-            placeholder="Tìm kiếm..."
+            [placeholder]="'common.search' | translate"
             class="w-full bg-transparent text-xs border-0 p-1 outline-none text-slate-800 dark:text-white"
           />
         </div>
@@ -47,7 +47,7 @@
       <div class="overflow-y-auto flex-1 py-1">
         @if (filteredOptions().length === 0) {
           <div class="px-4 py-3 text-center text-xs text-slate-400 italic">
-            Không tìm thấy tùy chọn nào
+            {{ 'table_ui.empty_title' | translate }}
           </div>
         }
         @for (opt of filteredOptions(); track getOptionValue(opt)) {

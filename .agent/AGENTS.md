@@ -2,6 +2,80 @@
 
 ## Ngày 11/08/2026
 
+### Yêu cầu: Khắc phục Lỗi Alert Chưa Có Màu Nền (Hiển Thị Trắng/Trong Suốt) Trong Tailwind v4
+- **Nội dung yêu cầu:** Xem lại component Alert (`app-alert`), khắc phục tình trạng thẻ Info và Error alert bị chìm/trắng không có màu nền rõ ràng khi render với Tailwind v4.
+- **Nguyên nhân:** Trong bảng màu OKLCH của Tailwind v4, các tông màu `purple-100` và `rose-100` có độ sáng lightness cực cao (~95%), khiến nền alert bị nhạt mờ và hòa tan hoàn toàn vào màu nền trắng card (`#ffffff`).
+- **Giải pháp:**
+  1. **Chuẩn Hóa Bộ Màu Pastel Nổi Bật Cho 4 Loại Alert (`alert.component.html`):**
+     - **Info Alert:** Chuyển sang tone Sky Pastel (`bg-sky-100 dark:bg-sky-950/70 text-sky-950 dark:text-sky-200 border-sky-300/60 text-sky-600`), hiển thị màu xanh da trời dịu nhẹ rõ nét.
+     - **Success Alert:** Giữ tone Emerald Pastel (`bg-emerald-100 dark:bg-emerald-950/70 text-emerald-950 dark:text-emerald-200 border-emerald-300/60 text-emerald-600`), hiển thị dải xanh lá pastel.
+     - **Warning Alert:** Giữ tone Amber Pastel (`bg-amber-100 dark:bg-amber-950/70 text-amber-950 dark:text-amber-200 border-amber-300/60 text-amber-600`), hiển thị dải vàng nhạt pastel.
+     - **Error Alert:** Chuyển sang tone Red Pastel (`bg-red-100 dark:bg-red-950/70 text-red-950 dark:text-red-200 border-red-300/60 text-red-600`), hiển thị dải đỏ pastel nổi bật rõ rệt trên mọi nền card trắng và dark mode.
+  2. **Xác thực:** Chạy `npx tsc --noEmit` thành công 100% 0 lỗi syntax/type. Chạy `npm run build` xuất sắc tạo bundle production.
+
+### Yêu cầu: Kiểm tra Đa ngôn ngữ (i18n) cho 9 Standalone UI Components & Audit Toàn Bộ 30 Showcase Cards Dự Án
+- **Nội dung yêu cầu:** Kiểm tra kỹ lưỡng hệ thống Đa ngôn ngữ (i18n) cho 9 component mới (Avatar, Empty State, Alert, Drawer, Stepper, Stat Card, Breadcrumb, Divider, Copy to Clipboard) cũng như toàn bộ 30 Card Showcase trên ứng dụng, đảm bảo không còn bất kỳ văn bản cứng nào.
+- **Giải pháp:**
+  1. **Tích hợp i18n lồng ghép trong `i18n.types.ts`, `vi.ts`, `en.ts`:**
+     - Thêm đầy đủ namespace mới cho 9 component mới và bổ sung từ điển key cho Card 16 (File Upload), Card 18 (Input OTP), Card 19 (Dropdown Menu), Card 20 (Progress Bar) với từ điển Tiếng Việt & Tiếng Anh khớp 100%.
+  2. **Cập nhật Template Showcase Cards 1 - 30 (`home.component.html` & `.ts`):**
+     - Đổi toàn bộ tiêu đề, mô tả, nút bấm, callout alert sang dùng `{{ 'cards.xxx.yyy' | translate }}` và `translationService.translate(...)`.
+     - Chuyển `demoStepperSteps` trong `home.component.ts` thành `computed()` signal tự động phản ứng và đổi từ ngữ theo `translationService.currentLang()`.
+  3. **Chuẩn hóa Đa Ngôn Ngữ Các Shared Components Nội Bộ (`breadcrumb`, `code-block`, `copy-to-clipboard`, `custom-search-input`, `custom-select`, `empty-state`, `sidebar`):**
+     - Tích hợp `TranslationService` / `TranslatePipe` vào các thẻ aria-label, tooltip, placeholder, empty-state title & description mặc định.
+  4. **Xác thực:** Chạy `npx tsc --noEmit` thành công 100% không có lỗi type. Chạy `npm run build` thành công xuất sắc bundle production.
+
+### Yêu cầu: Fix Triệt Để Các Lỗi UI/UX Giao Diện Component Mới & Chuẩn Hóa Con Trỏ & Khung Chứa
+- **Nội dung yêu cầu:** Sửa các lỗi UI hiển thị trên các component mới bao gồm:
+  1. Thẻ `<button>` thiếu class/style `cursor-pointer`.
+  2. Nút đóng 'X' trên Alert, Drawer, Modal không vuông tỉ lệ 1:1 (`w-7 h-7`, `w-8 h-8`).
+  3. Đường nối Stepper bị tràn (overflow) sang phải đè lên các Stat Card bên cạnh.
+  4. Khối Empty State bị xếp chồng dọc nút bấm và không dùng `app-button`.
+  5. Các Card 28 (Breadcrumb), Card 29 (Divider), Card 30 (Copy to Clipboard) bị ép quá hẹp trên 3 cột làm vỡ dòng văn bản.
+- **Giải pháp:**
+  1. **Tối Ưu Con Trỏ Chuột Toàn Cầu (`styles.scss`):**
+     - Bổ sung quy tắc CSS toàn cầu `button, [role="button"] { cursor: pointer; }` và `button:disabled { cursor: not-allowed; }`, đảm bảo 100% tất cả các thẻ button trong dự án đều xuất hiện con trỏ trỏ bàn tay `cursor-pointer`.
+  2. **Chuẩn Hóa Kích Thước Nút Đóng 'X' Vừa Vặn & Vuông Tỉ Lệ 1:1 (`alert`, `drawer`, `modal`, `modal-wrapper`):**
+     - Đặt kích thước vuông chuẩn `w-7 h-7 flex items-center justify-center shrink-0` (Alert, Modal) và `w-8 h-8 flex items-center justify-center shrink-0` (Drawer), tạo cảm giác bấm mượt và không bị méo.
+  3. **Fix Lỗi Tràn Đường Nối Stepper (`stepper.component.html` & `home.component.html`):**
+     - Tính toán lại khoảng cách địa lý chính xác cho đường kẻ nối: `left-[calc(50%+20px)] w-[calc(100%-40px)]`, đường kẻ bắt đầu đúng mép ngoài vòng tròn bước N và dừng chính xác trước mép vòng tròn N+1, không bao giờ đâm tràn ra khỏi card.
+     - Bổ sung `overflow-hidden` cho khung Card Stepper ở Trang chủ.
+  4. **Nâng Cấp Component Empty State (`empty-state.component.ts` & `.html`):**
+     - Tích hợp `ButtonComponent` (`app-button`) cho cả nút bấm chính (`variant="primary"`) và nút bấm phụ (`variant="cancel"`).
+     - Định dạng layout ngang `flex flex-wrap sm:flex-row flex-col items-center justify-center gap-3` giúp 2 nút nằm hàng ngang đẹp mắt.
+  5. **Tối Ưu Bố Cục Lưới Các Showcase Card 28 - 30 (`home.component.html` & `copy-to-clipboard`):**
+     - Đổi layout lưới của Card 28 (Breadcrumb) & Card 29 (Divider) sang 2 cột (`grid-cols-1 lg:grid-cols-2`), mở rộng độ rộng từ 280px lên ~550px+ giúp Breadcrumb nằm thẳng trên 1 hàng không bị vỡ.
+     - Card 30 (Copy to Clipboard) xếp trên khung rộng 2 cột, thêm `whitespace-nowrap shrink-0` vào component `copy-to-clipboard` để nhãn `Đã sao chép!` không bao giờ bị nhảy dòng.
+  6. **Nâng Cấp Hiệu Ứng Trượt & Căn Giữa Bottom Sheet (`drawer.component.html` & `.css`):**
+     - Bổ sung `items-end justify-center` và container `max-w-2xl mx-auto rounded-t-[15px]` cho biến thể `position="bottom"`, đảm bảo Bottom Sheet luôn căn giữa màn hình chuẩn trải nghiệm di động.
+     - Thêm các quy tắc CSS Keyframes animation (`drawerSlideRight`, `drawerSlideLeft`, `drawerSlideUp`, `drawerFadeIn`) trượt mượt 300ms.
+  7. **Tối Ưu Viền & Màu Nền Alert Pastel Rõ Nét (`alert.component.html` & `.ts`):**
+     - Đổi màu nền Alert từ lớp phủ mờ đục 5% sang dải màu Pastel nét đẹp dịu mắt (`bg-purple-100`, `bg-emerald-100`, `bg-amber-100`, `bg-rose-100` ở Light Mode và `dark:bg-purple-950/70` ở Dark Mode), không bị hiện nền trắng.
+     - Loại bỏ các đường viền đen đậm 2px `border-2`, thay bằng dải viền 1px mờ Glassmorphism đồng bộ 100% với các component card khác.
+     - Chuyển `dismissible` thành `true` theo mặc định để tất cả các thẻ Alert đều xuất hiện nút đóng 'X' vuông chuẩn.
+  8. **Chuẩn Hóa Kích Thước Nút Bấm Vừa Vặn (`size="md"`):**
+     - Đổi toàn bộ các nút bấm trong Empty State (`Làm mới`, `Nạp Token Ngay`), Drawer Footer (`Hủy bỏ`, `Xem trên Explorer`), Stepper (`Bước trước`, `Bước tiếp theo`), Copy to Clipboard sang kích chuẩn vừa vặn `size="md"`.
+  9. **Xác thực:** Chạy `npx tsc --noEmit` thành công 0 lỗi. Chạy `npm run build` xuất sắc thành công bản đóng gói production.
+
+### Yêu cầu: Đề xuất & Xây dựng 9 Standalone UI Components Mới & Tích hợp Showcase trên Trang chủ
+- **Nội dung yêu cầu:** Đề xuất và khởi tạo 9 component giao diện mới bao gồm: Avatar (`app-avatar`), Empty State (`app-empty-state`), Alert (`app-alert`), Drawer (`app-drawer`), Stepper (`app-stepper`), Stat Card (`app-stat-card`), Breadcrumb (`app-breadcrumb`), Divider (`app-divider`), và Copy to Clipboard (`app-copy-to-clipboard`); sau đó đưa toàn bộ ra hiển thị trực quan tại Trang chủ (`home.component`).
+- **Giải pháp:**
+  1. **Khởi tạo 9 Component Standalone chuẩn Design System (`src/app/shared/components/`):**
+     - **`app-avatar`**: Hiển thị ảnh đại diện, fallback initials, status dot (online/busy/away/offline), avatar stack đè lớp kèm badge `+N`.
+     - **`app-empty-state`**: Màn hình rỗng kèm icon vector, title, description, nút action primary & secondary.
+     - **`app-alert`**: Callout banner dính trang 4 màu (info, success, warning, error) & 3 style variant (soft, bordered, accent) có nút dismiss.
+     - **`app-drawer`**: Off-canvas slide-over panel (Left, Right, Bottom Sheet) điều khiển qua signal với backdrop `bg-black/40` và sticky header/footer.
+     - **`app-stepper`**: Quy trình nhiều bước (horizontal/vertical) với icon trạng thái (completed/active/pending/error) dành cho luồng giao dịch Web3.
+     - **`app-stat-card`**: Card chỉ số Kpi/Dashboard với gradient icon, số liệu lớn, dải phần trăm tăng/giảm xanh/đỏ (trend badge).
+     - **`app-breadcrumb`**: Thanh điều hướng phân cấp đường dẫn (Home > Section > Page) hỗ trợ router link và custom separator.
+     - **`app-divider`**: Đường kẻ phân cách ngang/dọc (solid, dashed, gradient) với label text căn lề linh hoạt.
+     - **`app-copy-to-clipboard`**: Nút sao chép văn bản (Địa chỉ ví `0x...`, Tx Hash) với hiệu ứng đổi sang icon tích xanh phát sáng trong 2 giây và toast notification.
+  2. **Tích hợp Showcase Cards 22 - 30 & Drawer Instance tại `home.component.html` & `home.component.ts`:**
+     - Khai báo 9 component mới trong array `imports` của `@Component` trong `home.component.ts`.
+     - Khởi tạo demo state (`demoDrawerOpen`, `demoStepperActive`, `demoAvatarList`, `demoBreadcrumbItems`, `demoStepperSteps`).
+     - Bổ sung 9 khối Card Showcase trực quan trình diễn đầy đủ tính năng 9 component mới ở cuối trang chủ.
+  3. **Xác thực:** Kiểm tra cú pháp `npx tsc --noEmit` thành công 100% không còn bất kỳ lỗi biên dịch hay sai type nào.
+
 ### Yêu cầu: Khắc phục Lỗi Thanh Ngang Trắng Không Đồng Bộ Trong Code Block Component (app-code-block)
 - **Nội dung yêu cầu:** Sửa lỗi thanh vạch kẻ ngang xám/trắng không đồng bộ với giao diện Light Mode và Dark Mode xuất hiện ở phía dưới vùng code khi bấm Thu gọn hoặc Xem đầy đủ mã nguồn trong `app-code-block`.
 - **Giải pháp:**

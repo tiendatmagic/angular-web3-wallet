@@ -239,12 +239,62 @@ export interface TranslationDictionary {
       subtitle: string;
       drag_drop_text: string;
       support_text: string;
+      card_title: string;
+      demo1_title: string;
+      demo1_field_title: string;
+      demo1_field_desc: string;
+      select_btn: string;
+      demo2_title: string;
+      demo2_field_title: string;
+      demo2_field_desc: string;
+      browse_btn: string;
+      demo3_title: string;
+      demo3_field_title: string;
+      demo3_field_desc: string;
+      select_image: string;
+      demo4_title: string;
+      avatar_title: string;
+      avatar_desc: string;
     };
     input_otp: {
       title: string;
       subtitle: string;
       label_6digit: string;
       label_pin: string;
+      invalid_title: string;
+      invalid_desc: string;
+      incorrect_code: string;
+      disabled_label: string;
+      card_title: string;
+      demo1_title: string;
+      demo1_desc: string;
+      input_val: string;
+      empty_val: string;
+      resend_code: string;
+      demo2_title: string;
+      demo2_desc: string;
+      hide_pin: string;
+      show_pin: string;
+      demo3_title: string;
+      demo3_desc: string;
+      paste_support: string;
+    };
+    dropdown: {
+      title: string;
+      subtitle: string;
+      card_title: string;
+      card_desc: string;
+      demo1_title: string;
+      demo1_desc: string;
+      demo2_title: string;
+      demo2_desc: string;
+      demo3_title: string;
+      demo3_desc: string;
+      demo4_title: string;
+      demo4_desc: string;
+      customize_ui: string;
+      web3_actions: string;
+      ghost_btn: string;
     };
     voice_chat: {
       title: string;
@@ -259,12 +309,103 @@ export interface TranslationDictionary {
       subtitle: string;
       storage_label: string;
       gauge_label: string;
+      card_title: string;
+      card_desc: string;
+      demo1_title: string;
+      demo1_desc: string;
+      demo2_title: string;
+      demo2_desc: string;
+      demo3_title: string;
+      demo3_desc: string;
+      demo4_title: string;
+      demo4_desc: string;
+      demo5_title: string;
+      demo5_desc: string;
+      demo6_title: string;
+      demo6_desc: string;
+      striped_animated: string;
+      indeterminate: string;
+      step_workflow: string;
+      storage_allocation: string;
+      empty_label: string;
+      loading_state: string;
+      adjust_value: string;
+      circle_label: string;
+      semicircle_label: string;
     };
     lang_showcase: {
       title: string;
       subtitle: string;
       active_lang: string;
       select_placeholder: string;
+    };
+    avatar: {
+      title: string;
+      subtitle: string;
+      single_label: string;
+      group_label: string;
+    };
+    empty_state: {
+      title: string;
+      subtitle: string;
+      sample_title: string;
+      sample_desc: string;
+      action_btn: string;
+      secondary_btn: string;
+    };
+    alert: {
+      title: string;
+      subtitle: string;
+      info_title: string;
+      info_msg: string;
+      success_title: string;
+      success_msg: string;
+      warning_title: string;
+      warning_msg: string;
+      error_title: string;
+      error_msg: string;
+    };
+    drawer: {
+      title: string;
+      subtitle: string;
+      btn_right: string;
+      btn_left: string;
+      btn_bottom: string;
+      panel_title: string;
+      panel_subtitle: string;
+    };
+    stepper: {
+      title: string;
+      subtitle: string;
+      prev_btn: string;
+      next_btn: string;
+    };
+    stat_card: {
+      title: string;
+      subtitle: string;
+      tvl_title: string;
+      tvl_subtitle: string;
+      vol_title: string;
+      vol_subtitle: string;
+      stakers_title: string;
+      stakers_subtitle: string;
+    };
+    breadcrumb: {
+      title: string;
+      subtitle: string;
+    };
+    divider: {
+      title: string;
+      subtitle: string;
+      label_or: string;
+      label_dashed: string;
+      label_gradient: string;
+    };
+    copy_to_clipboard: {
+      title: string;
+      subtitle: string;
+      copy_btn: string;
+      copied_btn: string;
     };
   };
   about: {

@@ -231,13 +231,63 @@ export const VI_TRANSLATIONS: TranslationDictionary = {
       title: 'Tải Lên Tệp Tin (File Upload Drag & Drop)',
       subtitle: 'Kéo thả tệp tin, xem trước hình ảnh và giả lập tiến trình tải lên sinh động.',
       drag_drop_text: 'Kéo thả tệp tin vào đây hoặc nhấp để chọn',
-      support_text: 'Hỗ trợ tệp PNG, JPG, PDF, ZIP tối đa 10MB'
+      support_text: 'Hỗ trợ tệp PNG, JPG, PDF, ZIP tối đa 10MB',
+      card_title: 'Card 16: Component File Upload Cao Cấp (app-file-upload)',
+      demo1_title: '1. Giao diện Thanh ngang (Horizontal Bar - Theo mẫu ví dụ)',
+      demo1_field_title: 'Chọn file sao lưu SQL',
+      demo1_field_desc: 'Nhấn để chọn file .sql từ thiết bị của bạn',
+      select_btn: 'Chọn file',
+      demo2_title: '2. Chọn nhiều tệp đính kèm (Multi-file Attachments)',
+      demo2_field_title: 'Tải lên tài liệu đính kèm',
+      demo2_field_desc: 'Nhấn hoặc kéo thả các tệp PDF, ZIP, Docx từ thiết bị',
+      browse_btn: 'Duyệt tệp',
+      demo3_title: '3. Vùng Kéo thả hình ảnh (Vertical Dropzone)',
+      demo3_field_title: 'Kéo thả hình ảnh vào đây',
+      demo3_field_desc: 'Hỗ trợ tải lên nhiều hình ảnh cùng lúc',
+      select_image: 'Chọn ảnh',
+      demo4_title: '4. Upload Ảnh Đại Diện',
+      avatar_title: 'Ảnh đại diện',
+      avatar_desc: 'PNG, JPG tối đa 3MB'
     },
     input_otp: {
       title: 'Nhập Mã Xác Thực OTP (Input OTP Component)',
       subtitle: 'Gõ phím di chuyển mượt mà, phân nhóm ô slot, mask mode và caret nhấp nháy.',
       label_6digit: 'XÁC THỰC OTP 6 SỐ (3 - 3)',
-      label_pin: 'MÃ PIN BẢO MẬT (MASK MODE 4 Ô)'
+      label_pin: 'MÃ PIN BẢO MẬT (MASK MODE 4 Ô)',
+      invalid_title: '4. Trạng Thái Lỗi (Invalid) & Vô Hiệu Hóa (Disabled)',
+      invalid_desc: 'Cảnh báo sai mã hoặc đang chờ xử lý',
+      incorrect_code: 'Mã OTP không chính xác',
+      disabled_label: 'Đã vô hiệu hóa',
+      card_title: 'Card 18: Component Input OTP Cao Cấp (app-input-otp)',
+      demo1_title: '1. Mã Xác Thực OTP (6 số - Phân nhóm 3-3)',
+      demo1_desc: 'Xác thực giao dịch Web3 / Đăng nhập 2FA',
+      input_val: 'Giá trị nhập',
+      empty_val: '(trống)',
+      resend_code: 'Gửi lại mã',
+      demo2_title: '2. Mã PIN An Toàn (Mask Mode - 4 số)',
+      demo2_desc: 'Ẩn ký tự bằng ký tự bảo mật',
+      hide_pin: 'Ẩn mã PIN',
+      show_pin: 'Hiện mã PIN',
+      demo3_title: '3. Mã Voucher / Giới Thiệu (Chữ & Số)',
+      demo3_desc: 'Chấp nhận cả chữ cái và chữ số (A-Z, 0-9)',
+      paste_support: 'Hỗ trợ Ctrl+V (Paste)'
+    },
+    dropdown: {
+      title: 'Dropdown Menu & Voice Chat Morphing Card',
+      subtitle: 'Biến hình FLIP Morphing Card 268px -> 360px mượt mà với hiệu ứng vạch sóng âm thanh.',
+      card_title: 'Card 19: Component Dropdown Menu Cao Cấp (app-dropdown-menu)',
+      card_desc: 'Menu điều hướng thả xuống đa dạng: User Profile, Submenu cấp 2, Checkbox/Radio options, Trigger linh hoạt & hiệu ứng Glassmorphism.',
+      demo1_title: '1. Menu Tài Khoản & Profile (Header + User Info)',
+      demo1_desc: 'Tích hợp Avatar, Email, Status Badge và Đăng xuất',
+      demo2_title: '2. Checkbox & Radio Items (Cấu Hình Giao Diện)',
+      demo2_desc: 'Bật/tắt tùy chỉnh & lựa chọn chế độ duy nhất',
+      demo3_title: '3. Submenu Nhánh Cấp 2 (Nested Menu)',
+      demo3_desc: 'Menu nhô mượt sang phải khi hover hoặc click',
+      demo4_title: '4. Nút Trigger Icon & Vị Trí Placement',
+      demo4_desc: 'Trigger kiểu icon-only hoặc căn lề bottom-right',
+      customize_ui: 'Tùy chỉnh giao diện',
+      web3_actions: 'Thao tác Web3 Ví',
+      ghost_btn: 'Nút Ghost'
     },
     voice_chat: {
       title: 'Dropdown Menu & Voice Chat Morphing Card',
@@ -251,13 +301,104 @@ export const VI_TRANSLATIONS: TranslationDictionary = {
       title: 'Thanh Tiến Trình (Progress Bar & Gauge Components)',
       subtitle: 'Linear bar, Multi-segment storage, Animated stripe, SVG Circular & Semi-Gauge.',
       storage_label: 'DUNG LƯỢNG LƯU TRỮ DAPP',
-      gauge_label: 'TIẾN TRÌNH KHỐI BLOCKCHAIN'
+      gauge_label: 'TIẾN TRÌNH KHỐI BLOCKCHAIN',
+      card_title: 'Card 20: Component Progress Tiến Trình Cao Cấp (app-progress)',
+      card_desc: 'Thanh tiến trình đa dạng biến thể: Linear Bar, Steps, Multi-Segment, Striped Animated, Indeterminate, Circular Ring & Semi-Circle Gauge.',
+      demo1_title: '1. Các Kích Thước (xs, sm, md, lg, xl)',
+      demo1_desc: 'Độ cao linh hoạt phù hợp mọi ngữ cảnh UI',
+      demo2_title: '2. Màu Sắc & Gradient Thương Hiệu',
+      demo2_desc: 'Hệ màu status: Success, Warning, Danger, Info & Gradient',
+      demo3_title: '3. Striped, Animated & Indeterminate Mode',
+      demo3_desc: 'Hiệu ứng sọc cuộn & sóng chạy không định lượng',
+      demo4_title: '4. Phân Đoạn Steps & Multi-Segment Storage',
+      demo4_desc: 'Đồng hồ quy trình 4 bước & phân bổ lưu trữ ví',
+      demo5_title: '5. Điều Chỉnh Tiến Trình Real-Time',
+      demo5_desc: 'Kéo slider để thay đổi % trực tiếp',
+      demo6_title: '6. Circular Ring & Semi-Circle Gauge',
+      demo6_desc: 'Vòng tròn 360° & Bán nguyệt 180° SVG',
+      striped_animated: 'Striped Animated (Đang tải tệp lên IPFS...)',
+      indeterminate: 'Indeterminate (Đang đồng bộ khối Blockchain...)',
+      step_workflow: 'Quy trình xác nhận 4 bước (Step 3/4)',
+      storage_allocation: 'Phân bổ dung lượng lưu trữ ví DApp',
+      empty_label: 'Trống',
+      loading_state: 'Trạng thái tải dữ liệu Web3',
+      adjust_value: 'Điều chỉnh giá trị tiến trình',
+      circle_label: 'Vòng Tròn',
+      semicircle_label: 'Bán Nguyệt'
     },
     lang_showcase: {
       title: 'Dropdown Đa Ngôn Ngữ (Multi-Language i18n Dropdown)',
       subtitle: 'Hệ thống i18n sử dụng Angular Signals, tách file ngôn ngữ vi.ts / en.ts riêng biệt, lưu trữ key chuẩn hóa và phản hồi tức thì.',
       active_lang: 'Ngôn ngữ hiện tại:',
       select_placeholder: 'Chọn ngôn ngữ hệ thống'
+    },
+    avatar: {
+      title: 'Avatar & Avatar Group Component',
+      subtitle: 'Ảnh đại diện cá nhân, status indicator (online/offline), fallback initials & mảng đè lớp (Avatar Stack).',
+      single_label: 'Single Avatars & Status Dots',
+      group_label: 'Avatar Group Stack (+N counter)'
+    },
+    empty_state: {
+      title: 'Empty State Component',
+      subtitle: 'Khối dữ liệu rỗng với SVG vector minh họa mượt, tiêu đề, mô tả và nút hành động nhanh.',
+      sample_title: 'Chưa có giao dịch nào',
+      sample_desc: 'Địa chỉ ví của bạn chưa thực hiện bất kỳ giao dịch nạp/rút token nào trên chuỗi khối.',
+      action_btn: 'Nạp Token Ngay',
+      secondary_btn: 'Làm mới'
+    },
+    alert: {
+      title: 'Alert & Callout Component',
+      subtitle: 'Banner thông báo dính trang (Info, Success, Warning, Error) với các style Soft, Bordered & Accent.',
+      info_title: 'Cập nhật mạng lưới',
+      info_msg: 'BSC Testnet RPC đã được chuyển đổi sang Sentio Node để tối ưu tốc độ phản hồi.',
+      success_title: 'Giao dịch thành công',
+      success_msg: 'Đã Mint thành công 1,000 DAPP Token vào ví của bạn.',
+      warning_title: 'Cảnh báo biến động Gas',
+      warning_msg: 'Tốc độ mạng Ethereum Mainnet đang cao hơn 45 Gwei.',
+      error_title: 'Sai mạng lưới ví',
+      error_msg: 'Vui lòng chuyển mạng ví sang Arbitrum Sepolia để tiếp tục.'
+    },
+    drawer: {
+      title: 'Drawer (Off-Canvas Slide-Over) Component',
+      subtitle: 'Bảng trượt slide-over từ các lề màn hình (Phải, Trái, Dưới - Bottom Sheet trên Mobile).',
+      btn_right: 'Mở Drawer (Lề Phải)',
+      btn_left: 'Mở Drawer (Lề Trái)',
+      btn_bottom: 'Bottom Sheet (Mobile)',
+      panel_title: 'Chi Tiết Giao Dịch Web3',
+      panel_subtitle: 'Mã hash: 0x9a8f...4e1b'
+    },
+    stepper: {
+      title: 'Stepper (Multi-Step Timeline Workflow) Component',
+      subtitle: 'Quy trình nhiều bước tuyến tính với icon trạng thái dành cho các luồng giao dịch Web3.',
+      prev_btn: 'Bước Trước',
+      next_btn: 'Bước Tiếp Theo'
+    },
+    stat_card: {
+      title: 'Stat Card (KPI Dashboard Metrics)',
+      subtitle: 'Card chỉ số tài chính/DApp số lớn tích hợp icon gradient và trend phần trăm.',
+      tvl_title: 'Total Value Locked (TVL)',
+      tvl_subtitle: 'Tổng giá trị khóa trong Pool',
+      vol_title: 'Khối Lượng Giao Dịch 24h',
+      vol_subtitle: 'Khối lượng giao dịch trong 24h qua',
+      stakers_title: 'Người Dùng Staking Active',
+      stakers_subtitle: 'Người dùng đang Stake Token'
+    },
+    breadcrumb: {
+      title: 'Breadcrumb Navigation Component',
+      subtitle: 'Thanh điều hướng phân cấp đường dẫn với icon Home và router link.'
+    },
+    divider: {
+      title: 'Divider & Separator Component',
+      subtitle: 'Đường kẻ phân cách Solid, Dashed & Gradient hỗ trợ căn lề nhãn text.',
+      label_or: 'HOẶC KẾT NỐI BẰNG',
+      label_dashed: 'DASHED LINE',
+      label_gradient: 'GRADIENT GLOW'
+    },
+    copy_to_clipboard: {
+      title: 'Copy to Clipboard Component',
+      subtitle: 'Nút sao chép văn bản với feedback icon tích xanh phát sáng và toast notification.',
+      copy_btn: 'Sao chép ví',
+      copied_btn: 'Đã sao chép!'
     }
   },
   about: {

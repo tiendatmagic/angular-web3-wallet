@@ -45,7 +45,7 @@
         type="button"
         (click)="toggleWrap()"
         appRipple
-        [appTooltip]="isWrapped() ? 'Tắt ngắt dòng' : 'Tự động ngắt dòng'"
+        [appTooltip]="isWrapped() ? (translationService.currentLang() === 'vi' ? 'Tắt ngắt dòng' : 'Disable line wrap') : (translationService.currentLang() === 'vi' ? 'Tự động ngắt dòng' : 'Enable line wrap')"
         class="flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-slate-300/60 dark:bg-slate-800/90 hover:bg-slate-300/90 dark:hover:bg-slate-700/80 border border-slate-300/80 dark:border-slate-700/60 rounded-lg transition-all active:scale-95"
         [class.text-purple-700]="isWrapped()"
         [class.dark:text-purple-300]="isWrapped()"
@@ -61,7 +61,7 @@
           type="button"
           (click)="copyCode()"
           appRipple
-          [appTooltip]="copied() ? 'Đã sao chép!' : 'Sao chép mã'"
+          [appTooltip]="copied() ? ('cards.copy_to_clipboard.copied_btn' | translate) : ('cards.code_block.copy_btn' | translate)"
           class="flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-slate-300/60 dark:bg-slate-800/90 hover:bg-slate-300/90 dark:hover:bg-slate-700/80 border border-slate-300/80 dark:border-slate-700/60 rounded-lg transition-all active:scale-95"
           [class.text-emerald-700]="copied()"
           [class.dark:text-emerald-400]="copied()"
@@ -134,7 +134,7 @@
         class="flex items-center gap-1.5 px-4 py-1.5 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:text-purple-600 dark:hover:text-purple-300 bg-white/90 dark:bg-slate-800/90 hover:bg-white dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-full shadow-sm hover:shadow-md backdrop-blur-md transition-all duration-200 hover:scale-[1.02] active:scale-95 cursor-pointer"
       >
         <app-icon [name]="isCollapsed() ? 'chevron-down' : 'chevron-up'" class="w-3.5 h-3.5 text-purple-600 dark:text-purple-400"></app-icon>
-        <span>{{ isCollapsed() ? 'Xem đầy đủ mã' : 'Thu gọn mã' }}</span>
+        <span>{{ isCollapsed() ? (translationService.currentLang() === 'vi' ? 'Xem đầy đủ mã' : 'Show full code') : (translationService.currentLang() === 'vi' ? 'Thu gọn mã' : 'Collapse code') }}</span>
       </button>
     </div>
   }

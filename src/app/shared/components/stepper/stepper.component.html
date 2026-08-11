@@ -1,0 +1,77 @@
+<div
+  class="w-full"
+  [ngClass]="{
+    'flex items-start justify-between relative': orientation === 'horizontal',
+    'flex flex-col space-y-6': orientation === 'vertical'
+  }"
+>
+  @for (step of steps; track $index; let isLast = $last) {
+    <div
+      class="flex relative"
+      [ngClass]="{
+        'flex-1 flex-col items-center text-center group': orientation === 'horizontal',
+        'items-start space-x-4': orientation === 'vertical',
+        'cursor-pointer': clickable
+      }"
+      (click)="selectStep($index)"
+    >
+      <!-- Horizontal Connecting Line -->
+      @if (orientation === 'horizontal' && !isLast) {
+        <div
+          class="absolute top-5 left-[calc(50%+20px)] w-[calc(100%-40px)] h-0.5 z-0 transition-colors duration-300"
+          [ngClass]="{
+            'bg-purple-600 dark:bg-purple-500': $index < activeIndex,
+            'bg-slate-200 dark:bg-slate-800': $index >= activeIndex
+          }"
+        ></div>
+      }
+
+      <!-- Step Circle Badge -->
+      <div
+        class="relative z-10 w-10 h-10 rounded-full flex items-center justify-center font-extrabold text-sm transition-all duration-300 shrink-0 select-none shadow-sm"
+        [ngClass]="{
+          'bg-purple-600 dark:bg-purple-500 text-white shadow-purple-500/25 scale-105': getStepState($index) === 'completed',
+          'bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 text-white ring-4 ring-purple-500/20 shadow-purple-500/30 scale-110': getStepState($index) === 'active',
+          'bg-slate-100 dark:bg-slate-800/80 text-slate-400 dark:text-slate-500 border border-slate-200 dark:border-slate-700': getStepState($index) === 'pending',
+          'bg-rose-500 text-white shadow-rose-500/25': getStepState($index) === 'error'
+        }"
+      >
+        @if (getStepState($index) === 'completed') {
+          <app-icon name="check" class="w-5 h-5 stroke-[3]"></app-icon>
+        } @else if (getStepState($index) === 'error') {
+          <app-icon name="close" class="w-5 h-5 stroke-[3]"></app-icon>
+        } @else if (step.icon) {
+          <app-icon [name]="step.icon" class="w-5 h-5"></app-icon>
+        } @else {
+          <span>{{ $index + 1 }}</span>
+        }
+      </div>
+
+      <!-- Step Label & Subtitle -->
+      <div
+        [ngClass]="{
+          'mt-3': orientation === 'horizontal',
+          'pt-1.5': orientation === 'vertical'
+        }"
+      >
+        <span
+          class="block text-xs sm:text-sm font-extrabold tracking-tight transition-colors duration-200"
+          [ngClass]="{
+            'text-purple-600 dark:text-purple-400': getStepState($index) === 'active',
+            'text-slate-800 dark:text-slate-200': getStepState($index) === 'completed',
+            'text-slate-400 dark:text-slate-500': getStepState($index) === 'pending',
+            'text-rose-600 dark:text-rose-400': getStepState($index) === 'error'
+          }"
+        >
+          {{ step.label }}
+        </span>
+
+        @if (step.subtitle) {
+          <span class="block text-xs text-slate-400 dark:text-slate-500 font-semibold mt-0.5">
+            {{ step.subtitle }}
+          </span>
+        }
+      </div>
+    </div>
+  }
+</div>

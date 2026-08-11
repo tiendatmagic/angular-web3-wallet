@@ -5,12 +5,15 @@ import {
   EventEmitter,
   forwardRef,
   signal,
-  OnDestroy} from '@angular/core';
+  OnDestroy,
+  inject
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { IconComponent } from '../icon/icon.component';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { TranslationService } from '../../../core/services/translation.service';
 
 @Component({
   selector: 'app-custom-search-input',
@@ -32,12 +35,18 @@ import { debounceTime } from 'rxjs/operators';
     `,
   ]})
 export class CustomSearchInputComponent implements ControlValueAccessor, OnDestroy {
+  public translationService = inject(TranslationService);
   public readonly val = signal<string>('');
 
-  @Input() placeholder: string = 'Tìm kiếm...';
+  @Input() placeholder?: string;
   @Input() disabled: boolean = false;
   @Input() clearable: boolean = true;
   @Input() containerClass: string = 'w-full';
+
+  get effectivePlaceholder(): string {
+    if (this.placeholder !== undefined) return this.placeholder;
+    return this.translationService.translate('common.search');
+  }
   @Input() inputClass: string = 'w-full search-input';
   @Input() debounce: number = 0;
   @Input() loading: boolean = false;

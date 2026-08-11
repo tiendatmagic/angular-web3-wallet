@@ -32,6 +32,18 @@ export class ToastService {
     }, finalDuration);
   }
 
+  public success(message: string, duration?: number) {
+    this.showToast(message, 'success', duration);
+  }
+
+  public error(message: string, duration?: number) {
+    this.showToast(message, 'error', duration);
+  }
+
+  public warning(message: string, duration?: number) {
+    this.showToast(message, 'warning', duration);
+  }
+
   public removeToast(id: string) {
     this.toasts.update(current => current.filter(t => t.id !== id));
   }

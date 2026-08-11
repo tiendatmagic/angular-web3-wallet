@@ -1403,21 +1403,21 @@
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
         >
           <app-icon name="cloud-upload" class="w-3.5 h-3.5 text-primary" strokeWidth="2.5" />
-          Component File Upload Cao Cấp (app-file-upload)
+          {{ 'cards.file_upload.card_title' | translate }}
         </h4>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <!-- Demo 1: Horizontal Bar Layout (Giao diện chuẩn theo mẫu ví dụ) -->
+          <!-- Demo 1: Horizontal Bar Layout -->
           <div class="space-y-3">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-slate-700 dark:text-slate-300">1. Giao diện Thanh ngang (Horizontal Bar - Theo mẫu ví dụ)</span>
+              <span class="text-xs font-bold text-slate-700 dark:text-slate-300">{{ 'cards.file_upload.demo1_title' | translate }}</span>
               <app-badge variant="primary" rounded="full" size="sm">File Sao Lưu SQL</app-badge>
             </div>
             <app-file-upload
               variant="horizontal"
-              title="Chọn file sao lưu SQL"
-              subtitle="Nhấn để chọn file .sql từ thiết bị của bạn"
-              buttonText="Chọn file"
+              [title]="'cards.file_upload.demo1_field_title' | translate"
+              [subtitle]="'cards.file_upload.demo1_field_desc' | translate"
+              [buttonText]="'cards.file_upload.select_btn' | translate"
               icon="upload"
               accept=".sql"
               [maxSizeMB]="100"
@@ -1429,14 +1429,14 @@
           <!-- Demo 2: Horizontal Bar Multi-file -->
           <div class="space-y-3">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-slate-700 dark:text-slate-300">2. Chọn nhiều tệp đính kèm (Multi-file Attachments)</span>
+              <span class="text-xs font-bold text-slate-700 dark:text-slate-300">{{ 'cards.file_upload.demo2_title' | translate }}</span>
               <app-badge variant="secondary" rounded="full" size="sm">Tối đa 20MB</app-badge>
             </div>
             <app-file-upload
               variant="horizontal"
-              title="Tải lên tài liệu đính kèm"
-              subtitle="Nhấn hoặc kéo thả các tệp PDF, ZIP, Docx từ thiết bị"
-              buttonText="Duyệt tệp"
+              [title]="'cards.file_upload.demo2_field_title' | translate"
+              [subtitle]="'cards.file_upload.demo2_field_desc' | translate"
+              [buttonText]="'cards.file_upload.browse_btn' | translate"
               icon="file-text"
               accept="image/*, application/pdf, .zip, .json, .ts, .txt"
               [multiple]="true"
@@ -1450,14 +1450,14 @@
           <div class="col-span-full grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
             <div class="md:col-span-2 space-y-3">
               <div class="flex items-center justify-between">
-                <span class="text-xs font-bold text-slate-700 dark:text-slate-300">3. Vùng Kéo thả hình ảnh (Vertical Dropzone)</span>
+                <span class="text-xs font-bold text-slate-700 dark:text-slate-300">{{ 'cards.file_upload.demo3_title' | translate }}</span>
                 <app-badge variant="info" rounded="full" size="sm">Dropzone Mode</app-badge>
               </div>
               <app-file-upload
                 variant="dropzone"
-                title="Kéo thả hình ảnh vào đây"
-                subtitle="Hỗ trợ tải lên nhiều hình ảnh cùng lúc"
-                buttonText="Chọn ảnh"
+                [title]="'cards.file_upload.demo3_field_title' | translate"
+                [subtitle]="'cards.file_upload.demo3_field_desc' | translate"
+                [buttonText]="'cards.file_upload.select_image' | translate"
                 accept="image/*"
                 [multiple]="true"
                 [maxSizeMB]="5"
@@ -1466,13 +1466,13 @@
 
             <div class="space-y-3">
               <div class="flex items-center justify-between">
-                <span class="text-xs font-bold text-slate-700 dark:text-slate-300">4. Upload Ảnh Đại Diện</span>
+                <span class="text-xs font-bold text-slate-700 dark:text-slate-300">{{ 'cards.file_upload.demo4_title' | translate }}</span>
                 <app-badge variant="neutral" rounded="full" size="sm">Avatar Mode</app-badge>
               </div>
               <app-file-upload
                 variant="avatar"
-                title="Ảnh đại diện"
-                subtitle="PNG, JPG tối đa 3MB"
+                [title]="'cards.file_upload.avatar_title' | translate"
+                [subtitle]="'cards.file_upload.avatar_desc' | translate"
                 accept="image/*"
                 [multiple]="false"
                 [maxSizeMB]="3"
@@ -1489,7 +1489,7 @@
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
         >
           <app-icon name="lock" class="w-3.5 h-3.5 text-primary" strokeWidth="2.5" />
-          Component Input OTP Cao Cấp (app-input-otp)
+          {{ 'cards.input_otp.card_title' | translate }}
         </h4>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -1497,8 +1497,8 @@
           <div class="space-y-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
             <div class="flex items-center justify-between">
               <div>
-                <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">1. Mã Xác Thực OTP (6 số - Phân nhóm 3-3)</span>
-                <span class="text-[11px] text-slate-500 dark:text-slate-400">Xác thực giao dịch Web3 / Đăng nhập 2FA</span>
+                <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.input_otp.demo1_title' | translate }}</span>
+                <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.input_otp.demo1_desc' | translate }}</span>
               </div>
               <app-badge variant="primary" rounded="full" size="sm">Standard 3-3</app-badge>
             </div>
@@ -1516,7 +1516,7 @@
 
               <div class="flex items-center justify-between w-full pt-1">
                 <span class="text-xs font-mono text-slate-500">
-                  Giá trị nhập: <strong class="text-purple-600 dark:text-purple-400 font-bold">{{ demoOtpStandard() || '(trống)' }}</strong>
+                  {{ 'cards.input_otp.input_val' | translate }}: <strong class="text-purple-600 dark:text-purple-400 font-bold">{{ demoOtpStandard() || ('cards.input_otp.empty_val' | translate) }}</strong>
                 </span>
 
                 <button
@@ -1527,7 +1527,7 @@
                   class="text-xs"
                 >
                   <app-icon name="refresh" class="w-3 h-3 mr-1" />
-                  Gửi lại mã
+                  {{ 'cards.input_otp.resend_code' | translate }}
                 </button>
               </div>
             </div>
@@ -1537,8 +1537,8 @@
           <div class="space-y-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
             <div class="flex items-center justify-between">
               <div>
-                <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">2. Mã PIN An Toàn (Mask Mode - 4 số)</span>
-                <span class="text-[11px] text-slate-500 dark:text-slate-400">Ẩn ký tự bằng ký tự bảo mật</span>
+                <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.input_otp.demo2_title' | translate }}</span>
+                <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.input_otp.demo2_desc' | translate }}</span>
               </div>
               <app-badge variant="secondary" rounded="full" size="sm">PIN Mask</app-badge>
             </div>
@@ -1556,7 +1556,7 @@
 
               <div class="flex items-center justify-between w-full pt-1">
                 <span class="text-xs font-mono text-slate-500">
-                  Mã PIN: <strong class="text-emerald-600 dark:text-emerald-400 font-bold">{{ demoOtpMaskToggle() ? demoOtpPin() : '••••' }}</strong>
+                  PIN: <strong class="text-emerald-600 dark:text-emerald-400 font-bold">{{ demoOtpMaskToggle() ? demoOtpPin() : '••••' }}</strong>
                 </span>
 
                 <button
@@ -1565,7 +1565,7 @@
                   size="sm"
                   (click)="demoOtpMaskToggle.set(!demoOtpMaskToggle())"
                 >
-                  {{ demoOtpMaskToggle() ? 'Ẩn mã PIN' : 'Hiện mã PIN' }}
+                  {{ demoOtpMaskToggle() ? ('cards.input_otp.hide_pin' | translate) : ('cards.input_otp.show_pin' | translate) }}
                 </button>
               </div>
             </div>
@@ -1575,8 +1575,8 @@
           <div class="space-y-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
             <div class="flex items-center justify-between">
               <div>
-                <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">3. Mã Voucher / Giới Thiệu (Chữ & Số)</span>
-                <span class="text-[11px] text-slate-500 dark:text-slate-400">Chấp nhận cả chữ cái và chữ số (A-Z, 0-9)</span>
+                <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.input_otp.demo3_title' | translate }}</span>
+                <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.input_otp.demo3_desc' | translate }}</span>
               </div>
               <app-badge variant="info" rounded="full" size="sm">Alphanumeric</app-badge>
             </div>
@@ -1593,10 +1593,10 @@
 
               <div class="flex items-center justify-between w-full pt-1">
                 <span class="text-xs font-mono text-slate-500">
-                  Ref Code: <strong class="text-sky-600 dark:text-sky-400 font-bold">{{ demoOtpAlpha() || '(trống)' }}</strong>
+                  Ref Code: <strong class="text-sky-600 dark:text-sky-400 font-bold">{{ demoOtpAlpha() || ('cards.input_otp.empty_val' | translate) }}</strong>
                 </span>
 
-                <span class="text-[11px] text-slate-400">Hỗ trợ Ctrl+V (Paste)</span>
+                <span class="text-[11px] text-slate-400">{{ 'cards.input_otp.paste_support' | translate }}</span>
               </div>
             </div>
           </div>
@@ -1605,15 +1605,15 @@
           <div class="space-y-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
             <div class="flex items-center justify-between">
               <div>
-                <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">4. Trạng Thái Lỗi (Invalid) & Vô Hiệu Hóa (Disabled)</span>
-                <span class="text-[11px] text-slate-500 dark:text-slate-400">Cảnh báo sai mã hoặc đang chờ xử lý</span>
+                <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.otp.invalid_title' | translate }}</span>
+                <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.otp.invalid_desc' | translate }}</span>
               </div>
               <app-badge variant="danger" rounded="full" size="sm">Invalid / Disabled</app-badge>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
               <div class="space-y-1.5">
-                <span class="text-[11px] font-semibold text-rose-500 block">Mã OTP không chính xác</span>
+                <span class="text-[11px] font-semibold text-rose-500 block">{{ 'cards.otp.incorrect_code' | translate }}</span>
                 <app-input-otp
                   [ngModel]="demoOtpError()"
                   (ngModelChange)="demoOtpError.set($event)"
@@ -1625,7 +1625,7 @@
               </div>
 
               <div class="space-y-1.5">
-                <span class="text-[11px] font-semibold text-slate-400 block">Đã vô hiệu hóa</span>
+                <span class="text-[11px] font-semibold text-slate-400 block">{{ 'cards.otp.disabled_label' | translate }}</span>
                 <app-input-otp
                   [ngModel]="demoOtpDisabled()"
                   [length]="6"
@@ -1645,11 +1645,11 @@
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200/80 dark:border-slate-800/80">
             <div>
               <div class="flex items-center gap-2.5">
-                <h3 class="text-base font-extrabold text-slate-900 dark:text-white">Card 19: Component Dropdown Menu Cao Cấp (app-dropdown-menu)</h3>
+                <h3 class="text-base font-extrabold text-slate-900 dark:text-white">{{ 'cards.dropdown.card_title' | translate }}</h3>
                 <app-badge variant="primary" rounded="full" size="sm">Shadcn Space Dropdown</app-badge>
               </div>
               <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                Menu điều hướng thả xuống đa dạng: User Profile, Submenu cấp 2, Checkbox/Radio options, Trigger linh hoạt & hiệu ứng Glassmorphism.
+                {{ 'cards.dropdown.card_desc' | translate }}
               </p>
             </div>
 
@@ -1666,8 +1666,8 @@
             <div class="space-y-3 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
               <div class="flex items-center justify-between">
                 <div>
-                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">1. Menu Tài Khoản & Profile (Header + User Info)</span>
-                  <span class="text-[11px] text-slate-500 dark:text-slate-400">Tích hợp Avatar, Email, Status Badge và Đăng xuất</span>
+                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.dropdown.demo1_title' | translate }}</span>
+                  <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.dropdown.demo1_desc' | translate }}</span>
                 </div>
                 <app-badge variant="success" rounded="full" size="sm">Profile Menu</app-badge>
               </div>
@@ -1700,8 +1700,8 @@
             <div class="space-y-3 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
               <div class="flex items-center justify-between">
                 <div>
-                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">2. Checkbox & Radio Items (Cấu Hình Giao Diện)</span>
-                  <span class="text-[11px] text-slate-500 dark:text-slate-400">Bật/tắt tùy chỉnh & lựa chọn chế độ duy nhất</span>
+                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.dropdown.demo2_title' | translate }}</span>
+                  <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.dropdown.demo2_desc' | translate }}</span>
                 </div>
                 <app-badge variant="info" rounded="full" size="sm">Config Items</app-badge>
               </div>
@@ -1709,7 +1709,7 @@
               <div class="flex items-center gap-3 pt-2">
                 <app-dropdown-menu
                   [items]="demoDisplayMenuItems"
-                  triggerText="Tùy chỉnh giao diện"
+                  [triggerText]="'cards.dropdown.customize_ui' | translate"
                   triggerIcon="filter"
                   triggerVariant="secondary"
                   triggerSize="md"
@@ -1725,8 +1725,8 @@
             <div class="space-y-3 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
               <div class="flex items-center justify-between">
                 <div>
-                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">3. Submenu Nhánh Cấp 2 (Nested Menu)</span>
-                  <span class="text-[11px] text-slate-500 dark:text-slate-400">Menu nhô mượt sang phải khi hover hoặc click</span>
+                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.dropdown.demo3_title' | translate }}</span>
+                  <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.dropdown.demo3_desc' | translate }}</span>
                 </div>
                 <app-badge variant="warning" rounded="full" size="sm">Nested Submenu</app-badge>
               </div>
@@ -1734,7 +1734,7 @@
               <div class="flex items-center gap-3 pt-2">
                 <app-dropdown-menu
                   [items]="demoWeb3ActionItems"
-                  triggerText="Thao tác Web3 Ví"
+                  [triggerText]="'cards.dropdown.web3_actions' | translate"
                   triggerIcon="bolt"
                   triggerVariant="primary"
                   triggerSize="md"
@@ -1749,8 +1749,8 @@
             <div class="space-y-3 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
               <div class="flex items-center justify-between">
                 <div>
-                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">4. Nút Trigger Icon & Vị Trí Placement</span>
-                  <span class="text-[11px] text-slate-500 dark:text-slate-400">Trigger kiểu icon-only hoặc căn lề bottom-right</span>
+                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.dropdown.demo4_title' | translate }}</span>
+                  <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.dropdown.demo4_desc' | translate }}</span>
                 </div>
                 <app-badge variant="primary" rounded="full" size="sm">Icon & Placements</app-badge>
               </div>
@@ -1768,7 +1768,7 @@
 
                 <app-dropdown-menu
                   [items]="demoProfileMenuItems"
-                  triggerText="Nút Ghost"
+                  [triggerText]="'cards.dropdown.ghost_btn' | translate"
                   triggerIcon="chevron-down"
                   triggerVariant="ghost"
                   triggerSize="md"
@@ -1820,11 +1820,11 @@
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200/80 dark:border-slate-800/80">
             <div>
               <div class="flex items-center gap-2.5">
-                <h3 class="text-base font-extrabold text-slate-900 dark:text-white">Card 20: Component Progress Tiến Trình Cao Cấp (app-progress)</h3>
+                <h3 class="text-base font-extrabold text-slate-900 dark:text-white">{{ 'cards.progress.card_title' | translate }}</h3>
                 <app-badge variant="primary" rounded="full" size="sm">Shadcn Space Progress</app-badge>
               </div>
               <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                Thanh tiến trình đa dạng biến thể: Linear Bar, Steps, Multi-Segment, Striped Animated, Indeterminate, Circular Ring & Semi-Circle Gauge.
+                {{ 'cards.progress.card_desc' | translate }}
               </p>
             </div>
 
@@ -1845,8 +1845,8 @@
             <div class="space-y-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
               <div class="flex items-center justify-between">
                 <div>
-                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">1. Các Kích Thước (xs, sm, md, lg, xl)</span>
-                  <span class="text-[11px] text-slate-500 dark:text-slate-400">Độ cao linh hoạt phù hợp mọi ngữ cảnh UI</span>
+                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.progress.demo1_title' | translate }}</span>
+                  <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.progress.demo1_desc' | translate }}</span>
                 </div>
                 <app-badge variant="primary" rounded="full" size="sm">5 Sizes</app-badge>
               </div>
@@ -1864,8 +1864,8 @@
             <div class="space-y-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
               <div class="flex items-center justify-between">
                 <div>
-                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">2. Màu Sắc & Gradient Thương Hiệu</span>
-                  <span class="text-[11px] text-slate-500 dark:text-slate-400">Hệ màu status: Success, Warning, Danger, Info & Gradient</span>
+                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.progress.demo2_title' | translate }}</span>
+                  <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.progress.demo2_desc' | translate }}</span>
                 </div>
                 <app-badge variant="info" rounded="full" size="sm">Variants</app-badge>
               </div>
@@ -1884,8 +1884,8 @@
             <div class="space-y-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
               <div class="flex items-center justify-between">
                 <div>
-                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">3. Striped, Animated & Indeterminate Mode</span>
-                  <span class="text-[11px] text-slate-500 dark:text-slate-400">Hiệu ứng sọc cuộn & sóng chạy không định lượng</span>
+                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.progress.demo3_title' | translate }}</span>
+                  <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.progress.demo3_desc' | translate }}</span>
                 </div>
                 <app-badge variant="warning" rounded="full" size="sm">Animations</app-badge>
               </div>
@@ -1901,7 +1901,7 @@
                 />
 
                 <app-progress
-                  label="Striped Animated (Đang tải tệp lên IPFS...)"
+                  [label]="'cards.progress.striped_animated' | translate"
                   [value]="78"
                   variant="info"
                   size="lg"
@@ -1912,7 +1912,7 @@
                 />
 
                 <app-progress
-                  label="Indeterminate (Đang đồng bộ khối Blockchain...)"
+                  [label]="'cards.progress.indeterminate' | translate"
                   [indeterminate]="true"
                   variant="gradient"
                   size="md"
@@ -1924,15 +1924,15 @@
             <div class="space-y-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
               <div class="flex items-center justify-between">
                 <div>
-                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">4. Phân Đoạn Steps & Multi-Segment Storage</span>
-                  <span class="text-[11px] text-slate-500 dark:text-slate-400">Đồng hồ quy trình 4 bước & phân bổ lưu trữ ví</span>
+                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.progress.demo4_title' | translate }}</span>
+                  <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.progress.demo4_desc' | translate }}</span>
                 </div>
                 <app-badge variant="success" rounded="full" size="sm">Steps & Segments</app-badge>
               </div>
 
               <div class="space-y-4 pt-1">
                 <app-progress
-                  label="Quy trình xác nhận 4 bước (Step 3/4)"
+                  [label]="'cards.progress.step_workflow' | translate"
                   [value]="75"
                   [steps]="4"
                   variant="primary"
@@ -1942,7 +1942,7 @@
 
                 <div class="space-y-2">
                   <app-progress
-                    label="Phân bổ dung lượng lưu trữ ví DApp"
+                    [label]="'cards.progress.storage_allocation' | translate"
                     [segments]="demoProgressSegments"
                     size="lg"
                   />
@@ -1961,7 +1961,7 @@
                     </div>
                     <div class="flex items-center gap-1.5">
                       <span class="w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-700 inline-block"></span>
-                      <span>Trống (20%)</span>
+                      <span>{{ 'cards.progress.empty_label' | translate }} (20%)</span>
                     </div>
                   </div>
                 </div>
@@ -1972,15 +1972,15 @@
             <div class="space-y-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60 col-span-1">
               <div class="flex items-center justify-between">
                 <div>
-                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">5. Điều Chỉnh Tiến Trình Real-Time</span>
-                  <span class="text-[11px] text-slate-500 dark:text-slate-400">Kéo slider để thay đổi % trực tiếp</span>
+                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.progress.demo5_title' | translate }}</span>
+                  <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.progress.demo5_desc' | translate }}</span>
                 </div>
                 <app-badge variant="secondary" rounded="full" size="sm">Interactive</app-badge>
               </div>
 
               <div class="space-y-4 pt-1">
                 <app-progress
-                  label="Trạng thái tải dữ liệu Web3"
+                  [label]="'cards.progress.loading_state' | translate"
                   [value]="demoProgressValue()"
                   variant="primary"
                   size="lg"
@@ -1992,7 +1992,7 @@
 
                 <div class="space-y-1.5">
                   <div class="flex justify-between text-xs text-slate-500">
-                    <span>Điều chỉnh giá trị tiến trình:</span>
+                    <span>{{ 'cards.progress.adjust_value' | translate }}:</span>
                     <strong class="font-mono text-purple-600 dark:text-purple-400">{{ demoProgressValue() }}%</strong>
                   </div>
                   <app-custom-slider
@@ -2010,8 +2010,8 @@
             <div class="space-y-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60 col-span-1">
               <div class="flex items-center justify-between">
                 <div>
-                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">6. Circular Ring & Semi-Circle Gauge</span>
-                  <span class="text-[11px] text-slate-500 dark:text-slate-400">Vòng tròn 360° & Bán nguyệt 180° SVG</span>
+                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.progress.demo6_title' | translate }}</span>
+                  <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.progress.demo6_desc' | translate }}</span>
                 </div>
                 <app-badge variant="ultra" rounded="full" size="sm">SVG Gauges</app-badge>
               </div>
@@ -2022,7 +2022,7 @@
                   [value]="demoProgressValue()"
                   variant="primary"
                   size="md"
-                  label="Vòng Tròn"
+                  [label]="'cards.progress.circle_label' | translate"
                   [showValue]="true"
                 />
 
@@ -2031,7 +2031,7 @@
                   [value]="demoProgressValue()"
                   variant="success"
                   size="md"
-                  label="Bán Nguyệt"
+                  [label]="'cards.progress.semicircle_label' | translate"
                   [showValue]="true"
                 />
               </div>
@@ -2136,6 +2136,326 @@
           </div>
         </div>
       </div>
+    <!-- Card 22: Avatar & Avatar Group Showcase -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-6">
+      <div app-card>
+        <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 flex items-center gap-2">
+          <app-icon name="user" class="w-3.5 h-3.5 text-primary" />
+          {{ 'cards.avatar.title' | translate }}
+        </h4>
+        <p class="text-xs text-slate-400 dark:text-slate-500 mb-5">
+          {{ 'cards.avatar.subtitle' | translate }}
+        </p>
+
+        <div class="space-y-6">
+          <!-- Single Avatars with Sizes & Status -->
+          <div class="space-y-2">
+            <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider">{{ 'cards.avatar.single_label' | translate }}</label>
+            <div class="flex flex-wrap items-center gap-4 pt-1">
+              <app-avatar size="xs" name="Satoshi Nakamoto" status="online" />
+              <app-avatar size="sm" name="Vitalik Buterin" status="busy" />
+              <app-avatar size="md" name="Elena Rostova" status="away" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&auto=format&fit=crop&q=80" />
+              <app-avatar size="lg" name="Nguyễn Tiến Đạt" status="online" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" />
+              <app-avatar size="xl" name="Marcus Vance" shape="square" status="online" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80" />
+            </div>
+          </div>
+
+          <!-- Avatar Group Stack -->
+          <div class="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-800/40">
+            <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider">{{ 'cards.avatar.group_label' | translate }}</label>
+            <div class="flex flex-col gap-3 pt-1">
+              <app-avatar [avatars]="demoAvatarList" [max]="4" size="md" />
+              <app-avatar [avatars]="demoAvatarList" [max]="3" size="lg" shape="square" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 23: Empty State Showcase -->
+      <div app-card>
+        <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 flex items-center gap-2">
+          <app-icon name="search" class="w-3.5 h-3.5 text-primary" />
+          {{ 'cards.empty_state.title' | translate }}
+        </h4>
+        <p class="text-xs text-slate-400 dark:text-slate-500 mb-5">
+          {{ 'cards.empty_state.subtitle' | translate }}
+        </p>
+
+        <app-empty-state
+          iconName="wallet"
+          [title]="'cards.empty_state.sample_title' | translate"
+          [description]="'cards.empty_state.sample_desc' | translate"
+          [actionText]="'cards.empty_state.action_btn' | translate"
+          [secondaryActionText]="'cards.empty_state.secondary_btn' | translate"
+          size="md"
+          (action)="stateService.showToast(translationService.translate('cards.empty_state.action_btn'), 'success')"
+          (secondaryAction)="stateService.showToast(translationService.translate('cards.empty_state.secondary_btn'), 'success')"
+        />
+      </div>
+    </div>
+
+    <!-- Card 24: Alert & Callout Showcase -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-6">
+      <div app-card>
+        <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 flex items-center gap-2">
+          <app-icon name="alert" class="w-3.5 h-3.5 text-primary" />
+          {{ 'cards.alert.title' | translate }}
+        </h4>
+        <p class="text-xs text-slate-400 dark:text-slate-500 mb-5">
+          {{ 'cards.alert.subtitle' | translate }}
+        </p>
+
+        <div class="space-y-3">
+          <app-alert
+            type="info"
+            variant="soft"
+            [title]="'cards.alert.info_title' | translate"
+            [message]="'cards.alert.info_msg' | translate"
+            [dismissible]="true"
+          />
+          <app-alert
+            type="success"
+            variant="accent"
+            [title]="'cards.alert.success_title' | translate"
+            [message]="'cards.alert.success_msg' | translate"
+            [dismissible]="true"
+          />
+          <app-alert
+            type="warning"
+            variant="bordered"
+            [title]="'cards.alert.warning_title' | translate"
+            [message]="'cards.alert.warning_msg' | translate"
+            [dismissible]="true"
+          />
+          <app-alert
+            type="error"
+            variant="soft"
+            [title]="'cards.alert.error_title' | translate"
+            [message]="'cards.alert.error_msg' | translate"
+            [dismissible]="true"
+          />
+        </div>
+      </div>
+
+      <!-- Card 25: Drawer / Off-canvas Slide-over Showcase -->
+      <div app-card>
+        <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 flex items-center gap-2">
+          <app-icon name="sidebar" class="w-3.5 h-3.5 text-primary" />
+          {{ 'cards.drawer.title' | translate }}
+        </h4>
+        <p class="text-xs text-slate-400 dark:text-slate-500 mb-5">
+          {{ 'cards.drawer.subtitle' | translate }}
+        </p>
+
+        <div class="space-y-4">
+          <div class="p-4 rounded-xl bg-slate-50/50 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 space-y-3">
+            <span class="text-xs font-bold text-slate-500 dark:text-slate-400 block">Click button to open Drawer:</span>
+            <div class="flex flex-wrap gap-2.5">
+              <button app-button variant="primary" size="md" (click)="openDemoDrawer('right')">
+                <app-icon name="chevron-right" class="w-4 h-4" />
+                {{ 'cards.drawer.btn_right' | translate }}
+              </button>
+              <button app-button variant="cancel" size="md" (click)="openDemoDrawer('left')">
+                <app-icon name="chevron-left" class="w-4 h-4" />
+                {{ 'cards.drawer.btn_left' | translate }}
+              </button>
+              <button app-button variant="cancel" size="md" (click)="openDemoDrawer('bottom')">
+                <app-icon name="chevron-down" class="w-4 h-4" />
+                {{ 'cards.drawer.btn_bottom' | translate }}
+              </button>
+            </div>
+          </div>
+
+          <div class="text-xs text-slate-400 space-y-1 font-semibold">
+            <div class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+              Backdrop Overlay `bg-black/40`
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-purple-500"></span>
+              ESC key or outside click listener
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 26: Stepper & Multi-step Workflow Showcase -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-6">
+      <div app-card class="lg:col-span-2 overflow-hidden">
+        <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 flex items-center gap-2">
+          <app-icon name="layers" class="w-3.5 h-3.5 text-primary" />
+          {{ 'cards.stepper.title' | translate }}
+        </h4>
+        <p class="text-xs text-slate-400 dark:text-slate-500 mb-5">
+          {{ 'cards.stepper.subtitle' | translate }}
+        </p>
+
+        <div class="space-y-6">
+          <app-stepper
+            [steps]="demoStepperSteps()"
+            [activeIndex]="demoStepperActive()"
+            [clickable]="true"
+            (activeIndexChange)="demoStepperActive.set($event)"
+          />
+
+          <div class="flex items-center justify-between pt-4 border-t border-slate-200/50 dark:border-slate-800/50">
+            <button
+              app-button
+              variant="cancel"
+              size="sm"
+              [disabled]="demoStepperActive() <= 0"
+              (click)="demoStepperActive.update(v => Math.max(0, v - 1))"
+            >
+              &larr; {{ 'cards.stepper.prev_btn' | translate }}
+            </button>
+
+            <span class="text-xs font-mono text-slate-400">
+              Active Step: {{ demoStepperActive() + 1 }} / {{ demoStepperSteps().length }}
+            </span>
+
+            <button
+              app-button
+              variant="primary"
+              size="sm"
+              [disabled]="demoStepperActive() >= demoStepperSteps().length - 1"
+              (click)="demoStepperActive.update(v => Math.min(demoStepperSteps().length - 1, v + 1))"
+            >
+              {{ 'cards.stepper.next_btn' | translate }} &rarr;
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 27: Stat Card Showcase -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 pt-6">
+      <app-stat-card
+        [title]="'cards.stat_card.tvl_title' | translate"
+        value="$12,845,920"
+        [subtitle]="'cards.stat_card.tvl_subtitle' | translate"
+        iconName="wallet"
+        changeValue="+14.2%"
+        changeType="increase"
+        iconBgGradient="from-purple-600 to-violet-600"
+      />
+      <app-stat-card
+        [title]="'cards.stat_card.vol_title' | translate"
+        value="$3,412,050"
+        [subtitle]="'cards.stat_card.vol_subtitle' | translate"
+        iconName="bolt"
+        changeValue="-2.4%"
+        changeType="decrease"
+        iconBgGradient="from-indigo-600 to-blue-600"
+      />
+      <app-stat-card
+        [title]="'cards.stat_card.stakers_title' | translate"
+        value="4,892 Users"
+        [subtitle]="'cards.stat_card.stakers_subtitle' | translate"
+        iconName="user"
+        changeValue="+8.7%"
+        changeType="increase"
+        iconBgGradient="from-emerald-600 to-teal-600"
+      />
+    </div>
+
+    <!-- Card 28 & 29: Breadcrumb & Divider Showcase -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-6">
+      <!-- Card 28: Breadcrumb -->
+      <div app-card>
+        <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 flex items-center gap-2">
+          <app-icon name="external" class="w-3.5 h-3.5 text-primary" />
+          {{ 'cards.breadcrumb.title' | translate }}
+        </h4>
+        <p class="text-xs text-slate-400 dark:text-slate-500 mb-4">
+          {{ 'cards.breadcrumb.subtitle' | translate }}
+        </p>
+
+        <div class="space-y-4">
+          <app-breadcrumb [items]="demoBreadcrumbItems" separatorIcon="chevron-right" />
+          <app-breadcrumb [items]="demoBreadcrumbItems" separatorIcon="slash" [showHome]="false" />
+        </div>
+      </div>
+
+      <!-- Card 29: Divider -->
+      <div app-card>
+        <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 flex items-center gap-2">
+          <app-icon name="code" class="w-3.5 h-3.5 text-primary" />
+          {{ 'cards.divider.title' | translate }}
+        </h4>
+        <p class="text-xs text-slate-400 dark:text-slate-500 mb-4">
+          {{ 'cards.divider.subtitle' | translate }}
+        </p>
+
+        <div class="space-y-3">
+          <app-divider [label]="'cards.divider.label_or' | translate" labelAlign="center" variant="solid" />
+          <app-divider [label]="'cards.divider.label_dashed' | translate" labelAlign="left" variant="dashed" />
+          <app-divider [label]="'cards.divider.label_gradient' | translate" labelAlign="right" variant="gradient" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 30: Copy to Clipboard Showcase -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-6">
+      <div app-card class="lg:col-span-2">
+        <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 flex items-center gap-2">
+          <app-icon name="copy" class="w-3.5 h-3.5 text-primary" />
+          {{ 'cards.copy_to_clipboard.title' | translate }}
+        </h4>
+        <p class="text-xs text-slate-400 dark:text-slate-500 mb-4">
+          {{ 'cards.copy_to_clipboard.subtitle' | translate }}
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="flex items-center justify-between p-3.5 rounded-xl bg-slate-50/60 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40">
+            <span class="text-xs font-mono text-slate-600 dark:text-slate-300 truncate pr-2">0x71C7656EC7ab88b098defB751B7401B5f6d8976F</span>
+            <app-copy-to-clipboard textToCopy="0x71C7656EC7ab88b098defB751B7401B5f6d8976F" [label]="'cards.copy_to_clipboard.copy_btn' | translate" size="sm" />
+          </div>
+
+          <div class="flex items-center justify-between p-3.5 rounded-xl bg-slate-50/60 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40">
+            <span class="text-xs font-mono text-slate-600 dark:text-slate-300 truncate pr-2">TX #0x9a8f1234567890abcdef1234567890abcdef4e1b</span>
+            <app-copy-to-clipboard textToCopy="0x9a8f1234567890abcdef1234567890abcdef4e1b" size="sm" />
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+</div>
 </main>
+
+<!-- Standalone Drawer Instance -->
+<app-drawer
+  [(isOpen)]="demoDrawerOpen"
+  [position]="demoDrawerPosition()"
+  [title]="'cards.drawer.panel_title' | translate"
+  [subtitle]="'cards.drawer.panel_subtitle' | translate"
+>
+  <div class="space-y-4">
+    <app-alert type="success" [title]="'cards.alert.success_title' | translate" [message]="'cards.alert.success_msg' | translate" />
+
+    <div class="space-y-3 text-xs">
+      <div class="flex justify-between py-2 border-b border-slate-100 dark:border-slate-800">
+        <span class="text-slate-400 font-bold">From:</span>
+        <span class="font-mono font-bold text-slate-700 dark:text-slate-200">0x71C7...976F</span>
+      </div>
+      <div class="flex justify-between py-2 border-b border-slate-100 dark:border-slate-800">
+        <span class="text-slate-400 font-bold">To:</span>
+        <span class="font-mono font-bold text-slate-700 dark:text-slate-200">0x88F1...11A2</span>
+      </div>
+      <div class="flex justify-between py-2 border-b border-slate-100 dark:border-slate-800">
+        <span class="text-slate-400 font-bold">Amount:</span>
+        <span class="font-black text-purple-600 dark:text-purple-400 text-sm">1.5 ETH</span>
+      </div>
+      <div class="flex justify-between py-2 border-b border-slate-100 dark:border-slate-800">
+        <span class="text-slate-400 font-bold">Gas Fee:</span>
+        <span class="font-mono text-slate-600 dark:text-slate-400">0.0012 ETH ($3.45)</span>
+      </div>
+    </div>
+  </div>
+
+  <div drawer-footer class="flex items-center justify-end gap-3">
+    <button app-button variant="cancel" size="md" (click)="demoDrawerOpen.set(false)">{{ 'action.cancel' | translate }}</button>
+    <button app-button variant="primary" size="md" (click)="stateService.showToast('Opened Explorer', 'success')">{{ 'header.view_explorer' | translate }}</button>
+  </div>
+</app-drawer>
+

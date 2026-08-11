@@ -7,8 +7,8 @@
   <button
     (click)="stateService.toggleSidebarCollapse()"
     class="absolute -right-3.5 top-8 sm:top-10 -translate-y-1/2 z-10 w-7 h-7 rounded-full bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-md flex items-center justify-center cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-primary transition-all duration-200 active:scale-95"
-    [attr.aria-label]="stateService.isSidebarCollapsed() ? 'Mở rộng sidebar' : 'Thu nhỏ sidebar'"
-    [title]="stateService.isSidebarCollapsed() ? 'Mở rộng sidebar' : 'Thu nhỏ sidebar'"
+    [attr.aria-label]="stateService.isSidebarCollapsed() ? (translationService.currentLang() === 'vi' ? 'Mở rộng sidebar' : 'Expand sidebar') : (translationService.currentLang() === 'vi' ? 'Thu nhỏ sidebar' : 'Collapse sidebar')"
+    [title]="stateService.isSidebarCollapsed() ? (translationService.currentLang() === 'vi' ? 'Mở rộng sidebar' : 'Expand sidebar') : (translationService.currentLang() === 'vi' ? 'Thu nhỏ sidebar' : 'Collapse sidebar')"
   >
     <app-icon
       [name]="stateService.isSidebarCollapsed() ? 'chevron-right' : 'chevron-left'"

@@ -1,0 +1,45 @@
+<!-- Horizontal Divider -->
+@if (orientation === 'horizontal') {
+  <div class="relative flex items-center my-4 w-full">
+    <!-- Left Line -->
+    <div
+      class="flex-1 transition-colors duration-200"
+      [ngClass]="{
+        'border-t border-slate-200/80 dark:border-slate-800/80': variant === 'solid',
+        'border-t border-dashed border-slate-300 dark:border-slate-800': variant === 'dashed',
+        'h-[1px] bg-gradient-to-r from-transparent via-purple-500/40 to-indigo-500/40': variant === 'gradient',
+        'shrink-0 w-8': label && labelAlign === 'left'
+      }"
+    ></div>
+
+    <!-- Optional Label -->
+    @if (label) {
+      <span class="px-3 text-xs font-black uppercase tracking-wider text-slate-400 dark:text-slate-500 select-none shrink-0">
+        {{ label }}
+      </span>
+    }
+
+    <!-- Right Line -->
+    <div
+      class="flex-1 transition-colors duration-200"
+      [ngClass]="{
+        'border-t border-slate-200/80 dark:border-slate-800/80': variant === 'solid',
+        'border-t border-dashed border-slate-300 dark:border-slate-800': variant === 'dashed',
+        'h-[1px] bg-gradient-to-r from-indigo-500/40 via-purple-500/40 to-transparent': variant === 'gradient',
+        'shrink-0 w-8': label && labelAlign === 'right'
+      }"
+    ></div>
+  </div>
+}
+
+<!-- Vertical Divider -->
+@if (orientation === 'vertical') {
+  <div
+    class="inline-block self-stretch mx-3 transition-colors duration-200"
+    [ngClass]="{
+      'border-r border-slate-200/80 dark:border-slate-800/80': variant === 'solid',
+      'border-r border-dashed border-slate-300 dark:border-slate-800': variant === 'dashed',
+      'w-[1px] bg-gradient-to-b from-transparent via-purple-500/40 to-transparent': variant === 'gradient'
+    }"
+  ></div>
+}

@@ -231,13 +231,63 @@ export const EN_TRANSLATIONS: TranslationDictionary = {
       title: 'File Upload Drag & Drop',
       subtitle: 'Drag and drop files, live image previews, and simulated uploading progress.',
       drag_drop_text: 'Drag & drop files here or click to browse',
-      support_text: 'Supports PNG, JPG, PDF, ZIP files up to 10MB'
+      support_text: 'Supports PNG, JPG, PDF, ZIP files up to 10MB',
+      card_title: 'Card 16: Premium File Upload Component (app-file-upload)',
+      demo1_title: '1. Horizontal Bar Layout (Standard Design)',
+      demo1_field_title: 'Select SQL backup file',
+      demo1_field_desc: 'Click to select .sql file from your device',
+      select_btn: 'Select file',
+      demo2_title: '2. Multi-file Attachments',
+      demo2_field_title: 'Upload attachment documents',
+      demo2_field_desc: 'Click or drag PDF, ZIP, Docx files from device',
+      browse_btn: 'Browse files',
+      demo3_title: '3. Vertical Image Dropzone',
+      demo3_field_title: 'Drag & drop images here',
+      demo3_field_desc: 'Supports uploading multiple images at once',
+      select_image: 'Select image',
+      demo4_title: '4. Avatar Profile Picture Upload',
+      avatar_title: 'Profile avatar',
+      avatar_desc: 'PNG, JPG max 3MB'
     },
     input_otp: {
       title: 'Input OTP Component',
       subtitle: 'Smooth key navigation, slot grouping, mask mode, and blinking caret.',
       label_6digit: '6-DIGIT OTP (3 - 3 GROUP)',
-      label_pin: 'SECURITY PIN (4-SLOT MASK MODE)'
+      label_pin: 'SECURITY PIN (4-SLOT MASK MODE)',
+      invalid_title: '4. Invalid & Disabled States',
+      invalid_desc: 'Warning for invalid code or pending state',
+      incorrect_code: 'Incorrect OTP code',
+      disabled_label: 'Disabled',
+      card_title: 'Card 18: Premium Input OTP Component (app-input-otp)',
+      demo1_title: '1. OTP Verification Code (6 digits - 3-3 Grouping)',
+      demo1_desc: 'Web3 transaction authentication / 2FA Login',
+      input_val: 'Input value',
+      empty_val: '(empty)',
+      resend_code: 'Resend code',
+      demo2_title: '2. Secure PIN Code (Mask Mode - 4 digits)',
+      demo2_desc: 'Hide characters using security mask',
+      hide_pin: 'Hide PIN',
+      show_pin: 'Show PIN',
+      demo3_title: '3. Voucher / Referral Code (Alphanumeric)',
+      demo3_desc: 'Accepts both letters and numbers (A-Z, 0-9)',
+      paste_support: 'Supports Ctrl+V (Paste)'
+    },
+    dropdown: {
+      title: 'Dropdown Menu & Voice Chat Morphing Card',
+      subtitle: 'FLIP Morphing Card 268px -> 360px transition with animated audio waveform bars.',
+      card_title: 'Card 19: Premium Dropdown Menu Component (app-dropdown-menu)',
+      card_desc: 'Versatile dropdown navigation: User Profile, 2-Level Submenu, Checkbox/Radio options, Flexible triggers & Glassmorphism.',
+      demo1_title: '1. Account & Profile Menu (Header + User Info)',
+      demo1_desc: 'Integrated Avatar, Email, Status Badge, and Logout',
+      demo2_title: '2. Checkbox & Radio Items (UI Configuration)',
+      demo2_desc: 'Toggle options and single mode selection',
+      demo3_title: '3. 2-Level Nested Submenu',
+      demo3_desc: 'Smooth slide-out menu on hover or click',
+      demo4_title: '4. Icon Trigger & Placements',
+      demo4_desc: 'Icon-only trigger or bottom-right alignment',
+      customize_ui: 'Customize UI',
+      web3_actions: 'Web3 Wallet Actions',
+      ghost_btn: 'Ghost Button'
     },
     voice_chat: {
       title: 'Dropdown Menu & Voice Chat Morphing Card',
@@ -251,13 +301,104 @@ export const EN_TRANSLATIONS: TranslationDictionary = {
       title: 'Progress Bar & Gauge Components',
       subtitle: 'Linear bar, Multi-segment storage, Animated stripe, SVG Circular & Semi-Gauge.',
       storage_label: 'DAPP STORAGE CAPACITY',
-      gauge_label: 'BLOCKCHAIN SYNC PROGRESS'
+      gauge_label: 'BLOCKCHAIN SYNC PROGRESS',
+      card_title: 'Card 20: Premium Progress Bar Component (app-progress)',
+      card_desc: 'Multiple progress variants: Linear Bar, Steps, Multi-Segment, Striped Animated, Indeterminate, Circular Ring & Semi-Circle Gauge.',
+      demo1_title: '1. Sizes (xs, sm, md, lg, xl)',
+      demo1_desc: 'Flexible heights fitting all UI contexts',
+      demo2_title: '2. Colors & Brand Gradients',
+      demo2_desc: 'Status colors: Success, Warning, Danger, Info & Gradient',
+      demo3_title: '3. Striped, Animated & Indeterminate Mode',
+      demo3_desc: 'Scrolling stripe effect & infinite loading wave',
+      demo4_title: '4. Steps & Multi-Segment Storage',
+      demo4_desc: '4-step workflow indicator & wallet storage allocation',
+      demo5_title: '5. Real-Time Interactive Demo',
+      demo5_desc: 'Drag slider to dynamically adjust percentage',
+      demo6_title: '6. Circular Ring & Semi-Circle Gauge',
+      demo6_desc: '360° Circular & 180° Semi-Circle SVG Gauges',
+      striped_animated: 'Striped Animated (Uploading file to IPFS...)',
+      indeterminate: 'Indeterminate (Syncing Blockchain blocks...)',
+      step_workflow: '4-Step Confirmation Workflow (Step 3/4)',
+      storage_allocation: 'DApp Wallet Storage Allocation',
+      empty_label: 'Free',
+      loading_state: 'Web3 Data Loading State',
+      adjust_value: 'Adjust Progress Value',
+      circle_label: 'Circular Ring',
+      semicircle_label: 'Semi-Circle'
     },
     lang_showcase: {
       title: 'Multi-Language i18n Dropdown',
       subtitle: 'i18n system powered by Angular Signals with separate vi.ts / en.ts files, key storage, and real-time updates.',
       active_lang: 'Active Language:',
       select_placeholder: 'Select system language'
+    },
+    avatar: {
+      title: 'Avatar & Avatar Group Component',
+      subtitle: 'User profile avatar, status indicators (online/offline), fallback initials & overlapping avatar stack.',
+      single_label: 'Single Avatars & Status Dots',
+      group_label: 'Avatar Group Stack (+N counter)'
+    },
+    empty_state: {
+      title: 'Empty State Component',
+      subtitle: 'Empty data container with smooth SVG vector illustrations, title, description, and action buttons.',
+      sample_title: 'No Transactions Found',
+      sample_desc: 'Your wallet address has not performed any deposit/withdraw token transactions on the blockchain.',
+      action_btn: 'Deposit Tokens Now',
+      secondary_btn: 'Refresh'
+    },
+    alert: {
+      title: 'Alert & Callout Component',
+      subtitle: 'Sticky notification banners (Info, Success, Warning, Error) with Soft, Bordered & Accent styles.',
+      info_title: 'Network Update',
+      info_msg: 'BSC Testnet RPC has been switched to Sentio Node for optimized response latency.',
+      success_title: 'Transaction Successful',
+      success_msg: 'Successfully minted 1,000 DAPP Tokens into your connected wallet.',
+      warning_title: 'Gas Volatility Warning',
+      warning_msg: 'Ethereum Mainnet gas fee is currently higher than 45 Gwei.',
+      error_title: 'Incorrect Wallet Network',
+      error_msg: 'Please switch your wallet network to Arbitrum Sepolia to proceed.'
+    },
+    drawer: {
+      title: 'Drawer (Off-Canvas Slide-Over) Component',
+      subtitle: 'Off-canvas slide-over panels from screen edges (Right, Left, Bottom Sheet on Mobile).',
+      btn_right: 'Open Drawer (Right Side)',
+      btn_left: 'Open Drawer (Left Side)',
+      btn_bottom: 'Bottom Sheet (Mobile)',
+      panel_title: 'Web3 Transaction Details',
+      panel_subtitle: 'Tx Hash: 0x9a8f...4e1b'
+    },
+    stepper: {
+      title: 'Stepper (Multi-Step Timeline Workflow) Component',
+      subtitle: 'Linear multi-step workflow timeline with status icons designed for Web3 transaction flows.',
+      prev_btn: 'Previous Step',
+      next_btn: 'Next Step'
+    },
+    stat_card: {
+      title: 'Stat Card (KPI Dashboard Metrics)',
+      subtitle: 'Financial & DApp metric card with large numbers, gradient icons, and percentage trend badges.',
+      tvl_title: 'Total Value Locked (TVL)',
+      tvl_subtitle: 'Total value locked inside pool',
+      vol_title: '24h Trading Volume',
+      vol_subtitle: 'Total trading volume over past 24 hours',
+      stakers_title: 'Active Stakers',
+      stakers_subtitle: 'Users currently staking tokens'
+    },
+    breadcrumb: {
+      title: 'Breadcrumb Navigation Component',
+      subtitle: 'Hierarchical path navigation with Home icon and router links.'
+    },
+    divider: {
+      title: 'Divider & Separator Component',
+      subtitle: 'Solid, Dashed & Gradient line separators supporting text label alignment.',
+      label_or: 'OR CONNECT WITH',
+      label_dashed: 'DASHED LINE',
+      label_gradient: 'GRADIENT GLOW'
+    },
+    copy_to_clipboard: {
+      title: 'Copy to Clipboard Component',
+      subtitle: 'Copy text button with glowing green checkmark feedback animation and toast notification.',
+      copy_btn: 'Copy Address',
+      copied_btn: 'Copied!'
     }
   },
   about: {

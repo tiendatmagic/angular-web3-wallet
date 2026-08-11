@@ -1,8 +1,10 @@
-import { Component, Input, computed, signal } from '@angular/core';
+import { Component, Input, computed, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '../icon/icon.component';
 import { RippleDirective } from '../ripple/ripple.directive';
 import { TooltipDirective } from '../tooltip/tooltip.directive';
+import { TranslationService } from '../../../core/services/translation.service';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 
 export interface CodeFile {
   name: string;
@@ -14,11 +16,12 @@ export interface CodeFile {
 @Component({
   selector: 'app-code-block',
   standalone: true,
-  imports: [CommonModule, IconComponent, RippleDirective, TooltipDirective],
+  imports: [CommonModule, IconComponent, RippleDirective, TooltipDirective, TranslatePipe],
   templateUrl: './code-block.component.html',
   styleUrl: './code-block.component.css'
 })
 export class CodeBlockComponent {
+  public translationService = inject(TranslationService);
   @Input() code: string = '';
   @Input() language: string = 'typescript';
   @Input() fileName: string = '';

@@ -32,6 +32,15 @@ import { DropdownMenuComponent, DropdownMenuItem, DropdownMenuHeader } from '@sh
 import { VoiceChatComponent } from '@shared/components/dropdown-menu/voice-chat.component';
 import { ProgressComponent, ProgressSegment } from '@shared/components/progress/progress.component';
 import { LanguageSelectorComponent } from '@shared/components/language-selector/language-selector.component';
+import { AvatarComponent, AvatarItem } from '@shared/components/avatar/avatar.component';
+import { EmptyStateComponent } from '@shared/components/empty-state/empty-state.component';
+import { AlertComponent } from '@shared/components/alert/alert.component';
+import { DrawerComponent } from '@shared/components/drawer/drawer.component';
+import { StepperComponent, StepItem } from '@shared/components/stepper/stepper.component';
+import { StatCardComponent } from '@shared/components/stat-card/stat-card.component';
+import { BreadcrumbComponent, BreadcrumbItem } from '@shared/components/breadcrumb/breadcrumb.component';
+import { DividerComponent } from '@shared/components/divider/divider.component';
+import { CopyToClipboardComponent } from '@shared/components/copy-to-clipboard/copy-to-clipboard.component';
 import { TranslatePipe } from '@shared/pipes/translate.pipe';
 import { TranslationService } from '@core/services/translation.service';
 import { parseEther } from 'ethers';
@@ -71,6 +80,15 @@ import { parseEther } from 'ethers';
     VoiceChatComponent,
     ProgressComponent,
     LanguageSelectorComponent,
+    AvatarComponent,
+    EmptyStateComponent,
+    AlertComponent,
+    DrawerComponent,
+    StepperComponent,
+    StatCardComponent,
+    BreadcrumbComponent,
+    DividerComponent,
+    CopyToClipboardComponent,
     TranslatePipe
   ],
   templateUrl: './home.component.html'
@@ -642,4 +660,40 @@ export function getNetworkRpc(chainId: number): string {
   public adjustProgress(delta: number): void {
     this.demoProgressValue.update(v => Math.min(100, Math.max(0, v + delta)));
   }
+
+  // Demo State for 9 New Standalone Components
+  public readonly demoDrawerOpen = signal<boolean>(false);
+  public readonly demoDrawerPosition = signal<'right' | 'left' | 'bottom'>('right');
+  public readonly demoStepperActive = signal<number>(1);
+
+  public readonly demoAvatarList: AvatarItem[] = [
+    { name: 'Nguyễn Tiến Đạt', status: 'online', src: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80' },
+    { name: 'Elena Rostova', status: 'online', src: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&auto=format&fit=crop&q=80' },
+    { name: 'Marcus Vance', status: 'busy', src: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80' },
+    { name: 'Satoshi Nakamoto', status: 'offline' },
+    { name: 'Vitalik Buterin', status: 'online' },
+    { name: 'Alice Smith', status: 'away' }
+  ];
+
+  public readonly demoBreadcrumbItems: BreadcrumbItem[] = [
+    { label: 'DApp Dashboard', url: '/' },
+    { label: 'UI Kit Showcase', url: '/' },
+    { label: 'New Components', icon: 'sparkles' }
+  ];
+
+  public readonly demoStepperSteps = computed<StepItem[]>(() => {
+    const lang = this.translationService.currentLang();
+    return [
+      { label: 'Approve Token', subtitle: lang === 'vi' ? 'Ủy quyền hợp đồng' : 'Authorize Smart Contract', icon: 'key' },
+      { label: 'Deposit Liquidity', subtitle: lang === 'vi' ? 'Nạp tiền vào bể' : 'Deposit into pool', icon: 'wallet' },
+      { label: 'Mint LP NFT', subtitle: lang === 'vi' ? 'Nhận NFT bằng chứng' : 'Claim Proof NFT', icon: 'sparkles' },
+      { label: lang === 'vi' ? 'Hoàn Tất' : 'Complete', subtitle: lang === 'vi' ? 'Hoàn tất quy trình' : 'Workflow completed' }
+    ];
+  });
+
+  public openDemoDrawer(pos: 'right' | 'left' | 'bottom' = 'right'): void {
+    this.demoDrawerPosition.set(pos);
+    this.demoDrawerOpen.set(true);
+  }
 }
+

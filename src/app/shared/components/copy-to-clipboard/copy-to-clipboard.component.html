@@ -1,0 +1,23 @@
+<button
+  type="button"
+  (click)="copy()"
+  class="inline-flex items-center justify-center gap-1.5 font-extrabold rounded-[12px] transition-all duration-200 select-none active:scale-95 cursor-pointer whitespace-nowrap shrink-0"
+  [ngClass]="{
+    'px-2.5 py-1 text-xs': size === 'sm',
+    'px-3 py-1.5 text-sm': size === 'md',
+    'px-4 py-2 text-base': size === 'lg',
+    'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30': copied,
+    'bg-purple-500/10 hover:bg-purple-500/20 text-purple-600 dark:text-purple-400 border border-purple-500/20': !copied
+  }"
+  [title]="copied ? ('cards.copy_to_clipboard.copied_btn' | translate) : ('common.copy' | translate)"
+>
+  <app-icon
+    [name]="copied ? 'check' : 'copy'"
+    [class]="size === 'sm' ? 'w-3.5 h-3.5' : size === 'md' ? 'w-4 h-4' : 'w-5 h-5'"
+    [ngClass]="{'animate-bounce': copied}"
+  ></app-icon>
+
+  @if (label) {
+    <span class="whitespace-nowrap">{{ copied ? ('cards.copy_to_clipboard.copied_btn' | translate) : label }}</span>
+  }
+</button>
