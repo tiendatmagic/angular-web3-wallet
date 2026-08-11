@@ -1,4 +1,4 @@
-﻿import {
+import {
   Component,
   Input,
   Output,
@@ -8,6 +8,7 @@
   inject,
   signal,
   computed,
+  effect,
   forwardRef,
   ViewChild,
   AfterViewChecked,
@@ -19,13 +20,15 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { IconComponent } from '../icon/icon.component';
 import { TranslationService } from '@core/services/translation.service';
+import { DropdownService } from '@core/services/dropdown.service';
 import { TranslatePipe } from '@shared/pipes/translate.pipe';
 
 @Component({
   selector: 'app-custom-date-picker',
   host: {
     'class': 'block',
-    '(document:click)': 'onClickOutside($event)'
+    '(document:click)': 'onClickOutside($event)',
+    '(document:keydown.escape)': 'onEscape()'
   },
   imports: [CommonModule, FormsModule, IconComponent, TranslatePipe],
   templateUrl: './custom-date-picker.component.html',
@@ -41,6 +44,8 @@ export class CustomDatePickerComponent implements ControlValueAccessor, AfterVie
   private readonly elementRef = inject(ElementRef);
   private readonly cdr = inject(ChangeDetectorRef);
   public readonly lang = inject(TranslationService);
+  private readonly dropdownService = inject(DropdownService);
+  public readonly instanceId = 'date_picker_' + Math.random().toString(36).substring(2, 9);
   private scrollListener: any;
 
   ngOnInit(): void {
@@ -72,6 +77,13 @@ export class CustomDatePickerComponent implements ControlValueAccessor, AfterVie
 
   public readonly value = signal<string>('');
   public readonly isOpen = signal<boolean>(false);
+
+  private readonly syncOpenState = effect(() => {
+    const activeId = this.dropdownService.activeDropdownId();
+    if (activeId !== this.instanceId && this.isOpen()) {
+      this.isOpen.set(false);
+    }
+  });
 
   public readonly currentYear = signal<number>(new Date().getFullYear());
   public readonly currentMonth = signal<number>(new Date().getMonth());
@@ -146,10 +158,18 @@ export class CustomDatePickerComponent implements ControlValueAccessor, AfterVie
   });
 
   public onClickOutside(event: MouseEvent): void {
-    if (!this.elementRef.nativeElement.contains(event.target)) {
+    if (this.isOpen() && !this.elementRef.nativeElement.contains(event.target)) {
       const popover = document.querySelector('.date-picker-popover');
       if (popover && popover.contains(event.target as Node)) return;
       this.isOpen.set(false);
+      this.dropdownService.close(this.instanceId);
+    }
+  }
+
+  public onEscape(): void {
+    if (this.isOpen()) {
+      this.isOpen.set(false);
+      this.dropdownService.close(this.instanceId);
     }
   }
 
@@ -169,8 +189,13 @@ export class CustomDatePickerComponent implements ControlValueAccessor, AfterVie
         }
       }
       this.updatePopoverPosition();
+      this.dropdownService.open(this.instanceId);
+    } else {
+      this.dropdownService.close(this.instanceId);
     }
   }
+
+  public readonly selectedPresetDays = signal<number | null>(null);
 
   private updatePopoverPosition(): void {
     const triggerEl = this.triggerDiv?.nativeElement;
@@ -179,7 +204,7 @@ export class CustomDatePickerComponent implements ControlValueAccessor, AfterVie
     const rect = triggerEl.getBoundingClientRect();
     const baseHeight = this.showPresets ? 380 : 340;
     const popoverHeight = this.enableTime ? baseHeight + 52 : baseHeight;
-    const popoverWidth = 300;
+    const popoverWidth = 320;
     const gap = 6;
 
     const spaceBelow = window.innerHeight - rect.bottom - gap;
@@ -266,6 +291,8 @@ export class CustomDatePickerComponent implements ControlValueAccessor, AfterVie
     event.stopPropagation();
     if (this.isDateDisabled(date)) return;
 
+    this.selectedPresetDays.set(null);
+
     if (this.enableTime) {
       const formattedDate = this.formatDateOnly(date);
       const h = this.pad2(this.selectedHour());
@@ -321,8 +348,11 @@ export class CustomDatePickerComponent implements ControlValueAccessor, AfterVie
 
   public selectPreset(days: number, event: Event): void {
     event.stopPropagation();
+    this.selectedPresetDays.set(days);
     const target = new Date();
     target.setDate(target.getDate() + days);
+    this.currentYear.set(target.getFullYear());
+    this.currentMonth.set(target.getMonth());
     if (this.enableTime) {
       const formattedDate = this.formatDateOnly(target);
       const h = this.pad2(this.selectedHour());

@@ -701,7 +701,7 @@
               <label>{{ 'cards.inputs.birthday' | translate }}</label>
               <app-custom-date-picker
                 placeholder="-- {{ 'cards.inputs.birthday' | translate }} --"
-                [showPresets]="false"
+                [showPresets]="demoDatePickerShowPresets()"
                 [ngModel]="demoProfileBirthday()"
                 (ngModelChange)="demoProfileBirthday.set($event)"
               />
@@ -749,6 +749,7 @@
             <label>{{ 'cards.date_picker.default_range' | translate }}</label>
             <app-custom-date-time-range
               placeholder="-- {{ 'cards.date_picker.range_date' | translate }} --"
+              [showPresets]="demoDatePickerShowPresets()"
               [ngModel]="demoRangeValue()"
               (ngModelChange)="demoRangeValue.set($event)"
             />
@@ -759,6 +760,7 @@
             <app-custom-date-time-range
               placeholder="-- {{ 'cards.date_picker.range_time' | translate }} --"
               [showTime]="true"
+              [showPresets]="demoDatePickerShowPresets()"
               [ngModel]="demoRangeWithTimeValue()"
               (ngModelChange)="demoRangeWithTimeValue.set($event)"
             />
@@ -770,6 +772,7 @@
               [placeholder]="'showcase.limited_range_placeholder' | translate"
               minDate="2026-07-10"
               maxDate="2026-07-20"
+              [showPresets]="demoDatePickerShowPresets()"
               [ngModel]="demoRangeLimitValue()"
               (ngModelChange)="demoRangeLimitValue.set($event)"
             />

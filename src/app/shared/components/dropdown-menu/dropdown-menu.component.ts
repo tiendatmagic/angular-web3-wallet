@@ -6,12 +6,14 @@ import {
   ElementRef,
   inject,
   signal,
+  effect,
   ViewChild,
   ChangeDetectorRef
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '../icon/icon.component';
 import { TranslatePipe } from '../../pipes/translate.pipe';
+import { DropdownService } from '@core/services/dropdown.service';
 
 export interface DropdownMenuItem {
   id?: string;
@@ -53,6 +55,8 @@ export interface DropdownMenuHeader {
 export class DropdownMenuComponent {
   private readonly elementRef = inject(ElementRef);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly dropdownService = inject(DropdownService);
+  public readonly instanceId = 'dropdown_menu_' + Math.random().toString(36).substring(2, 9);
 
   @Input() items: DropdownMenuItem[] = [];
   @Input() header: DropdownMenuHeader | null = null;
@@ -78,6 +82,15 @@ export class DropdownMenuComponent {
   public readonly isOpen = signal<boolean>(false);
   public readonly activeSubmenuId = signal<string | null>(null);
 
+  private readonly syncOpenState = effect(() => {
+    const activeId = this.dropdownService.activeDropdownId();
+    if (activeId !== this.instanceId && this.isOpen()) {
+      this.isOpen.set(false);
+      this.activeSubmenuId.set(null);
+      this.openChange.emit(false);
+    }
+  });
+
   public toggleOpen(event?: MouseEvent): void {
     if (event) {
       event.stopPropagation();
@@ -85,7 +98,10 @@ export class DropdownMenuComponent {
     if (this.disabled) return;
     const newState = !this.isOpen();
     this.isOpen.set(newState);
-    if (!newState) {
+    if (newState) {
+      this.dropdownService.open(this.instanceId);
+    } else {
+      this.dropdownService.close(this.instanceId);
       this.activeSubmenuId.set(null);
     }
     this.openChange.emit(newState);
@@ -94,12 +110,14 @@ export class DropdownMenuComponent {
   public open(): void {
     if (this.disabled || this.isOpen()) return;
     this.isOpen.set(true);
+    this.dropdownService.open(this.instanceId);
     this.openChange.emit(true);
   }
 
   public close(): void {
     if (!this.isOpen()) return;
     this.isOpen.set(false);
+    this.dropdownService.close(this.instanceId);
     this.activeSubmenuId.set(null);
     this.openChange.emit(false);
   }

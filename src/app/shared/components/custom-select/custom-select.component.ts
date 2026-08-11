@@ -8,6 +8,7 @@ import {
   inject,
   signal,
   computed,
+  effect,
   forwardRef,
   ViewChild,
   AfterViewChecked,
@@ -19,6 +20,7 @@ import { FormsModule, NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/f
 import { IconComponent } from '../icon/icon.component';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { TranslationService } from '../../../core/services/translation.service';
+import { DropdownService } from '../../../core/services/dropdown.service';
 
 export interface SelectOption {
   [key: string]: any;
@@ -29,7 +31,8 @@ export interface SelectOption {
   standalone: true,
   host: {
     'class': 'block',
-    '(document:click)': 'onClickOutside($event)'
+    '(document:click)': 'onClickOutside($event)',
+    '(document:keydown.escape)': 'onEscape()'
   },
 
   imports: [CommonModule, FormsModule, IconComponent, TranslatePipe],
@@ -46,6 +49,8 @@ export class CustomSelectComponent implements ControlValueAccessor, AfterViewChe
   private readonly elementRef = inject(ElementRef);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly translationService = inject(TranslationService);
+  private readonly dropdownService = inject(DropdownService);
+  public readonly instanceId = 'custom_select_' + Math.random().toString(36).substring(2, 9);
   private scrollListener: any;
 
   ngOnInit(): void {
@@ -83,6 +88,13 @@ export class CustomSelectComponent implements ControlValueAccessor, AfterViewChe
   public readonly isOpen = signal<boolean>(false);
   public readonly searchQuery = signal<string>('');
 
+  private readonly syncOpenState = effect(() => {
+    const activeId = this.dropdownService.activeDropdownId();
+    if (activeId !== this.instanceId && this.isOpen()) {
+      this.isOpen.set(false);
+    }
+  });
+
   public dropdownStyle: { [key: string]: string } = {};
   public resolvedPlacement: 'top' | 'bottom' = 'bottom';
 
@@ -91,8 +103,16 @@ export class CustomSelectComponent implements ControlValueAccessor, AfterViewChe
   }
 
   public onClickOutside(event: MouseEvent): void {
-    if (!this.elementRef.nativeElement.contains(event.target)) {
+    if (this.isOpen() && !this.elementRef.nativeElement.contains(event.target)) {
       this.isOpen.set(false);
+      this.dropdownService.close(this.instanceId);
+    }
+  }
+
+  public onEscape(): void {
+    if (this.isOpen()) {
+      this.isOpen.set(false);
+      this.dropdownService.close(this.instanceId);
     }
   }
 
@@ -102,6 +122,9 @@ export class CustomSelectComponent implements ControlValueAccessor, AfterViewChe
     if (nextState) {
       this.searchQuery.set('');
       this.updateDropdownPosition();
+      this.dropdownService.open(this.instanceId);
+    } else {
+      this.dropdownService.close(this.instanceId);
     }
     this.isOpen.set(nextState);
   }

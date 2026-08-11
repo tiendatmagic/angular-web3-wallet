@@ -8,6 +8,7 @@ import {
   inject,
   signal,
   computed,
+  effect,
   forwardRef,
   ViewChild,
   AfterViewChecked,
@@ -20,6 +21,7 @@ import { FormsModule, NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/f
 import { IconComponent } from '../icon/icon.component';
 import { TranslatePipe } from '@shared/pipes/translate.pipe';
 import { TranslationService } from '@core/services/translation.service';
+import { DropdownService } from '@core/services/dropdown.service';
 
 export interface DateTimeRangeValue {
   startDate: string;
@@ -30,7 +32,8 @@ export interface DateTimeRangeValue {
   selector: 'app-custom-date-time-range',
   host: {
     'class': 'block',
-    '(document:click)': 'onClickOutside($event)'
+    '(document:click)': 'onClickOutside($event)',
+    '(document:keydown.escape)': 'onEscape()'
   },
   imports: [CommonModule, FormsModule, IconComponent, TranslatePipe],
   templateUrl: './custom-date-time-range.component.html',
@@ -46,6 +49,8 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
   private readonly elementRef = inject(ElementRef);
   private readonly cdr = inject(ChangeDetectorRef);
   public readonly lang = inject(TranslationService);
+  private readonly dropdownService = inject(DropdownService);
+  public readonly instanceId = 'date_range_' + Math.random().toString(36).substring(2, 9);
   private scrollListener: any;
 
   ngOnInit(): void {
@@ -76,6 +81,14 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
   @ViewChild('triggerDiv', { static: false }) triggerDiv!: ElementRef<HTMLDivElement>;
   public readonly value = signal<DateTimeRangeValue>({ startDate: '', endDate: '' });
   public readonly isOpen = signal<boolean>(false);
+
+  private readonly syncOpenState = effect(() => {
+    const activeId = this.dropdownService.activeDropdownId();
+    if (activeId !== this.instanceId && this.isOpen()) {
+      this.isOpen.set(false);
+      this.closeAllTimeDropdowns();
+    }
+  });
 
   public readonly currentYear = signal<number>(new Date().getFullYear());
   public readonly currentMonth = signal<number>(new Date().getMonth());
@@ -170,12 +183,16 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
   });
 
   public onClickOutside(event: MouseEvent): void {
-    if (!this.elementRef.nativeElement.contains(event.target)) {
+    if (this.isOpen() && !this.elementRef.nativeElement.contains(event.target)) {
       const popover = document.querySelector('.date-time-range-popover');
       if (popover && popover.contains(event.target as Node)) return;
-      if (this.isOpen()) {
-        this.cancel();
-      }
+      this.cancel();
+    }
+  }
+
+  public onEscape(): void {
+    if (this.isOpen()) {
+      this.cancel();
     }
   }
 
@@ -242,6 +259,7 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
     this.hoveredDate.set(null);
     this.closeAllTimeDropdowns();
     this.isOpen.set(true);
+    this.dropdownService.open(this.instanceId);
     this.updatePopoverPosition();
   }
 
@@ -336,9 +354,13 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
     this.closeAllTimeDropdowns();
   }
 
+  public readonly activePresetId = signal<string | null>(null);
+
   public selectDate(date: Date, event: Event): void {
     event.stopPropagation();
     if (this.isDateDisabled(date)) return;
+
+    this.activePresetId.set(null);
 
     const formatted = this.formatDate(date);
     const start = this.tempStartDate();
@@ -441,6 +463,7 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
     if (event) event.stopPropagation();
     this.closeAllTimeDropdowns();
     this.isOpen.set(false);
+    this.dropdownService.close(this.instanceId);
   }
 
   public clear(event: Event): void {
@@ -455,12 +478,14 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
 
     this.tempStartDate.set('');
     this.tempEndDate.set('');
+    this.activePresetId.set(null);
     this.closeAllTimeDropdowns();
     this.isOpen.set(false);
   }
 
   public selectPreset(presetId: string, event: Event): void {
     event.stopPropagation();
+    this.activePresetId.set(presetId);
     const today = new Date();
     let start = new Date();
     let end = new Date();

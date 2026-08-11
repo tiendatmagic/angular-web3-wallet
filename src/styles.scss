@@ -447,3 +447,24 @@ html.dark .alert-error-bordered {
   border-color: rgba(220, 38, 38, 0.6) !important;
 }
 
+/* Glassmorphism Backdrop Blur cho Popover Dropdowns */
+.dropdown-menu-popover,
+.date-picker-popover,
+.date-time-range-popover {
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  background-color: rgba(255, 255, 255, 0.65) !important;
+  will-change: backdrop-filter;
+}
+
+html.dark .dropdown-menu-popover,
+html.dark .date-picker-popover,
+html.dark .date-time-range-popover,
+.dark .dropdown-menu-popover,
+.dark .date-picker-popover,
+.dark .date-time-range-popover {
+  background-color: rgba(15, 23, 42, 0.65) !important;
+}
+
+
+

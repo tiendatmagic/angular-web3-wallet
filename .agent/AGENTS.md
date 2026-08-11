@@ -2,6 +2,48 @@
 
 ## Ngày 12/08/2026
 
+### Yêu cầu: Đồng Bộ 100% Kích Thước UI & Màu Sắc Chủ Đạo (var(--color-primary)) Cho Component CustomDatePicker & CustomDateTimeRange
+- **Nội dung yêu cầu:** Đồng bộ độ rộng Popover (chuẩn 320px), vị trí dải nút chọn nhanh Presets (chuyển vào bên trong Popover), khoảng cách lưới ô lịch (`gap-0.5`) và chuẩn hóa dải màu tương tác về màu tím chủ đạo `var(--color-primary)` cho 2 component `CustomDatePicker` (`app-custom-date-picker`) và `CustomDateTimeRange` (`app-custom-date-time-range`).
+- **Giải pháp:**
+  1. **Tối Ưu `CustomDatePickerComponent` (`custom-date-picker.component.ts` & `.html`):**
+     - Đổi `popoverWidth` từ `300px` lên `320px` khớp 100% với `CustomDateTimeRange`.
+     - Di chuyển dải nút Presets vào **BÊN TRONG Popover** (ở vị trí trên cùng, phân cách bằng viền mờ `border-b border-slate-100 dark:border-slate-800/60 pb-3`, dàn hàng `grid grid-cols-5 gap-1` vừa khít 100% 1 hàng ngang).
+     - Bổ sung signal `selectedPresetDays` quản lý và highlight nút Preset đang chọn theo màu tím chủ đạo `bg-[var(--color-primary)]/15 border-[var(--color-primary)]/30 text-[var(--color-primary)] font-extrabold`.
+     - Bọc từng ô ngày trong `<div class="relative w-full aspect-square flex items-center justify-center">` và chuẩn hóa lưới `gap-0.5`.
+     - Đưa nút "Xong" (`action.done`) về chuẩn màu chủ đạo `bg-[var(--color-primary)] hover:opacity-90 active:scale-95 text-white shadow-sm shadow-[var(--color-primary)]/20`.
+     - Tối ưu ô **Ngày Hôm Nay (`Today`)** khi chưa chọn sử dụng viền nổi 2px `border-2 border-[var(--color-primary)] bg-[var(--color-primary)]/10 text-[var(--color-primary)] font-extrabold`, giúp phân biệt rõ ràng 100% với **Ngày Đang Chọn (`Selected`)** là nốt tròn tím/hồng đặc `bg-[var(--color-primary)] text-white`.
+  2. **Tối Ưu `CustomDateTimeRangeComponent` (`custom-date-time-range.component.ts` & `.html`):**
+     - Bổ sung signal `activePresetId` highlight nút Preset active theo màu chủ đạo `bg-[var(--color-primary)]/15 border-[var(--color-primary)]/30 text-[var(--color-primary)] font-extrabold`.
+     - Chuẩn hóa lưới ô lịch thành `grid grid-cols-7 gap-0.5` đồng bộ với DatePicker.
+     - Đổi nút "Áp dụng" (`common.apply`) từ dải màu gradient cũ sang **màu chủ đạo thuần `bg-[var(--color-primary)] hover:opacity-90 active:scale-95`**.
+  3. **Đồng Bộ Thuộc Tính `showPresets` Trên Trang Chủ (`home.component.html`):**
+     - Đã liên kết `[showPresets]="demoDatePickerShowPresets()"` cho tất cả các ô DatePicker & DateTimeRange ở Card 15 ("Demo Form Components") và Card 17 ("Custom Date Time Range"), đảm bảo khi bật/tắt công cụ điều khiển switch Presets thì 100% các ô chọn ngày trên cả trang chủ lẫn bên trong Modal đều đồng bộ hiển thị dải Presets như nhau.
+- **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Build production đóng gói Angular thành công.
+
+### Yêu cầu: Tối Ưu Hiệu Ứng Kính Mờ (Glassmorphism Backdrop Blur) Cho Tất Cả Popover Dropdowns (Bao Gồm Header Bar)
+- **Nội dung yêu cầu:** Khắc phục tình trạng lớp nền Popover Dropdown bị đục che mất hiệu ứng mờ nhòe kính mờ (`backdrop-blur`), đặc biệt là 3 Popover nằm trên Header Bar (`app-language-selector`, `app-network-selector`, `app-account-dropdown`).
+- **Phân tích nguyên nhân:**
+  1. Độ đục `bg-white/95 dark:bg-slate-900/95` ban đầu quá cao (95% kín) cản trở ánh sáng xuyên qua.
+  2. Animation `transform` gây xung đột GPU Compositing Layer với `backdrop-filter` trong Chromium.
+  3. **Nguyên nhân gốc rễ ở Header**: Thẻ `<header>` chứa `backdrop-blur-md` tạo ra Compositing Stacking Context riêng. Theo W3C spec, các phần tử Popover con dùng `position: absolute` nằm bên trong `<header>` bị triệt tiêu hiệu ứng `backdrop-filter` thứ hai (lỗi Nested Backdrop Filter Composition Bailout).
+- **Giải pháp:**
+  1. Chuyển opacity nền Popover về mức xuyên sáng Glassmorphism chuẩn mượt `bg-white/60 dark:bg-slate-900/50`.
+  2. Loại bỏ `transform` trong animation Keyframe của `.dropdown-menu-popover`.
+  3. Gỡ bỏ `backdrop-blur-md` trên thẻ `<header>` (`header.component.html`), giải phóng Stacking Context cho 3 Popover trên Header bar hiển thị Kính Mờ lộng lẫy 100%.
+  4. Cấu hình CSS toàn cục với `will-change: backdrop-filter;` và `-webkit-backdrop-filter: blur(20px) saturate(180%) !important;` trong `styles.scss`.
+- **Xác thực:** Runs `npx tsc --noEmit` đạt 0 lỗi type. Runs `npm run build` thành công 100%.
+
+### Yêu cầu: Khắc Phục Triệt Để Lỗi Nhiều Dropdown Mở Đè Chồng Lên Nhau (Global Single Dropdown Active State)
+- **Nội dung yêu cầu:** Khắc phục lỗi khi click mở nhiều nút Dropdown (Dropdown Menu, Đa ngôn ngữ, Chọn mạng, Ví cá nhân, Custom Select, Date Picker, Date Time Range), các Popover cũ không tự đóng lại mà bị xếp chồng lấn rối rắm trên giao diện.
+- **Phân tích nguyên nhân:**
+  1. Do sự kiện `event.stopPropagation()` ở các nút Trigger ngăn cản sự kiện click lan truyền (bubble) lên `document:click`, khiến listener đóng của các Dropdown đang mở không chạy.
+  2. Các Dropdown component tự quản lý state `isOpen` riêng lẻ, chưa có dịch vụ điều hướng/quản lý tập trung toàn cục.
+- **Giải pháp:**
+  1. Khai tạo singleton `DropdownService` (`src/app/core/services/dropdown.service.ts`) quản lý `activeDropdownId` signal duy nhất toàn ứng dụng.
+  2. Tích hợp `DropdownService` và cơ chế Angular `effect()` cho 7 component popover (`DropdownMenuComponent`, `LanguageSelectorComponent`, `NetworkSelectorComponent`, `AccountDropdownComponent`, `CustomSelectComponent`, `CustomDatePickerComponent`, `CustomDateTimeRangeComponent`).
+  3. Đảm bảo bất kỳ khi nào 1 Dropdown mở ra hoặc người dùng click ra ngoài / bấm phím `Esc`, TẤT CẢ các Dropdown khác đang mở lập tức tự động đóng lại, đảm bảo tại một thời điểm CHỈ CÓ DUY NHẤT 1 Dropdown được phép mở.
+- **Xác thực:** Runs `npx tsc --noEmit` đạt 0 lỗi type. Runs `npm run build` đóng gói Production thành công 100%.
+
 ### Yêu cầu: Bổ Sung Tùy Chọn Hiển Thị Avatar & Badge Cho Component AccountDropdown (`app-account-dropdown`)
 - **Nội dung yêu cầu:** Mặc định component thông tin cá nhân `app-account-dropdown` sẽ KHÔNG hiển thị ảnh đại diện hay gói cước (badge PRO) trừ khi được truyền tùy chọn (avatarUrl mặc định là bỏ trống).
 - **Giải pháp:**

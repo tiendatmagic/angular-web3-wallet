@@ -15,96 +15,113 @@
     <app-icon name="calendar" class="w-4 h-4 text-slate-400 dark:text-slate-500 shrink-0 ml-2" />
   </div>
 
-  @if (showPresets) {
-    <div class="flex flex-wrap gap-2 mt-2">
-      @for (p of presets; track p.days) {
-        <button
-          type="button"
-          (click)="selectPreset(p.days, $event)"
-          class="text-xs font-bold text-[var(--color-primary)] hover:text-white hover:bg-[var(--color-primary)] px-2 py-0.5 rounded-md transition-all cursor-pointer"
-        >
-          {{ p.label }}
-        </button>
-      }
-    </div>
-  }
-
   @if (isOpen()) {
     <div
       [ngStyle]="popoverStyle"
-      class="date-picker-popover bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-slate-200/80 dark:border-slate-800/80 shadow-lg shadow-slate-900/10 dark:shadow-slate-950/50 rounded-xl p-4"
+      class="date-picker-popover dropdown-menu-popover bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl backdrop-saturate-150 border border-slate-200/80 dark:border-slate-800/80 shadow-lg shadow-slate-900/10 dark:shadow-slate-950/50 rounded-[15px] p-4 flex flex-col gap-4"
       (click)="$event.stopPropagation()"
     >
-      <div class="flex items-center justify-between mb-4">
-        <button
-          type="button"
-          (click)="prevMonth($event)"
-          class="w-7 h-7 flex items-center justify-center shrink-0 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-500 hover:text-[var(--color-primary)] active:scale-90 transition-all cursor-pointer"
-        >
-          <app-icon name="chevron-left" class="w-4 h-4 shrink-0" />
-        </button>
-        <span class="text-sm font-extrabold text-slate-800 dark:text-slate-200 tracking-wide">
-          {{ currentMonthName() }}, {{ currentYear() }}
-        </span>
-        <button
-          type="button"
-          (click)="nextMonth($event)"
-          class="w-7 h-7 flex items-center justify-center shrink-0 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-500 hover:text-[var(--color-primary)] active:scale-90 transition-all cursor-pointer"
-        >
-          <app-icon name="chevron-right" class="w-4 h-4 shrink-0" />
-        </button>
-      </div>
+      @if (showPresets) {
+        <div class="grid grid-cols-5 gap-1 pb-3.5 border-b border-slate-100 dark:border-slate-800/60">
+          @for (p of presets; track p.days) {
+            <button
+              type="button"
+              (click)="selectPreset(p.days, $event)"
+              class="text-[11px] font-bold py-1 px-1 text-center rounded-lg transition-all cursor-pointer border truncate"
+              [class.bg-[var(--color-primary)]/15]="selectedPresetDays() === p.days"
+              [class.border-[var(--color-primary)]/30]="selectedPresetDays() === p.days"
+              [class.text-[var(--color-primary)]]="selectedPresetDays() === p.days"
+              [class.font-extrabold]="selectedPresetDays() === p.days"
+              [class.bg-slate-50]="selectedPresetDays() !== p.days"
+              [class.dark:bg-slate-800/60]="selectedPresetDays() !== p.days"
+              [class.border-slate-200/50]="selectedPresetDays() !== p.days"
+              [class.dark:border-slate-700/60]="selectedPresetDays() !== p.days"
+              [class.text-slate-600]="selectedPresetDays() !== p.days"
+              [class.dark:text-slate-400]="selectedPresetDays() !== p.days"
+              [class.hover:text-[var(--color-primary)]]="selectedPresetDays() !== p.days"
+              [class.hover:bg-[var(--color-primary)]/10]="selectedPresetDays() !== p.days"
+              [class.hover:border-[var(--color-primary)]/20]="selectedPresetDays() !== p.days"
+            >
+              {{ p.label }}
+            </button>
+          }
+        </div>
+      }
 
-      <div class="grid grid-cols-7 gap-0.5 text-center mb-2">
-        @for (day of weekdays; track day) {
-          <span class="text-xs font-bold text-[var(--color-primary)]/70 py-1">
-            {{ day }}
-          </span>
-        }
-      </div>
-
-      <div class="grid grid-cols-7 gap-0.5">
-        @for (day of calendarDays(); track day.getTime()) {
+      <div class="flex flex-col">
+        <div class="flex items-center justify-between mb-4">
           <button
             type="button"
-            (click)="selectDate(day, $event)"
-            [disabled]="isDateDisabled(day)"
-            class="w-full aspect-square flex items-center justify-center text-sm font-bold rounded-full transition-all"
-            [class.text-slate-300]="
-              !isCurrentMonth(day) && !isSelected(day) && !isDateDisabled(day)
-            "
-            [class.dark:text-slate-600]="
-              !isCurrentMonth(day) && !isSelected(day) && !isDateDisabled(day)
-            "
-            [class.text-slate-700]="
-              isCurrentMonth(day) && !isSelected(day) && !isToday(day) && !isDateDisabled(day)
-            "
-            [class.dark:text-slate-300]="
-              isCurrentMonth(day) && !isSelected(day) && !isToday(day) && !isDateDisabled(day)
-            "
-            [class.hover:bg-slate-50]="!isSelected(day) && !isToday(day) && !isDateDisabled(day)"
-            [class.dark:hover:bg-slate-800]="
-              !isSelected(day) && !isToday(day) && !isDateDisabled(day)
-            "
-            [class.cursor-pointer]="!isDateDisabled(day)"
-            [class.bg-[var(--color-primary)]/15]="isToday(day) && !isSelected(day)"
-            [class.!text-[var(--color-primary)]]="isToday(day) && !isSelected(day)"
-            [class.font-extrabold]="isToday(day) || isSelected(day)"
-            [class.bg-[var(--color-primary)]]="isSelected(day)"
-            [class.!text-white]="isSelected(day)"
-            [class.shadow-md]="isSelected(day)"
-            [class.shadow-[var(--color-primary)]/30]="isSelected(day)"
-            [class.opacity-30]="isDateDisabled(day)"
-            [class.cursor-not-allowed]="isDateDisabled(day)"
-            [class.pointer-events-none]="isDateDisabled(day)"
+            (click)="prevMonth($event)"
+            class="w-7 h-7 flex items-center justify-center shrink-0 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-500 hover:text-[var(--color-primary)] active:scale-90 transition-all cursor-pointer"
           >
-            {{ day.getDate() }}
+            <app-icon name="chevron-left" class="w-4 h-4 shrink-0" />
           </button>
-        }
+          <span class="text-sm font-extrabold text-slate-800 dark:text-slate-200 tracking-wide">
+            {{ currentMonthName() }}, {{ currentYear() }}
+          </span>
+          <button
+            type="button"
+            (click)="nextMonth($event)"
+            class="w-7 h-7 flex items-center justify-center shrink-0 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-500 hover:text-[var(--color-primary)] active:scale-90 transition-all cursor-pointer"
+          >
+            <app-icon name="chevron-right" class="w-4 h-4 shrink-0" />
+          </button>
+        </div>
+
+        <div class="grid grid-cols-7 gap-0.5 text-center mb-2">
+          @for (day of weekdays; track day) {
+            <span class="text-xs font-bold text-[var(--color-primary)]/70 py-1">
+              {{ day }}
+            </span>
+          }
+        </div>
+
+        <div class="grid grid-cols-7 gap-0.5">
+          @for (day of calendarDays(); track day.getTime()) {
+            <div class="relative w-full aspect-square flex items-center justify-center">
+              <button
+                type="button"
+                (click)="selectDate(day, $event)"
+                [disabled]="isDateDisabled(day)"
+                class="relative z-10 w-full h-full flex items-center justify-center text-sm font-bold rounded-full transition-all"
+                [class.text-slate-300]="
+                  !isCurrentMonth(day) && !isSelected(day) && !isDateDisabled(day)
+                "
+                [class.dark:text-slate-600]="
+                  !isCurrentMonth(day) && !isSelected(day) && !isDateDisabled(day)
+                "
+                [class.text-slate-700]="
+                  isCurrentMonth(day) && !isSelected(day) && !isToday(day) && !isDateDisabled(day)
+                "
+                [class.dark:text-slate-300]="
+                  isCurrentMonth(day) && !isSelected(day) && !isToday(day) && !isDateDisabled(day)
+                "
+                [class.hover:bg-slate-50]="!isSelected(day) && !isToday(day) && !isDateDisabled(day)"
+                [class.dark:hover:bg-slate-800]="
+                  !isSelected(day) && !isToday(day) && !isDateDisabled(day)
+                "
+                [class.cursor-pointer]="!isDateDisabled(day)"
+                [class.bg-[var(--color-primary)]/15]="isToday(day) && !isSelected(day)"
+                [class.!text-[var(--color-primary)]]="isToday(day) && !isSelected(day)"
+                [class.font-extrabold]="isToday(day) || isSelected(day)"
+                [class.bg-[var(--color-primary)]]="isSelected(day)"
+                [class.!text-white]="isSelected(day)"
+                [class.shadow-md]="isSelected(day)"
+                [class.shadow-[var(--color-primary)]/30]="isSelected(day)"
+                [class.opacity-30]="isDateDisabled(day)"
+                [class.cursor-not-allowed]="isDateDisabled(day)"
+                [class.pointer-events-none]="isDateDisabled(day)"
+              >
+                {{ day.getDate() }}
+              </button>
+            </div>
+          }
+        </div>
       </div>
 
       @if (enableTime) {
-        <div class="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between gap-2">
+        <div class="pt-3.5 border-t border-slate-100 dark:border-slate-800/60 flex items-center justify-between gap-2">
           <div class="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 font-bold">
             <app-icon name="clock" class="w-3.5 h-3.5 text-[var(--color-primary)] shrink-0" />
             <span>{{ 'date.hour' | translate }}:</span>
@@ -137,7 +154,7 @@
           <button
             type="button"
             (click)="confirmSelection($event)"
-            class="px-2.5 py-1 text-xs font-extrabold text-white bg-[var(--color-primary)] rounded-lg hover:opacity-90 active:scale-95 transition-all cursor-pointer shadow-sm shadow-[var(--color-primary)]/20"
+            class="px-3 py-1.5 text-xs font-extrabold text-white bg-[var(--color-primary)] rounded-lg hover:opacity-90 active:scale-95 transition-all cursor-pointer shadow-sm shadow-[var(--color-primary)]/20"
           >
             {{ 'action.done' | translate }}
           </button>
