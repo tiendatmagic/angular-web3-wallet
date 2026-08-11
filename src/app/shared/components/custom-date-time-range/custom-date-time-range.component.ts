@@ -254,10 +254,13 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
       }
     }
 
+    const popoverWidth = Math.min(Math.max(rect.width, 320), 340);
+    const left = rect.width > popoverWidth ? rect.right - popoverWidth : rect.left;
+
     const newStyle = {
       top: `${top}px`,
-      left: `${rect.left}px`,
-      width: `${Math.max(rect.width, 340)}px`
+      left: `${left}px`,
+      width: `${popoverWidth}px`
     };
 
     if (JSON.stringify(this.popoverStyle) !== JSON.stringify(newStyle)) {

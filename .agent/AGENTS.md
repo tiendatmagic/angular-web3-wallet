@@ -2,6 +2,16 @@
 
 ## Ngày 11/08/2026
 
+### Yêu cầu: Khắc phục Lỗi Hiển Thị Tương Phản Màu Chữ Datetime Range Picker Trong Dark Mode
+- **Nội dung yêu cầu:** Sửa lỗi chữ số ngày trong dải chọn khoảng thời gian (`custom-date-time-range`) bị tối đen trùng màu nền tím tối trong Dark Mode làm người dùng không đọc được số ngày (ví dụ các ngày 11, 12, 13, 14 trong khoảng chọn 10/07 - 15/07).
+- **Giải pháp:**
+  1. **Tối Ưu Class Tương Phản Màu Chữ Trong Khoảng Chọn (`custom-date-time-range.component.html`):**
+     - Đổi `[class.!text-[var(--color-primary)]]="isInRange(day)"` thành `[class.text-purple-800]="isInRange(day)"` (cho Light Mode) và `[class.dark:text-purple-100]="isInRange(day)"` (cho Dark Mode). Chữ ngày trong khoảng chọn giờ hiển thị màu tím nhạt sáng thanh lịch `#f3e8ff` chuẩn độ tương phản cao AAA trên nền tím tối `dark:bg-[var(--color-primary)]/30`.
+     - Tối ưu viền bo góc `[class.rounded-full]="!isInRange(day) && !isStartDate(day) && !isEndDate(day)"`, bổ sung `z-10` cho nút điểm đầu/điểm cuối giúp dải nối các ngày liền mạch mượt mà.
+  2. **Đồng Bộ Bộ Chọn Ngày Đơn (`custom-date-picker.component.html`):**
+     - Cập nhật `[class.dark:text-slate-200]` cho các ô ngày tháng và `[class.dark:!text-purple-300]` cho ngày hiện tại `isToday`.
+  3. **Xác thực:** Chạy lệnh `npm run build` thành công 100%, không phát sinh lỗi biên dịch.
+
 ### Yêu cầu: Khắc phục Lỗi Giật Lag & Chậm Transition Khi Chuyển Dark Mode / Light Mode
 - **Nội dung yêu cầu:** Khắc phục tình trạng cảm giác chậm, trễ màu sắc và lỗi màu chữ UI khi bấm chuyển đổi giữa các chế độ Dark Mode / Light Mode.
 - **Giải pháp:**

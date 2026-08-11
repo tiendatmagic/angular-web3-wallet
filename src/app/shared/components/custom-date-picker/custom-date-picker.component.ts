@@ -191,10 +191,13 @@ export class CustomDatePickerComponent implements ControlValueAccessor, OnInit, 
       }
     }
 
+    const popoverWidth = Math.min(Math.max(rect.width, 280), 320);
+    const left = rect.width > popoverWidth ? rect.right - popoverWidth : rect.left;
+
     const newStyle = {
       top: `${top}px`,
-      left: `${rect.left}px`,
-      width: `${Math.max(rect.width, 320)}px`
+      left: `${left}px`,
+      width: `${popoverWidth}px`
     };
 
     if (JSON.stringify(this.popoverStyle) !== JSON.stringify(newStyle)) {
