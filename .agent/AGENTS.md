@@ -2,15 +2,16 @@
 
 ## Ngày 11/08/2026
 
-### Yêu cầu: Khắc Phục Triệt Để Lỗi Responsive Stepper Component (app-stepper), Màu Icon SVG & Chuẩn Hóa Breadcrumb 1/2 Width
-- **Nội dung yêu cầu:** Khắc phục lỗi Stepper khi thu nhỏ vỡ bố cục, sửa màu icon SVG checkmark bị đen thay vì màu trắng sáng, và đưa Breadcrumb chiếm 1/2 độ rộng Card trên giao diện tổng quan mà không bị co vỡ dòng.
+### Yêu cầu: Khắc Phục Triệt Để Lỗi Responsive Stepper Component (app-stepper), Stat Cards & Chuẩn Hóa Bố Cục 2 Cột Trang Tổng Quan
+- **Nội dung yêu cầu:** Khắc phục lỗi Stepper khi thu nhỏ vỡ bố cục, sửa màu icon SVG checkmark bị đen thay vì màu trắng sáng, sửa lỗi 3 Stat Card bị ép hẹp 140px làm tràn số liệu `$12,845,920` và vỡ chữ, đồng thời đưa toàn bộ giao diện tổng quan về đúng **bố cục 2 Cột (`2 Columns Grid`)** không bị co ép thành 4-7 dải dọc.
 - **Giải pháp:**
-  1. **Chuẩn Hóa Màu SVG Icon Stepper (`stepper.component.html`):**
-     - Đặt trực tiếp class màu sáng `text-white` cho các biểu tượng SVG `check`, `close`, `sparkles` ở trạng thái hoàn thành (`completed`), đang hoạt động (`active`) và lỗi (`error`), đồng thời gán màu mờ `text-slate-400 dark:text-slate-500` cho trạng thái chờ (`pending`).
-  2. **Tối Ưu Chế Độ Responsive Tự Động (`stepper.component.ts` & `stepper.component.html`):**
-     - Tách riêng biệt 2 khối template layout độc lập cho di động (`< sm`: timeline dọc với khoảng cách `gap-6` chuẩn) và máy tính (`>= sm`: timeline ngang chuẩn dApp với vạch kẻ nối `top-5 left-[calc(50%+20px)] w-[calc(100%-40px)]`).
-  3. **Tối Ưu Component Breadcrumb Navigation (`breadcrumb.component.html`):**
-     - Bổ sung `flex-nowrap whitespace-nowrap` giúp thanh điều hướng phân cấp Breadcrumb nằm thẳng trên 1 hàng mượt mà, cuộn ngang tự nhiên khi ở trong khung Card 1/2 độ rộng.
+  1. **Thêm Thẻ `</div>` Đóng Grid Rò Rỉ (`home.component.html`):**
+     - Bổ sung thẻ `</div>` bị thiếu ở Card 21 (Dropdown Đa ngôn ngữ), tách độc lập hoàn toàn các hàng Grid phía sau, giải quyết triệt để lỗi 4 thẻ Avatar, Empty State, Alert, Drawer bị dồn ép thành 4 dải dọc 25% trên 1 hàng.
+  2. **Chuẩn Hóa 3 Thẻ Stat Cards Rộng Rãi & Responsive (`home.component.html` & `stat-card.component.html`):**
+     - Đưa 3 thẻ Stat Cards ra hàng độc lập `grid-cols-1 md:grid-cols-3 gap-6 pt-6` chiếm 100% độ rộng container, giúp mỗi thẻ Stat Card rộng ~400px+ đủ không gian hiển thị tiêu đề và con số `$12,845,920` trên 1 hàng sắc nét.
+     - Loại bỏ `whitespace-nowrap` trên `h3` value và thêm `break-all sm:break-normal` để số liệu tự xuống dòng mượt mà khi thu nhỏ màn hình điện thoại mà không bị văng ra khỏi khung viền card.
+  3. **Chuẩn Hóa Chuỗi Card 2 Cột (`home.component.html`):**
+     - Xếp hàng Stepper Card (Full width), hàng Breadcrumb Card (Col 1 - 50%) & Divider Card (Col 2 - 50%), hàng Copy to Clipboard (Full width).
   4. **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Chạy `npm run build` đóng gói Angular thành công 100%.
 
 ### Yêu cầu: Tăng Kích Thước Nút Toggle Thu Nhỏ / Mở Rộng Sidebar (Sidebar Collapse Toggle Button)

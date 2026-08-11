@@ -2136,6 +2136,8 @@
           </div>
         </div>
       </div>
+    </div>
+
     <!-- Card 22: Avatar & Avatar Group Showcase -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-6">
       <div app-card>
@@ -2280,7 +2282,7 @@
       </div>
     </div>
 
-    <!-- Card 26: Stepper & Multi-step Workflow Showcase -->
+    <!-- Card 26: Stepper Showcase -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-6">
       <div app-card class="lg:col-span-2 overflow-hidden">
         <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 flex items-center gap-2">
@@ -2359,9 +2361,9 @@
       />
     </div>
 
-    <!-- Card 28 & 29: Breadcrumb & Divider Showcase -->
+    <!-- Card 28 & 29: Breadcrumb (2 Cột 1/2) & Divider Showcase -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-6">
-      <!-- Card 28: Breadcrumb -->
+      <!-- Card 28: Breadcrumb (Chiếm 1/2 Chiều Rộng Cột Trái) -->
       <div app-card>
         <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 flex items-center gap-2">
           <app-icon name="external" class="w-3.5 h-3.5 text-primary" />
@@ -2371,13 +2373,13 @@
           {{ 'cards.breadcrumb.subtitle' | translate }}
         </p>
 
-        <div class="space-y-4">
+        <div class="space-y-4 pt-1">
           <app-breadcrumb [items]="demoBreadcrumbItems" separatorIcon="chevron-right" />
           <app-breadcrumb [items]="demoBreadcrumbItems" separatorIcon="slash" [showHome]="false" />
         </div>
       </div>
 
-      <!-- Card 29: Divider -->
+      <!-- Card 29: Divider (Chiếm 1/2 Chiều Rộng Cột Phải) -->
       <div app-card>
         <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 flex items-center gap-2">
           <app-icon name="code" class="w-3.5 h-3.5 text-primary" />
@@ -2420,7 +2422,6 @@
       </div>
     </div>
   </div>
-</div>
 </main>
 
 <!-- Standalone Drawer Instance -->
