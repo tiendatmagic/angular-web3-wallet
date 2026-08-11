@@ -2,10 +2,20 @@
 
 ## Ngày 11/08/2026
 
-### Yêu cầu: Viết lại tài liệu ARCHITECTURE.md và design.md cho bộ Web3 Template Source Code
-- **Nội dung yêu cầu:** Viết lại 2 tài liệu `ARCHITECTURE.md` và `design.md` (đồng bộ tại thư mục gốc và thư mục `.agent/`), loại bỏ thông tin bán hàng cũ nhưng **giữ lại đầy đủ phần 2: Kiến trúc Backend (Laravel API DDD, CQRS, Data Mapper, Event-driven Queue, Cookie auth)**, đồng thời **bổ sung cơ chế đăng nhập JWT Dual Token (Access Token lưu RAM 30 phút, Refresh Token lưu HttpOnly Cookie 7 ngày)** và chuẩn hóa theo đúng bộ Web3 DApp Starter Kit của Angular Web3 Wallet.
+### Yêu cầu: Mô đun hóa & Tách độc lập các Component Header (Đa ngôn ngữ, Đa chain, Thông tin tài khoản)
+- **Nội dung yêu cầu:** Tách các khối giao diện trên Header (dropdown Đa ngôn ngữ, bộ chọn Mạng Đa chain, Dropdown Thông tin tài khoản / Ví) thành các Standalone UI Component độc lập để có thể dễ dàng tái sử dụng hoặc lược bỏ cho các dự án Web2 không dùng Blockchain.
 - **Giải pháp:**
-  1. Cập nhật [ARCHITECTURE.md](file:///d:/git/angular-web3-wallet/ARCHITECTURE.md) & [/.agent/ARCHITECTURE.md](file:///d:/git/angular-web3-wallet/.agent/ARCHITECTURE.md):
+  1. **Component Đa ngôn ngữ (`app-language-selector`):** Đã được tách hoàn toàn độc lập tại `src/app/shared/components/language-selector/`, hỗ trợ 2 biến thể `compact` (Header) và `full` (Sidebar).
+  2. **Component Đa chain (`app-network-selector`):** Tách mới tại `src/app/shared/components/network-selector/` (`network-selector.component.ts`, `.html`, `.css`). Quản lý Nút Globe icon và Menu chọn mạng lưới `POPULAR_CHAINS`, bổ sung `:host { display: block; }`.
+  3. **Component Thông tin tài khoản (`app-account-dropdown`):** Tách mới tại `src/app/shared/components/account-dropdown/` (`account-dropdown.component.ts`, `.html`, `.css`). Quản lý Nút Kết nối ví / Nút trạng thái online ví, và Menu tài khoản (Copy address, View explorer, Wallet details, Disconnect), bổ sung `:host { display: block; }`.
+  4. **Tái cấu trúc Header Layout:** [header.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/layout/header/header.component.ts) & [header.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/layout/header/header.component.html) chỉ gọi `<app-language-selector>`, `<app-network-selector>`, `<app-account-dropdown>` giúp code tinh gọn từ 320 dòng xuống còn dưới 100 dòng.
+  5. Cập nhật [ARCHITECTURE.md](file:///d:/git/angular-web3-wallet/ARCHITECTURE.md) & [/.agent/ARCHITECTURE.md](file:///d:/git/angular-web3-wallet/.agent/ARCHITECTURE.md) ghi nhận đặc tả quy chuẩn mô đun hóa Header.
+
+### Yêu cầu: Viết lại tài liệu ARCHITECTURE.md và design.md cho bộ Web3 Template Source Code
+- **Nội dung yêu cầu:** Viết lại 2 tài liệu `ARCHITECTURE.md` và `design.md` (đồng bộ tại thư mục gốc và thư mục `.agent/`), loại bỏ thông tin bán hàng cũ nhưng **giữ lại đầy đủ phần 2: Kiến trúc Backend (Laravel API DDD, CQRS, Data Mapper, Event-driven Queue, Cookie auth)**, đồng thời **bổ sung cơ chế đăng nhập JWT Dual Token (Access Token lưu RAM 30 phút, Refresh Token lưu HttpOnly Cookie 7 ngày)** và chuẩn hóa theo đúng bộ Web3 DApp Starter Kit của Angular Web3 Wallet. Sửa lỗi hiển thị icon cờ Việt Nam (nền đỏ sao vàng) trong dropdown i18n.
+- **Giải pháp:**
+  1. Cập nhật [translation.service.ts](file:///d:/git/angular-web3-wallet/src/app/core/services/translation.service.ts): Sửa lỗi SVG cờ Việt Nam (thiếu lệnh path `M0 0`), thay thế bằng SVG lá cờ đỏ sao vàng chuẩn (`rect fill="#da251d"` + `polygon fill="#ffff00"`).
+  2. Cập nhật [ARCHITECTURE.md](file:///d:/git/angular-web3-wallet/ARCHITECTURE.md) & [/.agent/ARCHITECTURE.md](file:///d:/git/angular-web3-wallet/.agent/ARCHITECTURE.md):
      - **Tổng quan Kiến trúc:** Đặc tả đầy đủ cả Backend (Laravel API) và Frontend (Angular 22 Web3 Starter Kit & DApp Component Showcase).
      - **Kiến trúc Backend (Laravel API):** Giữ nguyên cấu trúc 4 lớp DDD (`Domain/`, `Infrastructure/`, `Application/`, `Http/`), Data Mapper Pattern, Form Request Validation, CQRS Command Bus, Event-driven Queue (`ShouldQueue`), **JWT Dual Token Authentication (Access Token RAM 30m, Refresh Token HttpOnly Cookie 7d)**, API Versioning (`/api/v1/`).
      - **Cơ chế Token Frontend:** Đặc tả quy tắc lưu Access Token hoàn toàn trong RAM (`AuthService` state), tự động Silent Refresh Token qua `AuthInterceptor` đọc cookie `refresh_token` khi Access Token hết hạn.

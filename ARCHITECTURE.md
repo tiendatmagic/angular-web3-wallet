@@ -9,7 +9,7 @@ Tài liệu này đặc tả chi tiết kiến trúc toàn diện của hệ th�
 Hệ thống được thiết kế theo mô hình kiến trúc hiện đại, phân tách độc lập giữa Backend API và Frontend Web3 DApp:
 
 1. **Backend (Laravel API):** Áp dụng Domain-Driven Design (DDD) lai, CQRS (Command Bus), Event-Driven Architecture (xử lý bất đồng bộ qua Queue), Data Mapper Pattern và cơ chế xác thực bảo mật **JWT Dual Token Architecture** (Access Token trong RAM + Refresh Token trong Cookie HttpOnly).
-2. **Frontend (Angular Web3 DApp Starter Kit):** Xây dựng trên nền tảng Angular 22 với kiến trúc Component Standalone hoàn toàn, quản lý trạng thái bằng Angular Signals, tích hợp Reown AppKit + Ethers.js v6, hệ thống Dynamic Modal/Toast, bộ 35+ Web3 UI Component cao cấp và hệ thống Đa ngôn ngữ (i18n) phản ứng.
+2. **Frontend (Angular Web3 DApp Starter Kit):** Xây dựng trên nền tảng Angular 22 với kiến trúc Component Standalone hoàn toàn, quản lý trạng thái bằng Angular Signals, tích hợp Reown AppKit + Ethers.js v6, hệ thống Dynamic Modal/Toast, bộ 37+ Web3 UI Component cao cấp và hệ thống Đa ngôn ngữ (i18n) phản ứng.
 3. **Smart Contracts & Multi-chain Engine:** Hỗ trợ tương tác với các mạng lưới EVM Blockchain (Ethereum Mainnet, BSC, Polygon, Arbitrum, Avalanche, BSC Testnet...), thực thi ký giao dịch, kiểm tra số dư và ước tính Gas speed.
 
 ---
@@ -98,7 +98,12 @@ src/app/
 │   └── utils/                      # Utilities hệ thống (blockchain.utils.ts: danh sách POPULAR_CHAINS & RPC backup)
 │
 ├── shared/                         # CÁC THÀNH PHẦN UI VÀ TIỆN ÍCH DÙNG CHUNG
-│   ├── components/                 # Bộ 35+ Standalone UI Components (button, input, select, modal, table, file-upload, progress, input-otp, code-block, dropdown-menu, voice-chat, language-selector...)
+│   ├── components/                 # Bộ 37+ Standalone UI Components:
+│   │   ├── language-selector/      # Component Đa Ngôn Ngữ i18n (app-language-selector)
+│   │   ├── network-selector/       # Component Chọn Mạng Đa Chain (app-network-selector)
+│   │   ├── account-dropdown/       # Component Thông Tin Tài Khoản / Ví Web3 (app-account-dropdown)
+│   │   ├── theme-switcher/         # Component Chuyển Theme 3 Vị Trí (app-theme-switcher)
+│   │   └── ...                     # (button, input, select, modal, table, file-upload, progress, input-otp, code-block...)
 │   ├── layout/                     # HeaderComponent, SidebarComponent (Layout khung ứng dụng)
 │   └── pipes/                      # ShortAddressPipe, TranslatePipe, SafeHtmlPipe, VndPipe
 │
@@ -112,7 +117,14 @@ src/app/
 
 ## ⚙️ 4. CÁC QUY TẮC PHÁT TRIỂN FRONTEND BẮT BUỘC
 
-### A. Quy tắc Quản lý Web3 & Blockchain
+### A. Quy tắc Mô đun hóa Header & Tái sử dụng Web2/Web3
+
+1. **Phân tách Component Độc lập:**
+   - **`app-language-selector`:** Đã được đóng gói độc lập. Có thể tái sử dụng trực tiếp ở bất kỳ dự án Web2 nào.
+   - **`app-network-selector`:** Đóng gói độc lập việc chọn mạng blockchain. Dự án Web2 có thể dễ dàng lược bỏ mà không ảnh hưởng đến Header layout.
+   - **`app-account-dropdown`:** Đóng gói độc lập nút Kết nối & Dropdown thông tin tài khoản ví. Dự án Web2 có thể dễ dàng thay thế bằng Component User Profile truyền thống.
+
+### B. Quy tắc Quản lý Web3 & Blockchain
 
 1. **Quản lý State Ví bằng Signals:**
    - Mọi trạng thái ví (`account`, `chainId`, `balance`, `isConnected`, `isConnecting`) đều được quản lý tập trung tại `Web3Service` thông qua Angular `signal` và `computed`.
@@ -123,7 +135,7 @@ src/app/
 3. **Chức năng Giao dịch & Gas Speed Selector:**
    - Mọi thao tác gửi coin/token phải hỗ trợ chọn tốc độ gas (`tx-speed-selector`: Fast, Standard, Slow) để người dùng chủ động điều chỉnh chi phí transaction.
 
-### B. Quy tắc Quản lý Token & Xác thực trên Frontend (Token Management)
+### C. Quy tắc Quản lý Token & Xác thực trên Frontend (Token Management)
 
 1. **Lưu trữ Access Token hoàn toàn trong RAM:**
    - **Tuyệt đối KHÔNG lưu Access Token vào `localStorage` hoặc `sessionStorage`** để triệt hạ nguy cơ tấn công XSS làm rò rỉ token.
@@ -133,7 +145,7 @@ src/app/
    - Khi API trả về lỗi HTTP `401 Unauthorized` hoặc trước khi Access Token hết hạn (30 phút), `AuthInterceptor` sẽ tạm hoãn các request và tự động gọi endpoint khôi phục `/api/v1/auth/refresh` (Backend sẽ đọc `HttpOnly` Cookie `refresh_token` 7 ngày để cấp mới Access Token vào RAM).
    - Nếu `refresh_token` hết hạn (quá 7 ngày) hoặc không hợp lệ, hệ thống tự động xóa sạch state RAM và điều hướng về màn hình Đăng nhập/Kết nối ví.
 
-### C. Quy tắc Lập trình Component & UI
+### D. Quy tắc Lập trình Component & UI
 
 1. **Path Aliases (Bắt buộc):**
    - Không sử dụng relative path tương đối dài dòng như `../../../../core/services`.
@@ -145,7 +157,7 @@ src/app/
    - Mọi màn hình chính đặt phẳng dưới `src/app/features/` (ví dụ: `features/home`, `features/about`, `features/contact`).
    - Tất cả các component phải tách biệt rõ ràng giữa logic `.component.ts`, template `.component.html`, và style `.component.css` (hoặc scss). Không viết template inline quá 5 dòng.
 3. **Cấu hình Component Host Display (CRITICAL):**
-   - Tất cả các Angular custom components (ví dụ `app-custom-switch`, `app-custom-select`, `app-language-selector`, `app-progress`...) bắt buộc phải khai báo `:host { display: block; }` trong tệp CSS tương ứng để tránh bị trình duyệt coi là inline element làm vỡ khoảng cách margin/spacing thẳng đứng của Tailwind CSS.
+   - Tất cả các Angular custom components (ví dụ `app-custom-switch`, `app-custom-select`, `app-language-selector`, `app-network-selector`, `app-account-dropdown`, `app-progress`...) bắt buộc phải khai báo `:host { display: block; }` trong tệp CSS tương ứng để tránh bị trình duyệt coi là inline element làm vỡ khoảng cách margin/spacing thẳng đứng của Tailwind CSS.
 4. **Quản lý Modal & Popups (Dynamic Modal Service):**
    - Tuyệt đối không dùng `alert()` hoặc `confirm()` gốc của trình duyệt.
    - Không nhúng cứng thẻ HTML modal (như `<app-modal ...>`) trực tiếp vào template HTML của các trang.

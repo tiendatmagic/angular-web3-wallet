@@ -10,7 +10,7 @@ export const LANGUAGE_OPTIONS: LanguageOption[] = [
     code: 'vi',
     label: 'Tiếng Việt',
     nativeName: 'Tiếng Việt',
-    flagSvg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" class="w-full h-full object-cover"><g fill-rule="evenodd" stroke-width="1pt"><path fill="#da251d" d="0 0h640v480H0z"/><path fill="#ffff00" d="M362.4 345.8 320 315l-42.4 30.8 16.2-50-42.4-30.8h52.4L320 215l16.2 50h52.4l-42.4 30.8z" transform="matrix(1.5 0 0 1.5 -160 -100)"/></g></svg>`
+    flagSvg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" class="w-full h-full object-cover"><rect width="640" height="480" fill="#da251d"/><polygon fill="#ffff00" points="320,96 352.3,195.5 456.9,195.5 372.3,257 404.6,356.5 320,295 235.4,356.5 267.7,257 183.1,195.5 287.7,195.5"/></svg>`
   },
   {
     code: 'en',
