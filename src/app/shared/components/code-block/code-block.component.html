@@ -45,7 +45,7 @@
         type="button"
         (click)="toggleWrap()"
         appRipple
-        [appTooltip]="isWrapped() ? (translationService.currentLang() === 'vi' ? 'Tắt ngắt dòng' : 'Disable line wrap') : (translationService.currentLang() === 'vi' ? 'Tự động ngắt dòng' : 'Enable line wrap')"
+        [appTooltip]="(isWrapped() ? 'showcase.disable_line_wrap' : 'showcase.enable_line_wrap') | translate"
         class="flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-slate-300/60 dark:bg-slate-800/90 hover:bg-slate-300/90 dark:hover:bg-slate-700/80 border border-slate-300/80 dark:border-slate-700/60 rounded-lg transition-all active:scale-95"
         [class.text-purple-700]="isWrapped()"
         [class.dark:text-purple-300]="isWrapped()"
@@ -53,7 +53,7 @@
         [class.bg-purple-500/15]="isWrapped()"
       >
         <app-icon name="wrap-text" class="w-3.5 h-3.5" [class.text-purple-600]="isWrapped()" [class.dark:text-purple-400]="isWrapped()"></app-icon>
-        <span>Wrap</span>
+        <span>{{ 'showcase.wrap' | translate }}</span>
       </button>
 
       @if (showCopyButton) {
@@ -70,10 +70,10 @@
         >
           @if (copied()) {
             <app-icon name="check" class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 animate-in zoom-in duration-200"></app-icon>
-            <span class="text-emerald-600 dark:text-emerald-400">Copied</span>
+            <span class="text-emerald-600 dark:text-emerald-400">{{ 'common.copied' | translate }}</span>
           } @else {
             <app-icon name="copy" class="w-3.5 h-3.5"></app-icon>
-            <span>Copy</span>
+            <span>{{ 'common.copy' | translate }}</span>
           }
         </button>
       }

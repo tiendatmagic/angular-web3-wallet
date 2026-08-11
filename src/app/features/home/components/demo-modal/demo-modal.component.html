@@ -4,7 +4,7 @@
   >
     <div class="flex items-center justify-between">
       <span class="text-xs font-bold text-slate-500 dark:text-slate-400"
-        >{{ 'cards.date_picker.option_min_date' | translate }}</span
+        >{{ 'cards.date_picker.label_max_date' | translate }}</span
       >
       <app-custom-switch
         [checked]="limitDatePicker()"
@@ -14,7 +14,7 @@
 
     <div class="flex items-center justify-between">
       <span class="text-xs font-bold text-slate-500 dark:text-slate-400"
-        >{{ 'cards.date_picker.option_max_date' | translate }}</span
+        >{{ 'cards.date_picker.option_min_date' | translate }}</span
       >
       <app-custom-switch
         [checked]="limitDatePickerMax()"
@@ -64,7 +64,7 @@
   <div class="form-field">
     <label>{{ 'modal_demo.release_date' | translate }}</label>
     <app-custom-date-picker
-      placeholder="DD/MM/YYYY"
+      [placeholder]="'date.select' | translate"
       [minDate]="limitDatePicker() ? demoDatePickerMinDate() : ''"
       [maxDate]="limitDatePickerMax() ? demoDatePickerMaxDate() : ''"
       [showPresets]="demoDatePickerShowPresets()"
@@ -103,7 +103,7 @@
     <app-custom-switch
       type="full"
       [label]="'modal_demo.enable_notif' | translate"
-      [description]="'cards.switch.desc' | translate"
+      [description]="'showcase.switch_description' | translate"
       [checked]="modalSwitchValue()"
       (checkedChange)="modalSwitchValue.set($event)"
     />
@@ -130,26 +130,26 @@
       [ngModel]="modalCheckboxValue()"
       (ngModelChange)="modalCheckboxValue.set($event)"
       [label]="'cards.controls.checkbox_agree' | translate"
-      [description]="'cards.checkbox.desc' | translate"
+      [description]="'showcase.checkbox_description' | translate"
     />
   </div>
 
   <div class="border-t border-slate-100 dark:border-slate-800/40 pt-4.5 space-y-4">
     <div class="flex items-center justify-between">
       <h5 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">
-        Components (Demo Modal)
+        {{ 'showcase.demo_form_components' | translate }}
       </h5>
-      <app-badge variant="ultra" [pulse]="true">NEW</app-badge>
+      <app-badge variant="ultra" [pulse]="true">{{ 'showcase.new_badge' | translate }}</app-badge>
     </div>
 
     <div class="text-xs font-semibold text-slate-500 dark:text-slate-400 flex items-center gap-1">
-      <span>Tip: Press</span>
-      <kbd app-kbd appTooltip="Phím thoát" tooltipPlacement="top">ESC</kbd>
-      <span>to close.</span>
+      <span>{{ 'showcase.tip_press' | translate }}</span>
+      <kbd app-kbd [appTooltip]="'showcase.escape_key_tooltip' | translate" tooltipPlacement="top">ESC</kbd>
+      <span>{{ 'showcase.tip_close' | translate }}</span>
     </div>
 
     <div class="form-field">
-      <label>{{ 'cards.tab_group.title' | translate }}</label>
+      <label>{{ 'showcase.tab_group_title' | translate }}</label>
       <app-tab-group
         [options]="modalTabOptions"
         [activeValue]="modalTabValue()"
@@ -181,13 +181,13 @@
     class="bg-slate-50 dark:bg-slate-950/40 rounded-xl p-4 space-y-1.5 border border-slate-200/30 dark:border-slate-800/30"
   >
     <h5 class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-2">
-      Giá trị hiện tại
+      {{ 'showcase.current_value' | translate }}
     </h5>
     <div class="text-xs font-mono text-slate-500 dark:text-slate-400">
-      date = "{{ modalDateValue() || '(chưa chọn)' }}"
+      date = "{{ modalDateValue() || ('showcase.not_selected' | translate) }}"
     </div>
     <div class="text-xs font-mono text-slate-500 dark:text-slate-400">
-      select = "{{ modalSelectValue() ?? '(chưa chọn)' }}"
+      select = "{{ modalSelectValue() ?? ('showcase.not_selected' | translate) }}"
     </div>
     <div class="text-xs font-mono text-slate-500 dark:text-slate-400">
       switch = {{ modalSwitchValue() }}

@@ -8,13 +8,15 @@ import {
 import { ModalRef, MODAL_DATA, ModalConfig, ConfirmConfig } from './modal-ref';
 import { ModalWrapperComponent } from '@shared/components/modal/modal-wrapper.component';
 import { ConfirmModalComponent } from '@shared/components/confirm-modal/confirm-modal.component';
+import { TranslationService } from './translation.service';
 
 @Injectable({
   providedIn: 'root'})
 export class ModalService {
   constructor(
     private appRef: ApplicationRef,
-    private injector: Injector
+    private injector: Injector,
+    private translationService: TranslationService
   ) {}
 
   open<T, D = any, R = any>(
@@ -60,7 +62,7 @@ export class ModalService {
 
   confirm(config: ConfirmConfig): ModalRef<boolean> {
     return this.open(ConfirmModalComponent, {
-      title: config.title || 'Xác nhận hành động',
+      title: config.title || this.translationService.t('showcase.confirm_action'),
       size: 'sm',
       closeOnBackdropClick: false,
       showHeader: false,

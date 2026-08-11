@@ -1,5 +1,4 @@
 <nav class="flex items-center flex-nowrap whitespace-nowrap text-sm font-bold text-slate-500 dark:text-slate-400 select-none overflow-x-auto py-1 no-scrollbar">
-  <!-- Home Item -->
   @if (showHome) {
     <a
       routerLink="/"
@@ -11,12 +10,10 @@
   }
 
   @for (item of items; track $index; let isLast = $last) {
-    <!-- Separator -->
     <span class="mx-2 text-slate-300 dark:text-slate-700 shrink-0">
       <app-icon [name]="separatorIcon" class="w-3.5 h-3.5"></app-icon>
     </span>
 
-    <!-- Breadcrumb Link / Text -->
     @if (!isLast && item.url) {
       <a
         [routerLink]="item.url"

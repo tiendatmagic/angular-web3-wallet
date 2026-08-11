@@ -6,7 +6,6 @@
     'py-16 px-8 sm:px-12': size === 'lg'
   }"
 >
-  <!-- Icon Container -->
   <div
     class="relative inline-flex items-center justify-center rounded-[15px] bg-gradient-to-br from-purple-500/10 via-violet-500/10 to-indigo-500/10 dark:from-purple-500/20 dark:via-violet-500/20 dark:to-indigo-500/20 border border-purple-500/20 dark:border-purple-400/20 text-purple-600 dark:text-purple-400 mb-4 shadow-sm"
     [ngClass]="{
@@ -20,11 +19,9 @@
       [class]="size === 'sm' ? 'w-6 h-6' : size === 'md' ? 'w-8 h-8' : 'w-10 h-10'"
     ></app-icon>
 
-    <!-- Subtle Pulsing Ring -->
     <span class="absolute -inset-1 rounded-[17px] bg-purple-500/10 dark:bg-purple-400/10 animate-pulse -z-10"></span>
   </div>
 
-  <!-- Title -->
   <h3
     class="font-black text-slate-800 dark:text-slate-100 tracking-tight"
     [ngClass]="{
@@ -36,7 +33,6 @@
     {{ displayTitle }}
   </h3>
 
-  <!-- Description -->
   @if (displayDescription) {
     <p
       class="text-slate-500 dark:text-slate-400 max-w-md mt-1.5 font-semibold leading-relaxed"
@@ -50,7 +46,6 @@
     </p>
   }
 
-  <!-- Slot or Action Buttons -->
   <div class="mt-5 flex flex-wrap sm:flex-row flex-col items-center justify-center gap-3">
     <ng-content></ng-content>
 

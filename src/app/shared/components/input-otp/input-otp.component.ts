@@ -9,10 +9,12 @@ import {
   signal,
   computed,
   ChangeDetectionStrategy,
-  AfterViewInit
+  AfterViewInit,
+  inject
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { TranslationService } from '../../../core/services/translation.service';
 
 export type OtpInputType = 'numeric' | 'alphanumeric' | 'any';
 export type OtpInputSize = 'sm' | 'md' | 'lg';
@@ -44,7 +46,7 @@ export class InputOtpComponent implements ControlValueAccessor, AfterViewInit {
   @Input() size: OtpInputSize = 'md';
   @Input() autoFocus: boolean = false;
   @Input() placeholder: string = '';
-  @Input() ariaLabel: string = 'OTP Code';
+  @Input() ariaLabel: string = '';
 
   @Output() valueChange = new EventEmitter<string>();
   @Output() completed = new EventEmitter<string>();
@@ -56,6 +58,11 @@ export class InputOtpComponent implements ControlValueAccessor, AfterViewInit {
   focusedIndexSignal = signal<number>(0);
 
   slotsSignal = computed(() => Array.from({ length: this.length }, (_, i) => i));
+  private readonly translationService = inject(TranslationService);
+
+  get effectiveAriaLabel(): string {
+    return this.ariaLabel || this.translationService.t('showcase.otp_code');
+  }
 
   onChange: (val: string) => void = () => {};
   onTouched: () => void = () => {};
@@ -66,7 +73,6 @@ export class InputOtpComponent implements ControlValueAccessor, AfterViewInit {
     }
   }
 
-  // ControlValueAccessor Implementation
   writeValue(val: string | null | undefined): void {
     const sanitized = this.cleanValue(val || '');
     this.valueSignal.set(sanitized);

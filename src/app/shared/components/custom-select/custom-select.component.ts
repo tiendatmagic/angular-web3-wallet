@@ -18,6 +18,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { IconComponent } from '../icon/icon.component';
 import { TranslatePipe } from '../../pipes/translate.pipe';
+import { TranslationService } from '../../../core/services/translation.service';
 
 export interface SelectOption {
   [key: string]: any;
@@ -44,6 +45,7 @@ export interface SelectOption {
 export class CustomSelectComponent implements ControlValueAccessor, AfterViewChecked, OnInit, OnDestroy {
   private readonly elementRef = inject(ElementRef);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly translationService = inject(TranslationService);
   private scrollListener: any;
 
   ngOnInit(): void {
@@ -68,7 +70,7 @@ export class CustomSelectComponent implements ControlValueAccessor, AfterViewChe
   @Input() options: any[] = [];
   @Input() valueKey: string = '';
   @Input() labelKey: string = '';
-  @Input() placeholder: string = 'Select...';
+  @Input() placeholder: string = '';
   @Input() disabled: boolean = false;
   @Input() placement: 'bottom' | 'top' | 'auto' = 'auto';
   @Input() showSearch: boolean = false;
@@ -83,6 +85,10 @@ export class CustomSelectComponent implements ControlValueAccessor, AfterViewChe
 
   public dropdownStyle: { [key: string]: string } = {};
   public resolvedPlacement: 'top' | 'bottom' = 'bottom';
+
+  public get effectivePlaceholder(): string {
+    return this.placeholder || this.translationService.t('showcase.select_placeholder');
+  }
 
   public onClickOutside(event: MouseEvent): void {
     if (!this.elementRef.nativeElement.contains(event.target)) {

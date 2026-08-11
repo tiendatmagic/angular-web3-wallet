@@ -14,7 +14,7 @@
       class="font-semibold truncate"
       [class.text-slate-400]="value === null || value === undefined || value === '' || value === 0"
     >
-      {{ selectedLabel || placeholder }}
+      {{ selectedLabel || effectivePlaceholder }}
     </span>
     <app-icon
       name="chevron-down"

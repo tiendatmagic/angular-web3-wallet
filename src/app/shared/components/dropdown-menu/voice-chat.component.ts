@@ -1,6 +1,7 @@
 import { Component, Input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '../icon/icon.component';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 
 export interface VoiceParticipant {
   id: string;
@@ -12,7 +13,7 @@ export interface VoiceParticipant {
 @Component({
   selector: 'app-voice-chat',
   standalone: true,
-  imports: [CommonModule, IconComponent],
+  imports: [CommonModule, IconComponent, TranslatePipe],
   templateUrl: './voice-chat.component.html',
   styleUrl: './voice-chat.component.scss',
   host: { 'class': 'block' },

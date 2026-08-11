@@ -56,7 +56,7 @@
                 <button
                   (click)="copyAddress($event)"
                   class="w-7 h-7 flex items-center justify-center rounded-lg transition-all cursor-pointer flex-shrink-0 outline-none focus:outline-none text-slate-400 hover:text-primary hover:bg-primary/10 focus:text-slate-400 focus:bg-transparent"
-                  title="Sao chép địa chỉ"
+                  [title]="'showcase.copy_address' | translate"
                 >
                   <app-icon name="copy" class="w-4 h-4" />
                 </button>
@@ -73,7 +73,7 @@
                 </span>
               </div>
               <div class="flex flex-col">
-                <span class="text-[10px] font-bold text-slate-400 uppercase">Chain ID</span>
+                <span class="text-[10px] font-bold text-slate-400 uppercase">{{ 'showcase.chain_id' | translate }}</span>
                 <span class="text-sm font-mono font-bold text-slate-700 dark:text-slate-200">
                   {{ stateService.chainId() }}
                 </span>
@@ -127,10 +127,10 @@
             </div>
             <div>
               <h3 class="text-base font-black text-slate-800 dark:text-white">
-                Gửi giao dịch Demo
+                {{ 'showcase.send_transaction_title' | translate }}
               </h3>
               <p class="text-xs text-slate-400 dark:text-slate-500">
-                Thử nghiệm chuyển {{ stateService.chainSymbol() }} tới ví khác
+                {{ 'showcase.send_transaction_description' | translate : { symbol: stateService.chainSymbol() } }}
               </p>
             </div>
           </div>
@@ -169,7 +169,7 @@
                 {{ 'common.loading' | translate }}
               } @else {
                 <app-icon name="send" class="w-4 h-4" />
-                {{ 'wallet.switch_network_btn' | translate }}
+                {{ 'showcase.send_transaction_title' | translate }}
               }
             </button>
 
@@ -184,7 +184,7 @@
                 <div class="flex items-center justify-between gap-4">
                   <span
                     class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider"
-                    >Transaction Hash</span
+                    >{{ 'showcase.transaction_hash' | translate }}</span
                   >
                   <a
                     [href]="'https://sepolia.arbiscan.io/tx/' + txHash()"
@@ -218,7 +218,7 @@
             <div>
               <h3 class="text-base font-black text-slate-800 dark:text-white">{{ 'home.sign_demo_title' | translate }}</h3>
               <p class="text-xs text-slate-400 dark:text-slate-500">
-                Xác thực thông điệp không mất phí gas
+                {{ 'showcase.sign_message_description' | translate }}
               </p>
             </div>
           </div>
@@ -272,7 +272,7 @@
                   <button
                     (click)="copySignature()"
                     class="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-500 hover:text-primary flex-shrink-0 cursor-pointer transition-all mt-0.5"
-                    title="Sao chép chữ ký"
+                    [title]="'showcase.copy_signature' | translate"
                   >
                     <app-icon name="copy" class="w-4 h-4" />
                   </button>
@@ -285,7 +285,7 @@
                 class="bg-red-500/10 border border-red-500/25 rounded-xl p-4 text-xs font-bold text-red-500 flex items-start gap-2"
               >
                 <app-icon name="warning" class="w-4 h-4 mt-0.5 flex-shrink-0" />
-                <span class="break-words min-w-0">Lỗi: {{ signError() }}</span>
+                <span class="break-words min-w-0">{{ 'home.error_prefix' | translate }}: {{ signError() }}</span>
               </div>
             }
           </div>
@@ -319,23 +319,23 @@
             [solid]="true"
             viewBox="0 0 20 20"
           />
-          Custom Switch
+          {{ 'showcase.custom_switch' | translate }}
         </h4>
         <div class="space-y-4">
           <div class="flex items-center justify-between">
             <span class="text-sm font-semibold text-slate-600 dark:text-slate-300"
-              >Compact toggle</span
+              >{{ 'showcase.compact_toggle' | translate }}</span
             >
             <app-custom-switch
               [checked]="demoSwitchChecked()"
               (checkedChange)="demoSwitchChecked.set($event)"
-              label="Bật thông báo"
+              [label]="'showcase.enable_notifications' | translate"
             />
           </div>
           <app-custom-switch
             type="full"
-            label="Xác nhận giao dịch"
-            description="Hiển thị popup xác nhận trước khi gửi {{ stateService.chainSymbol() }}"
+            [label]="'showcase.confirm_transaction' | translate"
+            [description]="'showcase.confirm_transaction_description' | translate : { symbol: stateService.chainSymbol() }"
             [checked]="demoSwitchFull()"
             (checkedChange)="demoSwitchFull.set($event)"
           />
@@ -357,7 +357,7 @@
             [solid]="true"
             viewBox="0 0 20 20"
           />
-          Custom Radio
+          {{ 'showcase.custom_radio' | translate }}
         </h4>
         <div class="space-y-3">
           @for (opt of demoRadioOptions(); track opt.value) {
@@ -383,14 +383,14 @@
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
         >
           <app-icon name="shield-check" class="w-3.5 h-3.5 text-primary" strokeWidth="2.5" />
-          Custom Checkbox
+          {{ 'showcase.custom_checkbox' | translate }}
         </h4>
         <div class="space-y-4">
           <app-custom-checkbox
             [ngModel]="demoCheckboxValue()"
             (ngModelChange)="demoCheckboxValue.set($event)"
             [label]="'cards.controls.checkbox_agree' | translate"
-            [description]="'cards.checkbox.desc' | translate"
+            [description]="'showcase.checkbox_description' | translate"
           />
           <div
             class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2"
@@ -405,11 +405,11 @@
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
         >
           <app-icon name="search" class="w-3.5 h-3.5 text-blue-500" strokeWidth="2.5" />
-          Custom Search Input
+          {{ 'showcase.custom_search' | translate }}
         </h4>
         <div class="space-y-3">
           <app-custom-search-input
-            placeholder="Tìm kiếm địa chỉ ví..."
+            [placeholder]="'showcase.search_wallet_placeholder' | translate"
             [debounce]="300"
             [clearable]="true"
             [ngModel]="demoSearchQuery()"
@@ -418,7 +418,7 @@
           <div
             class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2"
           >
-            query="{{ demoSearchQuery() || '(trống)' }}"
+            query="{{ demoSearchQuery() || ('showcase.empty_value' | translate) }}"
           </div>
         </div>
       </div>
@@ -428,7 +428,7 @@
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
         >
           <app-icon name="chevron-down" class="w-3.5 h-3.5 text-emerald-500" strokeWidth="2.5" />
-          Custom Select
+          {{ 'showcase.custom_select' | translate }}
         </h4>
         <div class="space-y-4">
           <div class="form-field">
@@ -473,7 +473,7 @@
             <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider select-none">{{ 'cards.selects.label_multi' | translate }}</label>
             <app-custom-select
               placeholder="-- {{ 'cards.selects.title' | translate }} --"
-              [options]="demoMultiSelectOptions"
+              [options]="demoMultiSelectOptions()"
               valueKey="id"
               labelKey="name"
               [multiple]="true"
@@ -496,7 +496,7 @@
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
         >
           <app-icon name="calendar" class="w-3.5 h-3.5 text-amber-500" strokeWidth="2.5" />
-          Custom Date Picker
+          {{ 'showcase.custom_date_picker' | translate }}
         </h4>
         <div class="flex flex-col gap-3.5">
                     <div class="flex flex-col gap-2.5 p-3 bg-slate-50/50 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 rounded-xl space-y-1.5">
@@ -530,18 +530,20 @@
             }
           </div>
 
-          <app-custom-date-picker
-            label="Ngày giao dịch"
-            placeholder="Chọn ngày..."
-            [minDate]="limitDatePicker() ? demoDatePickerMinDate() : ''"
-            [showPresets]="demoDatePickerShowPresets()"
-            [ngModel]="demoDatePickerValue()"
-            (ngModelChange)="demoDatePickerValue.set($event)"
-          />
+          <div class="form-field">
+            <label>{{ 'showcase.transaction_date' | translate }}</label>
+            <app-custom-date-picker
+              [placeholder]="'showcase.select_date_placeholder' | translate"
+              [minDate]="limitDatePicker() ? demoDatePickerMinDate() : ''"
+              [showPresets]="demoDatePickerShowPresets()"
+              [ngModel]="demoDatePickerValue()"
+              (ngModelChange)="demoDatePickerValue.set($event)"
+            />
+          </div>
           <div
             class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2"
           >
-            selected={{ demoDatePickerValue() || '(chưa chọn)' }}
+            selected={{ demoDatePickerValue() || ('showcase.not_selected' | translate) }}
           </div>
         </div>
       </div>
@@ -551,7 +553,7 @@
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
         >
           <app-icon name="chevron-down" class="w-3.5 h-3.5 text-primary" strokeWidth="2.5" />
-          Custom Accordion
+          {{ 'showcase.custom_accordion' | translate }}
         </h4>
         <div class="space-y-4">
           <div class="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800/40">
@@ -563,14 +565,14 @@
           </div>
 
           <app-accordion [multiple]="demoAccordionMultiple()">
-            <app-accordion-item title="Làm thế nào để kết nối ví?" subtitle="Hướng dẫn kết nối nhanh Web3">
-              Bạn có thể kết nối ví bằng cách nhấn nút &quot;Kết nối ví của bạn&quot; ở đầu trang. Hệ thống hỗ trợ nhiều loại ví thông qua Reown AppKit như MetaMask, Trust Wallet, Coinbase Wallet và các ví WalletConnect khác.
+            <app-accordion-item [title]="'showcase.accordion_connect_title' | translate" [subtitle]="'showcase.accordion_connect_subtitle' | translate">
+              {{ 'showcase.accordion_connect_content' | translate }}
             </app-accordion-item>
-            <app-accordion-item title="Tại sao cần chuyển đúng mạng lưới?" subtitle="Giải thích cơ chế EVM">
-              Mỗi hợp đồng thông minh được triển khai trên các chuỗi khối (blockchain) khác nhau. Để thực hiện giao dịch đúng địa chỉ và đúng loại token, ví của bạn cần được thiết lập đúng mạng lưới (ví dụ: Arbitrum Sepolia).
+            <app-accordion-item [title]="'showcase.accordion_network_title' | translate" [subtitle]="'showcase.accordion_network_subtitle' | translate">
+              {{ 'showcase.accordion_network_content' | translate }}
             </app-accordion-item>
-            <app-accordion-item title="Có mất phí gas khi ký tin nhắn không?" subtitle="Bảo mật và chi phí">
-              Không. Việc ký tin nhắn (Message Signing) chỉ là thao tác mã hóa cục bộ bằng khóa riêng của ví để xác thực quyền sở hữu địa chỉ ví, hoàn toàn không gửi giao dịch lên blockchain nên **không tốn bất kỳ chi phí gas nào**.
+            <app-accordion-item [title]="'showcase.accordion_sign_title' | translate" [subtitle]="'showcase.accordion_sign_subtitle' | translate">
+              {{ 'showcase.accordion_sign_content' | translate }}
             </app-accordion-item>
           </app-accordion>
         </div>
@@ -581,39 +583,39 @@
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
         >
           <app-icon name="shield-check" class="w-3.5 h-3.5 text-primary" strokeWidth="2.5" />
-          Badge & Tooltip
+          {{ 'cards.badges.title' | translate }}
         </h4>
         
         <div class="space-y-5">
           <div class="space-y-2">
-            <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider select-none">Tooltip Placement (Hover me)</label>
+            <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider select-none">{{ 'showcase.tooltip_placement' | translate }}</label>
             <div class="flex flex-wrap gap-2.5 pt-1">
-              <button app-button variant="cancel" size="sm" appTooltip="Tooltip hiển thị phía trên" tooltipIcon="sparkles" tooltipPlacement="top">
-                Top
+              <button app-button variant="cancel" size="sm" [appTooltip]="'showcase.tooltip_top' | translate" tooltipIcon="sparkles" tooltipPlacement="top">
+                {{ 'showcase.position_top' | translate }}
               </button>
-              <button app-button variant="cancel" size="sm" appTooltip="Tooltip hiển thị phía dưới" tooltipIcon="sparkles" tooltipPlacement="bottom">
-                Bottom
+              <button app-button variant="cancel" size="sm" [appTooltip]="'showcase.tooltip_bottom' | translate" tooltipIcon="sparkles" tooltipPlacement="bottom">
+                {{ 'showcase.position_bottom' | translate }}
               </button>
-              <button app-button variant="cancel" size="sm" appTooltip="Tooltip hiển thị bên trái" tooltipIcon="chevron-left" tooltipPlacement="left">
-                Left
+              <button app-button variant="cancel" size="sm" [appTooltip]="'showcase.tooltip_left' | translate" tooltipIcon="chevron-left" tooltipPlacement="left">
+                {{ 'showcase.position_left' | translate }}
               </button>
-              <button app-button variant="cancel" size="sm" appTooltip="Tooltip hiển thị bên phải" tooltipIcon="chevron-right" tooltipPlacement="right">
-                Right
+              <button app-button variant="cancel" size="sm" [appTooltip]="'showcase.tooltip_right' | translate" tooltipIcon="chevron-right" tooltipPlacement="right">
+                {{ 'showcase.position_right' | translate }}
               </button>
             </div>
           </div>
 
           <div class="space-y-2">
-            <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider select-none">Badge Variants</label>
+            <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider select-none">{{ 'showcase.badge_variants' | translate }}</label>
             <div class="flex flex-wrap gap-2 pt-1">
-              <app-badge variant="primary">Primary</app-badge>
-              <app-badge variant="secondary">Secondary</app-badge>
-              <app-badge variant="success" [pulse]="true">Success</app-badge>
-              <app-badge variant="warning">Warning</app-badge>
-              <app-badge variant="danger">Danger</app-badge>
-              <app-badge variant="info">Info</app-badge>
-              <app-badge variant="neutral">Neutral</app-badge>
-              <app-badge variant="ultra" [interactive]="true">Ultra</app-badge>
+              <app-badge variant="primary">{{ 'showcase.primary' | translate }}</app-badge>
+              <app-badge variant="secondary">{{ 'showcase.secondary' | translate }}</app-badge>
+              <app-badge variant="success" [pulse]="true">{{ 'common.success' | translate }}</app-badge>
+              <app-badge variant="warning">{{ 'showcase.warning' | translate }}</app-badge>
+              <app-badge variant="danger">{{ 'showcase.danger' | translate }}</app-badge>
+              <app-badge variant="info">{{ 'showcase.info' | translate }}</app-badge>
+              <app-badge variant="neutral">{{ 'showcase.neutral' | translate }}</app-badge>
+              <app-badge variant="ultra" [interactive]="true">{{ 'showcase.ultra' | translate }}</app-badge>
             </div>
           </div>
         </div>
@@ -624,7 +626,7 @@
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
         >
           <app-icon name="link-chain" class="w-3.5 h-3.5 text-primary" strokeWidth="2.5" />
-          Custom Tab Group
+          {{ 'showcase.custom_tab_group' | translate }}
         </h4>
         
         <div class="space-y-4">
@@ -647,7 +649,7 @@
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
         >
           <app-icon name="bolt" class="w-3.5 h-3.5 text-emerald-500" strokeWidth="2.5" />
-          Custom Slider
+          {{ 'showcase.custom_slider' | translate }}
         </h4>
         
         <div class="space-y-4">
@@ -694,7 +696,7 @@
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
         >
           <app-icon name="bolt" class="w-3.5 h-3.5 text-primary" strokeWidth="2.5" />
-          Demo Form Components
+          {{ 'showcase.demo_form_components' | translate }}
         </h4>
 
         <div class="space-y-4">
@@ -743,7 +745,7 @@
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
         >
           <app-icon name="calendar" class="w-3.5 h-3.5 text-primary" strokeWidth="2.5" />
-          Custom Date Time Range Picker
+          {{ 'showcase.custom_date_time_range' | translate }}
         </h4>
 
         <div class="space-y-4">
@@ -769,7 +771,7 @@
                     <div class="form-field">
             <label>{{ 'cards.date_picker.limited_range' | translate }} (Min: 2026-07-10, Max: 2026-07-20)</label>
             <app-custom-date-time-range
-              placeholder="Chọn khoảng ngày giới hạn..."
+              [placeholder]="'showcase.limited_range_placeholder' | translate"
               minDate="2026-07-10"
               maxDate="2026-07-20"
               [ngModel]="demoRangeLimitValue()"
@@ -780,9 +782,9 @@
           <div
             class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2.5 space-y-1"
           >
-            <div>range = start: "{{ demoRangeValue().startDate || '(trống)' }}" | end: "{{ demoRangeValue().endDate || '(trống)' }}"</div>
-            <div>rangeWithTime = start: "{{ demoRangeWithTimeValue().startDate || '(trống)' }}" | end: "{{ demoRangeWithTimeValue().endDate || '(trống)' }}"</div>
-            <div>rangeLimit = start: "{{ demoRangeLimitValue().startDate || '(trống)' }}" | end: "{{ demoRangeLimitValue().endDate || '(trống)' }}"</div>
+            <div>range = start: "{{ demoRangeValue().startDate || ('showcase.empty_value' | translate) }}" | end: "{{ demoRangeValue().endDate || ('showcase.empty_value' | translate) }}"</div>
+            <div>rangeWithTime = start: "{{ demoRangeWithTimeValue().startDate || ('showcase.empty_value' | translate) }}" | end: "{{ demoRangeWithTimeValue().endDate || ('showcase.empty_value' | translate) }}"</div>
+            <div>rangeLimit = start: "{{ demoRangeLimitValue().startDate || ('showcase.empty_value' | translate) }}" | end: "{{ demoRangeLimitValue().endDate || ('showcase.empty_value' | translate) }}"</div>
           </div>
         </div>
       </div>
@@ -792,7 +794,7 @@
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
         >
           <app-icon name="sparkles" class="w-3.5 h-3.5 text-primary" strokeWidth="2.5" />
-          Custom Ripple Directive
+          {{ 'showcase.custom_ripple' | translate }}
         </h4>
 
         <div class="space-y-4">
@@ -860,7 +862,7 @@
                 (click)="demoRippleColor.set('rgba(255, 0, 221, 0.2)'); demoRippleCustomColor.set('')"
                 class="!py-1.5 text-xs font-bold text-primary"
               >
-                Primary
+                {{ 'showcase.primary' | translate }}
               </button>
               <button
                 app-button
@@ -871,7 +873,7 @@
                 (click)="demoRippleColor.set('rgba(128, 0, 255, 0.2)'); demoRippleCustomColor.set('')"
                 class="!py-1.5 text-xs font-bold text-secondary"
               >
-                Secondary
+                {{ 'showcase.secondary' | translate }}
               </button>
               <button
                 app-button
@@ -882,7 +884,7 @@
                 (click)="demoRippleColor.set('rgba(239, 68, 68, 0.2)'); demoRippleCustomColor.set('')"
                 class="!py-1.5 text-xs font-bold text-red-500"
               >
-                Danger
+                {{ 'showcase.danger' | translate }}
               </button>
             </div>
           </div>
@@ -892,7 +894,7 @@
               <label>{{ 'cards.ripple.custom_color' | translate }}</label>
               <div class="flex gap-2">
                 <app-custom-input
-                  placeholder="Ví dụ: #ff00dd hoặc rgba(0, 255, 0, 0.4)"
+                  [placeholder]="'showcase.color_example' | translate"
                   [ngModel]="demoRippleCustomColor()"
                   (ngModelChange)="demoRippleCustomColor.set($event)"
                   class="flex-1"
@@ -952,7 +954,7 @@
                 [appRippleOpacity]="demoRippleOpacity()"
                 class="relative"
               >
-                Primary Button
+                {{ 'showcase.primary_button' | translate }}
               </button>
               <button
                 app-button
@@ -966,7 +968,7 @@
                 [appRippleOpacity]="demoRippleOpacity()"
                 class="relative"
               >
-                Secondary + Ripple Trắng
+                {{ 'showcase.secondary_white_ripple' | translate }}
               </button>
                             <button
                 appRipple
@@ -977,7 +979,7 @@
                 [appRippleDuration]="demoRippleDuration()"
                 [appRippleOpacity]="demoRippleOpacity()"
                 class="w-10 h-10 rounded-full flex items-center justify-center bg-slate-100 hover:bg-slate-200/80 dark:bg-slate-800 dark:hover:bg-slate-700/80 text-secondary transition-colors duration-200 focus:outline-none"
-                title="Unbounded Ripple"
+                [title]="'showcase.unbounded_ripple' | translate"
               >
                 <app-icon name="bolt" class="w-4 h-4" />
               </button>
@@ -991,7 +993,7 @@
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
         >
           <app-icon name="sparkles" class="w-3.5 h-3.5 text-primary" strokeWidth="2.5" />
-          Custom Aura Component (DaisyUI 5.6+)
+          {{ 'showcase.custom_aura' | translate }}
         </h4>
 
         <div class="space-y-6">
@@ -1025,7 +1027,7 @@
                   (click)="demoAuraVariant.set('dual')"
                   class="!py-1.5 text-xs font-bold"
                 >
-                  Dual Accent
+                  {{ 'showcase.dual_accent' | translate }}
                 </button>
                 <button
                   app-button
@@ -1036,7 +1038,7 @@
                   (click)="demoAuraVariant.set('primary')"
                   class="!py-1.5 text-xs font-bold text-primary"
                 >
-                  Primary
+                  {{ 'showcase.primary' | translate }}
                 </button>
                 <button
                   app-button
@@ -1047,7 +1049,7 @@
                   (click)="demoAuraVariant.set('secondary')"
                   class="!py-1.5 text-xs font-bold text-secondary"
                 >
-                  Secondary
+                  {{ 'showcase.secondary' | translate }}
                 </button>
                 <button
                   app-button
@@ -1058,7 +1060,7 @@
                   (click)="demoAuraVariant.set('rainbow')"
                   class="!py-1.5 text-xs font-bold text-transparent bg-gradient-to-r from-red-500 via-green-500 to-blue-500 bg-clip-text"
                 >
-                  Rainbow
+                  {{ 'showcase.rainbow' | translate }}
                 </button>
                 <button
                   app-button
@@ -1069,7 +1071,7 @@
                   (click)="demoAuraVariant.set('holo')"
                   class="!py-1.5 text-xs font-bold text-indigo-400"
                 >
-                  Holographic
+                  {{ 'showcase.holographic' | translate }}
                 </button>
                 <button
                   app-button
@@ -1080,7 +1082,7 @@
                   (click)="demoAuraVariant.set('gold')"
                   class="!py-1.5 text-xs font-bold text-yellow-500"
                 >
-                  Gold Metallic
+                  {{ 'showcase.gold_metallic' | translate }}
                 </button>
                 <button
                   app-button
@@ -1091,7 +1093,7 @@
                   (click)="demoAuraVariant.set('silver')"
                   class="!py-1.5 text-xs font-bold text-slate-400"
                 >
-                  Silver Metallic
+                  {{ 'showcase.silver_metallic' | translate }}
                 </button>
                 <button
                   app-button
@@ -1102,7 +1104,7 @@
                   (click)="demoAuraVariant.set('glow')"
                   class="!py-1.5 text-xs font-bold text-emerald-500"
                 >
-                  Static Glow
+                  {{ 'showcase.static_glow' | translate }}
                 </button>
               </div>
             </div>
@@ -1177,7 +1179,7 @@
                       (click)="demoAuraRadius.set(rad)"
                       class="!py-1.5 text-xs font-bold"
                     >
-                      {{ rad === '15px' ? ('tx_speed.default' | translate) + ' (15px)' : rad === '8px' ? 'Small (8px)' : 'Circle (9999px)' }}
+                      {{ rad === '15px' ? ('tx_speed.default' | translate) + ' (15px)' : rad === '8px' ? ('showcase.radius_small' | translate) : ('showcase.radius_circle' | translate) }}
                     </button>
                   }
                 </div>
@@ -1189,7 +1191,7 @@
               <div class="flex flex-wrap items-center gap-6 justify-start py-2">
                 <app-aura variant="dual" size="xs" radius="12px">
                   <button app-button variant="primary" size="md" class="relative">
-                    Button phát sáng
+                    {{ 'showcase.glowing_button' | translate }}
                   </button>
                 </app-aura>
 
@@ -1264,7 +1266,7 @@
                   class="text-xs font-bold text-primary hover:opacity-80 transition-opacity flex items-center gap-1 cursor-pointer"
                 >
                   <app-icon name="close" class="w-3 h-3" />
-                  Đặt lại
+                  {{ 'showcase.reset' | translate }}
                 </button>
               }
             </div>
@@ -1274,7 +1276,7 @@
           [columns]="demoTableColumns()"
           [data]="paginatedTransactions()"
           [loading]="demoTableLoading()"
-          [emptyText]="demoTableEmpty() ? 'Danh sách trống theo yêu cầu giả lập.' : 'Không có giao dịch nào khớp với bộ lọc tìm kiếm.'"
+          [emptyText]="(demoTableEmpty() ? 'showcase.table_empty_simulated' : 'showcase.table_empty_filtered') | translate"
           [emptyIcon]="demoTableEmpty() ? 'warning' : 'search'"
           [hoverable]="true"
           [localSort]="false"
@@ -1362,7 +1364,7 @@
           <div class="space-y-3">
             <div class="flex items-center justify-between">
               <span class="text-xs font-bold text-slate-700 dark:text-slate-300">{{ 'cards.code_block.demo1_title' | translate }}</span>
-              <app-badge variant="primary" rounded="full" size="sm">TypeScript</app-badge>
+              <app-badge variant="primary" rounded="full" size="sm">{{ 'showcase.typescript_badge' | translate }}</app-badge>
             </div>
             <app-code-block
               [code]="demoSingleCode"
@@ -1375,7 +1377,7 @@
           <div class="space-y-3">
             <div class="flex items-center justify-between">
               <span class="text-xs font-bold text-slate-700 dark:text-slate-300">{{ 'cards.code_block.demo2_title' | translate }}</span>
-              <app-badge variant="secondary" rounded="full" size="sm">Multi-tab</app-badge>
+              <app-badge variant="secondary" rounded="full" size="sm">{{ 'showcase.multi_tab' | translate }}</app-badge>
             </div>
             <app-code-block
               [files]="demoMultiCodeFiles"
@@ -1385,7 +1387,7 @@
           <div class="col-span-full space-y-3 pt-2">
             <div class="flex items-center justify-between">
               <span class="text-xs font-bold text-slate-700 dark:text-slate-300">{{ 'cards.code_block.demo3_title' | translate }}</span>
-              <app-badge variant="neutral" rounded="full" size="sm">Collapsible</app-badge>
+              <app-badge variant="neutral" rounded="full" size="sm">{{ 'showcase.collapsible' | translate }}</app-badge>
             </div>
             <app-code-block
               [code]="demoCollapsibleCode"
@@ -1407,7 +1409,6 @@
         </h4>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <!-- Demo 1: Horizontal Bar Layout -->
           <div class="space-y-3">
             <div class="flex flex-wrap items-center justify-between gap-2">
               <span class="text-xs font-bold text-slate-700 dark:text-slate-300">{{ 'cards.file_upload.demo1_title' | translate }}</span>
@@ -1426,7 +1427,6 @@
             ></app-file-upload>
           </div>
 
-          <!-- Demo 2: Horizontal Bar Multi-file -->
           <div class="space-y-3">
             <div class="flex flex-wrap items-center justify-between gap-2">
               <span class="text-xs font-bold text-slate-700 dark:text-slate-300">{{ 'cards.file_upload.demo2_title' | translate }}</span>
@@ -1446,12 +1446,11 @@
             ></app-file-upload>
           </div>
 
-          <!-- Demo 3: Dropzone & Avatar Upload Mode -->
           <div class="col-span-full grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
             <div class="md:col-span-2 space-y-3">
               <div class="flex flex-wrap items-center justify-between gap-2">
                 <span class="text-xs font-bold text-slate-700 dark:text-slate-300">{{ 'cards.file_upload.demo3_title' | translate }}</span>
-                <app-badge variant="info" rounded="full" size="sm" class="shrink-0">Dropzone Mode</app-badge>
+                <app-badge variant="info" rounded="full" size="sm" class="shrink-0">{{ 'showcase.dropzone_mode' | translate }}</app-badge>
               </div>
               <app-file-upload
                 variant="dropzone"
@@ -1467,7 +1466,7 @@
             <div class="space-y-3">
               <div class="flex flex-wrap items-center justify-between gap-2">
                 <span class="text-xs font-bold text-slate-700 dark:text-slate-300">{{ 'cards.file_upload.demo4_title' | translate }}</span>
-                <app-badge variant="neutral" rounded="full" size="sm" class="shrink-0">Avatar Mode</app-badge>
+                <app-badge variant="neutral" rounded="full" size="sm" class="shrink-0">{{ 'showcase.avatar_mode' | translate }}</app-badge>
               </div>
               <app-file-upload
                 variant="avatar"
@@ -1483,7 +1482,6 @@
         </div>
       </div>
 
-      <!-- Card 18: Component Input OTP Cao Cấp (app-input-otp) -->
       <div app-card class="col-span-full">
         <h4
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
@@ -1493,14 +1491,13 @@
         </h4>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <!-- Demo 1: OTP Standard 6 Digits (Grouped 3-3) -->
           <div class="space-y-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
             <div class="flex flex-wrap items-center justify-between gap-2">
               <div>
                 <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.input_otp.demo1_title' | translate }}</span>
                 <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.input_otp.demo1_desc' | translate }}</span>
               </div>
-              <app-badge variant="primary" rounded="full" size="sm" class="shrink-0">Standard 3-3</app-badge>
+              <app-badge variant="primary" rounded="full" size="sm" class="shrink-0">{{ 'showcase.standard_grouping' | translate }}</app-badge>
             </div>
 
             <div class="flex flex-col items-start gap-3 pt-1">
@@ -1533,14 +1530,13 @@
             </div>
           </div>
 
-          <!-- Demo 2: PIN Mask Mode 4 Digits -->
           <div class="space-y-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
             <div class="flex flex-wrap items-center justify-between gap-2">
               <div>
                 <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.input_otp.demo2_title' | translate }}</span>
                 <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.input_otp.demo2_desc' | translate }}</span>
               </div>
-              <app-badge variant="secondary" rounded="full" size="sm" class="shrink-0">PIN Mask</app-badge>
+              <app-badge variant="secondary" rounded="full" size="sm" class="shrink-0">{{ 'showcase.pin_mask' | translate }}</app-badge>
             </div>
 
             <div class="flex flex-col items-start gap-3 pt-1">
@@ -1556,7 +1552,7 @@
 
               <div class="flex flex-wrap items-center justify-between gap-2 w-full pt-1">
                 <span class="text-xs font-mono text-slate-500">
-                  PIN: <strong class="text-emerald-600 dark:text-emerald-400 font-bold">{{ demoOtpMaskToggle() ? demoOtpPin() : '••••' }}</strong>
+                  {{ 'showcase.pin_label' | translate }} <strong class="text-emerald-600 dark:text-emerald-400 font-bold">{{ demoOtpMaskToggle() ? demoOtpPin() : '••••' }}</strong>
                 </span>
 
                 <button
@@ -1571,14 +1567,13 @@
             </div>
           </div>
 
-          <!-- Demo 3: Alphanumeric Voucher Code -->
           <div class="space-y-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
             <div class="flex flex-wrap items-center justify-between gap-2">
               <div>
                 <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.input_otp.demo3_title' | translate }}</span>
                 <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.input_otp.demo3_desc' | translate }}</span>
               </div>
-              <app-badge variant="info" rounded="full" size="sm" class="shrink-0">Alphanumeric</app-badge>
+              <app-badge variant="info" rounded="full" size="sm" class="shrink-0">{{ 'showcase.alphanumeric' | translate }}</app-badge>
             </div>
 
             <div class="flex flex-col items-start gap-3 pt-1">
@@ -1593,7 +1588,7 @@
 
               <div class="flex flex-wrap items-center justify-between gap-2 w-full pt-1">
                 <span class="text-xs font-mono text-slate-500">
-                  Ref Code: <strong class="text-sky-600 dark:text-sky-400 font-bold">{{ demoOtpAlpha() || ('cards.input_otp.empty_val' | translate) }}</strong>
+                  {{ 'showcase.referral_code_label' | translate }} <strong class="text-sky-600 dark:text-sky-400 font-bold">{{ demoOtpAlpha() || ('cards.input_otp.empty_val' | translate) }}</strong>
                 </span>
 
                 <span class="text-[11px] text-slate-400">{{ 'cards.input_otp.paste_support' | translate }}</span>
@@ -1601,14 +1596,13 @@
             </div>
           </div>
 
-          <!-- Demo 4: Error State & Disabled State -->
           <div class="space-y-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
             <div class="flex flex-wrap items-center justify-between gap-2">
               <div>
                 <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.input_otp.invalid_title' | translate }}</span>
                 <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.input_otp.invalid_desc' | translate }}</span>
               </div>
-              <app-badge variant="danger" rounded="full" size="sm" class="shrink-0">Invalid / Disabled</app-badge>
+              <app-badge variant="danger" rounded="full" size="sm" class="shrink-0">{{ 'showcase.invalid_disabled' | translate }}</app-badge>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
@@ -1639,14 +1633,13 @@
         </div>
       </div>
 
-      <!-- Card 19: Component Dropdown Menu Cao Cấp (app-dropdown-menu) -->
       <div app-card class="mt-8">
         <div class="space-y-6">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200/80 dark:border-slate-800/80">
             <div>
               <div class="flex flex-wrap items-center gap-2.5">
                 <h3 class="text-base font-extrabold text-slate-900 dark:text-white">{{ 'cards.dropdown.card_title' | translate }}</h3>
-                <app-badge variant="primary" rounded="full" size="sm" class="shrink-0">Shadcn Space Dropdown</app-badge>
+                <app-badge variant="primary" rounded="full" size="sm" class="shrink-0">{{ 'showcase.dropdown_style' | translate }}</app-badge>
               </div>
               <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
                 {{ 'cards.dropdown.card_desc' | translate }}
@@ -1662,14 +1655,13 @@
           </div>
 
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <!-- Demo 1: User Profile Menu -->
             <div class="space-y-3 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
               <div class="flex flex-wrap items-center justify-between gap-2">
                 <div>
                   <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.dropdown.demo1_title' | translate }}</span>
                   <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.dropdown.demo1_desc' | translate }}</span>
                 </div>
-                <app-badge variant="success" rounded="full" size="sm" class="shrink-0">Profile Menu</app-badge>
+                <app-badge variant="success" rounded="full" size="sm" class="shrink-0">{{ 'showcase.profile_menu' | translate }}</app-badge>
               </div>
 
               <div class="flex flex-wrap items-center gap-3 pt-2">
@@ -1696,14 +1688,13 @@
               </div>
             </div>
 
-            <!-- Demo 2: Checkbox & Radio Menu -->
             <div class="space-y-3 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
               <div class="flex flex-wrap items-center justify-between gap-2">
                 <div>
                   <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.dropdown.demo2_title' | translate }}</span>
                   <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.dropdown.demo2_desc' | translate }}</span>
                 </div>
-                <app-badge variant="info" rounded="full" size="sm" class="shrink-0">Config Items</app-badge>
+                <app-badge variant="info" rounded="full" size="sm" class="shrink-0">{{ 'showcase.config_items' | translate }}</app-badge>
               </div>
 
               <div class="flex flex-wrap items-center gap-3 pt-2">
@@ -1721,14 +1712,13 @@
               </div>
             </div>
 
-            <!-- Demo 3: Nested Submenu -->
             <div class="space-y-3 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
               <div class="flex flex-wrap items-center justify-between gap-2">
                 <div>
                   <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.dropdown.demo3_title' | translate }}</span>
                   <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.dropdown.demo3_desc' | translate }}</span>
                 </div>
-                <app-badge variant="warning" rounded="full" size="sm" class="shrink-0">Nested Submenu</app-badge>
+                <app-badge variant="warning" rounded="full" size="sm" class="shrink-0">{{ 'showcase.nested_submenu' | translate }}</app-badge>
               </div>
 
               <div class="flex flex-wrap items-center gap-3 pt-2">
@@ -1745,14 +1735,13 @@
               </div>
             </div>
 
-            <!-- Demo 4: Icon Triggers & Placements -->
             <div class="space-y-3 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
               <div class="flex flex-wrap items-center justify-between gap-2">
                 <div>
                   <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.dropdown.demo4_title' | translate }}</span>
                   <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.dropdown.demo4_desc' | translate }}</span>
                 </div>
-                <app-badge variant="primary" rounded="full" size="sm" class="shrink-0">Icon & Placements</app-badge>
+                <app-badge variant="primary" rounded="full" size="sm" class="shrink-0">{{ 'showcase.icon_placements' | translate }}</app-badge>
               </div>
 
               <div class="flex flex-wrap items-center gap-3 pt-2">
@@ -1786,27 +1775,25 @@
                 >
                   <div dropdown-trigger class="px-3 py-1.5 rounded-full bg-gradient-to-r from-pink-500 to-rose-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-md hover:opacity-90">
                     <app-icon name="sparkles" class="w-3.5 h-3.5"></app-icon>
-                    <span>Custom Trigger</span>
+                    <span>{{ 'showcase.custom_trigger' | translate }}</span>
                   </div>
                 </app-dropdown-menu>
               </div>
             </div>
 
-            <!-- Demo 06: Voice Chat 06 Morphing Card (Shadcn Space 06 Full Transition & Animations) -->
             <div class="space-y-3 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60 col-span-1 lg:col-span-2">
               <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2">
                 <div class="space-y-1 min-w-0 flex-1">
                   <div class="flex flex-wrap items-center gap-2">
-                    <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">5. Dropdown Menu 06 - Voice Chat Morphing Card (Shadcn Space)</span>
-                    <span class="px-2 py-0.5 text-[10px] font-black rounded-full bg-teal-100 dark:bg-teal-950 text-teal-600 dark:text-teal-300 border border-teal-200/60 dark:border-teal-800/60 animate-pulse shrink-0">● MORPHING ANIMATION</span>
+                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'showcase.voice_demo_title' | translate }}</span>
+                  <span class="px-2 py-0.5 text-[10px] font-black rounded-full bg-teal-100 dark:bg-teal-950 text-teal-600 dark:text-teal-300 border border-teal-200/60 dark:border-teal-800/60 animate-pulse shrink-0">{{ 'showcase.morphing_animation' | translate }}</span>
                   </div>
                   <span class="text-[11px] text-slate-500 dark:text-slate-400 block leading-snug">{{ 'cards.voice_chat.morphing_desc' | translate }}</span>
                 </div>
-                <app-badge variant="success" rounded="full" size="sm" class="shrink-0 self-start sm:self-auto">Voice Chat 06 Exact</app-badge>
+                <app-badge variant="success" rounded="full" size="sm" class="shrink-0 self-start sm:self-auto">{{ 'showcase.voice_exact' | translate }}</app-badge>
               </div>
 
               <div class="flex flex-col items-center justify-center py-6">
-                <!-- App Voice Chat Component -->
                 <app-voice-chat></app-voice-chat>
               </div>
             </div>
@@ -1814,14 +1801,13 @@
         </div>
       </div>
 
-      <!-- Card 20: Component Progress Tiến Trình Cao Cấp (app-progress) -->
       <div app-card class="mt-8">
         <div class="space-y-6">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200/80 dark:border-slate-800/80">
             <div>
               <div class="flex flex-wrap items-center gap-2.5">
                 <h3 class="text-base font-extrabold text-slate-900 dark:text-white">{{ 'cards.progress.card_title' | translate }}</h3>
-                <app-badge variant="primary" rounded="full" size="sm" class="shrink-0">Shadcn Space Progress</app-badge>
+                <app-badge variant="primary" rounded="full" size="sm" class="shrink-0">{{ 'showcase.progress_style' | translate }}</app-badge>
               </div>
               <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
                 {{ 'cards.progress.card_desc' | translate }}
@@ -1841,58 +1827,55 @@
           </div>
 
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <!-- 1. Basic & Sizes -->
             <div class="space-y-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
               <div class="flex items-center justify-between">
                 <div>
                   <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.progress.demo1_title' | translate }}</span>
                   <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.progress.demo1_desc' | translate }}</span>
                 </div>
-                <app-badge variant="primary" rounded="full" size="sm">5 Sizes</app-badge>
+              <app-badge variant="primary" rounded="full" size="sm">{{ 'showcase.five_sizes' | translate }}</app-badge>
               </div>
 
               <div class="space-y-3 pt-1">
-                <app-progress label="Extra Small (xs - 6px)" [value]="25" size="xs" [showValue]="true" />
-                <app-progress label="Small (sm - 10px)" [value]="45" size="sm" [showValue]="true" />
-                <app-progress label="Medium (md - 14px)" [value]="65" size="md" [showValue]="true" />
-                <app-progress label="Large (lg - 20px)" [value]="80" size="lg" [showValue]="true" valuePosition="inside" />
-                <app-progress label="Extra Large (xl - 24px)" [value]="95" size="xl" [showValue]="true" valuePosition="inside" />
+              <app-progress [label]="'showcase.size_xs' | translate" [value]="25" size="xs" [showValue]="true" />
+              <app-progress [label]="'showcase.size_sm' | translate" [value]="45" size="sm" [showValue]="true" />
+              <app-progress [label]="'showcase.size_md' | translate" [value]="65" size="md" [showValue]="true" />
+              <app-progress [label]="'showcase.size_lg' | translate" [value]="80" size="lg" [showValue]="true" valuePosition="inside" />
+              <app-progress [label]="'showcase.size_xl' | translate" [value]="95" size="xl" [showValue]="true" valuePosition="inside" />
               </div>
             </div>
 
-            <!-- 2. Variants & Colors -->
             <div class="space-y-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
               <div class="flex items-center justify-between">
                 <div>
                   <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.progress.demo2_title' | translate }}</span>
                   <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.progress.demo2_desc' | translate }}</span>
                 </div>
-                <app-badge variant="info" rounded="full" size="sm">Variants</app-badge>
+                <app-badge variant="info" rounded="full" size="sm">{{ 'showcase.variants' | translate }}</app-badge>
               </div>
 
               <div class="space-y-3.5 pt-1">
-                <app-progress label="Primary (Purple Brand)" [value]="75" variant="primary" size="sm" [showValue]="true" />
-                <app-progress label="Success (Emerald Complete)" [value]="100" variant="success" size="sm" [showValue]="true" />
-                <app-progress label="Warning (Amber Warning)" [value]="55" variant="warning" size="sm" [showValue]="true" />
-                <app-progress label="Danger (Rose Error)" [value]="30" variant="danger" size="sm" [showValue]="true" />
-                <app-progress label="Info (Sky Information)" [value]="85" variant="info" size="sm" [showValue]="true" />
-                <app-progress label="Neon Gradient (Pink to Indigo)" [value]="90" variant="gradient" size="md" [showValue]="true" />
+              <app-progress [label]="'showcase.progress_primary' | translate" [value]="75" variant="primary" size="sm" [showValue]="true" />
+              <app-progress [label]="'showcase.progress_success' | translate" [value]="100" variant="success" size="sm" [showValue]="true" />
+              <app-progress [label]="'showcase.progress_warning' | translate" [value]="55" variant="warning" size="sm" [showValue]="true" />
+              <app-progress [label]="'showcase.progress_danger' | translate" [value]="30" variant="danger" size="sm" [showValue]="true" />
+              <app-progress [label]="'showcase.progress_info' | translate" [value]="85" variant="info" size="sm" [showValue]="true" />
+              <app-progress [label]="'showcase.progress_gradient' | translate" [value]="90" variant="gradient" size="md" [showValue]="true" />
               </div>
             </div>
 
-            <!-- 3. Striped, Animated & Indeterminate -->
             <div class="space-y-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
               <div class="flex items-center justify-between">
                 <div>
                   <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.progress.demo3_title' | translate }}</span>
                   <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.progress.demo3_desc' | translate }}</span>
                 </div>
-                <app-badge variant="warning" rounded="full" size="sm">Animations</app-badge>
+                <app-badge variant="warning" rounded="full" size="sm">{{ 'showcase.animations' | translate }}</app-badge>
               </div>
 
               <div class="space-y-4 pt-1">
                 <app-progress
-                  label="Striped Static"
+                [label]="'showcase.striped_static' | translate"
                   [value]="60"
                   variant="primary"
                   size="md"
@@ -1920,14 +1903,13 @@
               </div>
             </div>
 
-            <!-- 4. Steps & Multi-Segment Storage -->
             <div class="space-y-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
               <div class="flex items-center justify-between">
                 <div>
                   <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.progress.demo4_title' | translate }}</span>
                   <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.progress.demo4_desc' | translate }}</span>
                 </div>
-                <app-badge variant="success" rounded="full" size="sm">Steps & Segments</app-badge>
+                <app-badge variant="success" rounded="full" size="sm">{{ 'showcase.steps_segments' | translate }}</app-badge>
               </div>
 
               <div class="space-y-4 pt-1">
@@ -1943,21 +1925,21 @@
                 <div class="space-y-2">
                   <app-progress
                     [label]="'cards.progress.storage_allocation' | translate"
-                    [segments]="demoProgressSegments"
+                    [segments]="demoProgressSegments()"
                     size="lg"
                   />
                   <div class="flex items-center justify-between flex-wrap gap-2 text-[11px] text-slate-500 dark:text-slate-400 pt-1">
                     <div class="flex items-center gap-1.5">
                       <span class="w-2.5 h-2.5 rounded-full bg-purple-500 inline-block"></span>
-                      <span>DApps (40%)</span>
+                      <span>{{ 'showcase.dapps_segment' | translate }}</span>
                     </div>
                     <div class="flex items-center gap-1.5">
                       <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
-                      <span>Tokens (25%)</span>
+                      <span>{{ 'showcase.tokens_segment' | translate }}</span>
                     </div>
                     <div class="flex items-center gap-1.5">
                       <span class="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block"></span>
-                      <span>NFTs (15%)</span>
+                      <span>{{ 'showcase.nfts_segment' | translate }}</span>
                     </div>
                     <div class="flex items-center gap-1.5">
                       <span class="w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-700 inline-block"></span>
@@ -1968,14 +1950,13 @@
               </div>
             </div>
 
-            <!-- 5. Interactive Real-Time Demo -->
             <div class="space-y-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60 col-span-1">
               <div class="flex items-center justify-between">
                 <div>
                   <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.progress.demo5_title' | translate }}</span>
                   <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.progress.demo5_desc' | translate }}</span>
                 </div>
-                <app-badge variant="secondary" rounded="full" size="sm">Interactive</app-badge>
+                <app-badge variant="secondary" rounded="full" size="sm">{{ 'showcase.interactive' | translate }}</app-badge>
               </div>
 
               <div class="space-y-4 pt-1">
@@ -2006,14 +1987,13 @@
               </div>
             </div>
 
-            <!-- 6. Circular Progress & Semi-Circle Gauge -->
             <div class="space-y-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60 col-span-1">
               <div class="flex items-center justify-between">
                 <div>
                   <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.progress.demo6_title' | translate }}</span>
                   <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.progress.demo6_desc' | translate }}</span>
                 </div>
-                <app-badge variant="ultra" rounded="full" size="sm">SVG Gauges</app-badge>
+                <app-badge variant="ultra" rounded="full" size="sm">{{ 'showcase.svg_gauges' | translate }}</app-badge>
               </div>
 
               <div class="grid grid-cols-2 gap-4 items-center justify-items-center pt-2">
@@ -2048,7 +2028,6 @@
       </button>
     </div>
 
-    <!-- Card 21: Dropdown Đa Ngôn Ngữ Showcase -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <div app-card class="lg:col-span-2">
         <h4
@@ -2062,7 +2041,6 @@
         </p>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <!-- Bộ chọn ngôn ngữ dạng Full -->
           <div class="space-y-4">
             <div class="form-field">
               <label>{{ 'cards.lang_showcase.select_placeholder' | translate }}</label>
@@ -2095,10 +2073,9 @@
             </div>
           </div>
 
-          <!-- Bộ chọn ngôn ngữ dạng Compact + info -->
           <div class="space-y-4">
             <div class="form-field">
-              <label>COMPACT MODE (HEADER)</label>
+              <label>{{ 'showcase.compact_mode_header' | translate }}</label>
               <div class="flex items-center gap-3">
                 <app-language-selector variant="compact" direction="down" />
                 <span class="text-xs text-slate-400 dark:text-slate-500 font-semibold">
@@ -2112,16 +2089,16 @@
             >
               <h5 class="text-xs font-extrabold text-slate-700 dark:text-slate-200 flex items-center gap-2">
                 <app-icon name="code" class="w-4 h-4 text-primary" />
-                i18n Architecture
+                {{ 'showcase.i18n_architecture' | translate }}
               </h5>
               <ul class="text-xs text-slate-500 dark:text-slate-400 space-y-1.5 font-semibold">
                 <li class="flex items-center gap-2">
                   <span class="w-1.5 h-1.5 rounded-full bg-primary shrink-0"></span>
-                  Angular Signals reactive state
+                  {{ 'showcase.signals_state' | translate }}
                 </li>
                 <li class="flex items-center gap-2">
                   <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span>
-                  Separate vi.ts / en.ts translation files
+                  {{ 'showcase.separate_translation_files' | translate }}
                 </li>
                 <li class="flex items-center gap-2">
                   <span class="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0"></span>
@@ -2129,7 +2106,7 @@
                 </li>
                 <li class="flex items-center gap-2">
                   <span class="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0"></span>
-                  localStorage persistence
+                  {{ 'showcase.storage_persistence' | translate }}
                 </li>
               </ul>
             </div>
@@ -2138,7 +2115,6 @@
       </div>
     </div>
 
-    <!-- Card 22: Avatar & Avatar Group Showcase -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-6">
       <div app-card>
         <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 flex items-center gap-2">
@@ -2150,7 +2126,6 @@
         </p>
 
         <div class="space-y-6">
-          <!-- Single Avatars with Sizes & Status -->
           <div class="space-y-2">
             <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider">{{ 'cards.avatar.single_label' | translate }}</label>
             <div class="flex flex-wrap items-center gap-4 pt-1">
@@ -2162,7 +2137,6 @@
             </div>
           </div>
 
-          <!-- Avatar Group Stack -->
           <div class="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-800/40">
             <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider">{{ 'cards.avatar.group_label' | translate }}</label>
             <div class="flex flex-col gap-3 pt-1">
@@ -2173,7 +2147,6 @@
         </div>
       </div>
 
-      <!-- Card 23: Empty State Showcase -->
       <div app-card>
         <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 flex items-center gap-2">
           <app-icon name="search" class="w-3.5 h-3.5 text-primary" />
@@ -2196,7 +2169,6 @@
       </div>
     </div>
 
-    <!-- Card 24: Alert & Callout Showcase -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-6">
       <div app-card>
         <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 flex items-center gap-2">
@@ -2239,7 +2211,6 @@
         </div>
       </div>
 
-      <!-- Card 25: Drawer / Off-canvas Slide-over Showcase -->
       <div app-card>
         <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 flex items-center gap-2">
           <app-icon name="sidebar" class="w-3.5 h-3.5 text-primary" />
@@ -2251,7 +2222,7 @@
 
         <div class="space-y-4">
           <div class="p-4 rounded-xl bg-slate-50/50 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 space-y-3">
-            <span class="text-xs font-bold text-slate-500 dark:text-slate-400 block">Click button to open Drawer:</span>
+            <span class="text-xs font-bold text-slate-500 dark:text-slate-400 block">{{ 'showcase.click_open_drawer' | translate }}</span>
             <div class="flex flex-wrap gap-2.5">
               <button app-button variant="primary" size="md" (click)="openDemoDrawer('right')">
                 <app-icon name="chevron-right" class="w-4 h-4" />
@@ -2271,18 +2242,17 @@
           <div class="text-xs text-slate-400 space-y-1 font-semibold">
             <div class="flex items-center gap-2">
               <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-              Backdrop Overlay `bg-black/40`
+              {{ 'showcase.backdrop_overlay' | translate }}
             </div>
             <div class="flex items-center gap-2">
               <span class="w-1.5 h-1.5 rounded-full bg-purple-500"></span>
-              ESC key or outside click listener
+              {{ 'showcase.escape_or_outside' | translate }}
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Card 26: Stepper Showcase -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-6">
       <div app-card class="lg:col-span-2 overflow-hidden">
         <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 flex items-center gap-2">
@@ -2314,7 +2284,7 @@
             </button>
 
             <span class="text-[11px] sm:text-xs font-mono text-slate-400 shrink-0">
-              Active: {{ demoStepperActive() + 1 }}/{{ demoStepperSteps().length }}
+              {{ 'showcase.active' | translate }}: {{ demoStepperActive() + 1 }}/{{ demoStepperSteps().length }}
             </span>
 
             <button
@@ -2332,7 +2302,6 @@
       </div>
     </div>
 
-    <!-- Card 27: Stat Card Showcase -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 pt-6">
       <app-stat-card
         [title]="'cards.stat_card.tvl_title' | translate"
@@ -2363,9 +2332,7 @@
       />
     </div>
 
-    <!-- Card 28 & 29: Breadcrumb (2 Cột 1/2) & Divider Showcase -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-6">
-      <!-- Card 28: Breadcrumb (Chiếm 1/2 Chiều Rộng Cột Trái) -->
       <div app-card>
         <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 flex items-center gap-2">
           <app-icon name="external" class="w-3.5 h-3.5 text-primary" />
@@ -2376,12 +2343,11 @@
         </p>
 
         <div class="space-y-4 pt-1">
-          <app-breadcrumb [items]="demoBreadcrumbItems" separatorIcon="chevron-right" />
-          <app-breadcrumb [items]="demoBreadcrumbItems" separatorIcon="slash" [showHome]="false" />
+          <app-breadcrumb [items]="demoBreadcrumbItems()" separatorIcon="chevron-right" />
+          <app-breadcrumb [items]="demoBreadcrumbItems()" separatorIcon="slash" [showHome]="false" />
         </div>
       </div>
 
-      <!-- Card 29: Divider (Chiếm 1/2 Chiều Rộng Cột Phải) -->
       <div app-card>
         <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 flex items-center gap-2">
           <app-icon name="code" class="w-3.5 h-3.5 text-primary" />
@@ -2399,7 +2365,6 @@
       </div>
     </div>
 
-    <!-- Card 30: Copy to Clipboard Showcase -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-6">
       <div app-card class="lg:col-span-2">
         <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 flex items-center gap-2">
@@ -2426,7 +2391,6 @@
   </div>
 </main>
 
-<!-- Standalone Drawer Instance -->
 <app-drawer
   [(isOpen)]="demoDrawerOpen"
   [position]="demoDrawerPosition()"
@@ -2438,19 +2402,19 @@
 
     <div class="space-y-3 text-xs">
       <div class="flex justify-between py-2 border-b border-slate-100 dark:border-slate-800">
-        <span class="text-slate-400 font-bold">From:</span>
+        <span class="text-slate-400 font-bold">{{ 'showcase.from' | translate }}</span>
         <span class="font-mono font-bold text-slate-700 dark:text-slate-200">0x71C7...976F</span>
       </div>
       <div class="flex justify-between py-2 border-b border-slate-100 dark:border-slate-800">
-        <span class="text-slate-400 font-bold">To:</span>
+        <span class="text-slate-400 font-bold">{{ 'showcase.to' | translate }}</span>
         <span class="font-mono font-bold text-slate-700 dark:text-slate-200">0x88F1...11A2</span>
       </div>
       <div class="flex justify-between py-2 border-b border-slate-100 dark:border-slate-800">
-        <span class="text-slate-400 font-bold">Amount:</span>
+        <span class="text-slate-400 font-bold">{{ 'showcase.amount' | translate }}</span>
         <span class="font-black text-purple-600 dark:text-purple-400 text-sm">1.5 ETH</span>
       </div>
       <div class="flex justify-between py-2 border-b border-slate-100 dark:border-slate-800">
-        <span class="text-slate-400 font-bold">Gas Fee:</span>
+        <span class="text-slate-400 font-bold">{{ 'showcase.gas_fee' | translate }}</span>
         <span class="font-mono text-slate-600 dark:text-slate-400">0.0012 ETH ($3.45)</span>
       </div>
     </div>
@@ -2458,7 +2422,7 @@
 
   <div drawer-footer class="flex items-center justify-end gap-3">
     <button app-button variant="cancel" size="md" (click)="demoDrawerOpen.set(false)">{{ 'action.cancel' | translate }}</button>
-    <button app-button variant="primary" size="md" (click)="stateService.showToast('Opened Explorer', 'success')">{{ 'header.view_explorer' | translate }}</button>
+    <button app-button variant="primary" size="md" (click)="stateService.showToast(translationService.t('header.view_explorer'), 'success')">{{ 'header.view_explorer' | translate }}</button>
   </div>
 </app-drawer>
 

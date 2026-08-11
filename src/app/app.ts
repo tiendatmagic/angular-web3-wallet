@@ -7,6 +7,7 @@ import { IconComponent } from '@shared/components/icon/icon.component';
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { SidebarComponent } from '@shared/layout/sidebar/sidebar.component';
 import { StateService } from '@core/services/state.service';
+import { TranslatePipe } from '@shared/pipes/translate.pipe';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +19,8 @@ import { StateService } from '@core/services/state.service';
     ToastComponent,
     ModalComponent,
     IconComponent,
-    ButtonComponent
+    ButtonComponent,
+    TranslatePipe
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss'

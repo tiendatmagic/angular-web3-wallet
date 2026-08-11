@@ -1,4 +1,4 @@
-import { Component, signal, inject, computed } from '@angular/core';
+import { Component, signal, inject, computed, effect } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '@shared/components/icon/icon.component';
@@ -106,7 +106,16 @@ export class HomeComponent {
   public txLoading = signal(false);
   public txError = signal<string | null>(null);
 
-  public messageToSign = signal('Chào mừng bạn đến với Angular Web3!');
+  private defaultMessage = this.translationService.t('showcase.welcome_message');
+  public messageToSign = signal(this.defaultMessage);
+  private readonly syncDefaultMessage = effect(() => {
+    this.translationService.currentLang();
+    const translatedDefault = this.translationService.t('showcase.welcome_message');
+    if (!this.messageToSign() || this.messageToSign() === this.defaultMessage) {
+      this.messageToSign.set(translatedDefault);
+    }
+    this.defaultMessage = translatedDefault;
+  });
   public signature = signal<string | null>(null);
   public signLoading = signal(false);
   public signError = signal<string | null>(null);
@@ -192,14 +201,17 @@ export class HomeComponent {
   ];
 
   public demoMultiSelectValue = signal<string[]>(['mushroom', 'onion']);
-  public readonly demoMultiSelectOptions = [
-    { id: 'cheese', name: 'Extra cheese' },
-    { id: 'mushroom', name: 'Mushroom' },
-    { id: 'onion', name: 'Onion' },
-    { id: 'pepperoni', name: 'Pepperoni' },
-    { id: 'sausage', name: 'Sausage' },
-    { id: 'tomato', name: 'Tomato' }
-  ];
+  public readonly demoMultiSelectOptions = computed(() => {
+    this.translationService.currentLang();
+    return [
+      { id: 'cheese', name: this.translationService.t('showcase.toppings_cheese') },
+      { id: 'mushroom', name: this.translationService.t('showcase.toppings_mushroom') },
+      { id: 'onion', name: this.translationService.t('showcase.toppings_onion') },
+      { id: 'pepperoni', name: this.translationService.t('showcase.toppings_pepperoni') },
+      { id: 'sausage', name: this.translationService.t('showcase.toppings_sausage') },
+      { id: 'tomato', name: this.translationService.t('showcase.toppings_tomato') }
+    ];
+  });
 
   public readonly demoRadioOptions = computed(() => {
     this.translationService.currentLang();
@@ -301,7 +313,7 @@ export class HomeComponent {
 
   public openDemoModal(): void {
     const ref = this.modalService.open(DemoModalComponent, {
-      title: 'Demo Form Components',
+      title: this.translationService.t('showcase.demo_form_components'),
       size: 'xl',
       closeOnBackdropClick: true
     });
@@ -309,7 +321,10 @@ export class HomeComponent {
     ref.afterClosed$.subscribe(result => {
       if (result) {
         this.stateService.showToast(
-          `Xác nhận form! Date: ${result.date || '(chưa chọn)'}, Select: ${result.select || '(chưa chọn)'}`,
+          this.translationService.t('showcase.modal_result', {
+            date: result.date || this.translationService.t('showcase.not_selected'),
+            select: result.select || this.translationService.t('showcase.not_selected')
+          }),
           'success'
         );
       }
@@ -490,7 +505,7 @@ export class Web3Service {
       language: 'html',
       code: `<div class="wallet-card border rounded-xl p-4 bg-slate-900">
   <div class="flex items-center justify-between">
-    <h3 class="text-sm font-semibold">Ví Web3 của tôi</h3>
+    <h3 class="text-sm font-semibold">{{ 'wallet.dashboard_title' | translate }}</h3>
     <span class="badge text-xs bg-emerald-500/20 text-emerald-400">Connected</span>
   </div>
   <p class="mt-2 text-mono text-xs text-slate-400">{{ account() }}</p>
@@ -553,6 +568,10 @@ export function getNetworkRpc(chainId: number): string {
   }
 
   public readonly demoDropdownLastAction = signal<string>(this.translationService.t('cards.dropdown.no_action_yet'));
+  private readonly syncDropdownLanguage = effect(() => {
+    this.translationService.currentLang();
+    this.demoDropdownLastAction.set(this.translationService.t('cards.dropdown.no_action_yet'));
+  });
 
   public readonly demoProfileHeader: DropdownMenuHeader = {
     title: 'Nguyễn Tiến Đạt',
@@ -566,7 +585,7 @@ export function getNetworkRpc(chainId: number): string {
     return [
       { type: 'header', label: this.translationService.t('cards.dropdown.header_dapp') },
       { id: 'profile', label: this.translationService.t('cards.dropdown.profile'), icon: 'user' },
-      { id: 'wallet', label: this.translationService.t('cards.dropdown.connected_wallet'), icon: 'wallet', badge: 'Active', badgeColor: 'bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/50' },
+      { id: 'wallet', label: this.translationService.t('cards.dropdown.connected_wallet'), icon: 'wallet', badge: this.translationService.t('showcase.active'), badgeColor: 'bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/50' },
       { id: 'settings', label: this.translationService.t('cards.dropdown.system_settings'), icon: 'settings' },
       { id: 'keyboard', label: this.translationService.t('cards.dropdown.keyboard_shortcuts'), icon: 'keyboard' },
       { type: 'separator' },
@@ -639,32 +658,35 @@ export function getNetworkRpc(chainId: number): string {
   public readonly demoVoiceDeafened = signal<boolean>(false);
   public readonly demoVoiceScreenSharing = signal<boolean>(false);
 
-  public readonly demoVoiceParticipants = [
-    { id: '1', name: 'Nguyễn Tiến Đạt', role: 'Host', avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80', isSpeaking: true, isMuted: false },
-    { id: '2', name: 'Elena Rostova', role: 'Co-Host', avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&auto=format&fit=crop&q=80', isSpeaking: false, isMuted: false },
-    { id: '3', name: 'Marcus Vance', role: 'Speaker', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80', isSpeaking: false, isMuted: true },
-    { id: '4', name: 'Sophia Chen', role: 'Listener', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80', isSpeaking: false, isMuted: true },
-    { id: '5', name: 'Alexander Wright', role: 'Listener', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&auto=format&fit=crop&q=80', isSpeaking: false, isMuted: true },
-    { id: '6', name: 'Liam Sterling', role: 'Listener', avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&auto=format&fit=crop&q=80', isSpeaking: false, isMuted: true },
-    { id: '7', name: 'Chloe Bennett', role: 'Listener', avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&auto=format&fit=crop&q=80', isSpeaking: false, isMuted: true }
-  ];
+  public readonly demoVoiceParticipants = computed(() => {
+    this.translationService.currentLang();
+    return [
+      { id: '1', name: 'Nguyễn Tiến Đạt', role: this.translationService.t('showcase.role_host'), avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80', isSpeaking: true, isMuted: false },
+      { id: '2', name: 'Elena Rostova', role: this.translationService.t('showcase.role_cohost'), avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&auto=format&fit=crop&q=80', isSpeaking: false, isMuted: false },
+      { id: '3', name: 'Marcus Vance', role: this.translationService.t('showcase.role_speaker'), avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80', isSpeaking: false, isMuted: true },
+      { id: '4', name: 'Sophia Chen', role: this.translationService.t('showcase.role_listener'), avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80', isSpeaking: false, isMuted: true },
+      { id: '5', name: 'Alexander Wright', role: this.translationService.t('showcase.role_listener'), avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&auto=format&fit=crop&q=80', isSpeaking: false, isMuted: true },
+      { id: '6', name: 'Liam Sterling', role: this.translationService.t('showcase.role_listener'), avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&auto=format&fit=crop&q=80', isSpeaking: false, isMuted: true },
+      { id: '7', name: 'Chloe Bennett', role: this.translationService.t('showcase.role_listener'), avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&auto=format&fit=crop&q=80', isSpeaking: false, isMuted: true }
+    ];
+  });
 
   public toggleVoiceMic(): void {
     this.demoVoiceMuted.update(v => !v);
     const stateKey = this.demoVoiceMuted() ? 'cards.voice_chat.mic_muted' : 'cards.voice_chat.mic_unmuted';
-    this.stateService.showToast(`Voice Chat: ${this.translationService.t(stateKey)}`, this.demoVoiceMuted() ? 'warning' : 'success');
+    this.stateService.showToast(`${this.translationService.t('showcase.voice_chat')}: ${this.translationService.t(stateKey)}`, this.demoVoiceMuted() ? 'warning' : 'success');
   }
 
   public toggleVoiceSound(): void {
     this.demoVoiceDeafened.update(v => !v);
     const stateKey = this.demoVoiceDeafened() ? 'cards.voice_chat.deafened' : 'cards.voice_chat.undeafened';
-    this.stateService.showToast(`Voice Chat: ${this.translationService.t(stateKey)}`, this.demoVoiceDeafened() ? 'warning' : 'success');
+    this.stateService.showToast(`${this.translationService.t('showcase.voice_chat')}: ${this.translationService.t(stateKey)}`, this.demoVoiceDeafened() ? 'warning' : 'success');
   }
 
   public toggleVoiceScreenShare(): void {
     this.demoVoiceScreenSharing.update(v => !v);
     const stateKey = this.demoVoiceScreenSharing() ? 'cards.voice_chat.sharing_screen' : 'cards.voice_chat.stopped_sharing';
-    this.stateService.showToast(`Voice Chat: ${this.translationService.t(stateKey)}`, 'success');
+    this.stateService.showToast(`${this.translationService.t('showcase.voice_chat')}: ${this.translationService.t(stateKey)}`, 'success');
   }
 
   public toggleVoiceConnection(): void {
@@ -675,18 +697,20 @@ export function getNetworkRpc(chainId: number): string {
 
   public readonly demoProgressValue = signal<number>(68);
 
-  public readonly demoProgressSegments: ProgressSegment[] = [
-    { value: 40, color: 'bg-purple-500', label: 'DApps Data' },
-    { value: 25, color: 'bg-emerald-500', label: 'Tokens' },
-    { value: 15, color: 'bg-amber-500', label: 'NFTs' },
-    { value: 20, color: 'bg-slate-300 dark:bg-slate-700', label: 'Free Space' }
-  ];
+  public readonly demoProgressSegments = computed<ProgressSegment[]>(() => {
+    this.translationService.currentLang();
+    return [
+      { value: 40, color: 'bg-purple-500', label: this.translationService.t('showcase.dapps_data') },
+      { value: 25, color: 'bg-emerald-500', label: this.translationService.t('showcase.tokens_segment') },
+      { value: 15, color: 'bg-amber-500', label: this.translationService.t('showcase.nfts_segment') },
+      { value: 20, color: 'bg-slate-300 dark:bg-slate-700', label: this.translationService.t('showcase.free_space') }
+    ];
+  });
 
   public adjustProgress(delta: number): void {
     this.demoProgressValue.update(v => Math.min(100, Math.max(0, v + delta)));
   }
 
-  // Demo State for 9 New Standalone Components
   public readonly demoDrawerOpen = signal<boolean>(false);
   public readonly demoDrawerPosition = signal<'right' | 'left' | 'bottom'>('right');
   public readonly demoStepperActive = signal<number>(1);
@@ -700,19 +724,22 @@ export function getNetworkRpc(chainId: number): string {
     { name: 'Alice Smith', status: 'away' }
   ];
 
-  public readonly demoBreadcrumbItems: BreadcrumbItem[] = [
-    { label: 'DApp Dashboard', url: '/' },
-    { label: 'UI Kit Showcase', url: '/' },
-    { label: 'New Components', icon: 'sparkles' }
-  ];
+  public readonly demoBreadcrumbItems = computed<BreadcrumbItem[]>(() => {
+    this.translationService.currentLang();
+    return [
+      { label: this.translationService.t('showcase.breadcrumb_dashboard'), url: '/' },
+      { label: this.translationService.t('showcase.breadcrumb_ui_kit'), url: '/' },
+      { label: this.translationService.t('showcase.breadcrumb_new_components'), icon: 'sparkles' }
+    ];
+  });
 
   public readonly demoStepperSteps = computed<StepItem[]>(() => {
-    const lang = this.translationService.currentLang();
+    this.translationService.currentLang();
     return [
-      { label: 'Approve Token', subtitle: lang === 'vi' ? 'Ủy quyền hợp đồng' : 'Authorize Smart Contract', icon: 'key' },
-      { label: 'Deposit Liquidity', subtitle: lang === 'vi' ? 'Nạp tiền vào bể' : 'Deposit into pool', icon: 'wallet' },
-      { label: 'Mint LP NFT', subtitle: lang === 'vi' ? 'Nhận NFT bằng chứng' : 'Claim Proof NFT', icon: 'sparkles' },
-      { label: lang === 'vi' ? 'Hoàn Tất' : 'Complete', subtitle: lang === 'vi' ? 'Hoàn tất quy trình' : 'Workflow completed' }
+      { label: this.translationService.t('showcase.step_approve'), subtitle: this.translationService.t('showcase.step_approve_description'), icon: 'key' },
+      { label: this.translationService.t('showcase.step_deposit'), subtitle: this.translationService.t('showcase.step_deposit_description'), icon: 'wallet' },
+      { label: this.translationService.t('showcase.step_mint'), subtitle: this.translationService.t('showcase.step_mint_description'), icon: 'sparkles' },
+      { label: this.translationService.t('showcase.step_complete'), subtitle: this.translationService.t('showcase.step_complete_description') }
     ];
   });
 

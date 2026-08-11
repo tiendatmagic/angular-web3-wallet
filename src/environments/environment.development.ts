@@ -1,9 +1,9 @@
 export const environment = {
   production: false,
   enableWeb3: true,
-  walletConnectProjectId: 'a196657383cc397e36c797a54165e326', // Dùng chung Project ID để test
+  walletConnectProjectId: 'a196657383cc397e36c797a54165e326',
   defaultRpcUrl: 'https://sepolia-rollup.arbitrum.io/rpc',
   defaultExplorerUrl: 'https://sepolia.arbiscan.io',
-  defaultChainId: '42161', // Arbitrum One Mainnet (Mạng mặc định)
+  defaultChainId: '42161',
   apiBaseUrl: 'http://localhost:8000/api'
 };

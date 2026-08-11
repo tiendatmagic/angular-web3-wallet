@@ -8,12 +8,14 @@ import { environment } from '@environments/environment';
 import { ThemeService } from './theme.service';
 import { ToastService } from './toast.service';
 import { POPULAR_CHAINS } from '../utils/blockchain.utils';
+import { TranslationService } from './translation.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class Web3Service {
   private modal!: AppKit;
+  private readonly translationService = inject(TranslationService);
 
   public readonly isEnabled: boolean = environment.enableWeb3;
 
@@ -22,7 +24,7 @@ export class Web3Service {
   public isConnected = signal<boolean>(false);
   public balance = signal<string>('0.0000');
   public chainSymbol = signal<string>('ETH');
-  public networkName = signal<string>('Unknown Network');
+  public networkName = signal<string>(this.translationService.t('showcase.unknown_network'));
   public isWrongChain = signal<boolean>(false);
   public txSpeed = signal<'default' | 'fast' | 'custom'>('default');
   public gasMultiplier = signal<number>(2);
@@ -68,7 +70,7 @@ export class Web3Service {
       const confId = this.configuredChainId();
       if (!isConn) {
         const popular = POPULAR_CHAINS.find(c => c.chainId === confId);
-        this.networkName.set(popular ? popular.name : 'Unknown Network');
+        this.networkName.set(popular ? popular.name : this.translationService.t('showcase.unknown_network'));
         const symbol = popular ? (popular.chainId === '56' || popular.chainId === '97' ? 'BNB' : 'ETH') : 'ETH';
         this.chainSymbol.set(symbol);
       }
@@ -78,6 +80,13 @@ export class Web3Service {
       const chain = this.configuredChainId();
       if (typeof window !== 'undefined' && chain) {
         localStorage.setItem('angular_web3_configured_chain_id', chain);
+      }
+    });
+
+    effect(() => {
+      this.translationService.currentLang();
+      if (this.isConnected() && this.isWrongChain()) {
+        this.networkName.set(this.translationService.t('showcase.unknown_network'));
       }
     });
   }
@@ -117,7 +126,7 @@ export class Web3Service {
       allowUnsupportedChain: true,
       metadata: {
         name: 'Angular Web3 DApp',
-        description: 'Angular Web3 Application Framework',
+        description: this.translationService.t('about.subtitle'),
         url: window.location.origin,
         icons: [window.location.origin + '/assets/logo.svg']
       },
@@ -153,11 +162,11 @@ export class Web3Service {
       } else {
         this.balance.set('0.0000');
         this.chainId.set(null);
-        this.networkName.set('Unknown Network');
+        this.networkName.set(this.translationService.t('showcase.unknown_network'));
         this.isWrongChain.set(false);
         this.showWrongChainModal.set(false);
         if (prevConnected) {
-          this.toastService.showToast('Đã ngắt kết nối ví!', 'error');
+          this.toastService.showToast(this.translationService.t('showcase.web3_disconnected'), 'error');
         }
       }
     });
@@ -211,7 +220,7 @@ export class Web3Service {
         }
       }
       if (showToastAlert && prevChainId && prevChainId !== chainId) {
-        this.toastService.showToast(`Đã chuyển sang mạng ${supportedChain.name}!`, 'success');
+        this.toastService.showToast(this.translationService.t('showcase.web3_network_switched', { network: supportedChain.name }), 'success');
       }
 
       const isTestnet = !!supportedChain.testnet || supportedChain.name.toLowerCase().includes('sepolia') || supportedChain.name.toLowerCase().includes('testnet');
@@ -222,13 +231,13 @@ export class Web3Service {
       }
     } else {
       const popular = POPULAR_CHAINS.find(c => Number(c.chainId) === chainId);
-      this.networkName.set(popular ? popular.name : 'Mạng không hỗ trợ');
+      this.networkName.set(popular ? popular.name : this.translationService.t('showcase.unknown_network'));
       this.chainSymbol.set('ETH');
 
       if (this.isConnected()) {
         this.showWrongChainModal.set(true);
         if (showToastAlert && (!prevWrongChain || prevChainId !== chainId)) {
-          this.toastService.showToast('Mạng hiện tại không được hỗ trợ!', 'error');
+          this.toastService.showToast(this.translationService.t('showcase.web3_unsupported_network'), 'error');
         }
       } else {
         this.showWrongChainModal.set(false);
@@ -439,16 +448,16 @@ export class Web3Service {
       const popular = POPULAR_CHAINS.find(c => Number(c.chainId) === chainId);
       if (popular) {
         this.networkName.set(popular.name);
-        this.toastService.showToast(`Đã chọn mạng mong muốn: ${popular.name}`, 'success');
+        this.toastService.showToast(this.translationService.t('showcase.web3_network_selected', { network: popular.name }), 'success');
       }
     }
   }
 
   public async getSigner() {
-    if (!this.isEnabled) throw new Error('Web3 đã bị tắt. Bật lại environment.enableWeb3 = true.');
+    if (!this.isEnabled) throw new Error(this.translationService.t('showcase.web3_disabled'));
     const walletProvider = this.modal.getWalletProvider();
     if (!walletProvider) {
-      throw new Error('Ví chưa được kết nối');
+      throw new Error(this.translationService.t('showcase.web3_wallet_not_connected'));
     }
     const ethersProvider = new BrowserProvider(walletProvider as any);
     const currentAddress = this.address();
@@ -466,10 +475,10 @@ export class Web3Service {
   }
 
   public getProvider() {
-    if (!this.isEnabled) throw new Error('Web3 đã bị tắt. Bật lại environment.enableWeb3 = true.');
+    if (!this.isEnabled) throw new Error(this.translationService.t('showcase.web3_disabled'));
     const walletProvider = this.modal.getWalletProvider();
     if (!walletProvider) {
-      throw new Error('Ví chưa được kết nối');
+      throw new Error(this.translationService.t('showcase.web3_wallet_not_connected'));
     }
     return new BrowserProvider(walletProvider as any);
   }

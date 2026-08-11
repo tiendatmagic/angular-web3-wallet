@@ -1,5 +1,6 @@
 ﻿import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 
 export interface AvatarItem {
   src?: string;
@@ -10,7 +11,7 @@ export interface AvatarItem {
 @Component({
   selector: 'app-avatar',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslatePipe],
   templateUrl: './avatar.component.html',
   host: { 'class': 'inline-block' },
 })

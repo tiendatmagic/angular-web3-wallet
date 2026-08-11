@@ -36,7 +36,6 @@
       </a>
     </div>
 
-    <!-- Connected Network Status Badge (Desktop) -->
     <div class="hidden md:block">
       @if (stateService.isWeb3Enabled && stateService.isConnected()) {
         <div
@@ -56,23 +55,18 @@
       }
     </div>
 
-    <!-- Header Action Controls -->
     <div class="flex items-center gap-1 sm:gap-3 shrink-0">
-      <!-- Multi-Language Selector Component -->
       <app-language-selector variant="compact" />
 
       @if (stateService.isWeb3Enabled) {
-        <!-- Network Selector Component -->
         <app-network-selector />
 
-        <!-- Account / Wallet Dropdown Component -->
         <app-account-dropdown />
       }
     </div>
   </div>
 </header>
 
-<!-- Mobile Navigation Drawer -->
 <div
   [class.pointer-events-none]="!stateService.showMobileMenu()"
   class="fixed inset-0 z-[60] md:hidden select-none"

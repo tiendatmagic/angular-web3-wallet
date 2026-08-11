@@ -14,7 +14,7 @@
 
 <app-modal
   [isOpen]="stateService.showWrongChainModal()"
-  [title]="'Chuyển mạng lưới'"
+  [title]="'showcase.wrong_network_title' | translate"
   (close)="stateService.showWrongChainModal.set(false)"
   size="md"
 >
@@ -25,7 +25,7 @@
 
     <div class="space-y-2">
       <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed px-2">
-        Ứng dụng không hỗ trợ mạng hiện tại của bạn. Vui lòng chuyển sang một trong các mạng khả dụng dưới đây để tiếp tục.
+        {{ 'showcase.wrong_network_description' | translate }}
       </p>
     </div>
 
@@ -54,7 +54,7 @@
         (click)="disconnectWallet()"
       >
         <app-icon name="logout" class="w-4.5 h-4.5" />
-        Ngắt kết nối ví
+        {{ 'showcase.disconnect_wallet' | translate }}
       </button>
     </div>
   </div>

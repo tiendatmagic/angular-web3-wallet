@@ -1,7 +1,5 @@
 <div class="w-full relative">
-  <!-- AUTO ORIENTATION (Vertical on Mobile < sm, Horizontal on Desktop >= sm) -->
   @if (orientation === 'auto') {
-    <!-- Mobile Timeline (< sm / < 640px) -->
     <div class="flex sm:hidden flex-col gap-6 relative w-full">
       @for (step of steps; track $index; let isLast = $last) {
         <div
@@ -9,7 +7,6 @@
           [class.cursor-pointer]="clickable"
           (click)="selectStep($index)"
         >
-          <!-- Vertical Line -->
           @if (!isLast) {
             <div
               class="absolute top-10 left-5 -translate-x-1/2 w-0.5 h-[calc(100%+24px-10px)] z-0 transition-colors duration-300 pointer-events-none"
@@ -20,7 +17,6 @@
             ></div>
           }
 
-          <!-- Circle Badge -->
           <div
             class="relative z-10 w-10 h-10 rounded-full flex items-center justify-center font-extrabold text-sm transition-all duration-300 shrink-0 select-none shadow-sm"
             [ngClass]="{
@@ -41,7 +37,6 @@
             }
           </div>
 
-          <!-- Label & Subtitle -->
           <div class="min-w-0 flex-1 pt-1">
             <span
               class="block text-sm font-extrabold tracking-tight transition-colors duration-200 break-words leading-tight"
@@ -64,7 +59,6 @@
       }
     </div>
 
-    <!-- Desktop Timeline (>= sm / >= 640px) -->
     <div class="hidden sm:flex flex-row items-start justify-between flex-nowrap min-w-0 relative w-full">
       @for (step of steps; track $index; let isLast = $last) {
         <div
@@ -72,7 +66,6 @@
           [class.cursor-pointer]="clickable"
           (click)="selectStep($index)"
         >
-          <!-- Horizontal Connecting Line -->
           @if (!isLast) {
             <div
               class="absolute top-5 left-[calc(50%+20px)] w-[calc(100%-40px)] h-0.5 z-0 transition-colors duration-300 pointer-events-none"
@@ -83,7 +76,6 @@
             ></div>
           }
 
-          <!-- Circle Badge -->
           <div
             class="relative z-10 w-10 h-10 rounded-full flex items-center justify-center font-extrabold text-sm transition-all duration-300 shrink-0 select-none shadow-sm"
             [ngClass]="{
@@ -104,7 +96,6 @@
             }
           </div>
 
-          <!-- Label & Subtitle -->
           <div class="min-w-0 w-full mt-3">
             <span
               class="block text-xs sm:text-sm font-extrabold tracking-tight transition-colors duration-200 break-words leading-tight"
@@ -128,7 +119,6 @@
     </div>
   }
 
-  <!-- EXPLICIT HORIZONTAL ORIENTATION -->
   @if (orientation === 'horizontal') {
     <div class="flex flex-row items-start justify-between flex-nowrap min-w-0 overflow-x-auto pb-2 sm:pb-0 relative w-full">
       @for (step of steps; track $index; let isLast = $last) {
@@ -190,7 +180,6 @@
     </div>
   }
 
-  <!-- EXPLICIT VERTICAL ORIENTATION -->
   @if (orientation === 'vertical') {
     <div class="flex flex-col gap-6 sm:gap-8 relative w-full">
       @for (step of steps; track $index; let isLast = $last) {

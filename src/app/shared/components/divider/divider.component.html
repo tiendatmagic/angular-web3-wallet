@@ -1,7 +1,5 @@
-<!-- Horizontal Divider -->
 @if (orientation === 'horizontal') {
   <div class="relative flex items-center my-4 w-full">
-    <!-- Left Line -->
     <div
       class="flex-1 transition-colors duration-200"
       [ngClass]="{
@@ -12,14 +10,12 @@
       }"
     ></div>
 
-    <!-- Optional Label -->
     @if (label) {
       <span class="px-3 text-xs font-black uppercase tracking-wider text-slate-400 dark:text-slate-500 select-none shrink-0">
         {{ label }}
       </span>
     }
 
-    <!-- Right Line -->
     <div
       class="flex-1 transition-colors duration-200"
       [ngClass]="{
@@ -32,7 +28,6 @@
   </div>
 }
 
-<!-- Vertical Divider -->
 @if (orientation === 'vertical') {
   <div
     class="inline-block self-stretch mx-3 transition-colors duration-200"

@@ -1,5 +1,4 @@
 <div class="relative inline-block text-left" [ngClass]="{'w-full': triggerVariant === 'default'}">
-  <!-- Trigger Element -->
   @if (customTrigger) {
     <div (click)="toggleOpen($event)" class="cursor-pointer inline-block">
       <ng-content select="[dropdown-trigger]"></ng-content>
@@ -24,7 +23,7 @@
       }"
     >
       @if (triggerVariant === 'avatar' && avatarUrl) {
-        <img [src]="avatarUrl" alt="Avatar" class="w-8 h-8 rounded-full object-cover ring-2 ring-purple-500/30" />
+        <img [src]="avatarUrl" [alt]="'showcase.avatar_alt' | translate" class="w-8 h-8 rounded-full object-cover ring-2 ring-purple-500/30" />
       } @else {
         <span class="truncate">{{ triggerText }}</span>
         @if (triggerIcon) {
@@ -38,14 +37,12 @@
     </button>
   }
 
-  <!-- Dropdown Menu Panel -->
   @if (isOpen()) {
     <div
       class="absolute z-50 {{ width }} min-w-[220px] {{ getPlacementClasses() }} dropdown-menu-popover bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-slate-200/80 dark:border-slate-800/80 shadow-lg shadow-slate-900/10 dark:shadow-slate-950/50 rounded-[15px] p-2 text-slate-800 dark:text-slate-100 focus:outline-none"
     >
       <ng-content select="[dropdown-content]"></ng-content>
 
-      <!-- Optional User Header Section -->
       @if (header) {
         <div class="px-3.5 py-3 mb-1.5 bg-slate-50/80 dark:bg-slate-800/40 rounded-[12px] border border-slate-100 dark:border-slate-800/50">
           <div class="flex items-center gap-3">
@@ -69,7 +66,6 @@
         </div>
       }
 
-      <!-- Menu Items list -->
       <div class="space-y-0.5">
         @for (item of items; track item.id || item.label || $index) {
           @if (item.type === 'separator') {
@@ -79,7 +75,6 @@
               {{ item.label }}
             </div>
           } @else if (item.type === 'sub') {
-            <!-- Submenu Parent Item -->
             <div class="relative group/sub">
               <button
                 type="button"
@@ -102,7 +97,6 @@
                 <app-icon name="chevron-right" class="w-4 h-4 shrink-0 text-slate-400 ml-2"></app-icon>
               </button>
 
-              <!-- Submenu Flyout Menu -->
               @if (activeSubmenuId() === (item.id || item.label) && item.children && item.children.length > 0) {
                 <div
                   class="absolute left-full top-0 ml-2 {{ width }} min-w-[200px] bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-slate-200/80 dark:border-slate-800/80 shadow-2xl rounded-[15px] p-2 space-y-0.5 z-50 dropdown-menu-popover"
@@ -136,7 +130,6 @@
               }
             </div>
           } @else if (item.type === 'checkbox') {
-            <!-- Checkbox Item -->
             <button
               type="button"
               [disabled]="item.disabled"
@@ -166,7 +159,6 @@
               }
             </button>
           } @else if (item.type === 'radio') {
-            <!-- Radio Item -->
             <button
               type="button"
               [disabled]="item.disabled"
@@ -191,7 +183,6 @@
               </div>
             </button>
           } @else {
-            <!-- Standard Menu Item -->
             <button
               type="button"
               [disabled]="item.disabled"

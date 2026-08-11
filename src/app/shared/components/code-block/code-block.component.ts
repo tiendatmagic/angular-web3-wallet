@@ -113,9 +113,7 @@ export class CodeBlockComponent {
     try {
       document.execCommand('copy');
       this.triggerCopiedState();
-    } catch {
-      // Fail silently
-    }
+    } catch {}
     document.body.removeChild(textarea);
   }
 

@@ -1,7 +1,6 @@
 <div
   class="relative p-5 sm:p-6 rounded-[15px] bg-white/80 dark:bg-slate-900/70 backdrop-blur-md border border-slate-200/60 dark:border-slate-800/60 shadow-sm transition-all duration-300 hover:scale-[1.01] hover:shadow-md hover:border-purple-500/30 dark:hover:border-purple-500/30 group"
 >
-  <!-- Top Header Row: Title & Icon Badge -->
   <div class="flex items-start justify-between gap-3">
     <span class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 select-none leading-snug">
       {{ title }}
@@ -14,7 +13,6 @@
     </div>
   </div>
 
-  <!-- Middle Body Row: Value & Trend Badge -->
   <div class="mt-3 sm:mt-4 flex items-baseline gap-2.5 flex-wrap min-w-0">
     <h3 class="text-2xl sm:text-3xl font-black text-slate-800 dark:text-slate-100 tracking-tight break-all sm:break-normal">
       {{ value }}
@@ -36,7 +34,6 @@
     }
   </div>
 
-  <!-- Bottom Footer Row: Subtitle -->
   @if (subtitle) {
     <p class="text-xs text-slate-400 dark:text-slate-500 font-medium mt-1.5 leading-relaxed">
       {{ subtitle }}

@@ -97,7 +97,7 @@ export class FileUploadComponent implements ControlValueAccessor {
   readonly displaySubtitle = computed(() => {
     if (this.subtitle) return this.subtitle;
     if (this.effectiveVariant() === 'avatar') {
-      return `PNG, JPG max ${this.maxSizeMB}MB`;
+      return this.translationService.t('showcase.file_avatar_formats', { size: this.maxSizeMB });
     }
     return this.translationService.t('file_upload_ui.drag_drop_files');
   });
@@ -206,7 +206,7 @@ export class FileUploadComponent implements ControlValueAccessor {
 
     const currentFiles = this.files();
     if (this.multiple && currentFiles.length + selected.length > this.maxFiles) {
-      this.globalError.set(`Tối đa chỉ được tải lên ${this.maxFiles} tệp tin.`);
+      this.globalError.set(this.translationService.t('showcase.file_max_count', { count: this.maxFiles }));
       selected = selected.slice(0, this.maxFiles - currentFiles.length);
     }
 
@@ -214,12 +214,12 @@ export class FileUploadComponent implements ControlValueAccessor {
 
     for (const file of selected) {
       if (!this.validateFileType(file)) {
-        this.globalError.set(`Định dạng tệp "${file.name}" không được hỗ trợ.`);
+        this.globalError.set(this.translationService.t('showcase.file_type_unsupported', { file: file.name }));
         continue;
       }
 
       if (!this.validateFileSize(file)) {
-        this.globalError.set(`Dung lượng tệp "${file.name}" vượt quá giới hạn ${this.maxSizeMB}MB.`);
+        this.globalError.set(this.translationService.t('showcase.file_too_large', { file: file.name, size: this.maxSizeMB }));
         continue;
       }
 

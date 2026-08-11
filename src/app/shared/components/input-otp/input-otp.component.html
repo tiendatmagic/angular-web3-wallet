@@ -1,5 +1,4 @@
-<div class="relative inline-flex items-center select-none max-w-full overflow-x-auto no-scrollbar py-1" [attr.aria-label]="ariaLabel">
-  <!-- Input ẩn để thu thập sự kiện gõ/paste từ hệ thống -->
+<div class="relative inline-flex items-center select-none max-w-full overflow-x-auto no-scrollbar py-1" [attr.aria-label]="effectiveAriaLabel">
   <input
     #hiddenInput
     type="text"
@@ -18,7 +17,6 @@
     tabindex="-1"
   />
 
-  <!-- Danh sách ô nhập OTP (Slots) -->
   <div
     class="flex items-center shrink-0"
     [ngClass]="{
@@ -28,7 +26,6 @@
     }"
   >
     @for (slotIndex of slotsSignal(); track slotIndex) {
-      <!-- Individual Slot -->
       <div
         (click)="onSlotClick(slotIndex)"
         class="relative flex items-center justify-center font-mono transition-all duration-200 cursor-pointer shadow-xs border border-solid shrink-0"
@@ -46,7 +43,6 @@
             disabled
         }"
       >
-        <!-- Char Content -->
         @if (hasValueAt(slotIndex)) {
           <span class="animate-in fade-in zoom-in-75 duration-100">
             {{ getSlotChar(slotIndex) }}
@@ -57,7 +53,6 @@
           </span>
         }
 
-        <!-- Caret Cursor Animation -->
         @if (isCaretVisible(slotIndex) && !disabled && !readonly) {
           <span
             class="otp-caret-blink inline-block bg-purple-600 dark:bg-purple-400 rounded-full"
@@ -70,7 +65,6 @@
         }
       </div>
 
-      <!-- Separator (Gạch nối giữa nhóm) -->
       @if (shouldShowSeparatorAfter(slotIndex)) {
         <div
           class="flex items-center justify-center text-slate-400 dark:text-slate-500 font-semibold select-none transition-colors"

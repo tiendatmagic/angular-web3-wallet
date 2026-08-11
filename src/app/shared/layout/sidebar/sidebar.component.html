@@ -3,12 +3,11 @@
   [class.w-72]="!stateService.isSidebarCollapsed()"
   [class.w-20]="stateService.isSidebarCollapsed()"
 >
-  <!-- Floating Collapse / Expand Toggle Button -->
   <button
     (click)="stateService.toggleSidebarCollapse()"
     class="absolute -right-[17px] top-8 sm:top-10 -translate-y-1/2 z-10 w-8.5 h-8.5 rounded-full bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-md flex items-center justify-center cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-primary transition-all duration-200 active:scale-95 hover:scale-105"
-    [attr.aria-label]="stateService.isSidebarCollapsed() ? (translationService.currentLang() === 'vi' ? 'Mở rộng sidebar' : 'Expand sidebar') : (translationService.currentLang() === 'vi' ? 'Thu nhỏ sidebar' : 'Collapse sidebar')"
-    [title]="stateService.isSidebarCollapsed() ? (translationService.currentLang() === 'vi' ? 'Mở rộng sidebar' : 'Expand sidebar') : (translationService.currentLang() === 'vi' ? 'Thu nhỏ sidebar' : 'Collapse sidebar')"
+    [attr.aria-label]="(stateService.isSidebarCollapsed() ? 'showcase.expand_sidebar' : 'showcase.collapse_sidebar') | translate"
+    [title]="(stateService.isSidebarCollapsed() ? 'showcase.expand_sidebar' : 'showcase.collapse_sidebar') | translate"
   >
     <app-icon
       [name]="stateService.isSidebarCollapsed() ? 'chevron-right' : 'chevron-left'"
@@ -16,7 +15,6 @@
     />
   </button>
 
-  <!-- Logo & Title Header -->
   <a
     routerLink="/"
     class="h-16 sm:h-20 flex items-center border-b border-slate-100 dark:border-slate-800/60 cursor-pointer transition-all duration-300"
@@ -44,7 +42,6 @@
     }
   </a>
 
-  <!-- Navigation Menu Items -->
   <nav
     class="flex-1 py-6 space-y-1.5 overflow-y-auto"
     [class.px-4]="!stateService.isSidebarCollapsed()"
@@ -103,7 +100,6 @@
     </a>
   </nav>
 
-  <!-- Sidebar Footer -->
   <div
     class="py-4 border-t border-slate-100 dark:border-slate-800/60 bg-slate-50/30 dark:bg-slate-900/10 space-y-4"
     [class.px-5]="!stateService.isSidebarCollapsed()"
@@ -115,7 +111,6 @@
       }
       <app-theme-switcher />
     } @else {
-      <!-- Collapsed Footer: Compact Single Theme Toggle Button -->
       <div class="flex flex-col items-center gap-2">
         <button
           (click)="stateService.toggleTheme()"

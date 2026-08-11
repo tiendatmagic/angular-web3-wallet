@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '../icon/icon.component';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 
 export interface DropdownMenuItem {
   id?: string;
@@ -41,7 +42,7 @@ export interface DropdownMenuHeader {
 @Component({
   selector: 'app-dropdown-menu',
   standalone: true,
-  imports: [CommonModule, IconComponent],
+  imports: [CommonModule, IconComponent, TranslatePipe],
   templateUrl: './dropdown-menu.component.html',
   host: {
     'class': 'block',

@@ -1,5 +1,4 @@
 <div class="w-full space-y-3">
-  <!-- Hidden File Input -->
   <input
     #fileInput
     type="file"
@@ -10,7 +9,6 @@
     (change)="onFileSelected($event)"
   />
 
-  <!-- Variant 1: Horizontal Bar Layout -->
   @if (effectiveVariant() === 'horizontal') {
     <div
       class="relative group cursor-pointer transition-all duration-200 select-none rounded-[15px] p-4 border border-dashed"
@@ -25,7 +23,6 @@
       (click)="triggerFileInput()"
     >
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <!-- Left: Upload Icon Box -->
         <div class="flex items-center gap-3 min-w-0 flex-1">
           <div
             class="w-10 h-10 sm:w-12 sm:h-12 rounded-[12px] flex items-center justify-center shrink-0 transition-transform group-hover:scale-105"
@@ -37,7 +34,6 @@
             <app-icon [name]="icon" class="w-5 h-5 sm:w-6 sm:h-6"></app-icon>
           </div>
 
-          <!-- Middle: Title & Subtitle -->
           <div class="min-w-0 flex-1">
             <h4 class="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-100 truncate group-hover:text-[var(--color-primary)] transition-colors">
               {{ displayTitle() }}
@@ -48,7 +44,6 @@
           </div>
         </div>
 
-        <!-- Right: Action Button -->
         <button
           type="button"
           class="px-3 py-1.5 sm:px-4 sm:py-2 rounded-[10px] border border-[var(--color-primary)]/40 text-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white font-semibold text-xs transition-all duration-200 shrink-0 shadow-sm flex items-center justify-center gap-1.5 self-start sm:self-auto"
@@ -59,7 +54,6 @@
       </div>
     </div>
 
-    <!-- Max size label under horizontal bar -->
     <div class="flex flex-wrap items-center justify-between gap-1.5 px-1 text-[11px] text-slate-400 dark:text-slate-500">
       <span>{{ 'file_upload_ui.max_size' | translate }} <strong>{{ maxSizeMB }} MB</strong></span>
       @if (accept !== '*') {
@@ -70,7 +64,6 @@
     </div>
   }
 
-  <!-- Variant 2: Vertical Dropzone Area -->
   @if (effectiveVariant() === 'dropzone') {
     <div
       class="relative group cursor-pointer transition-all duration-200 select-none rounded-[15px] p-6 text-center border border-dashed"
@@ -96,7 +89,6 @@
     </div>
   }
 
-  <!-- Variant 3: Avatar Upload Mode -->
   @if (effectiveVariant() === 'avatar') {
     <div
       class="relative group cursor-pointer transition-all duration-200 select-none rounded-[15px] p-4 flex flex-col items-center justify-center text-center border border-dashed border-slate-300 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 hover:border-[var(--color-primary)]"
@@ -107,7 +99,7 @@
           <img [src]="files()[0].previewUrl" [alt]="files()[0].name" class="w-full h-full object-cover" />
           <div class="absolute inset-0 bg-slate-900/60 opacity-0 group-hover/avatar:opacity-100 transition-opacity flex flex-col items-center justify-center text-white text-xs gap-0.5">
             <app-icon name="edit" class="w-4 h-4"></app-icon>
-            <span>Edit</span>
+            <span>{{ 'showcase.edit' | translate }}</span>
           </div>
         </div>
       } @else {
@@ -120,7 +112,6 @@
     </div>
   }
 
-  <!-- Global Error Message -->
   @if (globalError()) {
     <div class="flex items-center gap-2 p-3 rounded-[12px] bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 text-xs animate-fadeIn">
       <app-icon name="warning-solid" class="w-4 h-4 shrink-0"></app-icon>
@@ -128,10 +119,8 @@
     </div>
   }
 
-  <!-- File List Container -->
   @if (showFileList && files().length > 0) {
     <div class="space-y-2 pt-1">
-      <!-- List Header -->
       <div class="flex items-center justify-between px-1">
         <div class="flex items-center gap-2">
           <span class="text-xs font-semibold text-slate-700 dark:text-slate-300">
@@ -155,7 +144,6 @@
         }
       </div>
 
-      <!-- File Cards Grid/Stack -->
       <div class="space-y-2">
         @for (file of files(); track file.id) {
           <div
@@ -165,7 +153,6 @@
               'border-emerald-500/30 bg-emerald-50/20 dark:bg-emerald-950/10': file.status === 'completed'
             }"
           >
-            <!-- File Thumbnail / Icon -->
             <div class="relative w-10 h-10 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800 flex items-center justify-center shrink-0 border border-slate-200/60 dark:border-slate-700/60">
               @if (file.previewUrl) {
                 <img
@@ -182,14 +169,12 @@
               }
             </div>
 
-            <!-- File Info & Progress -->
             <div class="flex-1 min-w-0 space-y-1">
               <div class="flex items-center justify-between gap-2">
                 <p class="text-xs font-semibold text-slate-800 dark:text-slate-200 truncate" [appTooltip]="file.name">
                   {{ file.name }}
                 </p>
 
-                <!-- Status Badges -->
                 <div class="shrink-0">
                   @switch (file.status) {
                     @case ('pending') {
@@ -219,7 +204,6 @@
                 </div>
               </div>
 
-              <!-- Size & Error message -->
               <div class="flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400">
                 <span>{{ formatFileSize(file.size) }}</span>
 
@@ -230,7 +214,6 @@
                 }
               </div>
 
-              <!-- Progress Bar -->
               @if (file.status === 'uploading') {
                 <div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden mt-1">
                   <div
@@ -241,7 +224,6 @@
               }
             </div>
 
-            <!-- Item Action Buttons -->
             <div class="flex items-center gap-1.5 shrink-0">
               @if (file.previewUrl) {
                 <button
@@ -283,7 +265,6 @@
   }
 </div>
 
-<!-- Image Preview Modal Lightbox -->
 @if (previewModalFile(); as file) {
   <div
     class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-fadeIn"
@@ -293,7 +274,6 @@
       class="relative max-w-3xl w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-[15px] p-4 shadow-2xl overflow-hidden"
       (click)="$event.stopPropagation()"
     >
-      <!-- Modal Header -->
       <div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-200 dark:border-slate-800">
         <div class="flex items-center gap-2 min-w-0">
           <app-icon name="file-image" class="w-5 h-5 text-[var(--color-primary)] shrink-0"></app-icon>
@@ -311,12 +291,10 @@
         </button>
       </div>
 
-      <!-- Modal Body (Image Container) -->
       <div class="relative flex items-center justify-center max-h-[70vh] bg-slate-950/5 dark:bg-slate-950/50 rounded-xl overflow-hidden p-2">
         <img [src]="file.previewUrl" [alt]="file.name" class="max-h-[65vh] max-w-full object-contain rounded-lg shadow" />
       </div>
 
-      <!-- Modal Footer -->
       <div class="flex items-center justify-between pt-3 mt-3 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500">
         <span>Format: {{ file.type }}</span>
         <button
