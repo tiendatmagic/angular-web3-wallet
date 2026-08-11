@@ -2,6 +2,39 @@
 
 ## Ngày 11/08/2026
 
+### Yêu cầu: Khắc Phục Triệt Để Lỗi Responsive Stepper Component (app-stepper), Màu Icon SVG & Chuẩn Hóa Breadcrumb 1/2 Width
+- **Nội dung yêu cầu:** Khắc phục lỗi Stepper khi thu nhỏ vỡ bố cục, sửa màu icon SVG checkmark bị đen thay vì màu trắng sáng, và đưa Breadcrumb chiếm 1/2 độ rộng Card trên giao diện tổng quan mà không bị co vỡ dòng.
+- **Giải pháp:**
+  1. **Chuẩn Hóa Màu SVG Icon Stepper (`stepper.component.html`):**
+     - Đặt trực tiếp class màu sáng `text-white` cho các biểu tượng SVG `check`, `close`, `sparkles` ở trạng thái hoàn thành (`completed`), đang hoạt động (`active`) và lỗi (`error`), đồng thời gán màu mờ `text-slate-400 dark:text-slate-500` cho trạng thái chờ (`pending`).
+  2. **Tối Ưu Chế Độ Responsive Tự Động (`stepper.component.ts` & `stepper.component.html`):**
+     - Tách riêng biệt 2 khối template layout độc lập cho di động (`< sm`: timeline dọc với khoảng cách `gap-6` chuẩn) và máy tính (`>= sm`: timeline ngang chuẩn dApp với vạch kẻ nối `top-5 left-[calc(50%+20px)] w-[calc(100%-40px)]`).
+  3. **Tối Ưu Component Breadcrumb Navigation (`breadcrumb.component.html`):**
+     - Bổ sung `flex-nowrap whitespace-nowrap` giúp thanh điều hướng phân cấp Breadcrumb nằm thẳng trên 1 hàng mượt mà, cuộn ngang tự nhiên khi ở trong khung Card 1/2 độ rộng.
+  4. **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Chạy `npm run build` đóng gói Angular thành công 100%.
+
+### Yêu cầu: Tăng Kích Thước Nút Toggle Thu Nhỏ / Mở Rộng Sidebar (Sidebar Collapse Toggle Button)
+- **Nội dung yêu cầu:** Tăng kích thước width và height của nút toggle `<` / `>` ở mép viền bên phải Sidebar cho dễ nhìn và dễ thao tác tương tác bấm.
+- **Giải pháp:**
+  1. **Tăng Kích Thước Khung Nút & Icon (`sidebar.component.html`):**
+     - Đổi kích thước nút từ `w-7 h-7` (28px) lên `w-8.5 h-8.5` (34px) kèm `hover:scale-105` cho trải nghiệm di chuột nhạy và rõ nét hơn.
+     - Điều chỉnh offset vị trí căn giữa đường viền sidebar từ `-right-3.5` sang `-right-[17px]` (34px / 2 = 17px), đảm bảo tâm nút luôn nằm chính xác ở mép đường kẻ viền sidebar.
+     - Tăng kích thước icon mũi tên bên trong từ `w-4 h-4` (16px) lên `w-4.5 h-4.5` (18px) vừa vặn và cân đối.
+  2. **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi. Chạy `npm run build` xác nhận đóng gói Angular thành công.
+
+### Yêu cầu: Khắc Phục Lỗi Kéo Giãn Chiều Cao Thừa & Tối Ưu Bố Cục Thẻ Stat Card (app-stat-card)
+- **Nội dung yêu cầu:** Khắc phục triệt để lỗi thẻ Stat Card bị kéo dài dọc hình chữ nhật cao chót vót sinh ra khoảng trắng khổng lồ ở giữa, đồng thời loại bỏ việc cắt tiêu đề thành `TOTAL VALUE LO...`.
+- **Giải pháp:**
+  1. **Khôi phục Chiều cao Tự nhiên Chuẩn UI/UX (`stat-card.component.css`):**
+     - Trả `:host` về `display: block; width: 100%;` loại bỏ `height: 100%` ép buộc, giúp thẻ card có chiều cao gọn gàng, tự nhiên theo đúng padding `p-5 sm:p-6`.
+  2. **Bố Cục Nội Dung Chuẩn KPI Stat Card (`stat-card.component.html`):**
+     - Giữ nguyên cấu trúc 3 hàng nhưng xếp dòng tự nhiên (`mt-3 sm:mt-4`), loại bỏ `justify-between` kéo giãn hàng top/middle/bottom.
+     - Cho phép tiêu đề xuống dòng tự nhiên (`leading-snug`) khi màn hình nhỏ thay vì ép cắt từ bằng `truncate`.
+     - Đảm bảo con số chính `Value` hiển thị to rõ `text-2xl sm:text-3xl font-black` ở vị trí trung tâm thẻ.
+  3. **Tối Ưu Lưới Grid Trang Chủ (`home.component.html`):**
+     - Đặt lưới `grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 pt-6`, hiển thị 1 cột tròn trịa trên điện thoại và 3 cột cân đối trên màn hình lớn.
+  4. **Xác thực:** Chạy `npx tsc --noEmit` đạt 100% 0 lỗi. Chạy `npm run build` tạo bản build đóng gói thành công.
+
 ### Yêu cầu: Khắc phục Lỗi Alert Chưa Có Màu Nền (Hiển Thị Trắng/Trong Suốt), Sửa Icon Warning & Đồng Bộ Viền Mỏng Mở Cả 4 Alert
 - **Nội dung yêu cầu:** Xem lại component Alert (`app-alert`), khắc phục tình trạng màu nền bị trắng, sửa biểu tượng Warning hiển thị nhầm thành dấu hỏi `(?)` và loại bỏ dải viền mép trái dày 4px ở thẻ Success Alert để cả 4 thẻ Alert hiển thị phẳng đồng bộ.
 - **Giải pháp:**

@@ -20,7 +20,7 @@ export interface StepItem {
 export class StepperComponent {
   @Input() steps: StepItem[] = [];
   @Input() activeIndex: number = 0;
-  @Input() orientation: 'horizontal' | 'vertical' = 'horizontal';
+  @Input() orientation: 'horizontal' | 'vertical' | 'auto' = 'auto';
   @Input() clickable: boolean = false;
 
   @Output() activeIndexChange = new EventEmitter<number>();
