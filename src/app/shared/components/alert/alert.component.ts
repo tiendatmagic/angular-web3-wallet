@@ -27,7 +27,7 @@ export class AlertComponent {
       case 'success':
         return 'check';
       case 'warning':
-        return 'alert';
+        return 'warning';
       case 'error':
         return 'close';
       case 'info':

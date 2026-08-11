@@ -2,16 +2,16 @@
 
 ## Ngày 11/08/2026
 
-### Yêu cầu: Khắc phục Lỗi Alert Chưa Có Màu Nền (Hiển Thị Trắng/Trong Suốt) Trong Tailwind v4
-- **Nội dung yêu cầu:** Xem lại component Alert (`app-alert`), khắc phục tình trạng thẻ Info và Error alert bị chìm/trắng không có màu nền rõ ràng khi render với Tailwind v4.
-- **Nguyên nhân:** Trong bảng màu OKLCH của Tailwind v4, các tông màu `purple-100` và `rose-100` có độ sáng lightness cực cao (~95%), khiến nền alert bị nhạt mờ và hòa tan hoàn toàn vào màu nền trắng card (`#ffffff`).
+### Yêu cầu: Khắc phục Lỗi Alert Chưa Có Màu Nền (Hiển Thị Trắng/Trong Suốt), Sửa Icon Warning & Đồng Bộ Viền Mỏng Mở Cả 4 Alert
+- **Nội dung yêu cầu:** Xem lại component Alert (`app-alert`), khắc phục tình trạng màu nền bị trắng, sửa biểu tượng Warning hiển thị nhầm thành dấu hỏi `(?)` và loại bỏ dải viền mép trái dày 4px ở thẻ Success Alert để cả 4 thẻ Alert hiển thị phẳng đồng bộ.
 - **Giải pháp:**
-  1. **Chuẩn Hóa Bộ Màu Pastel Nổi Bật Cho 4 Loại Alert (`alert.component.html`):**
-     - **Info Alert:** Chuyển sang tone Sky Pastel (`bg-sky-100 dark:bg-sky-950/70 text-sky-950 dark:text-sky-200 border-sky-300/60 text-sky-600`), hiển thị màu xanh da trời dịu nhẹ rõ nét.
-     - **Success Alert:** Giữ tone Emerald Pastel (`bg-emerald-100 dark:bg-emerald-950/70 text-emerald-950 dark:text-emerald-200 border-emerald-300/60 text-emerald-600`), hiển thị dải xanh lá pastel.
-     - **Warning Alert:** Giữ tone Amber Pastel (`bg-amber-100 dark:bg-amber-950/70 text-amber-950 dark:text-amber-200 border-amber-300/60 text-amber-600`), hiển thị dải vàng nhạt pastel.
-     - **Error Alert:** Chuyển sang tone Red Pastel (`bg-red-100 dark:bg-red-950/70 text-red-950 dark:text-red-200 border-red-300/60 text-red-600`), hiển thị dải đỏ pastel nổi bật rõ rệt trên mọi nền card trắng và dark mode.
-  2. **Xác thực:** Chạy `npx tsc --noEmit` thành công 100% 0 lỗi syntax/type. Chạy `npm run build` xuất sắc tạo bundle production.
+  1. **Tối Ưu Mã Nền Pastel Chuẩn Tailwind v4 (`styles.scss` & `alert.component.html`):**
+     - Tạo bộ class CSS cố định độc lập (`.alert-info-soft`, `.alert-success-soft`, `.alert-warning-soft`, `.alert-error-soft`) giúp mã màu pastel nhã nhặn hiển thị rõ nét trên nền card trắng và Dark Mode mà không lo bị Tailwind JIT purger bỏ sót.
+  2. **Sửa Lỗi Icon SVG Warning (`icon.component.html` & `alert.component.ts`):**
+     - Bổ sung `@case ('alert')` vào `IconComponent` đồng bộ với `@case ('warning')`, sửa `defaultIcon` trả về `'warning'` thay vì `'alert'` giúp hiển thị đúng biểu tượng cảnh báo tam giác `⚠️` thay vì bị rớt vào `@default` dấu hỏi `(?)`.
+  3. **Đồng Bộ Dải Viền Cả 4 Alert Showcase (`home.component.html`):**
+     - Chuyển thẻ Success Alert từ `variant="accent"` (có dải viền mép trái dày 4px) sang `variant="soft"` đồng nhất với các thẻ Alert còn lại.
+  4. **Xác thực:** Chạy `npx tsc --noEmit` thành công 100% 0 lỗi. Chạy `npm run build` thành công hoàn hảo.
 
 ### Yêu cầu: Kiểm tra Đa ngôn ngữ (i18n) cho 9 Standalone UI Components & Audit Toàn Bộ 30 Showcase Cards Dự Án
 - **Nội dung yêu cầu:** Kiểm tra kỹ lưỡng hệ thống Đa ngôn ngữ (i18n) cho 9 component mới (Avatar, Empty State, Alert, Drawer, Stepper, Stat Card, Breadcrumb, Divider, Copy to Clipboard) cũng như toàn bộ 30 Card Showcase trên ứng dụng, đảm bảo không còn bất kỳ văn bản cứng nào.
