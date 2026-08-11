@@ -232,7 +232,7 @@ body.dark .btn-danger-light:hover {
 
 .app-card,
 .app-card-interactive {
-  @apply bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-lg shadow-slate-200/50 dark:shadow-slate-900/30 rounded-[15px] p-6;
+  @apply bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-lg shadow-slate-200/50 dark:shadow-slate-900/30 rounded-[15px] p-4 sm:p-6;
 }
 
 .app-card-interactive {

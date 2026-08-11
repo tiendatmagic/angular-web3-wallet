@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+﻿import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '../icon/icon.component';
 
@@ -7,7 +7,7 @@ import { IconComponent } from '../icon/icon.component';
   standalone: true,
   imports: [CommonModule, IconComponent],
   templateUrl: './stat-card.component.html',
-  styleUrl: './stat-card.component.css',
+  styleUrl: './stat-card.component.scss',
 })
 export class StatCardComponent {
   @Input() title: string = '';
@@ -18,3 +18,4 @@ export class StatCardComponent {
   @Input() changeType: 'increase' | 'decrease' | 'neutral' = 'increase';
   @Input() iconBgGradient: string = 'from-purple-600 to-indigo-600';
 }
+

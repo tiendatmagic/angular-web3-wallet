@@ -24,25 +24,25 @@
       (drop)="onDrop($event)"
       (click)="triggerFileInput()"
     >
-      <div class="flex items-center justify-between gap-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <!-- Left: Upload Icon Box -->
-        <div class="flex items-center gap-3.5 min-w-0">
+        <div class="flex items-center gap-3 min-w-0 flex-1">
           <div
-            class="w-12 h-12 rounded-[12px] flex items-center justify-center shrink-0 transition-transform group-hover:scale-105"
+            class="w-10 h-10 sm:w-12 sm:h-12 rounded-[12px] flex items-center justify-center shrink-0 transition-transform group-hover:scale-105"
             [ngClass]="{
               'bg-[var(--color-primary)]/10 text-[var(--color-primary)] dark:bg-[var(--color-primary)]/20 border border-[var(--color-primary)]/20': !isDragging(),
               'bg-[var(--color-primary)] text-white ring-4 ring-[var(--color-primary)]/20': isDragging()
             }"
           >
-            <app-icon [name]="icon" class="w-6 h-6"></app-icon>
+            <app-icon [name]="icon" class="w-5 h-5 sm:w-6 sm:h-6"></app-icon>
           </div>
 
           <!-- Middle: Title & Subtitle -->
-          <div class="min-w-0">
-            <h4 class="text-sm font-bold text-slate-800 dark:text-slate-100 truncate group-hover:text-[var(--color-primary)] transition-colors">
+          <div class="min-w-0 flex-1">
+            <h4 class="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-100 truncate group-hover:text-[var(--color-primary)] transition-colors">
               {{ displayTitle() }}
             </h4>
-            <p class="text-xs text-slate-500 dark:text-slate-400 truncate mt-0.5">
+            <p class="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 truncate mt-0.5">
               {{ displaySubtitle() }}
             </p>
           </div>
@@ -51,7 +51,7 @@
         <!-- Right: Action Button -->
         <button
           type="button"
-          class="px-4 py-2 rounded-[10px] border border-[var(--color-primary)]/40 text-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white font-semibold text-xs transition-all duration-200 shrink-0 shadow-sm flex items-center gap-1.5"
+          class="px-3 py-1.5 sm:px-4 sm:py-2 rounded-[10px] border border-[var(--color-primary)]/40 text-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white font-semibold text-xs transition-all duration-200 shrink-0 shadow-sm flex items-center justify-center gap-1.5 self-start sm:self-auto"
           [disabled]="disabled"
         >
           <span>{{ displayButtonText() }}</span>
@@ -60,10 +60,10 @@
     </div>
 
     <!-- Max size label under horizontal bar -->
-    <div class="flex items-center justify-between px-1 text-[11px] text-slate-400 dark:text-slate-500">
+    <div class="flex flex-wrap items-center justify-between gap-1.5 px-1 text-[11px] text-slate-400 dark:text-slate-500">
       <span>{{ 'file_upload_ui.max_size' | translate }} <strong>{{ maxSizeMB }} MB</strong></span>
       @if (accept !== '*') {
-        <span class="font-mono bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-slate-600 dark:text-slate-300">
+        <span class="font-mono bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-slate-600 dark:text-slate-300 break-all max-w-full">
           {{ accept }}
         </span>
       }

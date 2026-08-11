@@ -4,23 +4,25 @@
     <button
       type="button"
       (click)="toggleDropdown($event)"
-      class="h-10 px-3 rounded-xl bg-slate-100/80 dark:bg-slate-900/80 hover:bg-slate-200/80 dark:hover:bg-slate-800/80 border border-slate-200/50 dark:border-slate-800/50 text-slate-700 dark:text-slate-200 text-xs font-bold transition-all duration-200 flex items-center gap-2 cursor-pointer shadow-xs active:scale-95"
+      class="h-9 sm:h-10 px-2 sm:px-3 rounded-xl bg-slate-100/80 dark:bg-slate-900/80 hover:bg-slate-200/80 dark:hover:bg-slate-800/80 border border-slate-200/50 dark:border-slate-800/50 text-slate-700 dark:text-slate-200 text-xs font-bold transition-all duration-200 flex items-center gap-1 sm:gap-2 cursor-pointer shadow-xs active:scale-95 shrink-0"
       [attr.aria-expanded]="isOpen()"
       [title]="'language.select_language' | translate"
     >
       <span
-        class="w-5 h-3.5 rounded-xs overflow-hidden shrink-0 shadow-xs border border-slate-200/50 dark:border-slate-700/50 flex items-center justify-center"
+        class="w-4.5 h-3 sm:w-5 sm:h-3.5 rounded-xs overflow-hidden shrink-0 shadow-xs border border-slate-200/50 dark:border-slate-700/50 flex items-center justify-center"
         [innerHTML]="translationService.getCurrentLanguageOption().flagSvg | safeHtml"
       ></span>
-      <span class="font-extrabold uppercase text-[11px] tracking-wider">
+      <span class="font-extrabold uppercase text-[10px] sm:text-[11px] tracking-wider">
         {{ translationService.currentLang() }}
       </span>
-      <app-icon
-        name="chevron-down"
-        class="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 transition-transform duration-200"
-        [class.rotate-180]="isOpen()"
-        strokeWidth="2.5"
-      />
+      <span class="!hidden sm:!inline-flex items-center shrink-0">
+        <app-icon
+          name="chevron-down"
+          class="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 transition-transform duration-200"
+          [class.rotate-180]="isOpen()"
+          strokeWidth="2.5"
+        />
+      </span>
     </button>
   } @else {
     <button
@@ -50,11 +52,13 @@
   <!-- Dropdown Popover Panel -->
   @if (isOpen()) {
     <div
-      [class.bottom-full]="direction === 'up'"
-      [class.mb-2]="direction === 'up'"
-      [class.top-full]="direction === 'down'"
-      [class.mt-2]="direction === 'down'"
-      class="absolute right-0 w-48 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-slate-200/60 dark:border-slate-800/60 rounded-2xl shadow-xl z-[250] overflow-hidden py-1.5 animate-in fade-in slide-in-from-top-1 duration-150"
+      [ngClass]="{
+        'fixed top-[3.75rem] left-3 right-3 sm:absolute sm:top-full sm:mt-2 sm:right-0 sm:left-auto sm:w-48': variant === 'compact',
+        'absolute left-0 right-0 w-full': variant === 'full',
+        'bottom-full mb-2': direction === 'up',
+        'top-full mt-2': direction === 'down' && variant === 'full'
+      }"
+      class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-slate-200/60 dark:border-slate-800/60 rounded-2xl shadow-lg shadow-slate-900/10 dark:shadow-slate-950/50 z-[250] overflow-hidden py-1.5 animate-in fade-in slide-in-from-top-1 duration-150"
     >
       <div class="px-3 py-1.5 mb-1 border-b border-slate-100 dark:border-slate-800/60">
         <span class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest block">

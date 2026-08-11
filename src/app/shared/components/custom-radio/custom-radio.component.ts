@@ -19,21 +19,8 @@ import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/f
       useExisting: forwardRef(() => CustomRadioComponent),
       multi: true},
   ],
-  
-  styles: [
-    `
-      :host {
-        display: block;
-      }
-      @keyframes scaleUp {
-        from { transform: scale(0); }
-        to   { transform: scale(1); }
-      }
-      .animate-scale-up {
-        animation: scaleUp 0.15s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-      }
-    `,
-  ]})
+  styleUrl: './custom-radio.component.scss',
+})
 export class CustomRadioComponent implements ControlValueAccessor {
   public readonly checked = signal<boolean>(false);
 

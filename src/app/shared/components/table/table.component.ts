@@ -39,14 +39,7 @@ export class TableCellDirective {
   standalone: true,
   imports: [CommonModule, IconComponent, SkeletonLoaderComponent, TranslatePipe],
   templateUrl: './table.component.html',
-  styles: [
-    `
-      :host {
-        display: block;
-        width: 100%;
-      }
-    `
-  ]
+  styleUrl: './table.component.scss',
 })
 export class TableComponent {
   @Input() columns: TableColumn[] = [];

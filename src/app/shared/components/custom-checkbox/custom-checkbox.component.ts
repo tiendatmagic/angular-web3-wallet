@@ -20,14 +20,8 @@ import { IconComponent } from '../icon/icon.component';
       useExisting: forwardRef(() => CustomCheckboxComponent),
       multi: true},
   ],
-  
-  styles: [
-    `
-      :host {
-        display: block;
-      }
-    `,
-  ]})
+  styleUrl: './custom-checkbox.component.scss',
+})
 export class CustomCheckboxComponent implements ControlValueAccessor {
   public readonly checked = signal<boolean>(false);
 

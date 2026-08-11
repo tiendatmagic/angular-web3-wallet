@@ -1,4 +1,4 @@
-import { Component, inject, computed } from '@angular/core';
+﻿import { Component, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { StateService } from '@core/services/state.service';
@@ -11,7 +11,7 @@ import { TranslatePipe } from '@shared/pipes/translate.pipe';
   standalone: true,
   imports: [CommonModule, FormsModule, TabGroupComponent, TranslatePipe],
   templateUrl: './tx-speed-selector.component.html',
-  styleUrl: './tx-speed-selector.component.css'
+  styleUrl: './tx-speed-selector.component.scss'
 })
 export class TxSpeedSelectorComponent {
   public stateService = inject(StateService);
@@ -23,3 +23,4 @@ export class TxSpeedSelectorComponent {
     { value: 'custom', label: this.translationService.t('tx_speed.custom') }
   ]);
 }
+

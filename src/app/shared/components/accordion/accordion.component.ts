@@ -6,13 +6,7 @@ import { AccordionItemComponent } from './accordion-item.component';
   selector: 'app-accordion',
   imports: [CommonModule],
   templateUrl: './accordion.component.html',
-  styles: [
-    `
-      :host {
-        display: block;
-      }
-    `,
-  ],
+  styleUrl: './accordion.component.scss',
 })
 export class AccordionComponent implements AfterContentInit {
     @Input() multiple = false;

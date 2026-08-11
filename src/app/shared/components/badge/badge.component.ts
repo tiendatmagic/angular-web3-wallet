@@ -3,28 +3,18 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-badge, [app-badge]',
-  
   imports: [CommonModule],
-  template: `<ng-content></ng-content>`,
+  templateUrl: './badge.component.html',
+  styleUrl: './badge.component.scss',
   host: {
     '[class]': 'hostClasses',
     '[class.animate-pulse]': 'pulse',
     '[class.cursor-pointer]': 'interactive',
     '[class.hover:opacity-85]': 'interactive',
     '[class.active:scale-95]': 'interactive',
-    '[class.transition-all]': 'interactive'},
-  
-  styles: [
-    `
-      :host {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 800;
-        line-height: 1;
-      }
-    `,
-  ]})
+    '[class.transition-all]': 'interactive',
+  },
+})
 export class BadgeComponent {
   @Input() variant:
     | 'primary'

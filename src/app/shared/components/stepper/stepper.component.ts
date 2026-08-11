@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+﻿import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '../icon/icon.component';
 
@@ -15,7 +15,7 @@ export interface StepItem {
   standalone: true,
   imports: [CommonModule, IconComponent],
   templateUrl: './stepper.component.html',
-  styleUrl: './stepper.component.css',
+  styleUrl: './stepper.component.scss',
 })
 export class StepperComponent {
   @Input() steps: StepItem[] = [];
@@ -40,3 +40,4 @@ export class StepperComponent {
     return 'pending';
   }
 }
+

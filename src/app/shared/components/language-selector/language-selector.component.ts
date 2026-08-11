@@ -1,4 +1,4 @@
-import { Component, Input, signal, inject, ElementRef, HostListener } from '@angular/core';
+﻿import { Component, Input, signal, inject, ElementRef, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslationService } from '@core/services/translation.service';
 import { StateService } from '@core/services/state.service';
@@ -33,7 +33,7 @@ export class LanguageSelectorComponent {
     event.stopPropagation();
     if (this.translationService.currentLang() !== code) {
       this.translationService.setLanguage(code);
-      const msg = code === 'vi' ? 'Đã chuyển đổi sang Tiếng Việt!' : 'Switched language to English!';
+      const msg = code === 'vi' ? 'ÄÃ£ chuyá»ƒn Ä‘á»•i sang Tiáº¿ng Viá»‡t!' : 'Switched language to English!';
       this.stateService.showToast(msg, 'success');
     }
     this.isOpen.set(false);
@@ -46,3 +46,4 @@ export class LanguageSelectorComponent {
     }
   }
 }
+

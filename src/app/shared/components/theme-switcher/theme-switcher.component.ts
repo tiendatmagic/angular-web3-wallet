@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+﻿import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StateService } from '@core/services/state.service';
 import { IconComponent } from '@shared/components/icon/icon.component';
@@ -9,8 +9,9 @@ import { TranslatePipe } from '@shared/pipes/translate.pipe';
   standalone: true,
   imports: [CommonModule, IconComponent, TranslatePipe],
   templateUrl: './theme-switcher.component.html',
-  styleUrl: './theme-switcher.component.css'
+  styleUrl: './theme-switcher.component.scss'
 })
 export class ThemeSwitcherComponent {
   public stateService = inject(StateService);
 }
+

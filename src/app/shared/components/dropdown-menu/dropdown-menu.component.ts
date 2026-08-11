@@ -1,4 +1,4 @@
-import {
+﻿import {
   Component,
   Input,
   Output,
@@ -178,3 +178,4 @@ export class DropdownMenuComponent {
     }
   }
 }
+

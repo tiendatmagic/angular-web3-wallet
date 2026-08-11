@@ -1,6 +1,94 @@
 # Lịch sử yêu cầu và xử lý của Agent
 
+## Ngày 12/08/2026
+
+### Yêu cầu: Chuyển Đổi Toàn Bộ CSS → SCSS & Tách File Riêng Cho Shared Components
+
+- **Nội dung yêu cầu:** Tất cả các component trong `src/app/shared/components` phải chuyển từ `.css` sang `.scss`, đồng thời tách inline `template` và `styles` trong file `.ts` ra thành file riêng `.html` và `.scss`.
+- **Giải pháp:**
+  1. **Copy 23 file `.css` → `.scss`** (account-dropdown, alert, aura, avatar, breadcrumb, code-block, copy-to-clipboard, custom-date-time-range, custom-input, divider, drawer, dropdown-menu, voice-chat, empty-state, file-upload, input-otp, language-selector, network-selector, progress, stat-card, stepper, theme-switcher, tx-speed-selector).
+  2. **Cập nhật `styleUrl: '*.css'` → `styleUrl: '*.scss'`** trong 23 file `.ts` tương ứng.
+  3. **Tạo 13 file `.scss` mới** cho các component có inline styles: accordion, accordion-item, badge, card, custom-checkbox, custom-date-picker, custom-radio, custom-search-input, custom-select, custom-slider, custom-switch, kbd, logo, tab-group, table.
+  4. **Tạo 4 file `.html` mới** cho component có inline template: `badge.component.html` (`<ng-content>`), `button.component.html` (loading spinner + ng-content), `card.component.html` (`<ng-content>`), `logo.component.html` (logo SVG animation).
+  5. **Cập nhật tất cả `.ts`** sử dụng `templateUrl`/`styleUrl` thay vì `template`/`styles` inline.
+  6. **Xóa 23 file `.css` gốc** sau khi xác nhận build thành công.
+  7. **Xác thực:** `npx tsc --noEmit` đạt 0 lỗi. `npm run build` đóng gói Production thành công.
+
+
+
+### Yêu cầu: Khắc Phục Triệt Để Lỗi Cuộn Ngang & Sửa Tận Gốc Responsive Flex Layouts Cho Màn Hình 320px
+- **Nội dung yêu cầu:** Loại bỏ cách khóa cuộn ngang toàn cục (`overflow-x: hidden` trên `html`/`body`), sửa tận gốc nguyên nhân vỡ bố cục và tràn viền tại từng component cụ thể khi hiển thị trên màn hình di động nhỏ `320px`.
+- **Giải pháp:**
+  1. **Bỏ Khóa Cuộn Ngang Toàn Cục (`styles.scss`):**
+     - Đã xóa `overflow-x: hidden` và `max-width: 100vw` khỏi `html` và `body`, trả về cơ chế cuộn tự nhiên.
+  2. **Fix Tận Gốc Bố Cục Thẻ Card Showcase Khi Có Nút/Badge Bên Phải (`home.component.html`):**
+     - **Nguyên nhân vỡ chữ 15 dòng dọc:** Các header thẻ Card 19 (Dropdown Menu & Voice Chat 06), Card 20 (Progress Bar), Card 18 (OTP), Card 16 (File Upload) sử dụng `flex items-center justify-between` ép 2 cột song song trên màn hình nhỏ. Badge bên phải (`Voice Chat 06 Exact`, `File Sao Lưu SQL`, `Tối đa 20MB`...) chiếm ~140px-200px, ép tiêu đề bên trái thu hẹp còn ~50px width làm chữ bị bó đứng thành 15 dòng dọc và đè chồng các badge lên nhau.
+     - **Sửa đổi:** Chuyển container header sang `flex flex-col sm:flex-row sm:items-start justify-between gap-2` và thêm `flex-wrap` cho các badge. Trên màn di động `320px`, tiêu đề và mô tả chiếm trọn 100% độ rộng dòng trên, badge nằm bên dưới hoặc ngắt dòng tự nhiên mượt mà không bao giờ bị dồn ép.
+  3. **Fix Co Giãn Layout Component File Upload (`file-upload.component.html`):**
+     - Đưa container thanh ngang (Horizontal Bar) sang `flex-col sm:flex-row gap-3` và thêm `flex-wrap` ở dải thông số file size bên dưới. Nút bấm `[ Chọn file ]` và nhãn loại file `.sql`, `image/*...` ngắt dòng tự nhiên, không ép tiêu đề bị rút gọn thành 1 ký tự `C...` hay `T...` trên màn 320px.
+  4. **Fix Tràn Viền Ô Nhập OTP (`input-otp.component.html`):**
+     - Đổi kích thước ô slot OTP responsive (`size="sm"` thành `w-6.5 h-8 text-[11px]`, `size="md"` thành `w-7.5 h-9 text-xs`, `size="lg"` thành `w-8.5 h-10 text-xs`), giúp 6 ô OTP xếp vừa vặn 100% bên trong thẻ Card trên màn 320px mà không bị tràn viền 6px.
+  5. **Fix Tràn Lề Thanh Điều Khiển Table Component (`home.component.html`):**
+     - **Nguyên nhân gây cuộn ngang toàn trang (Horizontal Scrollbar) trên ảnh 3:** Khung công cụ `Giả lập Tải (Loading)` và `Giả lập Rỗng (Empty)` ở Card Table sử dụng `md:flex-row` ép 2 ô tìm kiếm/bộ lọc và 2 nút switch nằm song song 1 hàng khi màn hình `>= 768px` (`md`). Nhưng khi mở DevTools bên phải màn hình làm khung xem rơi vào khoảng `768px - 1000px` (có Sidebar menu chiếm 260px), tổng độ rộng Search (320px) + Select (224px) + Công cụ Switch (336px) = `908px` (vượt xa độ rộng khả dụng `460px` của thẻ), khiến bộ công cụ switch bị đẩy thò 300px ra ngoài viền phải trong không gian nền đen.
+     - **Sửa đổi:** Đổi breakpoint header sang `xl:flex-row` (`>= 1280px`). Ở tất cả các kích thước màn hình nhỏ và vừa (`< 1280px`), Search/Select nằm ở hàng 1 trọn vẹn trong thẻ, bộ công cụ Switch nằm ở hàng 2 trọn vẹn trong thẻ (`max-w-full flex-wrap`), triệt tiêu 100% hiện tượng bị đẩy thò ra ngoài thẻ ở mọi kích thước màn hình và mọi góc xem DevTools.
+  6. **Fix Tràn Lề Nút Kéo Component Custom Slider (`custom-slider.component.html`):**
+     - Bổ sung `px-2.5` vào container ngoài, ngăn nút kéo thumb ở 0% và 100% bị nhô ra ngoài lề card 10px.
+  7. **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Chạy `npm run build` hoàn thành đóng gói thành công.
+
+### Yêu cầu: Tối Ưu Nút Bấm Thông Tin Ví (Account Dropdown) & Thanh Header Nhỏ Gọn Tương Thích Màn Hình 320px
+- **Nội dung yêu cầu:** Tối ưu hóa kích thước nút hiển thị thông tin ví (địa chỉ tài khoản và số dư ETH), thu nhỏ diện tích chiếm dụng trên thanh Header để hiển thị hoàn hảo, không bị tràn hay ép chật chội trên thiết bị di động có chiều rộng màn hình siêu nhỏ `320px`.
+- **Giải pháp:**
+  1. **Tối Ưu Nút Bấm Dropdown Ví (`account-dropdown.component.html`):**
+     - Đưa chiều cao nút pill từ `h-10` về `h-9 sm:h-10`, padding thu gọn `!pl-2 !pr-2.5 sm:!pl-3.5 sm:!pr-4`, gap phần tử `gap-1.5 sm:gap-2`.
+     - Điều chỉnh font chữ địa chỉ ví thành `text-[10px] sm:text-[13px]` và số dư thành `text-[9px] sm:text-[10px]`, dán sát dòng `leading-none sm:leading-tight`.
+     - Ẩn biểu tượng mũi tên chevron `v` trên màn di động `< sm` (`!hidden sm:!inline-flex`), giúp tiết kiệm thêm 16px khoảng trống ngang.
+     - Cập nhật vị trí popover panel mobile về `fixed top-[3.75rem] left-3 right-3 sm:top-full`.
+  2. **Đồng Bộ Kích Thước Các Controls Trên Top Header Bar (`header.component.html`, `network-selector.component.html`, `language-selector.component.html`):**
+     - Đưa kích thước các nút Network Selector (`w-9 h-9 sm:w-10 sm:h-10`) và Language Selector compact (`h-9 sm:h-10 px-2 sm:px-3`) về chuẩn 36px trên di động.
+     - Điều chỉnh padding lề 2 bên thanh Header `px-2 sm:px-6` và gap khoảng cách các nút điều khiển `gap-1 sm:gap-3`.
+  3. **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Chạy `npm run build` đóng gói bản Production hoàn hảo.
+
 ## Ngày 11/08/2026
+
+### Yêu cầu: Giảm Độ Đậm & Đồng Bộ 100% Box Shadow Cho Toàn Bộ 7 Dropdown Popover Components
+- **Nội dung yêu cầu:** Giảm bớt dải bóng `shadow-xl` và `shadow-2xl` quá đậm/thô, đồng bộ 100% kiểu hiệu ứng shadow dịu mắt, sang trọng cho toàn bộ các Popover Dropdown trên ứng dụng (Đa ngôn ngữ, Chọn mạng, Dropdown Ví, Custom Select, Date Picker, Date Time Range, Dropdown Menu).
+- **Giải pháp:**
+  1. **Tối Ưu & Đồng Bộ Chuẩn Class Box Shadow (`shadow-lg shadow-slate-900/10 dark:shadow-slate-950/50`):**
+     - Đã loại bỏ các class `shadow-xl` và `shadow-2xl` bị đậm bóng đen cứng.
+     - Cập nhật dải bóng mờ Glassmorphism hiện đại `shadow-lg shadow-slate-900/10 dark:shadow-slate-950/50` đồng bộ 100% trên 7 component popover:
+       1. `language-selector.component.html`
+       2. `network-selector.component.html`
+       3. `account-dropdown.component.html`
+       4. `dropdown-menu.component.html`
+       5. `custom-select.component.html`
+       6. `custom-date-picker.component.html`
+       7. `custom-date-time-range.component.html`
+  2. **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Chạy `npm run build` đóng gói bản Production hoàn hảo.
+
+### Yêu cầu: Đồng Bộ Kiểu Hiển Thị Dropdown Đa Ngôn Ngữ Chuẩn Giống Dropdown Ví & Dropdown Chọn Mạng Chain
+- **Nội dung yêu cầu:** Sửa vị trí hiển thị Popover Dropdown của bộ chọn Đa ngôn ngữ (`app-language-selector`) cho đồng bộ 100% với kiểu hiển thị Popover của Dropdown Tài khoản ví (`app-account-dropdown`) và Dropdown Chọn mạng (`app-network-selector`), tránh tràn lề trái trên di động và vị trí bật lệch khi bấm ở Sidebar Mobile.
+- **Giải pháp:**
+  1. **Đồng Bộ Class Vị Trí Dropdown Popover Theo Biến Thể `variant` (`language-selector.component.html`):**
+     - Dùng `ngClass` tách biệt rõ 2 biến thể:
+       - **Biến thể Top Bar (`variant="compact"`):** Áp dụng `fixed top-[4.25rem] left-4 right-4 sm:absolute sm:right-0 sm:left-auto sm:w-48`. Trên mobile là Floating Panel phẳng đẹp ở top header, trên desktop dính dưới nút trigger.
+       - **Biến thể Sidebar Drawer / Footer / Form Card (`variant="full"`):** Áp dụng `absolute left-0 right-0 w-full` kết hợp `bottom-full mb-2` (cho `direction="up"`). Khi bấm vào nút `[ 🇻🇳 Tiếng Việt ^ ]` ở chân Sidebar mobile, Menu dropdown nẩy lên mượt mà chính xác **nằm ngay phía trên nút bấm**, không bị nhảy lên đầu trang nữa.
+  2. **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Chạy `npm run build` đóng gói bản Production hoàn hảo.
+
+### Yêu cầu: Tối Ưu Responsive Màn Hình Di Động Siêu Nhỏ (Width 320px) & Ẩn Mũi Tên Đa Ngôn Ngữ Trên Mobile (< sm)
+- **Nội dung yêu cầu:** Tối ưu toàn bộ giao diện Header, Stepper Footer và Card padding cho thiết bị di động 320px, đồng thời ẩn nút mũi tên chevron `v` ở bộ chọn đa ngôn ngữ trên màn hình di động `< sm` (`< 640px`).
+- **Giải pháp:**
+  1. **Ẩn Icon Mũi Tên Chevron Trong Bộ Chọn Đa Ngôn Ngữ (`language-selector.component.html`):**
+     - Bao bọc icon `<app-icon name="chevron-down">` trong thẻ `<span class="!hidden sm:!inline-flex items-center shrink-0">`.
+     - **Di động (`< 640px` / `< sm`):** Ẩn 100% icon mũi tên `v`, thu gọn nút thành `[ 🇻🇳 VI ]` tiết kiệm tối đa không gian header.
+     - **Máy tính (`>= 640px` / `>= sm`):** Hiển thị icon mũi tên `v` bình thường.
+  2. **Tối Ưu Thanh Header Điều Hướng Top Bar (`header.component.html`):**
+     - Giảm lề padding hai bên từ `px-4` xuống `px-2.5 sm:px-6` và gap control từ `gap-2` xuống `gap-1.5 sm:gap-3`, tiết kiệm 28px khoảng trống ngang.
+     - Điều chỉnh kích thước nút hamburger menu (`w-9 h-9 sm:w-10 sm:h-10`) và logo icon (`w-8 h-8 sm:w-11 sm:h-11`) giúp tất cả các nút bộ chọn mạng, bộ chọn ngôn ngữ và địa chỉ ví nằm vừa vặn 100% trên màn 320px không bị tràn viền.
+  3. **Tối Ưu Chân Thẻ Stepper Workflow (`home.component.html`):**
+     - Đổi layout footer thành `flex-wrap items-center justify-between gap-2` và thu gọn nhãn bước thành `Active: 2/4` kèm class button padding `!px-2.5 sm:!px-3 text-xs`, giúp 2 nút bấm `<- Bước Trước` và `Bước Tiếp Theo ->` cùng nhãn `Active` nằm thẳng 1 hàng vừa vặn không bị rớt dòng đè lấp nhau.
+  4. **Tối Ưu Padding Khung Card Toàn Cầu (`styles.scss`):**
+     - Đổi padding `.app-card` từ `p-6` cố định sang `p-4 sm:p-6`, giải phóng thêm 16px khoảng thở ngang cho nội dung bên trong trên màn 320px.
+  5. **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Chạy `npm run build` đóng gói bản Production hoàn hảo.
 
 ### Yêu cầu: Khắc Phục Triệt Để Lỗi Responsive Stepper Component (app-stepper), Stat Cards & Chuẩn Hóa Bố Cục 2 Cột Trang Tổng Quan
 - **Nội dung yêu cầu:** Khắc phục lỗi Stepper khi thu nhỏ vỡ bố cục, sửa màu icon SVG checkmark bị đen thay vì màu trắng sáng, sửa lỗi 3 Stat Card bị ép hẹp 140px làm tràn số liệu `$12,845,920` và vỡ chữ, đồng thời đưa toàn bộ giao diện tổng quan về đúng **bố cục 2 Cột (`2 Columns Grid`)** không bị co ép thành 4-7 dải dọc.

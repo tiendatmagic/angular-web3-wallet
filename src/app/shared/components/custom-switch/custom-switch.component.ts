@@ -8,13 +8,8 @@ import { FormsModule } from '@angular/forms';
   imports: [CommonModule, FormsModule],
   templateUrl: './custom-switch.component.html',
   
-  styles: [
-    `
-      :host {
-        display: block;
-      }
-    `,
-  ]})
+  styleUrl: './custom-switch.component.scss',
+})
 export class CustomSwitchComponent {
   @Input() checked: boolean = false;
   @Output() checkedChange = new EventEmitter<boolean>();

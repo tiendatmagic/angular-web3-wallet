@@ -35,13 +35,7 @@ import { TranslatePipe } from '@shared/pipes/translate.pipe';
       multi: true
     }
   ],
-  styles: [
-    `
-      :host {
-        display: block;
-      }
-    `
-  ]
+  styleUrl: './custom-date-picker.component.scss',
 })
 export class CustomDatePickerComponent implements ControlValueAccessor, AfterViewChecked, OnInit, OnDestroy {
   private readonly elementRef = inject(ElementRef);

@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+﻿import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '../icon/icon.component';
 
@@ -7,7 +7,7 @@ import { IconComponent } from '../icon/icon.component';
   standalone: true,
   imports: [CommonModule, IconComponent],
   templateUrl: './drawer.component.html',
-  styleUrl: './drawer.component.css',
+  styleUrl: './drawer.component.scss',
 })
 export class DrawerComponent {
   @Input() isOpen: boolean = false;
@@ -31,3 +31,4 @@ export class DrawerComponent {
     }
   }
 }
+

@@ -34,7 +34,7 @@
   @if (isOpen()) {
     <div
       [ngStyle]="popoverStyle"
-      class="date-picker-popover bg-white dark:bg-slate-950 border border-slate-200/50 dark:border-slate-800/50 shadow-lg rounded-xl p-4"
+      class="date-picker-popover bg-white dark:bg-slate-950 border border-slate-200/50 dark:border-slate-800/50 shadow-lg shadow-slate-900/10 dark:shadow-slate-950/50 rounded-xl p-4"
       (click)="$event.stopPropagation()"
     >
       <div class="flex items-center justify-between mb-4">

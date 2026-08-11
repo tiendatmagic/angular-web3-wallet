@@ -21,13 +21,7 @@ import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/f
       multi: true
     }
   ],
-  styles: [
-    `
-      :host {
-        display: block;
-      }
-    `
-  ]
+  styleUrl: './custom-slider.component.scss',
 })
 export class CustomSliderComponent implements ControlValueAccessor {
   public readonly value = signal<number>(0);

@@ -3,21 +3,14 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'button[app-button], a[app-button]',
-  
   imports: [CommonModule],
-  template: `
-    @if (loading) {
-      <div
-        class="w-4 h-4 rounded-full border-2 border-current border-t-transparent animate-spin shrink-0"
-      ></div>
-    }
-    <ng-content></ng-content>
-  `,
-  
+  templateUrl: './button.component.html',
   host: {
     '[class]': 'hostClasses',
     '[attr.disabled]': '(disabled || loading) ? "" : null',
-    '[class.pointer-events-none]': 'loading || disabled'}})
+    '[class.pointer-events-none]': 'loading || disabled',
+  },
+})
 export class ButtonComponent {
   @Input() variant:
     | 'primary'

@@ -7,13 +7,7 @@ import { IconComponent } from '../icon/icon.component';
   selector: 'app-accordion-item',
   imports: [CommonModule, IconComponent],
   templateUrl: './accordion-item.component.html',
-  styles: [
-    `
-      :host {
-        display: block;
-      }
-    `,
-  ],
+  styleUrl: './accordion-item.component.scss',
 })
 export class AccordionItemComponent {
   @Input() title: string = '';

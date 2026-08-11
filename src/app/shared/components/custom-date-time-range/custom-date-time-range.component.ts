@@ -1,4 +1,4 @@
-import {
+﻿import {
   Component,
   Input,
   Output,
@@ -33,7 +33,7 @@ export interface DateTimeRangeValue {
   },
   imports: [CommonModule, FormsModule, IconComponent, TranslatePipe],
   templateUrl: './custom-date-time-range.component.html',
-  styleUrl: './custom-date-time-range.component.css',
+  styleUrl: './custom-date-time-range.component.scss',
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -710,3 +710,4 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
     this.disabled = isDisabled;
   }
 }
+

@@ -1,4 +1,4 @@
-import { Component, Input, computed, signal } from '@angular/core';
+﻿import { Component, Input, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 export interface ProgressSegment {
@@ -17,7 +17,7 @@ export type ProgressValuePosition = 'right' | 'top' | 'inside' | 'bottom' | 'non
   standalone: true,
   imports: [CommonModule],
   templateUrl: './progress.component.html',
-  styleUrl: './progress.component.css',
+  styleUrl: './progress.component.scss',
 })
 export class ProgressComponent {
   @Input() set value(val: number) {
@@ -188,3 +188,4 @@ export class ProgressComponent {
     return Math.min(100, Math.max(0, (segValue / this.maxSignal()) * 100));
   }
 }
+

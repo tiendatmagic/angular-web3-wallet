@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+﻿import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 export interface AvatarItem {
@@ -12,7 +12,7 @@ export interface AvatarItem {
   standalone: true,
   imports: [CommonModule],
   templateUrl: './avatar.component.html',
-  styleUrl: './avatar.component.css',
+  styleUrl: './avatar.component.scss',
 })
 export class AvatarComponent {
   @Input() src: string = '';
@@ -51,3 +51,4 @@ export class AvatarComponent {
     return name.substring(0, 2).toUpperCase();
   }
 }
+

@@ -1218,57 +1218,57 @@
       </h4>
 
       <div class="space-y-6">
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1 max-w-2xl">
-            <div class="w-full sm:w-80">
-              <app-custom-search-input
-                placeholder="Tìm theo TxHash, Phương thức, Địa chỉ..."
-                [debounce]="200"
-                [clearable]="true"
-                [ngModel]="demoTableSearchQuery()"
-                (valueChange)="demoTableSearchQuery.set($event); demoTableCurrentPage.set(1)"
-              />
+          <div class="flex flex-col xl:flex-row xl:items-center justify-between gap-4">
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1 max-w-2xl">
+              <div class="w-full sm:w-80">
+                <app-custom-search-input
+                  placeholder="Tìm theo TxHash, Phương thức, Địa chỉ..."
+                  [debounce]="200"
+                  [clearable]="true"
+                  [ngModel]="demoTableSearchQuery()"
+                  (valueChange)="demoTableSearchQuery.set($event); demoTableCurrentPage.set(1)"
+                />
+              </div>
+              <div class="w-full sm:w-56">
+                <app-custom-select
+                  [options]="tableStatusOptions"
+                  valueKey="value"
+                  labelKey="label"
+                  [(value)]="demoTableStatusFilter"
+                  (valueChange)="demoTableCurrentPage.set(1)"
+                  placeholder="Lọc trạng thái"
+                />
+              </div>
             </div>
-            <div class="w-full sm:w-56">
-              <app-custom-select
-                [options]="tableStatusOptions"
-                valueKey="value"
-                labelKey="label"
-                [(value)]="demoTableStatusFilter"
-                (valueChange)="demoTableCurrentPage.set(1)"
-                placeholder="Lọc trạng thái"
-              />
-            </div>
-          </div>
 
-                    <div class="flex flex-wrap items-center gap-4 bg-slate-50 dark:bg-slate-950/20 p-2.5 rounded-xl border border-slate-200/40 dark:border-slate-800/40">
-            <div class="flex items-center gap-2">
-              <span class="text-xs font-bold text-slate-500 dark:text-slate-400 select-none">Giả lập Tải (Loading)</span>
-              <app-custom-switch
-                [checked]="demoTableLoading()"
-                (checkedChange)="demoTableLoading.set($event)"
-              />
+            <div class="flex flex-wrap items-center gap-x-4 gap-y-2.5 bg-slate-50 dark:bg-slate-950/20 p-2.5 rounded-xl border border-slate-200/40 dark:border-slate-800/40 max-w-full">
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold text-slate-500 dark:text-slate-400 select-none whitespace-nowrap">Giả lập Tải (Loading)</span>
+                <app-custom-switch
+                  [checked]="demoTableLoading()"
+                  (checkedChange)="demoTableLoading.set($event)"
+                />
+              </div>
+              <div class="hidden sm:block h-4 w-px bg-slate-200 dark:bg-slate-800"></div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold text-slate-500 dark:text-slate-400 select-none whitespace-nowrap">Giả lập Rỗng (Empty)</span>
+                <app-custom-switch
+                  [checked]="demoTableEmpty()"
+                  (checkedChange)="demoTableEmpty.set($event)"
+                />
+              </div>
+              @if (demoTableSearchQuery() || demoTableStatusFilter() !== 'all' || demoTableEmpty() || demoTableLoading()) {
+                <div class="hidden sm:block h-4 w-px bg-slate-200 dark:bg-slate-800"></div>
+                <button
+                  (click)="resetTableFilters()"
+                  class="text-xs font-bold text-primary hover:opacity-80 transition-opacity flex items-center gap-1 cursor-pointer"
+                >
+                  <app-icon name="close" class="w-3 h-3" />
+                  Đặt lại
+                </button>
+              }
             </div>
-            <div class="h-4 w-px bg-slate-200 dark:bg-slate-800"></div>
-            <div class="flex items-center gap-2">
-              <span class="text-xs font-bold text-slate-500 dark:text-slate-400 select-none">Giả lập Rỗng (Empty)</span>
-              <app-custom-switch
-                [checked]="demoTableEmpty()"
-                (checkedChange)="demoTableEmpty.set($event)"
-              />
-            </div>
-            @if (demoTableSearchQuery() || demoTableStatusFilter() !== 'all' || demoTableEmpty() || demoTableLoading()) {
-              <div class="h-4 w-px bg-slate-200 dark:bg-slate-800"></div>
-              <button
-                (click)="resetTableFilters()"
-                class="text-xs font-bold text-primary hover:opacity-80 transition-opacity flex items-center gap-1 cursor-pointer"
-              >
-                <app-icon name="close" class="w-3 h-3" />
-                Đặt lại
-              </button>
-            }
           </div>
-        </div>
 
                 <app-table
           [columns]="demoTableColumns"
@@ -1409,9 +1409,9 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <!-- Demo 1: Horizontal Bar Layout -->
           <div class="space-y-3">
-            <div class="flex items-center justify-between">
+            <div class="flex flex-wrap items-center justify-between gap-2">
               <span class="text-xs font-bold text-slate-700 dark:text-slate-300">{{ 'cards.file_upload.demo1_title' | translate }}</span>
-              <app-badge variant="primary" rounded="full" size="sm">File Sao Lưu SQL</app-badge>
+              <app-badge variant="primary" rounded="full" size="sm" class="shrink-0">File Sao Lưu SQL</app-badge>
             </div>
             <app-file-upload
               variant="horizontal"
@@ -1428,9 +1428,9 @@
 
           <!-- Demo 2: Horizontal Bar Multi-file -->
           <div class="space-y-3">
-            <div class="flex items-center justify-between">
+            <div class="flex flex-wrap items-center justify-between gap-2">
               <span class="text-xs font-bold text-slate-700 dark:text-slate-300">{{ 'cards.file_upload.demo2_title' | translate }}</span>
-              <app-badge variant="secondary" rounded="full" size="sm">Tối đa 20MB</app-badge>
+              <app-badge variant="secondary" rounded="full" size="sm" class="shrink-0">Tối đa 20MB</app-badge>
             </div>
             <app-file-upload
               variant="horizontal"
@@ -1449,9 +1449,9 @@
           <!-- Demo 3: Dropzone & Avatar Upload Mode -->
           <div class="col-span-full grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
             <div class="md:col-span-2 space-y-3">
-              <div class="flex items-center justify-between">
+              <div class="flex flex-wrap items-center justify-between gap-2">
                 <span class="text-xs font-bold text-slate-700 dark:text-slate-300">{{ 'cards.file_upload.demo3_title' | translate }}</span>
-                <app-badge variant="info" rounded="full" size="sm">Dropzone Mode</app-badge>
+                <app-badge variant="info" rounded="full" size="sm" class="shrink-0">Dropzone Mode</app-badge>
               </div>
               <app-file-upload
                 variant="dropzone"
@@ -1465,9 +1465,9 @@
             </div>
 
             <div class="space-y-3">
-              <div class="flex items-center justify-between">
+              <div class="flex flex-wrap items-center justify-between gap-2">
                 <span class="text-xs font-bold text-slate-700 dark:text-slate-300">{{ 'cards.file_upload.demo4_title' | translate }}</span>
-                <app-badge variant="neutral" rounded="full" size="sm">Avatar Mode</app-badge>
+                <app-badge variant="neutral" rounded="full" size="sm" class="shrink-0">Avatar Mode</app-badge>
               </div>
               <app-file-upload
                 variant="avatar"
@@ -1495,12 +1495,12 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <!-- Demo 1: OTP Standard 6 Digits (Grouped 3-3) -->
           <div class="space-y-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
-            <div class="flex items-center justify-between">
+            <div class="flex flex-wrap items-center justify-between gap-2">
               <div>
                 <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.input_otp.demo1_title' | translate }}</span>
                 <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.input_otp.demo1_desc' | translate }}</span>
               </div>
-              <app-badge variant="primary" rounded="full" size="sm">Standard 3-3</app-badge>
+              <app-badge variant="primary" rounded="full" size="sm" class="shrink-0">Standard 3-3</app-badge>
             </div>
 
             <div class="flex flex-col items-start gap-3 pt-1">
@@ -1514,7 +1514,7 @@
                 placeholder="•"
               ></app-input-otp>
 
-              <div class="flex items-center justify-between w-full pt-1">
+              <div class="flex flex-wrap items-center justify-between gap-2 w-full pt-1">
                 <span class="text-xs font-mono text-slate-500">
                   {{ 'cards.input_otp.input_val' | translate }}: <strong class="text-purple-600 dark:text-purple-400 font-bold">{{ demoOtpStandard() || ('cards.input_otp.empty_val' | translate) }}</strong>
                 </span>
@@ -1535,12 +1535,12 @@
 
           <!-- Demo 2: PIN Mask Mode 4 Digits -->
           <div class="space-y-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
-            <div class="flex items-center justify-between">
+            <div class="flex flex-wrap items-center justify-between gap-2">
               <div>
                 <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.input_otp.demo2_title' | translate }}</span>
                 <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.input_otp.demo2_desc' | translate }}</span>
               </div>
-              <app-badge variant="secondary" rounded="full" size="sm">PIN Mask</app-badge>
+              <app-badge variant="secondary" rounded="full" size="sm" class="shrink-0">PIN Mask</app-badge>
             </div>
 
             <div class="flex flex-col items-start gap-3 pt-1">
@@ -1554,7 +1554,7 @@
                 size="lg"
               ></app-input-otp>
 
-              <div class="flex items-center justify-between w-full pt-1">
+              <div class="flex flex-wrap items-center justify-between gap-2 w-full pt-1">
                 <span class="text-xs font-mono text-slate-500">
                   PIN: <strong class="text-emerald-600 dark:text-emerald-400 font-bold">{{ demoOtpMaskToggle() ? demoOtpPin() : '••••' }}</strong>
                 </span>
@@ -1573,12 +1573,12 @@
 
           <!-- Demo 3: Alphanumeric Voucher Code -->
           <div class="space-y-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
-            <div class="flex items-center justify-between">
+            <div class="flex flex-wrap items-center justify-between gap-2">
               <div>
                 <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.input_otp.demo3_title' | translate }}</span>
                 <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.input_otp.demo3_desc' | translate }}</span>
               </div>
-              <app-badge variant="info" rounded="full" size="sm">Alphanumeric</app-badge>
+              <app-badge variant="info" rounded="full" size="sm" class="shrink-0">Alphanumeric</app-badge>
             </div>
 
             <div class="flex flex-col items-start gap-3 pt-1">
@@ -1591,7 +1591,7 @@
                 size="md"
               ></app-input-otp>
 
-              <div class="flex items-center justify-between w-full pt-1">
+              <div class="flex flex-wrap items-center justify-between gap-2 w-full pt-1">
                 <span class="text-xs font-mono text-slate-500">
                   Ref Code: <strong class="text-sky-600 dark:text-sky-400 font-bold">{{ demoOtpAlpha() || ('cards.input_otp.empty_val' | translate) }}</strong>
                 </span>
@@ -1603,17 +1603,17 @@
 
           <!-- Demo 4: Error State & Disabled State -->
           <div class="space-y-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
-            <div class="flex items-center justify-between">
+            <div class="flex flex-wrap items-center justify-between gap-2">
               <div>
-                <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.otp.invalid_title' | translate }}</span>
-                <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.otp.invalid_desc' | translate }}</span>
+                <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.input_otp.invalid_title' | translate }}</span>
+                <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.input_otp.invalid_desc' | translate }}</span>
               </div>
-              <app-badge variant="danger" rounded="full" size="sm">Invalid / Disabled</app-badge>
+              <app-badge variant="danger" rounded="full" size="sm" class="shrink-0">Invalid / Disabled</app-badge>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
               <div class="space-y-1.5">
-                <span class="text-[11px] font-semibold text-rose-500 block">{{ 'cards.otp.incorrect_code' | translate }}</span>
+                <span class="text-[11px] font-semibold text-rose-500 block">{{ 'cards.input_otp.incorrect_code' | translate }}</span>
                 <app-input-otp
                   [ngModel]="demoOtpError()"
                   (ngModelChange)="demoOtpError.set($event)"
@@ -1625,7 +1625,7 @@
               </div>
 
               <div class="space-y-1.5">
-                <span class="text-[11px] font-semibold text-slate-400 block">{{ 'cards.otp.disabled_label' | translate }}</span>
+                <span class="text-[11px] font-semibold text-slate-400 block">{{ 'cards.input_otp.disabled_label' | translate }}</span>
                 <app-input-otp
                   [ngModel]="demoOtpDisabled()"
                   [length]="6"
@@ -1644,16 +1644,16 @@
         <div class="space-y-6">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200/80 dark:border-slate-800/80">
             <div>
-              <div class="flex items-center gap-2.5">
+              <div class="flex flex-wrap items-center gap-2.5">
                 <h3 class="text-base font-extrabold text-slate-900 dark:text-white">{{ 'cards.dropdown.card_title' | translate }}</h3>
-                <app-badge variant="primary" rounded="full" size="sm">Shadcn Space Dropdown</app-badge>
+                <app-badge variant="primary" rounded="full" size="sm" class="shrink-0">Shadcn Space Dropdown</app-badge>
               </div>
               <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
                 {{ 'cards.dropdown.card_desc' | translate }}
               </p>
             </div>
 
-            <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-purple-50 dark:bg-purple-950/40 border border-purple-200/60 dark:border-purple-800/50">
+            <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-purple-50 dark:bg-purple-950/40 border border-purple-200/60 dark:border-purple-800/50 shrink-0">
               <app-icon name="info" class="w-4 h-4 text-purple-500 shrink-0"></app-icon>
               <span class="text-xs font-semibold text-purple-700 dark:text-purple-300">
                 {{ demoDropdownLastAction() }}
@@ -1664,15 +1664,15 @@
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <!-- Demo 1: User Profile Menu -->
             <div class="space-y-3 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
-              <div class="flex items-center justify-between">
+              <div class="flex flex-wrap items-center justify-between gap-2">
                 <div>
                   <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.dropdown.demo1_title' | translate }}</span>
                   <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.dropdown.demo1_desc' | translate }}</span>
                 </div>
-                <app-badge variant="success" rounded="full" size="sm">Profile Menu</app-badge>
+                <app-badge variant="success" rounded="full" size="sm" class="shrink-0">Profile Menu</app-badge>
               </div>
 
-              <div class="flex items-center gap-3 pt-2">
+              <div class="flex flex-wrap items-center gap-3 pt-2">
                 <app-dropdown-menu
                   [header]="demoProfileHeader"
                   [items]="demoProfileMenuItems"
@@ -1698,15 +1698,15 @@
 
             <!-- Demo 2: Checkbox & Radio Menu -->
             <div class="space-y-3 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
-              <div class="flex items-center justify-between">
+              <div class="flex flex-wrap items-center justify-between gap-2">
                 <div>
                   <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.dropdown.demo2_title' | translate }}</span>
                   <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.dropdown.demo2_desc' | translate }}</span>
                 </div>
-                <app-badge variant="info" rounded="full" size="sm">Config Items</app-badge>
+                <app-badge variant="info" rounded="full" size="sm" class="shrink-0">Config Items</app-badge>
               </div>
 
-              <div class="flex items-center gap-3 pt-2">
+              <div class="flex flex-wrap items-center gap-3 pt-2">
                 <app-dropdown-menu
                   [items]="demoDisplayMenuItems"
                   [triggerText]="'cards.dropdown.customize_ui' | translate"
@@ -1723,15 +1723,15 @@
 
             <!-- Demo 3: Nested Submenu -->
             <div class="space-y-3 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
-              <div class="flex items-center justify-between">
+              <div class="flex flex-wrap items-center justify-between gap-2">
                 <div>
                   <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.dropdown.demo3_title' | translate }}</span>
                   <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.dropdown.demo3_desc' | translate }}</span>
                 </div>
-                <app-badge variant="warning" rounded="full" size="sm">Nested Submenu</app-badge>
+                <app-badge variant="warning" rounded="full" size="sm" class="shrink-0">Nested Submenu</app-badge>
               </div>
 
-              <div class="flex items-center gap-3 pt-2">
+              <div class="flex flex-wrap items-center gap-3 pt-2">
                 <app-dropdown-menu
                   [items]="demoWeb3ActionItems"
                   [triggerText]="'cards.dropdown.web3_actions' | translate"
@@ -1747,15 +1747,15 @@
 
             <!-- Demo 4: Icon Triggers & Placements -->
             <div class="space-y-3 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
-              <div class="flex items-center justify-between">
+              <div class="flex flex-wrap items-center justify-between gap-2">
                 <div>
                   <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.dropdown.demo4_title' | translate }}</span>
                   <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.dropdown.demo4_desc' | translate }}</span>
                 </div>
-                <app-badge variant="primary" rounded="full" size="sm">Icon & Placements</app-badge>
+                <app-badge variant="primary" rounded="full" size="sm" class="shrink-0">Icon & Placements</app-badge>
               </div>
 
-              <div class="flex items-center gap-4 pt-2">
+              <div class="flex flex-wrap items-center gap-3 pt-2">
                 <app-dropdown-menu
                   [items]="demoWeb3ActionItems"
                   triggerIcon="dots-vertical"
@@ -1794,15 +1794,15 @@
 
             <!-- Demo 06: Voice Chat 06 Morphing Card (Shadcn Space 06 Full Transition & Animations) -->
             <div class="space-y-3 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60 col-span-1 lg:col-span-2">
-              <div class="flex items-center justify-between">
-                <div>
-                  <div class="flex items-center gap-2">
+              <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2">
+                <div class="space-y-1 min-w-0 flex-1">
+                  <div class="flex flex-wrap items-center gap-2">
                     <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">5. Dropdown Menu 06 - Voice Chat Morphing Card (Shadcn Space)</span>
-                    <span class="px-2 py-0.5 text-[10px] font-black rounded-full bg-teal-100 dark:bg-teal-950 text-teal-600 dark:text-teal-300 border border-teal-200/60 dark:border-teal-800/60 animate-pulse">● MORPHING ANIMATION</span>
+                    <span class="px-2 py-0.5 text-[10px] font-black rounded-full bg-teal-100 dark:bg-teal-950 text-teal-600 dark:text-teal-300 border border-teal-200/60 dark:border-teal-800/60 animate-pulse shrink-0">● MORPHING ANIMATION</span>
                   </div>
-                  <span class="text-[11px] text-slate-500 dark:text-slate-400">Hiệu ứng Morphing FLIP mượt mà (kích thước, vị trí Avatar grid, Speaking Ring teal & Join Now)</span>
+                  <span class="text-[11px] text-slate-500 dark:text-slate-400 block leading-snug">Hiệu ứng Morphing FLIP mượt mà (kích thước, vị trí Avatar grid, Speaking Ring teal & Join Now)</span>
                 </div>
-                <app-badge variant="success" rounded="full" size="sm">Voice Chat 06 Exact</app-badge>
+                <app-badge variant="success" rounded="full" size="sm" class="shrink-0 self-start sm:self-auto">Voice Chat 06 Exact</app-badge>
               </div>
 
               <div class="flex flex-col items-center justify-center py-6">
@@ -1819,9 +1819,9 @@
         <div class="space-y-6">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200/80 dark:border-slate-800/80">
             <div>
-              <div class="flex items-center gap-2.5">
+              <div class="flex flex-wrap items-center gap-2.5">
                 <h3 class="text-base font-extrabold text-slate-900 dark:text-white">{{ 'cards.progress.card_title' | translate }}</h3>
-                <app-badge variant="primary" rounded="full" size="sm">Shadcn Space Progress</app-badge>
+                <app-badge variant="primary" rounded="full" size="sm" class="shrink-0">Shadcn Space Progress</app-badge>
               </div>
               <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
                 {{ 'cards.progress.card_desc' | translate }}
@@ -2301,25 +2301,27 @@
             (activeIndexChange)="demoStepperActive.set($event)"
           />
 
-          <div class="flex items-center justify-between pt-4 border-t border-slate-200/50 dark:border-slate-800/50">
+          <div class="flex flex-wrap items-center justify-between gap-2 pt-4 border-t border-slate-200/50 dark:border-slate-800/50">
             <button
               app-button
               variant="cancel"
               size="sm"
+              class="!px-2.5 sm:!px-3 text-xs"
               [disabled]="demoStepperActive() <= 0"
               (click)="demoStepperActive.update(v => Math.max(0, v - 1))"
             >
               &larr; {{ 'cards.stepper.prev_btn' | translate }}
             </button>
 
-            <span class="text-xs font-mono text-slate-400">
-              Active Step: {{ demoStepperActive() + 1 }} / {{ demoStepperSteps().length }}
+            <span class="text-[11px] sm:text-xs font-mono text-slate-400 shrink-0">
+              Active: {{ demoStepperActive() + 1 }}/{{ demoStepperSteps().length }}
             </span>
 
             <button
               app-button
               variant="primary"
               size="sm"
+              class="!px-2.5 sm:!px-3 text-xs"
               [disabled]="demoStepperActive() >= demoStepperSteps().length - 1"
               (click)="demoStepperActive.update(v => Math.min(demoStepperSteps().length - 1, v + 1))"
             >

@@ -26,14 +26,8 @@ import { TranslationService } from '../../../core/services/translation.service';
       useExisting: forwardRef(() => CustomSearchInputComponent),
       multi: true},
   ],
-  
-  styles: [
-    `
-      :host {
-        display: block;
-      }
-    `,
-  ]})
+  styleUrl: './custom-search-input.component.scss',
+})
 export class CustomSearchInputComponent implements ControlValueAccessor, OnDestroy {
   public translationService = inject(TranslationService);
   public readonly val = signal<string>('');

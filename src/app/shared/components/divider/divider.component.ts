@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+﻿import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './divider.component.html',
-  styleUrl: './divider.component.css',
+  styleUrl: './divider.component.scss',
 })
 export class DividerComponent {
   @Input() orientation: 'horizontal' | 'vertical' = 'horizontal';
@@ -14,3 +14,4 @@ export class DividerComponent {
   @Input() labelAlign: 'left' | 'center' | 'right' = 'center';
   @Input() variant: 'solid' | 'dashed' | 'gradient' = 'solid';
 }
+

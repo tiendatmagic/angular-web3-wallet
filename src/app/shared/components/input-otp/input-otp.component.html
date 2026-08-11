@@ -1,4 +1,4 @@
-<div class="relative inline-flex items-center select-none" [attr.aria-label]="ariaLabel">
+<div class="relative inline-flex items-center select-none max-w-full overflow-x-auto no-scrollbar py-1" [attr.aria-label]="ariaLabel">
   <!-- Input ẩn để thu thập sự kiện gõ/paste từ hệ thống -->
   <input
     #hiddenInput
@@ -20,22 +20,22 @@
 
   <!-- Danh sách ô nhập OTP (Slots) -->
   <div
-    class="flex items-center"
+    class="flex items-center shrink-0"
     [ngClass]="{
-      'gap-1.5': size === 'sm',
-      'gap-2': size === 'md',
-      'gap-2.5': size === 'lg'
+      'gap-1 sm:gap-1.5': size === 'sm',
+      'gap-1 sm:gap-2': size === 'md',
+      'gap-1.5 sm:gap-2.5': size === 'lg'
     }"
   >
     @for (slotIndex of slotsSignal(); track slotIndex) {
       <!-- Individual Slot -->
       <div
         (click)="onSlotClick(slotIndex)"
-        class="relative flex items-center justify-center font-mono transition-all duration-200 cursor-pointer shadow-xs border border-solid"
+        class="relative flex items-center justify-center font-mono transition-all duration-200 cursor-pointer shadow-xs border border-solid shrink-0"
         [ngClass]="{
-          'w-8 h-9 text-sm rounded-[10px]': size === 'sm',
-          'w-11 h-12 text-base rounded-[12px]': size === 'md',
-          'w-14 h-14 text-xl rounded-[14px]': size === 'lg',
+          'w-6.5 h-8 text-[11px] sm:w-8 sm:h-9 sm:text-sm rounded-[7px] sm:rounded-[10px]': size === 'sm',
+          'w-7.5 h-9 text-xs sm:w-11 sm:h-12 sm:text-base rounded-[8px] sm:rounded-[12px]': size === 'md',
+          'w-8.5 h-10 text-xs sm:w-14 sm:h-14 sm:text-xl rounded-[10px] sm:rounded-[14px]': size === 'lg',
           'bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 border-slate-200 dark:border-slate-700 hover:border-purple-400 dark:hover:border-purple-500 hover:bg-purple-50/20 dark:hover:bg-purple-950/20':
             !isSlotFocused(slotIndex) && !invalid && !disabled,
           'border-purple-500 dark:border-purple-500 ring-4 ring-purple-500/20 dark:ring-purple-500/30 bg-purple-50/40 dark:bg-purple-950/30 text-slate-900 dark:text-white z-10 scale-[1.02] shadow-sm shadow-purple-500/10':

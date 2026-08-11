@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+﻿import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '../icon/icon.component';
 
@@ -7,7 +7,7 @@ import { IconComponent } from '../icon/icon.component';
   standalone: true,
   imports: [CommonModule, IconComponent],
   templateUrl: './alert.component.html',
-  styleUrl: './alert.component.css',
+  styleUrl: './alert.component.scss',
 })
 export class AlertComponent {
   @Input() type: 'info' | 'success' | 'warning' | 'error' = 'info';
@@ -41,3 +41,4 @@ export class AlertComponent {
     this.close.emit();
   }
 }
+

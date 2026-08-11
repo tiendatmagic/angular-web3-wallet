@@ -1,4 +1,4 @@
-import { Component, Input, signal } from '@angular/core';
+﻿import { Component, Input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '../icon/icon.component';
 
@@ -121,3 +121,4 @@ export class VoiceChatComponent {
     this.isJoined.update(val => !val);
   }
 }
+

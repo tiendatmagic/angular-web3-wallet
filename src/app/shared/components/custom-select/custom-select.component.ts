@@ -39,13 +39,8 @@ export interface SelectOption {
       useExisting: forwardRef(() => CustomSelectComponent),
       multi: true},
   ],
-  styles: [
-    `
-      :host {
-        display: block;
-      }
-    `,
-  ]})
+  styleUrl: './custom-select.component.scss',
+})
 export class CustomSelectComponent implements ControlValueAccessor, AfterViewChecked, OnInit, OnDestroy {
   private readonly elementRef = inject(ElementRef);
   private readonly cdr = inject(ChangeDetectorRef);

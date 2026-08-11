@@ -33,13 +33,8 @@ export interface TabOption {
   imports: [CommonModule, IconComponent],
   templateUrl: './tab-group.component.html',
   
-  styles: [
-    `
-      :host {
-        display: block;
-      }
-    `,
-  ]})
+  styleUrl: './tab-group.component.scss',
+})
 export class TabGroupComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() options: TabOption[] = [];
   @Input() activeValue: any = null;
