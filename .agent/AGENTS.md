@@ -8,7 +8,9 @@
   1. **Core State & Persistence (`UiStateService` & `StateService`):** Thêm signal `isSidebarCollapsed` đọc/ghi `localStorage` (`angular_web3_sidebar_collapsed`) và hàm `toggleSidebarCollapse()`.
   2. **Tương thích Layout (`app.html` & `header.component.html`):** Chuyển padding left của main container và sticky header sang class động `[class.md:pl-72]="!stateService.isSidebarCollapsed()"` và `[class.md:pl-20]="stateService.isSidebarCollapsed()"` kèm `transition-all duration-300 ease-in-out`.
   3. **Giao diện Sidebar Component (`sidebar.component.html`):**
-     - Thêm nút floating tròn nhỏ ở cạnh phải sidebar (`absolute -right-3.5 top-6`) hiển thị icon `chevron-left` `<` khi mở rộng và `chevron-right` `>` khi thu nhỏ.
+     - Đặt chiều cao header logo `h-16 sm:h-20` đồng bộ 100% trục ngang với đường kẻ viền chân top header.
+     - Tăng padding right cho phần thông tin logo `pl-6 pr-8` để tạo khoảng thở vừa vặn, không bị chạm sát nút toggle.
+     - Thêm nút floating tròn ở vị trí căn giữa dọc chiều cao header (`absolute -right-3.5 top-8 sm:top-10 -translate-y-1/2`) hiển thị icon `chevron-left` `<` khi mở rộng và `chevron-right` `>` khi thu nhỏ.
      - Chuyển độ rộng sidebar linh hoạt giữa `w-72` (mở rộng) và `w-20` (thu nhỏ).
      - Khi thu nhỏ (`w-20`): Ẩn tiêu đề logo, căn giữa Logo Icon, chuyển menu item về biểu tượng căn giữa kèm `title` tooltip và ẩn text, footer hiển thị nút đổi giao diện nhanh dạng icon-only.
   4. **Xác thực:** Chạy `npm run build` kiểm tra biên dịch không lỗi syntax hay logic.
