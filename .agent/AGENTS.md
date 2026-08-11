@@ -14,6 +14,7 @@
      - Với variant `avatar`, thẻ `<img>` đổi thành `w-full h-full rounded-full object-cover ring-2 ring-purple-500/30`.
   2. **Nâng Cấp `CopyToClipboardComponent` (`copy-to-clipboard.component.html`):**
      - Khi `!label` (chỉ có icon copy), chuyển sang kích thước vuông chuẩn `w-7 h-7 !p-0` (sm), `w-8.5 h-8.5 !p-0` (md), `w-10 h-10 !p-0` (lg).
+     - Điều chỉnh font-size từ `text-sm`/`text-base` về `text-xs` (cho size `sm` & `md`) và `text-sm` (cho size `lg`), chuyển `font-extrabold` sang `font-bold` giúp nhãn chữ nút copy vừa vặn, tinh tế và không bị thô/quá to.
   3. **Đồng Bộ Các Icon Button Phụ Thuộc Khác:**
      - `CustomSearchInputComponent`: Nút clear search `X` bổ sung `w-6 h-6 flex items-center justify-center shrink-0` (24px x 24px).
      - `CustomDatePickerComponent` & `CustomDateTimeRangeComponent`: Nút chevron `<` `>` chuyển tháng bổ sung `w-7 h-7 flex items-center justify-center shrink-0` (28px x 28px); nút clear date bổ sung `w-5 h-5`.

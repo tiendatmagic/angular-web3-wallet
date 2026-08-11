@@ -1,15 +1,15 @@
 <button
   type="button"
   (click)="copy()"
-  class="inline-flex items-center justify-center gap-1.5 font-extrabold rounded-[12px] transition-all duration-200 select-none active:scale-95 cursor-pointer whitespace-nowrap shrink-0"
+  class="inline-flex items-center justify-center gap-1.5 font-bold rounded-[10px] transition-all duration-200 select-none active:scale-95 cursor-pointer whitespace-nowrap shrink-0 tracking-tight"
   [ngClass]="{
-    'px-2.5 py-1 text-xs': label && size === 'sm',
-    'px-3 py-1.5 text-sm': label && size === 'md',
-    'px-4 py-2 text-base': label && size === 'lg',
+    'px-2.5 py-1 text-[10px]': label && size === 'sm',
+    'px-3 py-1.5 text-[11px]': label && size === 'md',
+    'px-4 py-2 text-xs': label && size === 'lg',
 
-    'w-7 h-7 text-xs !p-0': !label && size === 'sm',
-    'w-8.5 h-8.5 text-sm !p-0': !label && size === 'md',
-    'w-10 h-10 text-base !p-0': !label && size === 'lg',
+    'w-7 h-7 text-[10px] !p-0': !label && size === 'sm',
+    'w-8.5 h-8.5 text-[11px] !p-0': !label && size === 'md',
+    'w-10 h-10 text-xs !p-0': !label && size === 'lg',
 
     'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30': copied,
     'bg-purple-500/10 hover:bg-purple-500/20 text-purple-600 dark:text-purple-400 border border-purple-500/20': !copied
@@ -18,11 +18,11 @@
 >
   <app-icon
     [name]="copied ? 'check' : 'copy'"
-    [class]="size === 'sm' ? 'w-3.5 h-3.5' : size === 'md' ? 'w-4 h-4' : 'w-5 h-5'"
+    [class]="size === 'sm' ? 'w-3 h-3' : size === 'md' ? 'w-3.5 h-3.5' : 'w-4 h-4'"
     [ngClass]="{'animate-bounce': copied}"
   ></app-icon>
 
   @if (label) {
-    <span class="whitespace-nowrap">{{ copied ? ('cards.copy_to_clipboard.copied_btn' | translate) : label }}</span>
+    <span class="whitespace-nowrap font-bold text-[10px] sm:text-[10px]">{{ copied ? ('cards.copy_to_clipboard.copied_btn' | translate) : label }}</span>
   }
 </button>

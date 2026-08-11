@@ -10,13 +10,13 @@
       (click)="toggleOpen($event)"
       class="inline-flex items-center transition-all duration-200 focus:outline-none select-none font-semibold"
       [ngClass]="{
-        'px-3 py-1.5 text-xs rounded-[12px] justify-between gap-2': triggerVariant !== 'icon' && triggerVariant !== 'avatar' && triggerSize === 'sm',
-        'px-4 py-2 text-sm rounded-[12px] justify-between gap-2': triggerVariant !== 'icon' && triggerVariant !== 'avatar' && triggerSize === 'md',
-        'px-5 py-2.5 text-base rounded-[12px] justify-between gap-2': triggerVariant !== 'icon' && triggerVariant !== 'avatar' && triggerSize === 'lg',
+        'px-2.5 py-1 text-xs rounded-[10px] justify-between gap-2': triggerVariant !== 'icon' && triggerVariant !== 'avatar' && triggerSize === 'sm',
+        'px-3.5 py-1.5 text-xs rounded-[12px] justify-between gap-2': triggerVariant !== 'icon' && triggerVariant !== 'avatar' && triggerSize === 'md',
+        'px-4.5 py-2 text-sm rounded-[14px] justify-between gap-2': triggerVariant !== 'icon' && triggerVariant !== 'avatar' && triggerSize === 'lg',
 
-        'w-8 h-8 !p-0 text-xs justify-center shrink-0': (triggerVariant === 'icon' || triggerVariant === 'avatar') && triggerSize === 'sm',
-        'w-10 h-10 !p-0 text-sm justify-center shrink-0': (triggerVariant === 'icon' || triggerVariant === 'avatar') && triggerSize === 'md',
-        'w-12 h-12 !p-0 text-base justify-center shrink-0': (triggerVariant === 'icon' || triggerVariant === 'avatar') && triggerSize === 'lg',
+        'w-7.5 h-7.5 !p-0 text-xs justify-center shrink-0': (triggerVariant === 'icon' || triggerVariant === 'avatar') && triggerSize === 'sm',
+        'w-9.5 h-9.5 !p-0 text-xs justify-center shrink-0': (triggerVariant === 'icon' || triggerVariant === 'avatar') && triggerSize === 'md',
+        'w-11 h-11 !p-0 text-sm justify-center shrink-0': (triggerVariant === 'icon' || triggerVariant === 'avatar') && triggerSize === 'lg',
 
         'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/80 shadow-sm': triggerVariant === 'outline' || triggerVariant === 'default',
         'bg-slate-100 dark:bg-slate-800/60 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700/70': triggerVariant === 'secondary',
