@@ -113,10 +113,10 @@ export class CustomDatePickerComponent implements ControlValueAccessor, AfterVie
 
   public get presets() {
     return [
+      { label: this.lang.translate('date.today'), days: 0 },
       { label: this.lang.translate('date.days_7'), days: 7 },
       { label: this.lang.translate('date.month_1'), days: 30 },
       { label: this.lang.translate('date.months_3'), days: 90 },
-      { label: this.lang.translate('date.months_6'), days: 180 },
       { label: this.lang.translate('date.year_1'), days: 365 },
     ];
   }

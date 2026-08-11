@@ -7,17 +7,18 @@
 - **Giải pháp:**
   1. **Tối Ưu `CustomDatePickerComponent` (`custom-date-picker.component.ts` & `.html`):**
      - Đổi `popoverWidth` từ `300px` lên `320px` khớp 100% với `CustomDateTimeRange`.
-     - Di chuyển dải nút Presets vào **BÊN TRONG Popover** (ở vị trí trên cùng, phân cách bằng viền mờ `border-b border-slate-100 dark:border-slate-800/60 pb-3`, dàn hàng `grid grid-cols-5 gap-1` vừa khít 100% 1 hàng ngang).
+     - Di chuyển dải nút Presets vào **BÊN TRONG Popover** (ở vị trí trên cùng, phân cách bằng viền mờ `border-b border-slate-100 dark:border-slate-800/60 pb-3`, dàn hàng `flex flex-wrap gap-1.5` ngắt dòng tự nhiên vừa vặn 100% không bị cắt chữ `...`).
+     - Bổ sung nút chọn nhanh **"Hôm nay" (`date.today`)** vào đầu dải Presets của `CustomDatePickerComponent`.
      - Bổ sung signal `selectedPresetDays` quản lý và highlight nút Preset đang chọn theo màu tím chủ đạo `bg-[var(--color-primary)]/15 border-[var(--color-primary)]/30 text-[var(--color-primary)] font-extrabold`.
      - Bọc từng ô ngày trong `<div class="relative w-full aspect-square flex items-center justify-center">` và chuẩn hóa lưới `gap-0.5`.
      - Đưa nút "Xong" (`action.done`) về chuẩn màu chủ đạo `bg-[var(--color-primary)] hover:opacity-90 active:scale-95 text-white shadow-sm shadow-[var(--color-primary)]/20`.
-     - Tối ưu ô **Ngày Hôm Nay (`Today`)** khi chưa chọn sử dụng viền nổi 2px `border-2 border-[var(--color-primary)] bg-[var(--color-primary)]/10 text-[var(--color-primary)] font-extrabold`, giúp phân biệt rõ ràng 100% với **Ngày Đang Chọn (`Selected`)** là nốt tròn tím/hồng đặc `bg-[var(--color-primary)] text-white`.
+     - Chuẩn hóa ô **Ngày Hôm Nay (`Today`)** khi chưa chọn hiển thị phẳng đẹp màu chữ tiêu chuẩn như các ô ngày khác trong tháng (chỉ khi được chọn mới hiển thị nốt tròn đặc màu chủ đạo `bg-[var(--color-primary)] text-white`).
   2. **Tối Ưu `CustomDateTimeRangeComponent` (`custom-date-time-range.component.ts` & `.html`):**
      - Bổ sung signal `activePresetId` highlight nút Preset active theo màu chủ đạo `bg-[var(--color-primary)]/15 border-[var(--color-primary)]/30 text-[var(--color-primary)] font-extrabold`.
      - Chuẩn hóa lưới ô lịch thành `grid grid-cols-7 gap-0.5` đồng bộ với DatePicker.
      - Đổi nút "Áp dụng" (`common.apply`) từ dải màu gradient cũ sang **màu chủ đạo thuần `bg-[var(--color-primary)] hover:opacity-90 active:scale-95`**.
   3. **Đồng Bộ Thuộc Tính `showPresets` Trên Trang Chủ (`home.component.html`):**
-     - Đã liên kết `[showPresets]="demoDatePickerShowPresets()"` cho tất cả các ô DatePicker & DateTimeRange ở Card 15 ("Demo Form Components") và Card 17 ("Custom Date Time Range"), đảm bảo khi bật/tắt công cụ điều khiển switch Presets thì 100% các ô chọn ngày trên cả trang chủ lẫn bên trong Modal đều đồng bộ hiển thị dải Presets như nhau.
+     - Đã liên kết `[showPresets]="demoDatePickerShowPresets()"` cho tất cả các ô DatePicker & DateTimeRange ở Card 15 ("Demo Form Components") và Card 17 ("Custom Date Time Range"), chuyển trạng thái mặc định sang **Mặc định TẮT (`demoDatePickerShowPresets = signal(false)`)**. Khi cần hiển thị Presets, người dùng bật công tắc switch điều khiển.
 - **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Build production đóng gói Angular thành công.
 
 ### Yêu cầu: Tối Ưu Hiệu Ứng Kính Mờ (Glassmorphism Backdrop Blur) Cho Tất Cả Popover Dropdowns (Bao Gồm Header Bar)

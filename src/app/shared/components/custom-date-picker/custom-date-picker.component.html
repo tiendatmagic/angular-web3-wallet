@@ -22,12 +22,12 @@
       (click)="$event.stopPropagation()"
     >
       @if (showPresets) {
-        <div class="grid grid-cols-5 gap-1 pb-3.5 border-b border-slate-100 dark:border-slate-800/60">
+        <div class="flex flex-wrap gap-1.5 pb-3.5 border-b border-slate-100 dark:border-slate-800/60">
           @for (p of presets; track p.days) {
             <button
               type="button"
               (click)="selectPreset(p.days, $event)"
-              class="text-[11px] font-bold py-1 px-1 text-center rounded-lg transition-all cursor-pointer border truncate"
+              class="text-xs font-bold px-2.5 py-1 rounded-lg transition-all cursor-pointer border whitespace-nowrap"
               [class.bg-[var(--color-primary)]/15]="selectedPresetDays() === p.days"
               [class.border-[var(--color-primary)]/30]="selectedPresetDays() === p.days"
               [class.text-[var(--color-primary)]]="selectedPresetDays() === p.days"
@@ -92,19 +92,17 @@
                   !isCurrentMonth(day) && !isSelected(day) && !isDateDisabled(day)
                 "
                 [class.text-slate-700]="
-                  isCurrentMonth(day) && !isSelected(day) && !isToday(day) && !isDateDisabled(day)
+                  isCurrentMonth(day) && !isSelected(day) && !isDateDisabled(day)
                 "
                 [class.dark:text-slate-300]="
-                  isCurrentMonth(day) && !isSelected(day) && !isToday(day) && !isDateDisabled(day)
+                  isCurrentMonth(day) && !isSelected(day) && !isDateDisabled(day)
                 "
-                [class.hover:bg-slate-50]="!isSelected(day) && !isToday(day) && !isDateDisabled(day)"
+                [class.hover:bg-slate-50]="!isSelected(day) && !isDateDisabled(day)"
                 [class.dark:hover:bg-slate-800]="
-                  !isSelected(day) && !isToday(day) && !isDateDisabled(day)
+                  !isSelected(day) && !isDateDisabled(day)
                 "
                 [class.cursor-pointer]="!isDateDisabled(day)"
-                [class.bg-[var(--color-primary)]/15]="isToday(day) && !isSelected(day)"
-                [class.!text-[var(--color-primary)]]="isToday(day) && !isSelected(day)"
-                [class.font-extrabold]="isToday(day) || isSelected(day)"
+                [class.font-extrabold]="isSelected(day)"
                 [class.bg-[var(--color-primary)]]="isSelected(day)"
                 [class.!text-white]="isSelected(day)"
                 [class.shadow-md]="isSelected(day)"

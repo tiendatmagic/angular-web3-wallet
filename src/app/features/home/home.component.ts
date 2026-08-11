@@ -130,7 +130,7 @@ export class HomeComponent {
   public demoDatePickerValue = signal('2026-07-10');
   public limitDatePicker = signal(false);
   public demoDatePickerMinDate = signal('2026-07-20');
-  public demoDatePickerShowPresets = signal(true);
+  public demoDatePickerShowPresets = signal(false);
   public demoAccordionMultiple = signal(false);
 
   public demoRangeValue = signal<DateTimeRangeValue>({ startDate: '2026-07-10', endDate: '2026-07-15' });
