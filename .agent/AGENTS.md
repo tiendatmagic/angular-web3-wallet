@@ -2,6 +2,17 @@
 
 ## Ngày 12/08/2026
 
+### Yêu cầu: Khắc Phục Lỗi Mobile Sidebar Drawer Bị Giật / Thọt Thụt Về Bên Trái Khi Reload Trang
+- **Nội dung yêu cầu:** Khắc phục lỗi khi vừa reload lại trang trên mobile, Sidebar Drawer bị lòi ra một phần hoặc phát hiệu ứng trượt thụt lùi về góc trái màn hình trong khi người dùng chưa hề thao tác hay bấm nút menu.
+- **Phân tích nguyên nhân:**
+  1. **Hiệu Ứng Initial Load Glitch (FOUC):** Do container wrapper của Mobile Drawer trong `header.component.html` không có class `invisible`/`hidden` khi `showMobileMenu` bằng `false`. Khi khởi tạo DOM, trình duyệt apply class `-translate-x-full` kết hợp với `transition-transform duration-300 ease-in-out` có sẵn trong HTML, coi đó là sự thay đổi thuộc tính CSS từ `0` sang `-100%` và tự động kích hoạt animation trượt 300ms từ giữa màn hình rút lui về mép trái.
+  2. **Tràn Bóng Đổ (Shadow Leakage):** Class `shadow-2xl` trên thẻ drawer `w-[280px]` bị dãn bóng mờ 25px~50px lọt qua mép trái viewport khi container không có `overflow-hidden`.
+- **Giải pháp:**
+  1. Thêm `[class.invisible]="!stateService.showMobileMenu()"` và `[class.visible]="stateService.showMobileMenu()"` vào Container ngoài cùng của Mobile Drawer (`header.component.html`).
+  2. Thêm `overflow-hidden` và `transition-all duration-300 ease-in-out` vào Container wrapper.
+  3. Cơ chế: Khi vừa reload trang, `showMobileMenu` là `false` nên phần tử lập tức mang class `invisible` ở frame đầu tiên, trình duyệt loại bỏ hoàn toàn việc vẽ (paint) phần tử và triệt tiêu 100% animation trượt giật cũng như bóng đổ `shadow-2xl`. Khi bấm mở menu, `visible` bật ở frame 0 cho phép hiệu ứng trượt trơn mượt 300ms; khi đóng menu, animation trượt và mờ đục diễn ra trọn vẹn trong 300ms trước khi `invisible` có hiệu lực.
+- **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Build production đóng gói Angular thành công.
+
 ### Yêu cầu: Đồng Bộ 100% Kích Thước UI & Màu Sắc Chủ Đạo (var(--color-primary)) Cho Component CustomDatePicker & CustomDateTimeRange
 - **Nội dung yêu cầu:** Đồng bộ độ rộng Popover (chuẩn 320px), vị trí dải nút chọn nhanh Presets (chuyển vào bên trong Popover), khoảng cách lưới ô lịch (`gap-0.5`) và chuẩn hóa dải màu tương tác về màu tím chủ đạo `var(--color-primary)` cho 2 component `CustomDatePicker` (`app-custom-date-picker`) và `CustomDateTimeRange` (`app-custom-date-time-range`).
 - **Giải pháp:**
