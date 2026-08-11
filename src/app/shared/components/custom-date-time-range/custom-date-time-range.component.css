@@ -2,6 +2,13 @@
   display: block;
 }
 
+.date-time-range-popover {
+  position: fixed;
+  z-index: 99999;
+  width: 340px;
+  box-sizing: border-box;
+}
+
 .time-select {
   appearance: none;
   -webkit-appearance: none;
