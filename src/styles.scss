@@ -25,7 +25,6 @@
 
 html {
   background-color: #f8fafc;
-  transition: background-color 0.3s;
 }
 
 html.dark {
@@ -38,9 +37,6 @@ body {
   color: #0f172a;
   min-height: 100vh;
   margin: 0;
-  transition:
-    background-color 0.3s,
-    color 0.3s;
 }
 
 html.dark body,
@@ -48,6 +44,8 @@ body.dark {
   background-color: #030712;
   color: #f8fafc;
 }
+
+
 
 .transition-all-300 {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);

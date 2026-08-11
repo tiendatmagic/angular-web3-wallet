@@ -2,6 +2,19 @@
 
 ## Ngày 11/08/2026
 
+### Yêu cầu: Khắc phục Lỗi Giật Lag & Chậm Transition Khi Chuyển Dark Mode / Light Mode
+- **Nội dung yêu cầu:** Khắc phục tình trạng cảm giác chậm, trễ màu sắc và lỗi màu chữ UI khi bấm chuyển đổi giữa các chế độ Dark Mode / Light Mode.
+- **Giải pháp:**
+  1. **Tối Ưu Chuyển Đổi Dark/Light Mode Tức Thì 0ms (`ThemeService` & `styles.scss`):**
+     - Loại bỏ toàn bộ các hack CSS `transition` ép buộc trên tất cả element (`*`) và bộ đếm thời gian timer trong `ThemeService`.
+     - Chuyển `applyDarkClass(dark)` sang cơ chế bật/tắt class `.dark` trực tiếp và tức thì (0ms delay) trên `document.documentElement` (`html`) và `body`. Giúp giao diện chuyển màu nhạy tức thì, phản hồi nhanh 100% không còn cảm giác bị chậm/trễ.
+  2. **Tối Ưu Tránh `transition-all` Trên Các Wrapper Layout Khung Nhất (`app.html`, `header.component.html`, `sidebar.component.html`):**
+     - Đổi `transition-all duration-300` thành `transition-[padding]` trên main content container (`app.html`) và sticky header (`header.component.html`).
+     - Đổi `transition-all duration-300` thành `transition-[width]` trên sidebar container (`sidebar.component.html`). Việc này tránh cho trình duyệt phải tính toán lại hiệu ứng làm mờ `backdrop-blur-md` hoặc layout grid khi chuyển đổi theme mode.
+  3. **Sửa Triệt Để Lỗi Màu Chữ / Khớp Tương Phản Màu UI:**
+     - Loại bỏ các quy tắc ép `transition-delay` làm nháy/mờ màu chữ. Giúp toàn bộ văn bản và card trong Light Mode & Dark Mode hiển thị sắc nét, chuẩn sắc thái tương phản của Tailwind CSS.
+  4. **Xác thực:** Chạy lệnh `npm run build` thành công 100%, biên dịch hoàn hảo không lỗi syntax hay logic.
+
 ### Yêu cầu: Tính năng Thu nhỏ / Mở rộng Sidebar Menu Desktop (Collapsible Sidebar)
 - **Nội dung yêu cầu:** Thêm nút toggle `<` trên Sidebar Desktop (bấm vào thu nhỏ sidebar còn icon (`w-20`), ẩn text; bấm `>` mở rộng đầy đủ (`w-72`)).
 - **Giải pháp:**

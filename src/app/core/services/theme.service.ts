@@ -19,13 +19,11 @@ export class ThemeService {
     this.mediaQueryList = window.matchMedia('(prefers-color-scheme: dark)');
     this.mediaQueryList.addEventListener('change', this.handleSystemThemeChange);
 
-    if (savedTheme === 'light') {
-      this.setThemeMode('light');
-    } else if (savedTheme === 'dark') {
-      this.setThemeMode('dark');
-    } else {
-      this.setThemeMode('auto');
-    }
+    const mode = savedTheme || 'auto';
+    this.themeMode.set(mode);
+    const isDark = mode === 'dark' || (mode === 'auto' && this.mediaQueryList.matches);
+    
+    this.applyDarkClass(isDark);
   }
 
   public applyDarkClass(dark: boolean) {
@@ -33,7 +31,7 @@ export class ThemeService {
     if (typeof document !== 'undefined') {
       const htmlEl = document.documentElement;
       const bodyEl = document.body;
-      
+
       if (dark) {
         htmlEl.classList.add('dark');
         bodyEl.classList.add('dark');
@@ -69,6 +67,7 @@ export class ThemeService {
       this.setThemeMode('light');
     }
   }
+
   private handleSystemThemeChange = (e: MediaQueryListEvent) => {
     if (this.themeMode() === 'auto') {
       this.applyDarkClass(e.matches);
