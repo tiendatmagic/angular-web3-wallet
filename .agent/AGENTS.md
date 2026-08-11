@@ -2,6 +2,13 @@
 
 ## Ngày 11/08/2026
 
+### Yêu cầu: Loại bỏ Bộ chọn Đa Ngôn Ngữ ở Sidebar Menu
+- **Nội dung yêu cầu:** Xóa component chuyển đổi ngôn ngữ (`<app-language-selector>`) khỏi khu vực chân Sidebar.
+- **Giải pháp:**
+  1. Cập nhật [sidebar.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/layout/sidebar/sidebar.component.html): Loại bỏ thẻ `<app-language-selector variant="full" direction="up" />` ở footer sidebar.
+  2. Cập nhật [sidebar.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/layout/sidebar/sidebar.component.ts): Loại bỏ `LanguageSelectorComponent` khỏi mảng `imports` và `import` dư thừa.
+  3. **Xác thực:** Chạy `npm run build` kiểm tra biên dịch không lỗi syntax hay logic.
+
 ### Yêu cầu: Loại bỏ cảnh báo NG8113 TranslatePipe thừa trong ConfirmModalComponent
 - **Nội dung yêu cầu:** Sửa cảnh báo biên dịch `NG8113: TranslatePipe is not used within the template of ConfirmModalComponent`.
 - **Giải pháp:**
