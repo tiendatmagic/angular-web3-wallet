@@ -61,7 +61,6 @@ button:disabled,
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Tắt transition toàn cục tạm thời khi đổi theme để 100% màu sắc chuyển đổi tức thì 0ms, tránh bị nháy/trễ màu */
 html.theme-transition-disabled,
 html.theme-transition-disabled *:not(.theme-switcher-pill):not(.tab-group-pill),
 html.theme-transition-disabled *:not(.theme-switcher-pill):not(.tab-group-pill)::before,
@@ -282,11 +281,6 @@ body.dark .btn-danger-light:hover {
   }
 }
 
-/* ==========================================================================
-   Alert & Callout Component Background System (Tailwind v4 Optimized)
-   ========================================================================== */
-
-/* Info Alert (Sky Pastel) */
 .alert-info-soft {
   background-color: #e0f2fe !important;
   color: #082f49 !important;
@@ -329,7 +323,6 @@ html.dark .alert-info-bordered {
   border-color: rgba(2, 132, 199, 0.6) !important;
 }
 
-/* Success Alert (Emerald Pastel) */
 .alert-success-soft {
   background-color: #d1fae5 !important;
   color: #064e3b !important;
@@ -372,7 +365,6 @@ html.dark .alert-success-bordered {
   border-color: rgba(5, 150, 105, 0.6) !important;
 }
 
-/* Warning Alert (Amber Pastel) */
 .alert-warning-soft {
   background-color: #fef3c7 !important;
   color: #78350f !important;
@@ -415,7 +407,6 @@ html.dark .alert-warning-bordered {
   border-color: rgba(217, 119, 6, 0.6) !important;
 }
 
-/* Error Alert (Red Pastel) */
 .alert-error-soft {
   background-color: #fee2e2 !important;
   color: #7f1d1d !important;
@@ -469,7 +460,6 @@ html.dark .alert-error-bordered {
   }
 }
 
-/* Glassmorphism Backdrop Blur cho Popover Dropdowns */
 .dropdown-menu-popover,
 .date-picker-popover,
 .date-time-range-popover {

@@ -37,7 +37,6 @@ Các biến dynamic được ánh xạ vào Tailwind CSS v4 thông qua `@theme`:
 --color-primary: var(--dynamic-primary, #ff00dd);
 --color-secondary: var(--dynamic-secondary, #8000ff);
 
-/* Ghi đè các class purple/violet của Tailwind để tự động đồng bộ màu chủ đạo */
 --color-purple-50: color-mix(in srgb, var(--color-primary) 5%, white);
 --color-purple-100: color-mix(in srgb, var(--color-primary) 12%, white);
 --color-purple-400: var(--color-secondary);

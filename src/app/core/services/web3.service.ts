@@ -330,9 +330,6 @@ export class Web3Service {
     }
   }
 
-  /**
-   * Tự động dọn dẹp dữ liệu kẹt trong IndexedDB & LocalStorage nếu chưa đăng nhập (Self-Healing)
-   */
   private async clearWalletConnectStorage() {
     if (typeof window === 'undefined') return;
 
