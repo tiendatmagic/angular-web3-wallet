@@ -15,6 +15,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { TranslationService } from '../../../core/services/translation.service';
+import { IconComponent } from '../icon/icon.component';
 
 export type OtpInputType = 'numeric' | 'alphanumeric' | 'any';
 export type OtpInputSize = 'sm' | 'md' | 'lg';
@@ -22,7 +23,7 @@ export type OtpInputSize = 'sm' | 'md' | 'lg';
 @Component({
   selector: 'app-input-otp',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, IconComponent],
   templateUrl: './input-otp.component.html',
   host: { 'class': 'block' },
   changeDetection: ChangeDetectionStrategy.OnPush,

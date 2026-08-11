@@ -17,4 +17,11 @@ export class IconComponent {
     @Input() solid: boolean = false;
 
     @Input() viewBox: string = '0 0 24 24';
+
+    /** Optional geometry used by data-driven icons such as progress rings. */
+    @Input() radius: string | number = 46;
+    @Input() dashArray: string | number | null = null;
+    @Input() dashOffset: string | number | null = null;
+    @Input() trackClass: string = '';
+    @Input() valueClass: string = '';
 }

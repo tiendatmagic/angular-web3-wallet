@@ -298,7 +298,7 @@
       <div
         class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary border border-primary/10"
       >
-        <app-icon name="bolt" class="w-5 h-5" [solid]="true" viewBox="0 0 20 20" />
+        <app-icon name="grid" class="w-5 h-5" />
       </div>
       <div>
         <h3 class="text-base font-black text-slate-800 dark:text-white">{{ 'home.showcase_title' | translate }}</h3>
@@ -314,10 +314,8 @@
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
         >
           <app-icon
-            name="bolt"
+            name="toggle"
             class="w-3.5 h-3.5 text-primary"
-            [solid]="true"
-            viewBox="0 0 20 20"
           />
           {{ 'showcase.custom_switch' | translate }}
         </h4>
@@ -352,10 +350,8 @@
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
         >
           <app-icon
-            name="bolt"
+            name="radio"
             class="w-3.5 h-3.5 text-primary"
-            [solid]="true"
-            viewBox="0 0 20 20"
           />
           {{ 'showcase.custom_radio' | translate }}
         </h4>
@@ -382,7 +378,7 @@
         <h4
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
         >
-          <app-icon name="shield-check" class="w-3.5 h-3.5 text-primary" strokeWidth="2.5" />
+          <app-icon name="checkbox" class="w-3.5 h-3.5 text-primary" strokeWidth="2.5" />
           {{ 'showcase.custom_checkbox' | translate }}
         </h4>
         <div class="space-y-4">
@@ -582,7 +578,7 @@
         <h4
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
         >
-          <app-icon name="shield-check" class="w-3.5 h-3.5 text-primary" strokeWidth="2.5" />
+          <app-icon name="check-badge" class="w-3.5 h-3.5 text-primary" strokeWidth="2.5" />
           {{ 'cards.badges.title' | translate }}
         </h4>
         
@@ -625,7 +621,7 @@
         <h4
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
         >
-          <app-icon name="link-chain" class="w-3.5 h-3.5 text-primary" strokeWidth="2.5" />
+          <app-icon name="tabs" class="w-3.5 h-3.5 text-primary" strokeWidth="2.5" />
           {{ 'showcase.custom_tab_group' | translate }}
         </h4>
         
@@ -648,7 +644,7 @@
         <h4
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
         >
-          <app-icon name="bolt" class="w-3.5 h-3.5 text-emerald-500" strokeWidth="2.5" />
+          <app-icon name="sliders-horizontal" class="w-3.5 h-3.5 text-emerald-500" strokeWidth="2.5" />
           {{ 'showcase.custom_slider' | translate }}
         </h4>
         
@@ -695,7 +691,7 @@
         <h4
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
         >
-          <app-icon name="bolt" class="w-3.5 h-3.5 text-primary" strokeWidth="2.5" />
+          <app-icon name="list-bullet" class="w-3.5 h-3.5 text-primary" strokeWidth="2.5" />
           {{ 'showcase.demo_form_components' | translate }}
         </h4>
 
@@ -2023,7 +2019,7 @@
 
     <div class="flex items-center justify-center pt-6">
       <button app-button variant="primary" size="md" (click)="openDemoModal()">
-        <app-icon name="bolt" class="w-4 h-4" [solid]="true" viewBox="0 0 20 20" />
+        <app-icon name="bolt-solid" class="w-4 h-4" />
         {{ 'cards.modal_demo.open_btn' | translate }}
       </button>
     </div>
@@ -2316,7 +2312,7 @@
         [title]="'cards.stat_card.vol_title' | translate"
         value="$3,412,050"
         [subtitle]="'cards.stat_card.vol_subtitle' | translate"
-        iconName="bolt"
+        iconName="trending-up"
         changeValue="-2.4%"
         changeType="decrease"
         iconBgGradient="from-indigo-600 to-blue-600"
@@ -2335,7 +2331,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-6">
       <div app-card>
         <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 flex items-center gap-2">
-          <app-icon name="external" class="w-3.5 h-3.5 text-primary" />
+          <app-icon name="route" class="w-3.5 h-3.5 text-primary" />
           {{ 'cards.breadcrumb.title' | translate }}
         </h4>
         <p class="text-xs text-slate-400 dark:text-slate-500 mb-4">
@@ -2350,7 +2346,7 @@
 
       <div app-card>
         <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 flex items-center gap-2">
-          <app-icon name="code" class="w-3.5 h-3.5 text-primary" />
+          <app-icon name="minus" class="w-3.5 h-3.5 text-primary" strokeWidth="2.5" />
           {{ 'cards.divider.title' | translate }}
         </h4>
         <p class="text-xs text-slate-400 dark:text-slate-500 mb-4">

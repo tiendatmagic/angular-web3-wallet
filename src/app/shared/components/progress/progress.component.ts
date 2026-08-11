@@ -1,5 +1,6 @@
 ﻿import { Component, Input, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { IconComponent } from '../icon/icon.component';
 
 export interface ProgressSegment {
   value: number;
@@ -15,7 +16,7 @@ export type ProgressValuePosition = 'right' | 'top' | 'inside' | 'bottom' | 'non
 @Component({
   selector: 'app-progress',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, IconComponent],
   templateUrl: './progress.component.html',
   host: { 'class': 'block' },
 })
@@ -74,7 +75,8 @@ export class ProgressComponent {
   });
 
   readonly semiCircleCircumference = computed(() => {
-    return Math.PI * this.circleRadius();
+    // The semicircle path in app-icon uses a fixed 40px radius (M10…A40…90).
+    return Math.PI * 40;
   });
 
   readonly semiCircleDashoffset = computed(() => {

@@ -4,7 +4,7 @@ export interface LanguageOption {
   code: SupportedLang;
   label: string;
   nativeName: string;
-  flagSvg: string;
+  flagIcon: 'flag-vi' | 'flag-en';
 }
 
 export interface TranslationDictionary {

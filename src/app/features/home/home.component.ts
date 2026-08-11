@@ -150,7 +150,7 @@ export class HomeComponent {
     return [
       { value: 'wallet', label: this.translationService.t('cards.selects.opt_wallet'), icon: 'wallet', badge: 3 },
       { value: 'history', label: this.translationService.t('cards.selects.opt_history'), icon: 'link-chain' },
-      { value: 'settings', label: this.translationService.t('cards.selects.opt_settings'), icon: 'bolt' }
+      { value: 'settings', label: this.translationService.t('cards.selects.opt_settings'), icon: 'settings' }
     ];
   });
 

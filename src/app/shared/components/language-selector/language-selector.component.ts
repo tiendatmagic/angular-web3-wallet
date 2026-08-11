@@ -5,12 +5,11 @@ import { StateService } from '@core/services/state.service';
 import { SupportedLang, LanguageOption } from '@core/i18n/i18n.types';
 import { IconComponent } from '@shared/components/icon/icon.component';
 import { TranslatePipe } from '@shared/pipes/translate.pipe';
-import { SafeHtmlPipe } from '@shared/pipes/safe-html.pipe';
 
 @Component({
   selector: 'app-language-selector',
   standalone: true,
-  imports: [CommonModule, IconComponent, TranslatePipe, SafeHtmlPipe],
+  imports: [CommonModule, IconComponent, TranslatePipe],
   templateUrl: './language-selector.component.html',
   host: { 'class': 'block' },
 })

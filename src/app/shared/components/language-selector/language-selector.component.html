@@ -7,10 +7,11 @@
       [attr.aria-expanded]="isOpen()"
       [title]="'language.select_language' | translate"
     >
-      <span
-        class="w-4.5 h-3 sm:w-5 sm:h-3.5 rounded-xs overflow-hidden shrink-0 shadow-xs border border-slate-200/50 dark:border-slate-700/50 flex items-center justify-center"
-        [innerHTML]="translationService.getCurrentLanguageOption().flagSvg | safeHtml"
-      ></span>
+      <app-icon
+        [name]="translationService.getCurrentLanguageOption().flagIcon"
+        viewBox="0 0 640 480"
+        class="w-4.5 h-3 sm:w-5 sm:h-3.5 rounded-xs overflow-hidden shrink-0 shadow-xs border border-slate-200/50 dark:border-slate-700/50"
+      />
       <span class="font-extrabold uppercase text-[10px] sm:text-[11px] tracking-wider">
         {{ translationService.currentLang() }}
       </span>
@@ -31,10 +32,11 @@
       [attr.aria-expanded]="isOpen()"
     >
       <div class="flex items-center gap-3">
-        <span
-          class="w-6 h-4 rounded-xs overflow-hidden shrink-0 shadow-xs border border-slate-200/50 dark:border-slate-700/50 flex items-center justify-center"
-          [innerHTML]="translationService.getCurrentLanguageOption().flagSvg | safeHtml"
-        ></span>
+        <app-icon
+          [name]="translationService.getCurrentLanguageOption().flagIcon"
+          viewBox="0 0 640 480"
+          class="w-6 h-4 rounded-xs overflow-hidden shrink-0 shadow-xs border border-slate-200/50 dark:border-slate-700/50"
+        />
         <span class="font-bold text-slate-800 dark:text-slate-100">
           {{ translationService.getCurrentLanguageOption().nativeName }}
         </span>
@@ -76,10 +78,11 @@
             class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100/80 dark:hover:bg-slate-800/60 transition-all cursor-pointer group"
           >
             <div class="flex items-center gap-3">
-              <span
-                class="w-5 h-3.5 rounded-xs overflow-hidden shrink-0 shadow-xs border border-slate-200/50 dark:border-slate-700/50 flex items-center justify-center"
-                [innerHTML]="opt.flagSvg | safeHtml"
-              ></span>
+              <app-icon
+                [name]="opt.flagIcon"
+                viewBox="0 0 640 480"
+                class="w-5 h-3.5 rounded-xs overflow-hidden shrink-0 shadow-xs border border-slate-200/50 dark:border-slate-700/50"
+              />
               <span class="group-hover:text-primary transition-colors">
                 {{ opt.nativeName }}
               </span>

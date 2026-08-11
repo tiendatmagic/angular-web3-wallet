@@ -27,8 +27,12 @@
           'bg-slate-500/10 text-slate-600 dark:text-slate-400 border border-slate-500/20': changeType === 'neutral'
         }"
       >
-        @if (changeType === 'increase') { ↑ }
-        @if (changeType === 'decrease') { ↓ }
+        @if (changeType === 'increase') {
+          <app-icon name="arrow-up" class="w-3 h-3" strokeWidth="2.5" />
+        }
+        @if (changeType === 'decrease') {
+          <app-icon name="arrow-down" class="w-3 h-3" strokeWidth="2.5" />
+        }
         {{ changeValue }}
       </span>
     }

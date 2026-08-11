@@ -2,6 +2,22 @@
 
 ## Ngày 12/08/2026
 
+### Yêu cầu: Tối Ưu & Đồng Bộ Tông Màu Dark Mode Cho Component CustomDatePicker & CustomDateTimeRange
+- **Nội dung yêu cầu:** Đánh giá và khắc phục tình trạng lệch tông màu nền Dark Mode của Popover DatePicker và DateTimeRange khi đang bị quá đen đậm (`dark:bg-slate-950` / `#020617`), lệch hẳn so với tổng thể theme Dark Mode xanh/tím đậm (`slate-900` / `#0f172a` / `#0e1022`).
+- **Phân tích:**
+  1. Trong `custom-date-picker.component.html` và `custom-date-time-range.component.html`, khung popover nổi đang dùng `dark:bg-slate-950` (đen tuyền) kết hợp `border-slate-800/50`.
+  2. Các phần tử bên trong popover (preset buttons, các ô chọn giờ/phút, nút chọn) dùng `dark:bg-slate-900`, làm cho popover trông như một ô bị hẫng màu đen đè lên giao diện xanh/tím đen của ứng dụng.
+- **Giải pháp:**
+  1. **Đồng Bộ Nền Popover Popups (`custom-date-picker.component.html`, `custom-date-time-range.component.html`):**
+     - Đổi nền khung popover từ `dark:bg-slate-950` sang `bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-slate-200/80 dark:border-slate-800/80 shadow-lg shadow-slate-900/10 dark:shadow-slate-950/50`.
+  2. **Đồng Bộ Chiều Sâu Nền Các Phần Tử Con (Sub-elements Elevation):**
+     - Nút preset ( DateTimeRange): Đổi từ `dark:bg-slate-900/60` sang `dark:bg-slate-800/60 border-slate-700/50`.
+     - Nút bấm chuyển tháng `<` `>`: Đổi `dark:hover:bg-slate-900` sang `dark:hover:bg-slate-800`.
+     - Nút hover chọn ngày: Đổi `dark:hover:bg-slate-800`.
+     - Ô container chọn giờ/phút (Time Pills): Đổi từ `dark:bg-slate-900` sang `dark:bg-slate-800/60 border-slate-700/60`.
+     - Khung popover chọn giờ/phút: Đổi từ `dark:bg-slate-900` sang `bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-slate-800/80 shadow-lg`.
+- **Xác thực:** Runs `npx tsc --noEmit` đạt 0 lỗi type. Runs `npm run build` đóng gói Production thành công 100%.
+
 ### Yêu cầu: Chuẩn Hóa & Cân Đối Kích Thước Width/Height Cho Các Nút Icon, Avatar Trigger & Copy Button
 - **Nội dung yêu cầu:** Rà soát và sửa các nút bấm trigger avatar, icon button, copy-to-clipboard button... bị mất cân đối kích thước (bị dẹt/bị hình bầu dục oval do `px-4 py-2` hoặc padding không đồng đều khi chỉ có icon mà không có text), đảm bảo tất cả các nút icon/avatar được set width & height bằng nhau (`aspect-square` / `w-X h-X` cân đối).
 - **Phân tích:**
