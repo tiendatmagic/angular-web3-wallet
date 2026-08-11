@@ -3,15 +3,18 @@
 ## Ngày 12/08/2026
 
 ### Yêu cầu: Chuẩn Hóa & Phủ Kín 100% Đa Ngôn Ngữ (i18n) Cho Tất Cả Các File HTML và TypeScript trong Dự Án
-- **Nội dung yêu cầu:** Rà soát toàn bộ các file `.html` và `.ts` trong ứng dụng, chuyển đổi tất cả các chuỗi văn bản Tiếng Việt hardcoded (bao gồm cả các tùy chọn mảng dữ liệu, tiêu đề modal, nhãn card showcase...) sang các key dịch i18n chuẩn sử dụng `TranslatePipe` và `computed()` Signal phản ứng theo ngôn ngữ hiện tại `TranslationService.currentLang()`.
+- **Nội dung yêu cầu:** Rà soát chuyên sâu toàn bộ các file `.html` và `.ts` trong ứng dụng bằng công cụ tìm kiếm ripgrep, chuyển đổi tất cả các chuỗi văn bản Tiếng Việt hardcoded (bao gồm cả các tùy chọn mảng dữ liệu, tiêu đề modal, nhãn badge, mô tả voice chat morphing...) sang các key dịch i18n chuẩn sử dụng `TranslatePipe` và `computed()` Signal phản ứng theo ngôn ngữ hiện tại `TranslationService.currentLang()`.
 - **Giải pháp:**
   1. **Mở Rộng Từ Điển i18n (`i18n.types.ts`, `vi.ts`, `en.ts`):**
-     - Bổ sung hơn 50 key dịch mới cho các nhóm `home`, `cards.inputs`, `cards.selects`, `cards.slider`, `cards.date_picker`, `cards.ripple`, `cards.accordion`, `cards.table`, `cards.dropdown`, `cards.aura`, `cards.switch`, `cards.checkbox`, `cards.tab_group`.
-  2. **Tối Ưu Phản Ứng Đổi Ngôn Ngữ Ngay Lập Tức Trong TS (`home.component.ts`):**
-     - Chuyển `demoTabOptions`, `genderOptions`, `demoTableColumns`, `tableStatusOptions`, `demoProfileMenuItems`, `demoDisplayMenuItems`, `demoWeb3ActionItems` thành các `computed()` Signal liên kết với `this.translationService.currentLang()`, giúp toàn bộ menu dropdown, bảng dữ liệu và tab group tự động cập nhật ngôn ngữ ngay lập tức khi người dùng chuyển đổi giữa Tiếng Việt và Tiếng Anh.
+     - Bổ sung hơn 60 key dịch mới cho các nhóm `home`, `cards.inputs`, `cards.selects`, `cards.slider`, `cards.date_picker`, `cards.ripple`, `cards.accordion`, `cards.table`, `cards.dropdown`, `cards.aura`, `cards.switch`, `cards.checkbox`, `cards.tab_group`, `cards.code_block`, `cards.file_upload`, `cards.voice_chat`, `cards.controls`.
+  2. **Tối Ưu Phản Ứng Đổi Ngôn Ngữ Ngay Lập Tức Trong TS (`home.component.ts`, `demo-modal.component.ts`):**
+     - Chuyển `demoTabOptions`, `genderOptions`, `demoTableColumns`, `tableStatusOptions`, `demoProfileMenuItems`, `demoDisplayMenuItems`, `demoWeb3ActionItems`, `demoRadioOptions` thành các `computed()` Signal liên kết với `this.translationService.currentLang()`, giúp toàn bộ menu dropdown, bảng dữ liệu, bộ chọn radio và tab group tự động cập nhật ngôn ngữ ngay lập tức khi người dùng chuyển đổi giữa Tiếng Việt và Tiếng Anh.
   3. **Chuẩn Hóa Phủ Kín File HTML (`home.component.html`, `demo-modal.component.html`, `code-block.component.html`):**
-     - Thay thế 100% các nhãn text cứng trong 30 Card Showcase và Demo Modal thành `{{ 'key' | translate }}` và `[placeholder]="'key' | translate"`.
-  4. **Xác thực:** Runs `npx tsc --noEmit` đạt 0 lỗi type. Runs `npm run build` đóng gói Production thành công 100% (771 kB bundle).
+     - Thay thế 100% các nhãn text cứng (bao gồm badge "Thành công", "Đang chờ", "Thất bại", tiêu đề code block 1/2/3, badge upload "File Sao Lưu SQL", "Tối đa 20MB", mô tả voice chat morphing...) thành `{{ 'key' | translate }}`.
+     - Khắc phục chuỗi mã hóa fallback bị hỏng trong `custom-select.component.ts`.
+  4. **Chuyển Đổi Toast Notification & Trạng Thái Sang i18n Động (`home.component.ts`):**
+     - Đã thêm hơn 18 key dịch Toast cho các hành động: Sao chép địa chỉ ví, Đang gửi giao dịch, Giao dịch đã phát đi, Giao dịch thành công, Giao dịch thất bại, Yêu cầu ký tin nhắn, Đã ký tin nhắn, Sao chép chữ ký, Bật/Tắt micro, Bật/Tắt âm thanh, Chia sẻ màn hình, Kết nối/Ngắt kết nối Voice Chat. Tất cả thông báo Toast hiển thị đúng 100% Tiếng Việt khi chọn Tiếng Việt và Tiếng Anh khi chọn English.
+  5. **Xác thực:** Chạy kiểm tra ripgrep đối soát 100% không còn bất kỳ văn bản tiếng Việt cứng nào trong các file HTML template hay Toast notification. Runs `npx tsc --noEmit` đạt 0 lỗi type. Runs `npm run build` đóng gói Production thành công 100% (772.54 kB bundle).
 
 
 ### Yêu cầu: Khắc Phục Lỗi Dịch Đa Ngôn Ngữ & Chuẩn Hóa Mã Hóa UTF-8 Cho Toast Notification

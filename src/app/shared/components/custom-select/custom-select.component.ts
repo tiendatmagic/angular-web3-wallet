@@ -1,4 +1,4 @@
-﻿import {
+import {
   Component,
   Input,
   Output,
@@ -68,7 +68,7 @@ export class CustomSelectComponent implements ControlValueAccessor, AfterViewChe
   @Input() options: any[] = [];
   @Input() valueKey: string = '';
   @Input() labelKey: string = '';
-  @Input() placeholder: string = 'Chá»n...';
+  @Input() placeholder: string = 'Select...';
   @Input() disabled: boolean = false;
   @Input() placement: 'bottom' | 'top' | 'auto' = 'auto';
   @Input() showSearch: boolean = false;

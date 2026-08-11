@@ -112,7 +112,7 @@
   <div class="form-field">
     <label>{{ 'modal_demo.chain' | translate }} (RADIO)</label>
     <div class="space-y-2.5">
-      @for (opt of demoRadioOptions; track opt.value) {
+      @for (opt of demoRadioOptions(); track opt.value) {
         <app-custom-radio
           name="modalChain"
           [value]="opt.value"

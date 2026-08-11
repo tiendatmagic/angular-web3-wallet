@@ -201,18 +201,21 @@ export class HomeComponent {
     { id: 'tomato', name: 'Tomato' }
   ];
 
-  public readonly demoRadioOptions = [
-    { value: 'arbitrum', label: 'Arbitrum One', description: 'Layer 2 - Phí thấp, tốc độ cao' },
-    { value: 'ethereum', label: 'Ethereum',     description: 'Mainnet - Bảo mật cao nhất' },
-    { value: 'bsc',      label: 'BNB Chain',    description: 'BSC - Phí cực rẻ' },
-  ];
+  public readonly demoRadioOptions = computed(() => {
+    this.translationService.currentLang();
+    return [
+      { value: 'arbitrum', label: 'Arbitrum One', description: this.translationService.t('cards.controls.radio_arb_desc') },
+      { value: 'ethereum', label: 'Ethereum', description: this.translationService.t('cards.controls.radio_eth_desc') },
+      { value: 'bsc', label: 'BNB Chain', description: this.translationService.t('cards.controls.radio_bsc_desc') }
+    ];
+  });
 
   public copyAddress(event: Event) {
     event.stopPropagation();
     const address = this.stateService.address();
     if (address) {
       navigator.clipboard.writeText(address);
-      this.stateService.showToast('Đã sao chép địa chỉ ví vào clipboard!', 'success');
+      this.stateService.showToast(this.translationService.t('common.copied_to_clipboard'), 'success');
     }
   }
 
@@ -221,14 +224,14 @@ export class HomeComponent {
     const val = String(this.amount() || '').trim();
 
     if (!to || !val) {
-      this.stateService.showToast(`Vui lòng điền đầy đủ địa chỉ nhận và số lượng ${this.stateService.chainSymbol()}.`, 'error');
+      this.stateService.showToast(this.translationService.t('home.toast_enter_fields'), 'error');
       return;
     }
 
     this.txLoading.set(true);
     this.txHash.set(null);
     this.txError.set(null);
-    this.stateService.showToast('Đang gửi yêu cầu giao dịch đến ví...', 'warning');
+    this.stateService.showToast(this.translationService.t('home.toast_sending_tx'), 'warning');
 
     try {
       const signer = await this.stateService.getSigner();
@@ -245,18 +248,18 @@ export class HomeComponent {
       const tx = await signer.sendTransaction(txRequest);
       
       this.txHash.set(tx.hash);
-      this.stateService.showToast('Giao dịch đã được phát đi! Đang chờ xác nhận...', 'warning');
+      this.stateService.showToast(this.translationService.t('home.toast_tx_sent'), 'warning');
       await tx.wait();
       await this.stateService.web3Service.updateBalanceAndNetwork();
-      this.stateService.showToast(`Giao dịch chuyển ${this.stateService.chainSymbol()} đã thành công!`, 'success');
+      this.stateService.showToast(this.translationService.t('home.toast_tx_success'), 'success');
 
       this.toAddress.set('');
       this.amount.set('');
     } catch (err: any) {
-      console.error('Lỗi khi gửi giao dịch:', err);
-      const errMsg = err.reason || err.message || 'Lỗi không xác định xảy ra.';
+      console.error('Error sending transaction:', err);
+      const errMsg = err.reason || err.message || 'Error occurred.';
       this.txError.set(errMsg);
-      this.stateService.showToast('Giao dịch thất bại: ' + errMsg, 'error');
+      this.stateService.showToast(this.translationService.t('home.toast_tx_failed') + errMsg, 'error');
     } finally {
       this.txLoading.set(false);
     }
@@ -265,25 +268,25 @@ export class HomeComponent {
   public async signMessage() {
     const msg = String(this.messageToSign() || '').trim();
     if (!msg) {
-      this.stateService.showToast('Vui lòng nhập nội dung tin nhắn cần ký.', 'error');
+      this.stateService.showToast(this.translationService.t('home.toast_enter_msg'), 'error');
       return;
     }
 
     this.signLoading.set(true);
     this.signature.set(null);
     this.signError.set(null);
-    this.stateService.showToast('Đang yêu cầu ký tin nhắn...', 'warning');
+    this.stateService.showToast(this.translationService.t('home.toast_signing_msg'), 'warning');
 
     try {
       const signer = await this.stateService.getSigner();
       const sig = await signer.signMessage(msg);
       this.signature.set(sig);
-      this.stateService.showToast('Đã ký tin nhắn thành công!', 'success');
+      this.stateService.showToast(this.translationService.t('home.toast_signed_success'), 'success');
     } catch (err: any) {
-      console.error('Lỗi khi ký tin nhắn:', err);
-      const errMsg = err.message || 'Lỗi không xác định xảy ra khi ký.';
+      console.error('Error signing message:', err);
+      const errMsg = err.message || 'Error occurred while signing.';
       this.signError.set(errMsg);
-      this.stateService.showToast('Ký tin nhắn thất bại: ' + errMsg, 'error');
+      this.stateService.showToast(this.translationService.t('home.toast_signing_failed') + errMsg, 'error');
     } finally {
       this.signLoading.set(false);
     }
@@ -292,7 +295,7 @@ export class HomeComponent {
   public copySignature() {
     if (this.signature()) {
       navigator.clipboard.writeText(this.signature()!);
-      this.stateService.showToast('Đã sao chép chữ ký vào bộ nhớ tạm!', 'success');
+      this.stateService.showToast(this.translationService.t('home.toast_copied_sig'), 'success');
     }
   }
 
@@ -648,26 +651,26 @@ export function getNetworkRpc(chainId: number): string {
 
   public toggleVoiceMic(): void {
     this.demoVoiceMuted.update(v => !v);
-    const state = this.demoVoiceMuted() ? 'Tắt micro (Muted)' : 'Bật micro (Unmuted)';
-    this.stateService.showToast(`Voice Chat: ${state}`, this.demoVoiceMuted() ? 'warning' : 'success');
+    const stateKey = this.demoVoiceMuted() ? 'cards.voice_chat.mic_muted' : 'cards.voice_chat.mic_unmuted';
+    this.stateService.showToast(`Voice Chat: ${this.translationService.t(stateKey)}`, this.demoVoiceMuted() ? 'warning' : 'success');
   }
 
   public toggleVoiceSound(): void {
     this.demoVoiceDeafened.update(v => !v);
-    const state = this.demoVoiceDeafened() ? 'Tắt âm thanh phòng (Deafened)' : 'Bật lại âm thanh phòng';
-    this.stateService.showToast(`Voice Chat: ${state}`, this.demoVoiceDeafened() ? 'warning' : 'success');
+    const stateKey = this.demoVoiceDeafened() ? 'cards.voice_chat.deafened' : 'cards.voice_chat.undeafened';
+    this.stateService.showToast(`Voice Chat: ${this.translationService.t(stateKey)}`, this.demoVoiceDeafened() ? 'warning' : 'success');
   }
 
   public toggleVoiceScreenShare(): void {
     this.demoVoiceScreenSharing.update(v => !v);
-    const state = this.demoVoiceScreenSharing() ? 'Đang chia sẻ màn hình Web3' : 'Đã dừng chia sẻ màn hình';
-    this.stateService.showToast(`Voice Chat: ${state}`, 'success');
+    const stateKey = this.demoVoiceScreenSharing() ? 'cards.voice_chat.sharing_screen' : 'cards.voice_chat.stopped_sharing';
+    this.stateService.showToast(`Voice Chat: ${this.translationService.t(stateKey)}`, 'success');
   }
 
   public toggleVoiceConnection(): void {
     this.demoVoiceConnected.update(v => !v);
-    const state = this.demoVoiceConnected() ? 'Đã tham gia phòng thoại Web3 Voice Lounge' : 'Đã ngắt kết nối Voice Chat';
-    this.stateService.showToast(state, this.demoVoiceConnected() ? 'success' : 'warning');
+    const stateKey = this.demoVoiceConnected() ? 'cards.voice_chat.connected' : 'cards.voice_chat.disconnected';
+    this.stateService.showToast(this.translationService.t(stateKey), this.demoVoiceConnected() ? 'success' : 'warning');
   }
 
   public readonly demoProgressValue = signal<number>(68);

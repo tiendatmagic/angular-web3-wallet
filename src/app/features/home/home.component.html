@@ -360,7 +360,7 @@
           Custom Radio
         </h4>
         <div class="space-y-3">
-          @for (opt of demoRadioOptions; track opt.value) {
+          @for (opt of demoRadioOptions(); track opt.value) {
             <app-custom-radio
               name="demoChain"
               [value]="opt.value"
@@ -389,8 +389,8 @@
           <app-custom-checkbox
             [ngModel]="demoCheckboxValue()"
             (ngModelChange)="demoCheckboxValue.set($event)"
-            label="Chấp nhận điều khoản dịch vụ"
-            description="Tôi đồng ý với các điều khoản và cam kết bảo mật thông tin ví dApp này."
+            [label]="'cards.controls.checkbox_agree' | translate"
+            [description]="'cards.checkbox.desc' | translate"
           />
           <div
             class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2"
@@ -1327,11 +1327,11 @@
 
                     <ng-template appTableCell="status" let-value>
             @if (value === 'success') {
-              <app-badge variant="success" rounded="full" size="sm">Thành công</app-badge>
+              <app-badge variant="success" rounded="full" size="sm">{{ 'cards.table.status_success' | translate }}</app-badge>
             } @else if (value === 'pending') {
-              <app-badge variant="warning" rounded="full" size="sm" [pulse]="true">Đang chờ</app-badge>
+              <app-badge variant="warning" rounded="full" size="sm" [pulse]="true">{{ 'cards.table.status_pending' | translate }}</app-badge>
             } @else {
-              <app-badge variant="danger" rounded="full" size="sm">Thất bại</app-badge>
+              <app-badge variant="danger" rounded="full" size="sm">{{ 'cards.table.status_failed' | translate }}</app-badge>
             }
           </ng-template>
         </app-table>
@@ -1343,7 +1343,7 @@
               [totalPages]="demoTableTotalPages()"
               [totalItems]="demoTableTotalItems()"
               [itemsPerPage]="demoTableItemsPerPage"
-              itemName="giao dịch"
+              [itemName]="'pagination_ui.records' | translate"
               (pageChange)="onPageChange($event)"
             />
           </div>
@@ -1355,13 +1355,13 @@
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
         >
           <app-icon name="code" class="w-3.5 h-3.5 text-primary" strokeWidth="2.5" />
-          Component Code Block Cao Cấp (app-code-block)
+          {{ 'cards.code_block.title' | translate }}
         </h4>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div class="space-y-3">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-slate-700 dark:text-slate-300">1. Tệp đơn lẻ (Single File & Line Highlight)</span>
+              <span class="text-xs font-bold text-slate-700 dark:text-slate-300">{{ 'cards.code_block.demo1_title' | translate }}</span>
               <app-badge variant="primary" rounded="full" size="sm">TypeScript</app-badge>
             </div>
             <app-code-block
@@ -1374,7 +1374,7 @@
 
           <div class="space-y-3">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-slate-700 dark:text-slate-300">2. Nhiều tệp mã nguồn (Multi-file Tabs)</span>
+              <span class="text-xs font-bold text-slate-700 dark:text-slate-300">{{ 'cards.code_block.demo2_title' | translate }}</span>
               <app-badge variant="secondary" rounded="full" size="sm">Multi-tab</app-badge>
             </div>
             <app-code-block
@@ -1384,7 +1384,7 @@
 
           <div class="col-span-full space-y-3 pt-2">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-slate-700 dark:text-slate-300">3. Thu gọn & Mở rộng mã nguồn dài (Collapsible Code Block)</span>
+              <span class="text-xs font-bold text-slate-700 dark:text-slate-300">{{ 'cards.code_block.demo3_title' | translate }}</span>
               <app-badge variant="neutral" rounded="full" size="sm">Collapsible</app-badge>
             </div>
             <app-code-block
@@ -1411,7 +1411,7 @@
           <div class="space-y-3">
             <div class="flex flex-wrap items-center justify-between gap-2">
               <span class="text-xs font-bold text-slate-700 dark:text-slate-300">{{ 'cards.file_upload.demo1_title' | translate }}</span>
-              <app-badge variant="primary" rounded="full" size="sm" class="shrink-0">File Sao Lưu SQL</app-badge>
+              <app-badge variant="primary" rounded="full" size="sm" class="shrink-0">{{ 'cards.file_upload.badge_sql' | translate }}</app-badge>
             </div>
             <app-file-upload
               variant="horizontal"
@@ -1430,7 +1430,7 @@
           <div class="space-y-3">
             <div class="flex flex-wrap items-center justify-between gap-2">
               <span class="text-xs font-bold text-slate-700 dark:text-slate-300">{{ 'cards.file_upload.demo2_title' | translate }}</span>
-              <app-badge variant="secondary" rounded="full" size="sm" class="shrink-0">Tối đa 20MB</app-badge>
+              <app-badge variant="secondary" rounded="full" size="sm" class="shrink-0">{{ 'cards.file_upload.badge_max_20mb' | translate }}</app-badge>
             </div>
             <app-file-upload
               variant="horizontal"
@@ -1800,7 +1800,7 @@
                     <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">5. Dropdown Menu 06 - Voice Chat Morphing Card (Shadcn Space)</span>
                     <span class="px-2 py-0.5 text-[10px] font-black rounded-full bg-teal-100 dark:bg-teal-950 text-teal-600 dark:text-teal-300 border border-teal-200/60 dark:border-teal-800/60 animate-pulse shrink-0">● MORPHING ANIMATION</span>
                   </div>
-                  <span class="text-[11px] text-slate-500 dark:text-slate-400 block leading-snug">Hiệu ứng Morphing FLIP mượt mà (kích thước, vị trí Avatar grid, Speaking Ring teal & Join Now)</span>
+                  <span class="text-[11px] text-slate-500 dark:text-slate-400 block leading-snug">{{ 'cards.voice_chat.morphing_desc' | translate }}</span>
                 </div>
                 <app-badge variant="success" rounded="full" size="sm" class="shrink-0 self-start sm:self-auto">Voice Chat 06 Exact</app-badge>
               </div>

@@ -140,7 +140,17 @@ export const VI_TRANSLATIONS: TranslationDictionary = {
     sign_demo_title: 'Demo Ký tin nhắn',
     sign_message_content: 'Nội dung thông điệp',
     sign_success_title: 'Đã tạo chữ ký số',
-    error_prefix: 'Lỗi'
+    error_prefix: 'Lỗi',
+    toast_enter_fields: 'Vui lòng điền đầy đủ địa chỉ nhận và số lượng.',
+    toast_sending_tx: 'Đang gửi yêu cầu giao dịch đến ví...',
+    toast_tx_sent: 'Giao dịch đã được phát đi! Đang chờ xác nhận...',
+    toast_tx_success: 'Giao dịch chuyển tiền đã thành công!',
+    toast_tx_failed: 'Giao dịch thất bại: ',
+    toast_enter_msg: 'Vui lòng nhập nội dung tin nhắn cần ký.',
+    toast_signing_msg: 'Đang yêu cầu ký tin nhắn...',
+    toast_signed_success: 'Đã ký tin nhắn thành công!',
+    toast_signing_failed: 'Ký tin nhắn thất bại: ',
+    toast_copied_sig: 'Đã sao chép chữ ký vào bộ nhớ tạm!'
   },
   cards: {
     buttons: {
@@ -197,9 +207,12 @@ export const VI_TRANSLATIONS: TranslationDictionary = {
       switch_dark: 'Chế độ Tối',
       switch_notif: 'Thông báo Push',
       checkbox_agree: 'Tôi đồng ý với điều khoản sử dụng',
-      radio_fast: 'Nhanh (Fast)',
-      radio_normal: 'Chuẩn (Normal)',
-      radio_slow: 'Tiết kiệm (Slow)'
+      radio_fast: 'Nhanh',
+      radio_normal: 'Bình thường',
+      radio_slow: 'Chậm',
+      radio_arb_desc: 'Layer 2 - Phí thấp, tốc độ cao',
+      radio_eth_desc: 'Mainnet - Bảo mật cao nhất',
+      radio_bsc_desc: 'BSC - Phí cực rẻ'
     },
     slider: {
       title: 'Thanh Trượt Giá Trị (Custom Slider)',
@@ -275,7 +288,10 @@ export const VI_TRANSLATIONS: TranslationDictionary = {
       subtitle: 'Tô màu cú pháp Syntax Highlighting cho TypeScript, HTML, CSS, JSON và Bash.',
       copy_btn: 'Sao Chép Code',
       show_full_code: 'Xem đầy đủ mã',
-      collapse_code: 'Thu gọn mã'
+      collapse_code: 'Thu gọn mã',
+      demo1_title: '1. Tệp đơn lẻ (Single File & Line Highlight)',
+      demo2_title: '2. Nhiều tệp mã nguồn (Multi-file Tabs)',
+      demo3_title: '3. Thu gọn & Mở rộng mã nguồn dài (Collapsible Code Block)'
     },
     file_upload: {
       title: 'Tải Lên Tệp Tin (File Upload Drag & Drop)',
@@ -297,7 +313,9 @@ export const VI_TRANSLATIONS: TranslationDictionary = {
       select_image: 'Chọn ảnh',
       demo4_title: '4. Upload Ảnh Đại Diện',
       avatar_title: 'Ảnh đại diện',
-      avatar_desc: 'PNG, JPG tối đa 3MB'
+      avatar_desc: 'PNG, JPG tối đa 3MB',
+      badge_sql: 'File Sao Lưu SQL',
+      badge_max_20mb: 'Tối đa 20MB'
     },
     input_otp: {
       title: 'Nhập Mã Xác Thực OTP (Input OTP Component)',
@@ -391,7 +409,16 @@ export const VI_TRANSLATIONS: TranslationDictionary = {
       voice_title: 'Phòng Thoại Web3 Developers',
       members_count: '4 Thành viên đang nói',
       join_btn: 'Tham Gia Ngay',
-      leave_btn: 'Rời Phòng'
+      leave_btn: 'Rời Phòng',
+      morphing_desc: 'Hiệu ứng Morphing FLIP mượt mà (kích thước, vị trí Avatar grid, Speaking Ring teal & Join Now)',
+      mic_muted: 'Tắt micro (Muted)',
+      mic_unmuted: 'Bật micro (Unmuted)',
+      deafened: 'Tắt âm thanh phòng (Deafened)',
+      undeafened: 'Bật lại âm thanh phòng',
+      sharing_screen: 'Đang chia sẻ màn hình Web3',
+      stopped_sharing: 'Đã dừng chia sẻ màn hình',
+      connected: 'Đã tham gia phòng thoại Web3 Voice Lounge',
+      disconnected: 'Đã ngắt kết nối Voice Chat'
     },
     progress: {
       title: 'Thanh Tiến Trình (Progress Bar & Gauge Components)',

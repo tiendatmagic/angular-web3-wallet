@@ -140,7 +140,17 @@ export const EN_TRANSLATIONS: TranslationDictionary = {
     sign_demo_title: 'Message Signing Demo',
     sign_message_content: 'Message Content',
     sign_success_title: 'Digital Signature Created',
-    error_prefix: 'Error'
+    error_prefix: 'Error',
+    toast_enter_fields: 'Please fill in recipient address and amount.',
+    toast_sending_tx: 'Sending transaction request to wallet...',
+    toast_tx_sent: 'Transaction broadcasted! Awaiting confirmation...',
+    toast_tx_success: 'Transaction succeeded!',
+    toast_tx_failed: 'Transaction failed: ',
+    toast_enter_msg: 'Please enter a message to sign.',
+    toast_signing_msg: 'Requesting message signature...',
+    toast_signed_success: 'Message signed successfully!',
+    toast_signing_failed: 'Message signing failed: ',
+    toast_copied_sig: 'Copied signature to clipboard!'
   },
   cards: {
     buttons: {
@@ -199,7 +209,10 @@ export const EN_TRANSLATIONS: TranslationDictionary = {
       checkbox_agree: 'I agree to the terms of service',
       radio_fast: 'Fast',
       radio_normal: 'Normal',
-      radio_slow: 'Economy (Slow)'
+      radio_slow: 'Slow',
+      radio_arb_desc: 'Layer 2 - Low fee, high speed',
+      radio_eth_desc: 'Mainnet - Maximum security',
+      radio_bsc_desc: 'BSC - Ultra low fee'
     },
     slider: {
       title: 'Custom Value Slider',
@@ -275,7 +288,10 @@ export const EN_TRANSLATIONS: TranslationDictionary = {
       subtitle: 'Syntax Highlighting tokenizer for TypeScript, HTML, CSS, JSON, and Bash.',
       copy_btn: 'Copy Code',
       show_full_code: 'Show full code',
-      collapse_code: 'Collapse code'
+      collapse_code: 'Collapse code',
+      demo1_title: '1. Single File & Line Highlight',
+      demo2_title: '2. Multi-file Tabs',
+      demo3_title: '3. Collapsible Code Block'
     },
     file_upload: {
       title: 'File Upload Drag & Drop',
@@ -297,7 +313,9 @@ export const EN_TRANSLATIONS: TranslationDictionary = {
       select_image: 'Select image',
       demo4_title: '4. Avatar Profile Picture Upload',
       avatar_title: 'Profile avatar',
-      avatar_desc: 'PNG, JPG max 3MB'
+      avatar_desc: 'PNG, JPG max 3MB',
+      badge_sql: 'SQL Backup File',
+      badge_max_20mb: 'Max 20MB'
     },
     input_otp: {
       title: 'Input OTP Component',
@@ -391,7 +409,16 @@ export const EN_TRANSLATIONS: TranslationDictionary = {
       voice_title: 'Web3 Developers Voice Room',
       members_count: '4 Members Speaking',
       join_btn: 'Join Now',
-      leave_btn: 'Leave Room'
+      leave_btn: 'Leave Room',
+      morphing_desc: 'Smooth FLIP morphing animation (size, avatar grid position, teal speaking ring & Join Now)',
+      mic_muted: 'Microphone Muted',
+      mic_unmuted: 'Microphone Unmuted',
+      deafened: 'Deafened Room Audio',
+      undeafened: 'Re-enabled Room Audio',
+      sharing_screen: 'Sharing Web3 Screen',
+      stopped_sharing: 'Stopped Screen Sharing',
+      connected: 'Joined Web3 Voice Lounge',
+      disconnected: 'Disconnected from Voice Chat'
     },
     progress: {
       title: 'Progress Bar & Gauge Components',

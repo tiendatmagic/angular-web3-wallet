@@ -1,7 +1,8 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ModalRef } from '@core/services/modal-ref';
+import { TranslationService } from '@core/services/translation.service';
 import { CustomDatePickerComponent } from '@shared/components/custom-date-picker/custom-date-picker.component';
 import { CustomSelectComponent } from '@shared/components/custom-select/custom-select.component';
 import { CustomSwitchComponent } from '@shared/components/custom-switch/custom-switch.component';
@@ -55,6 +56,7 @@ import { TranslatePipe } from '@shared/pipes/translate.pipe';
 })
 export class DemoModalComponent {
   private readonly modalRef = inject(ModalRef);
+  private readonly translationService = inject(TranslationService);
 
   public modalDateValue = signal('');
   public modalRangeValue = signal<DateTimeRangeValue>({ startDate: '', endDate: '' });
@@ -86,11 +88,14 @@ export class DemoModalComponent {
     { value: '97',    label: 'BSC Testnet' },
   ];
 
-  public readonly demoRadioOptions = [
-    { value: 'arbitrum', label: 'Arbitrum One', description: 'Layer 2 - Phí thấp, tốc độ cao' },
-    { value: 'ethereum', label: 'Ethereum',     description: 'Mainnet - Bảo mật cao nhất' },
-    { value: 'bsc',      label: 'BNB Chain',    description: 'BSC - Phí cực rẻ' },
-  ];
+  public readonly demoRadioOptions = computed(() => {
+    this.translationService.currentLang();
+    return [
+      { value: 'arbitrum', label: 'Arbitrum One', description: this.translationService.t('cards.controls.radio_arb_desc') },
+      { value: 'ethereum', label: 'Ethereum', description: this.translationService.t('cards.controls.radio_eth_desc') },
+      { value: 'bsc', label: 'BNB Chain', description: this.translationService.t('cards.controls.radio_bsc_desc') }
+    ];
+  });
 
   public cancel(): void {
     this.modalRef.close();

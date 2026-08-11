@@ -148,6 +148,16 @@ export interface TranslationDictionary {
     sign_message_content: string;
     sign_success_title: string;
     error_prefix: string;
+    toast_enter_fields: string;
+    toast_sending_tx: string;
+    toast_tx_sent: string;
+    toast_tx_success: string;
+    toast_tx_failed: string;
+    toast_enter_msg: string;
+    toast_signing_msg: string;
+    toast_signed_success: string;
+    toast_signing_failed: string;
+    toast_copied_sig: string;
   };
   cards: {
     buttons: {
@@ -207,6 +217,9 @@ export interface TranslationDictionary {
       radio_fast: string;
       radio_normal: string;
       radio_slow: string;
+      radio_arb_desc: string;
+      radio_eth_desc: string;
+      radio_bsc_desc: string;
     };
     slider: {
       title: string;
@@ -283,6 +296,9 @@ export interface TranslationDictionary {
       copy_btn: string;
       show_full_code: string;
       collapse_code: string;
+      demo1_title: string;
+      demo2_title: string;
+      demo3_title: string;
     };
     file_upload: {
       title: string;
@@ -305,6 +321,8 @@ export interface TranslationDictionary {
       demo4_title: string;
       avatar_title: string;
       avatar_desc: string;
+      badge_sql: string;
+      badge_max_20mb: string;
     };
     input_otp: {
       title: string;
@@ -399,6 +417,15 @@ export interface TranslationDictionary {
       members_count: string;
       join_btn: string;
       leave_btn: string;
+      morphing_desc: string;
+      mic_muted: string;
+      mic_unmuted: string;
+      deafened: string;
+      undeafened: string;
+      sharing_screen: string;
+      stopped_sharing: string;
+      connected: string;
+      disconnected: string;
     };
     progress: {
       title: string;

@@ -44,7 +44,7 @@ export class InputOtpComponent implements ControlValueAccessor, AfterViewInit {
   @Input() size: OtpInputSize = 'md';
   @Input() autoFocus: boolean = false;
   @Input() placeholder: string = '';
-  @Input() ariaLabel: string = 'Mã OTP';
+  @Input() ariaLabel: string = 'OTP Code';
 
   @Output() valueChange = new EventEmitter<string>();
   @Output() completed = new EventEmitter<string>();
