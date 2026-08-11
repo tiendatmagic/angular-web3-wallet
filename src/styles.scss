@@ -60,6 +60,17 @@ button:disabled,
 .transition-all-300 {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+/* Tắt transition toàn cục tạm thời khi đổi theme để 100% màu sắc chuyển đổi tức thì 0ms, tránh bị nháy/trễ màu */
+html.theme-transition-disabled,
+html.theme-transition-disabled *:not(.theme-switcher-pill):not(.tab-group-pill),
+html.theme-transition-disabled *:not(.theme-switcher-pill):not(.tab-group-pill)::before,
+html.theme-transition-disabled *:not(.theme-switcher-pill):not(.tab-group-pill)::after {
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -o-transition: none !important;
+  transition: none !important;
+}
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -113,15 +124,15 @@ body.dark ::-webkit-scrollbar-thumb {
 }
 
 .btn {
-  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-all duration-200 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5;
+  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-all duration-150 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5;
 }
 
 .btn-primary {
-  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-all duration-200 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] hover:opacity-90 text-white shadow-md shadow-[var(--color-primary)]/15 hover:shadow-[var(--color-primary)]/25;
+  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-all duration-150 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] hover:opacity-90 text-white shadow-md shadow-[var(--color-primary)]/15 hover:shadow-[var(--color-primary)]/25;
 }
 
 .btn-secondary {
-  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-all duration-200 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5;
+  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-all duration-150 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5;
   background-color: color-mix(in srgb, var(--color-primary) 8%, transparent);
   border: 1px solid color-mix(in srgb, var(--color-primary) 20%, transparent);
   color: var(--color-primary);
@@ -143,11 +154,11 @@ body.dark .btn-secondary:hover {
 }
 
 .btn-danger {
-  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-all duration-200 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-rose-500 hover:bg-rose-600 text-white shadow-md shadow-rose-500/15 hover:shadow-rose-500/25;
+  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-all duration-150 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-rose-500 hover:bg-rose-600 text-white shadow-md shadow-rose-500/15 hover:shadow-rose-500/25;
 }
 
 .btn-danger-light {
-  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-all duration-200 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5;
+  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-all duration-150 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5;
   background-color: rgba(244, 63, 94, 0.08);
   color: rgb(244, 63, 94);
 }
@@ -165,15 +176,15 @@ body.dark .btn-danger-light:hover {
 }
 
 .btn-cancel {
-  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-all duration-200 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800/80 dark:hover:bg-slate-700/80 text-slate-700 dark:text-slate-300;
+  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-all duration-150 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800/80 dark:hover:bg-slate-700/80 text-slate-700 dark:text-slate-300;
 }
 
 .btn-success {
-  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-all duration-200 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white shadow-md shadow-emerald-500/15 hover:shadow-emerald-500/25;
+  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-all duration-150 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white shadow-md shadow-emerald-500/15 hover:shadow-emerald-500/25;
 }
 
 .btn-info {
-  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-all duration-200 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-600/15 hover:shadow-blue-600/25;
+  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-all duration-150 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-600/15 hover:shadow-blue-600/25;
 }
 
 .btn-sm {
@@ -447,14 +458,25 @@ html.dark .alert-error-bordered {
   border-color: rgba(220, 38, 38, 0.6) !important;
 }
 
+@keyframes popoverIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97) translateY(-3px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
 /* Glassmorphism Backdrop Blur cho Popover Dropdowns */
 .dropdown-menu-popover,
 .date-picker-popover,
 .date-time-range-popover {
   -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
   backdrop-filter: blur(20px) saturate(180%) !important;
-  background-color: rgba(255, 255, 255, 0.75) !important;
-  will-change: backdrop-filter;
+  background-color: rgba(255, 255, 255, 0.85) !important;
+  animation: popoverIn 150ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 html.dark .dropdown-menu-popover,

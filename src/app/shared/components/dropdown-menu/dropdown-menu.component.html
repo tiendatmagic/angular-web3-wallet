@@ -51,7 +51,7 @@
 
   @if (isOpen()) {
     <div
-      class="absolute z-50 {{ width }} min-w-[220px] {{ getPlacementClasses() }} dropdown-menu-popover bg-white/75 dark:bg-slate-900/75 backdrop-blur-xl backdrop-saturate-180 border border-slate-200/80 dark:border-slate-800/80 shadow-lg shadow-slate-900/10 dark:shadow-slate-950/50 rounded-[15px] p-2 text-slate-800 dark:text-slate-100 focus:outline-none"
+      class="absolute z-50 {{ width }} min-w-[220px] {{ getPlacementClasses() }} dropdown-menu-popover bg-white/85 dark:bg-slate-900/75 backdrop-blur-xl backdrop-saturate-180 border border-slate-200/80 dark:border-slate-800/80 shadow-lg shadow-slate-900/10 dark:shadow-slate-950/50 rounded-[15px] p-2 text-slate-800 dark:text-slate-100 focus:outline-none"
     >
       <ng-content select="[dropdown-content]"></ng-content>
 
@@ -111,7 +111,7 @@
 
               @if (activeSubmenuId() === (item.id || item.label) && item.children && item.children.length > 0) {
                 <div
-                  class="absolute left-full top-0 ml-2 {{ width }} min-w-[200px] bg-white/75 dark:bg-slate-900/75 backdrop-blur-xl backdrop-saturate-180 border border-slate-200/80 dark:border-slate-800/80 shadow-lg shadow-slate-900/10 dark:shadow-slate-950/50 rounded-[15px] p-2 space-y-0.5 z-50 dropdown-menu-popover"
+                  class="absolute left-full top-0 ml-2 {{ width }} min-w-[200px] bg-white/85 dark:bg-slate-900/75 backdrop-blur-xl backdrop-saturate-180 border border-slate-200/80 dark:border-slate-800/80 shadow-lg shadow-slate-900/10 dark:shadow-slate-950/50 rounded-[15px] p-2 space-y-0.5 z-50 dropdown-menu-popover"
                 >
                   @for (subItem of item.children; track subItem.id || subItem.label || $index) {
                     <button

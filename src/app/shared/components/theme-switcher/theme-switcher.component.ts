@@ -43,13 +43,13 @@ export class ThemeSwitcherComponent implements AfterViewInit, OnDestroy {
   constructor() {
     effect(() => {
       this.stateService.themeMode();
-      setTimeout(() => this.updateSliderPosition(), 0);
+      this.updateSliderPosition();
     });
   }
 
   ngAfterViewInit(): void {
-    setTimeout(() => this.updateSliderPosition(), 20);
-    setTimeout(() => this.updateSliderPosition(), 100);
+    this.updateSliderPosition();
+    requestAnimationFrame(() => this.updateSliderPosition());
 
     if (this.themeButtons) {
       this.themeButtons.changes.subscribe(() => {

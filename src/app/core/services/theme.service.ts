@@ -23,14 +23,18 @@ export class ThemeService {
     this.themeMode.set(mode);
     const isDark = mode === 'dark' || (mode === 'auto' && this.mediaQueryList.matches);
     
-    this.applyDarkClass(isDark);
+    this.applyDarkClass(isDark, true);
   }
 
-  public applyDarkClass(dark: boolean) {
+  public applyDarkClass(dark: boolean, isInitial = false) {
     this.isDarkMode.set(dark);
     if (typeof document !== 'undefined') {
       const htmlEl = document.documentElement;
       const bodyEl = document.body;
+
+      if (!isInitial) {
+        htmlEl.classList.add('theme-transition-disabled');
+      }
 
       if (dark) {
         htmlEl.classList.add('dark');
@@ -38,6 +42,16 @@ export class ThemeService {
       } else {
         htmlEl.classList.remove('dark');
         bodyEl.classList.remove('dark');
+      }
+
+      if (!isInitial) {
+        void htmlEl.offsetHeight;
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            htmlEl.classList.remove('theme-transition-disabled');
+          });
+        });
       }
     }
   }

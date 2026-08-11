@@ -1,4 +1,4 @@
-﻿import {
+import {
   Component,
   Input,
   Output,
@@ -58,7 +58,8 @@ export class TabGroupComponent implements AfterViewInit, OnChanges, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    setTimeout(() => this.updateSliderPosition(), 50);
+    this.updateSliderPosition();
+    requestAnimationFrame(() => this.updateSliderPosition());
 
     if (typeof ResizeObserver !== 'undefined' && this.containerEl) {
       this.resizeObserver = new ResizeObserver(() => {
@@ -70,7 +71,7 @@ export class TabGroupComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['activeValue'] || changes['options']) {
-      setTimeout(() => this.updateSliderPosition(), 0);
+      this.updateSliderPosition();
     }
   }
 
