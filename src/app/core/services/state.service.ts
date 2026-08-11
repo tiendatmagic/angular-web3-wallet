@@ -17,6 +17,7 @@ export class StateService {
   public readonly showDropdown = this.uiStateService.showDropdown;
   public readonly showNetworkDropdown = this.uiStateService.showNetworkDropdown;
   public readonly isLoading = this.uiStateService.isLoading;
+  public readonly isSidebarCollapsed = this.uiStateService.isSidebarCollapsed;
 
   public readonly isDarkMode = this.themeService.isDarkMode;
   public readonly themeMode = this.themeService.themeMode;
@@ -40,6 +41,14 @@ export class StateService {
     if (!addr) return '';
     return `${addr.substring(0, 6)}...${addr.substring(addr.length - 4)}`;
   });
+
+  public toggleSidebarCollapse() {
+    const nextState = !this.uiStateService.isSidebarCollapsed();
+    this.uiStateService.isSidebarCollapsed.set(nextState);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('angular_web3_sidebar_collapsed', String(nextState));
+    }
+  }
 
   public showToast(msg: string, type: 'success' | 'error' | 'warning' = 'success') {
     this.toastService.showToast(msg, type);

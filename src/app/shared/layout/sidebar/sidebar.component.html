@@ -1,62 +1,134 @@
 <aside
-  class="fixed inset-y-0 left-0 z-50 w-72 bg-white dark:bg-slate-950 border-r border-slate-200/50 dark:border-slate-900/50 hidden md:flex flex-col shadow-sm select-none"
+  class="fixed inset-y-0 left-0 z-50 bg-white dark:bg-slate-950 border-r border-slate-200/50 dark:border-slate-900/50 hidden md:flex flex-col shadow-sm select-none transition-all duration-300 ease-in-out group/sidebar"
+  [class.w-72]="!stateService.isSidebarCollapsed()"
+  [class.w-20]="stateService.isSidebarCollapsed()"
 >
+  <!-- Floating Collapse / Expand Toggle Button -->
+  <button
+    (click)="stateService.toggleSidebarCollapse()"
+    class="absolute -right-3.5 top-6 z-10 w-7 h-7 rounded-full bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-md flex items-center justify-center cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-primary transition-all duration-200 active:scale-95"
+    [attr.aria-label]="stateService.isSidebarCollapsed() ? 'Mở rộng sidebar' : 'Thu nhỏ sidebar'"
+    [title]="stateService.isSidebarCollapsed() ? 'Mở rộng sidebar' : 'Thu nhỏ sidebar'"
+  >
+    <app-icon
+      [name]="stateService.isSidebarCollapsed() ? 'chevron-right' : 'chevron-left'"
+      class="w-4 h-4"
+    />
+  </button>
+
+  <!-- Logo & Title Header -->
   <a
     routerLink="/"
-    class="flex items-center gap-3.5 px-6 py-6 border-b border-slate-100 dark:border-slate-800/60 cursor-pointer"
+    class="flex items-center border-b border-slate-100 dark:border-slate-800/60 cursor-pointer transition-all duration-300"
+    [class.gap-3.5]="!stateService.isSidebarCollapsed()"
+    [class.px-6]="!stateService.isSidebarCollapsed()"
+    [class.py-6]="!stateService.isSidebarCollapsed()"
+    [class.justify-center]="stateService.isSidebarCollapsed()"
+    [class.px-3]="stateService.isSidebarCollapsed()"
+    [class.py-6]="stateService.isSidebarCollapsed()"
   >
     <app-logo class="w-11 h-11 shrink-0" />
-    <div class="flex flex-col select-none">
-      <span
-        class="text-base font-black tracking-tight leading-none text-slate-800 dark:text-white mb-1.5"
-      >
-        <span class="text-primary">Angular</span>
-        <span class="text-secondary">Web3</span>
-      </span>
-      <span
-        class="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest leading-none"
-      >
-        {{ 'nav.tagline' | translate }}
-      </span>
-    </div>
+    @if (!stateService.isSidebarCollapsed()) {
+      <div class="flex flex-col select-none overflow-hidden whitespace-nowrap">
+        <span
+          class="text-base font-black tracking-tight leading-none text-slate-800 dark:text-white mb-1.5"
+        >
+          <span class="text-primary">Angular</span>
+          <span class="text-secondary">Web3</span>
+        </span>
+        <span
+          class="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest leading-none"
+        >
+          {{ 'nav.tagline' | translate }}
+        </span>
+      </div>
+    }
   </a>
 
-  <nav class="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto">
+  <!-- Navigation Menu Items -->
+  <nav
+    class="flex-1 py-6 space-y-1.5 overflow-y-auto"
+    [class.px-4]="!stateService.isSidebarCollapsed()"
+    [class.px-2.5]="stateService.isSidebarCollapsed()"
+  >
     <a
       routerLink="/home"
       routerLinkActive="!bg-primary/10 !text-primary !font-extrabold"
       [routerLinkActiveOptions]="{ exact: true }"
-      class="flex items-center gap-3.5 px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/50 text-slate-600 dark:text-slate-400 font-semibold text-sm transition-colors duration-200 cursor-pointer"
+      class="flex items-center rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/50 text-slate-600 dark:text-slate-400 font-semibold text-sm transition-all duration-200 cursor-pointer"
+      [class.gap-3.5]="!stateService.isSidebarCollapsed()"
+      [class.px-4]="!stateService.isSidebarCollapsed()"
+      [class.py-3]="!stateService.isSidebarCollapsed()"
+      [class.justify-center]="stateService.isSidebarCollapsed()"
+      [class.p-3]="stateService.isSidebarCollapsed()"
+      [attr.title]="stateService.isSidebarCollapsed() ? ('nav.home' | translate) : null"
     >
-      <app-icon name="home" class="w-5 h-5 flex-shrink-0" />
-      <span>{{ 'nav.home' | translate }}</span>
+      <app-icon name="home" class="w-5 h-5 shrink-0" />
+      @if (!stateService.isSidebarCollapsed()) {
+        <span class="whitespace-nowrap overflow-hidden">{{ 'nav.home' | translate }}</span>
+      }
     </a>
 
     <a
       routerLink="/about"
       routerLinkActive="!bg-primary/10 !text-primary !font-extrabold"
-      class="flex items-center gap-3.5 px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/50 text-slate-600 dark:text-slate-400 font-semibold text-sm transition-colors duration-200 cursor-pointer"
+      class="flex items-center rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/50 text-slate-600 dark:text-slate-400 font-semibold text-sm transition-all duration-200 cursor-pointer"
+      [class.gap-3.5]="!stateService.isSidebarCollapsed()"
+      [class.px-4]="!stateService.isSidebarCollapsed()"
+      [class.py-3]="!stateService.isSidebarCollapsed()"
+      [class.justify-center]="stateService.isSidebarCollapsed()"
+      [class.p-3]="stateService.isSidebarCollapsed()"
+      [attr.title]="stateService.isSidebarCollapsed() ? ('nav.about' | translate) : null"
     >
-      <app-icon name="info" class="w-5 h-5 flex-shrink-0" />
-      <span>{{ 'nav.about' | translate }}</span>
+      <app-icon name="info" class="w-5 h-5 shrink-0" />
+      @if (!stateService.isSidebarCollapsed()) {
+        <span class="whitespace-nowrap overflow-hidden">{{ 'nav.about' | translate }}</span>
+      }
     </a>
 
     <a
       routerLink="/contact"
       routerLinkActive="!bg-primary/10 !text-primary !font-extrabold"
-      class="flex items-center gap-3.5 px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/50 text-slate-600 dark:text-slate-400 font-semibold text-sm transition-colors duration-200 cursor-pointer"
+      class="flex items-center rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/50 text-slate-600 dark:text-slate-400 font-semibold text-sm transition-all duration-200 cursor-pointer"
+      [class.gap-3.5]="!stateService.isSidebarCollapsed()"
+      [class.px-4]="!stateService.isSidebarCollapsed()"
+      [class.py-3]="!stateService.isSidebarCollapsed()"
+      [class.justify-center]="stateService.isSidebarCollapsed()"
+      [class.p-3]="stateService.isSidebarCollapsed()"
+      [attr.title]="stateService.isSidebarCollapsed() ? ('nav.contact' | translate) : null"
     >
-      <app-icon name="send" class="w-5 h-5 flex-shrink-0" />
-      <span>{{ 'nav.contact' | translate }}</span>
+      <app-icon name="send" class="w-5 h-5 shrink-0" />
+      @if (!stateService.isSidebarCollapsed()) {
+        <span class="whitespace-nowrap overflow-hidden">{{ 'nav.contact' | translate }}</span>
+      }
     </a>
   </nav>
 
+  <!-- Sidebar Footer -->
   <div
-    class="px-5 py-4 border-t border-slate-100 dark:border-slate-800/60 bg-slate-50/30 dark:bg-slate-900/10 space-y-4"
+    class="py-4 border-t border-slate-100 dark:border-slate-800/60 bg-slate-50/30 dark:bg-slate-900/10 space-y-4"
+    [class.px-5]="!stateService.isSidebarCollapsed()"
+    [class.px-2]="stateService.isSidebarCollapsed()"
   >
-    @if (stateService.isWeb3Enabled) {
-      <app-tx-speed-selector />
+    @if (!stateService.isSidebarCollapsed()) {
+      @if (stateService.isWeb3Enabled) {
+        <app-tx-speed-selector />
+      }
+      <app-theme-switcher />
+    } @else {
+      <!-- Collapsed Footer: Compact Single Theme Toggle Button -->
+      <div class="flex flex-col items-center gap-2">
+        <button
+          (click)="stateService.toggleTheme()"
+          [title]="'theme.label' | translate"
+          class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 flex items-center justify-center transition-all cursor-pointer shadow-xs border border-slate-200/50 dark:border-slate-800/50"
+        >
+          <app-icon
+            [name]="stateService.isDarkMode() ? 'sun' : 'moon'"
+            class="w-4.5 h-4.5 text-primary"
+          />
+        </button>
+      </div>
     }
-    <app-theme-switcher />
   </div>
 </aside>
