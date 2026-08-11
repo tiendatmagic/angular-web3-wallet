@@ -4,6 +4,8 @@ import { UiStateService } from './ui-state.service';
 import { ThemeService } from './theme.service';
 import { ToastService } from './toast.service';
 
+export type ThemeMode = 'light' | 'dark' | 'auto';
+
 @Injectable({
   providedIn: 'root'
 })

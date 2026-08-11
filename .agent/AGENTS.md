@@ -2,6 +2,21 @@
 
 ## Ngày 12/08/2026
 
+### Yêu cầu: Kiểm Tra & Nâng Cấp Hiệu Ứng Animation Nền Trượt (Sliding Pill Animation) Cho Component Theme Switcher
+- **Nội dung yêu cầu:** Kiểm tra xem `app-theme-switcher` có còn hiệu ứng animation giống như `app-tab-group` không, và đồng bộ lại trải nghiệm trượt mượt mà giữa các lựa chọn theme (Light / Auto / Dark).
+- **Phân tích:** Trước đây `theme-switcher` đã bỏ `app-tab-group` và dùng việc chuyển class `bg-white` / `dark:bg-slate-800` trực tiếp trên từng button độc lập, làm mất đi hiệu ứng thanh pill trượt (sliding animation) di chuyển mượt từ nút này sang nút khác như của `tab-group`.
+- **Giải pháp:**
+  1. **Nâng Cấp `ThemeSwitcherComponent` (`theme-switcher.component.ts`) & `StateService` (`state.service.ts`):**
+     - Export `type ThemeMode = 'light' | 'dark' | 'auto';` từ `StateService`.
+     - Bổ sung `sliderStyle` signal (`left`, `width`), `@ViewChild('containerEl')`, `@ViewChildren('themeBtn')` cùng cơ chế theo dõi kích thước `ResizeObserver`.
+     - Thêm phương thức `updateSliderPosition()` tự động tính toán `offsetLeft` và `offsetWidth` của nút đang được chọn trong 3 chế độ (`light`, `auto`, `dark`).
+  2. **Cập Nhất HTML Template (`theme-switcher.component.html`):**
+     - Loại bỏ `@if` để giữ thẻ `div` slider pill luôn cố định trong cây DOM (`[class.opacity-0]="!sliderStyle().ready"` và `[class.opacity-100]="sliderStyle().ready"`), đảm bảo thuộc tính CSS `transition-all duration-300 ease-out` luôn tính toán được vị trí trước/sau để trượt mượt mà.
+     - Chuẩn hóa kích thước các nút bấm `w-7 h-7 flex items-center justify-center rounded-full shrink-0` tương ứng 28px x 28px, giúp khối pill trắng/xám trượt khít 100% qua lại giữa 3 biểu tượng Mặt trời (Sun), Tự động (Auto) và Mặt trăng (Moon).
+  3. **Xác thực:** Runs `npx tsc --noEmit` đạt 0 lỗi type. Runs `npm run build` đóng gói Production thành công 100% (832.54 kB bundle).
+
+
+
 ### Yêu cầu: Chuẩn Hóa & Phủ Kín 100% Đa Ngôn Ngữ (i18n) Cho Tất Cả Các File HTML và TypeScript trong Dự Án
 - **Nội dung yêu cầu:** Rà soát chuyên sâu toàn bộ các file `.html` và `.ts` trong ứng dụng bằng công cụ tìm kiếm ripgrep, chuyển đổi tất cả các chuỗi văn bản Tiếng Việt hardcoded (bao gồm cả các tùy chọn mảng dữ liệu, tiêu đề modal, nhãn badge, mô tả voice chat morphing...) sang các key dịch i18n chuẩn sử dụng `TranslatePipe` và `computed()` Signal phản ứng theo ngôn ngữ hiện tại `TranslationService.currentLang()`.
 - **Giải pháp:**
