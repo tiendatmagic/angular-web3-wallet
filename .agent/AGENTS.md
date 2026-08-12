@@ -2,6 +2,38 @@
 
 ## Ngày 12/08/2026
 
+### Yêu cầu: Khôi Phục Hiệu Ứng Animation Nền Trượt Mượt (Sliding Pill) Cho Component TabGroup (`app-tab-group`)
+- **Nội dung yêu cầu:** Khắc phục tình trạng khi click chuyển giữa các tab trong `app-tab-group` (ví dụ: Nhóm Tab Tùy Biến, Giới Tính, Tốc Độ Giao Dịch...), thanh pill nền bị mất animation trượt mượt mà nhảy vụt từ tab này sang tab khác.
+- **Phân tích nguyên nhân:**
+  1. Thẻ `<div>` hiển thị pill trượt `.tab-group-pill` trong `tab-group.component.html` bị thiếu class thời gian chuyển động `transition-[left,width] duration-300`.
+  2. Mặc dù có class `ease-out`, nhưng việc thiếu `transition-[left,width]` khiến trình duyệt thay đổi thuộc tính `left` và `width` tức thì mà không thể phát hiệu ứng animation trượt.
+- **Giải pháp:**
+  1. Bổ sung `transition-[left,width] duration-300 ease-out` vào `.tab-group-pill` trong `tab-group.component.html`.
+  2. Bổ sung thuộc tính `ready` vào `sliderStyle` signal trong `tab-group.component.ts` kết hợp `[class.opacity-0]="!sliderStyle().ready"` & `[class.opacity-100]="sliderStyle().ready"` giúp loại bỏ 100% hiện tượng pill bị nhảy vị trí từ `0px` khi vừa render lại trang.
+- **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Build production đóng gói Angular thành công 100%.
+
+### Yêu cầu: Tối Ưu Màu Sắc Tương Phản Rõ Ràng & Độ Đậm Nhạt (font-weight) Cho Component Accordion (`app-accordion-item`)
+- **Nội dung yêu cầu:** Khắc phục tình trạng nội dung phần thân Accordion (`ng-content`) bị tối mờ, khó đọc trong Dark Mode (như ảnh chụp màn hình) và chuẩn hóa độ đậm nhạt chữ về mức bình thường, sắc nét.
+- **Phân tích nguyên nhân:**
+  1. Thẻ chứa nội dung chi tiết bên trong `accordion-item.component.html` bị dùng class `dark:text-slate-350` — đây là một class CSS KHÔNG hợp lệ trong Tailwind CSS (Tailwind chỉ hỗ trợ `slate-300`, `slate-400`...), dẫn tới việc trình duyệt bỏ qua class màu Dark Mode và hiển thị chữ bị chìm tối sẫm trên nền đen.
+  2. Màu subtitle `dark:text-slate-500` bị quá tối.
+- **Giải pháp:**
+  1. Sửa `dark:text-slate-350` thành `font-normal text-slate-700 dark:text-slate-200 leading-relaxed`, đưa độ đậm về `font-normal` (bình thường) và màu chữ sáng rõ, chuẩn tương phản cao trên cả Light Mode lẫn Dark Mode.
+  2. Tăng độ sáng cho subtitle (`text-slate-500 dark:text-slate-400 font-medium`).
+  3. Tiêu đề (Title) hiển thị rõ nét (`font-bold text-slate-900 dark:text-white`), khi mở sẽ highlight màu chủ đạo `text-[var(--color-primary)]`.
+  4. Đồng bộ bo góc `rounded-[15px]` cho thẻ Accordion container.
+- **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Build production đóng gói Angular thành công 100%.
+
+### Yêu cầu: Khôi Phục Bo Góc (rounded-[15px]) Và Clipping Tràn Viền (overflow-hidden) Cho Component CustomSelect (`app-custom-select`)
+- **Nội dung yêu cầu:** Khắc phục lỗi khung Popover của `app-custom-select` bị mất bo góc rounded, khiến 4 góc vuông vức dẹt (như ảnh chụp màn hình) và danh sách lựa chọn bên trong bị tràn viền.
+- **Phân tích nguyên nhân:**
+  1. Thẻ `<div>` wrapper chính của Popover trong `custom-select.component.html` bị thiếu class bo góc `rounded-[15px]` (đồng bộ với các Popover khác như `DropdownMenu`, `LanguageSelector`, `NetworkSelector`, `CustomDatePicker`...).
+  2. Việc thiếu `rounded-[15px]` làm thuộc tính `overflow-hidden` chỉ bo clip ở góc vuông 90 độ mặc định của HTML element.
+- **Giải pháp:**
+  1. Bổ sung `rounded-[15px]` vào container Popover trong `custom-select.component.html`.
+  2. Bổ sung class highlight nền tím dịu mượt (`bg-purple-50/60 dark:bg-purple-950/30 text-[var(--color-primary)] font-bold`) cho option đang được chọn trong chế độ chọn đơn (Single select).
+- **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Build production đóng gói Angular thành công 100%.
+
 ### Yêu cầu: Tự Động Tìm Port Trống Bước Tiến (4200 ➔ 4201 ➔ 4202...) Khi Chạy npm run start
 - **Nội dung yêu cầu:** Cấu hình để khi chạy `npm run start`, nếu port 4200 bị chiếm dụng thì Angular tự động chuyển sang 4201, 4202... mà không cần phải xác nhận thủ công trên Terminal.
 - **Giải pháp:**

@@ -49,9 +49,11 @@ export class TabGroupComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   private resizeObserver?: ResizeObserver;
 
-  public readonly sliderStyle = signal<{ left: string; width: string }>({
+  public readonly sliderStyle = signal<{ left: string; width: string; ready: boolean }>({
     left: '0px',
-    width: '0px'});
+    width: '0px',
+    ready: false
+  });
 
   public get activeIndex(): number {
     return this.options.findIndex((opt) => opt.value === this.activeValue);
@@ -105,8 +107,8 @@ export class TabGroupComponent implements AfterViewInit, OnChanges, OnDestroy {
       const nextWidth = `${activeEl.offsetWidth}px`;
 
       const current = this.sliderStyle();
-      if (current.left !== nextLeft || current.width !== nextWidth) {
-        this.sliderStyle.set({ left: nextLeft, width: nextWidth });
+      if (current.left !== nextLeft || current.width !== nextWidth || !current.ready) {
+        this.sliderStyle.set({ left: nextLeft, width: nextWidth, ready: true });
       }
 
       const container = this.containerEl.nativeElement;
@@ -122,8 +124,8 @@ export class TabGroupComponent implements AfterViewInit, OnChanges, OnDestroy {
       }
     } else {
       const current = this.sliderStyle();
-      if (current.left !== '0px' || current.width !== '0px') {
-        this.sliderStyle.set({ left: '0px', width: '0px' });
+      if (current.left !== '0px' || current.width !== '0px' || current.ready) {
+        this.sliderStyle.set({ left: '0px', width: '0px', ready: false });
       }
     }
   }
