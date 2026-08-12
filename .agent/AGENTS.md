@@ -2,6 +2,15 @@
 
 ## Ngày 12/08/2026
 
+### Yêu cầu: Tự Động Tìm Port Trống Bước Tiến (4200 ➔ 4201 ➔ 4202...) Khi Chạy npm run start
+- **Nội dung yêu cầu:** Cấu hình để khi chạy `npm run start`, nếu port 4200 bị chiếm dụng thì Angular tự động chuyển sang 4201, 4202... mà không cần phải xác nhận thủ công trên Terminal.
+- **Giải pháp:**
+  1. Tạo script `scripts/start-dev.js` kiểm tra đa tầng socket (thử bind `127.0.0.1`, `0.0.0.0` với `exclusive: true` và probe kết nối `net.connect` trên `localhost`) để phát hiện chính xác 100% port bị chiếm dụng trên Windows. Nếu port 4200 bận, tự động tăng tiến `+1` để tìm port trống tiếp theo.
+  2. Dùng `child_process.spawn` kết hợp `cmd.exe /c` (trên Windows) kích hoạt `npx ng serve --port <port>` với `stdio: 'inherit'`, triệt tiêu hoàn toàn cảnh báo `DeprecationWarning [DEP0190]` và lỗi `spawn EINVAL`.
+  3. Cập nhật `package.json` script `"start"` sang `"node scripts/start-dev.js"`, loại bỏ hoàn toàn comment và chuẩn hóa toàn bộ câu thông báo console sang tiếng Anh.
+- **Xác thực:** Đã chạy thử nghiệm thực tế `node scripts/start-dev.js`, phát hiện port 4200 đang bận và tự động chuyển ngay sang port 4201 thành công 100%. Chạy `npx tsc --noEmit` đạt 0 lỗi type.
+
+
 ### Yêu cầu: Khắc Phục Lỗi Mobile Sidebar Drawer Bị Giật / Thọt Thụt Về Bên Trái Khi Reload Trang
 - **Nội dung yêu cầu:** Khắc phục lỗi khi vừa reload lại trang trên mobile, Sidebar Drawer bị lòi ra một phần hoặc phát hiệu ứng trượt thụt lùi về góc trái màn hình trong khi người dùng chưa hề thao tác hay bấm nút menu.
 - **Phân tích nguyên nhân:**
