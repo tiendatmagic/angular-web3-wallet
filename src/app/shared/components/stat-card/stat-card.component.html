@@ -2,19 +2,25 @@
   class="relative p-5 sm:p-6 rounded-[15px] bg-white/80 dark:bg-slate-900/70 backdrop-blur-md border border-slate-200/60 dark:border-slate-800/60 shadow-sm transition-[transform,shadow,border-color] duration-200 hover:scale-[1.01] hover:shadow-md hover:border-purple-500/30 dark:hover:border-purple-500/30 group"
 >
   <div class="flex items-start justify-between gap-3">
-    <span class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 select-none leading-snug">
+    <span
+      class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 select-none leading-snug"
+    >
       {{ title }}
     </span>
 
     <div
-      class="shrink-0 w-10 h-10 rounded-[12px] bg-gradient-to-br {{ iconBgGradient }} text-white flex items-center justify-center shadow-md shadow-purple-500/20 group-hover:scale-105 transition-transform duration-300"
+      class="shrink-0 w-10 h-10 rounded-[12px] bg-gradient-to-br {{
+        iconBgGradient
+      }} text-white flex items-center justify-center shadow-md shadow-purple-500/20 group-hover:scale-105 transition-transform duration-300"
     >
       <app-icon [name]="iconName" class="w-5 h-5"></app-icon>
     </div>
   </div>
 
   <div class="mt-3 sm:mt-4 flex items-baseline gap-2.5 flex-wrap min-w-0">
-    <h3 class="text-2xl sm:text-3xl font-black text-slate-800 dark:text-slate-100 tracking-tight break-all sm:break-normal">
+    <h3
+      class="text-2xl sm:text-3xl font-black text-slate-800 dark:text-slate-100 tracking-tight break-all sm:break-normal"
+    >
       {{ value }}
     </h3>
 
@@ -22,9 +28,12 @@
       <span
         class="inline-flex items-center gap-0.5 px-2.5 py-0.5 rounded-full text-xs font-bold tracking-tight shrink-0 select-none"
         [ngClass]="{
-          'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20': changeType === 'increase',
-          'bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20': changeType === 'decrease',
-          'bg-slate-500/10 text-slate-600 dark:text-slate-400 border border-slate-500/20': changeType === 'neutral'
+          'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20':
+            changeType === 'increase',
+          'bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20':
+            changeType === 'decrease',
+          'bg-slate-1000/10 text-slate-600 dark:text-slate-400 border border-slate-500/20':
+            changeType === 'neutral',
         }"
       >
         @if (changeType === 'increase') {

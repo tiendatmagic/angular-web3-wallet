@@ -1,9 +1,9 @@
 <div
-  class="flex flex-col items-center justify-center text-center rounded-[15px] p-6 sm:p-8 border border-dashed border-slate-300/80 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900/30 backdrop-blur-sm transition-all duration-300"
+  class="flex flex-col items-center justify-center text-center rounded-[15px] p-6 sm:p-8 border border-dashed border-slate-300/80 dark:border-slate-800/80 bg-slate-100/50 dark:bg-slate-900/30 backdrop-blur-sm transition-all duration-300"
   [ngClass]="{
     'py-6 px-4': size === 'sm',
     'py-10 px-6 sm:px-8': size === 'md',
-    'py-16 px-8 sm:px-12': size === 'lg'
+    'py-16 px-8 sm:px-12': size === 'lg',
   }"
 >
   <div
@@ -11,7 +11,7 @@
     [ngClass]="{
       'w-12 h-12': size === 'sm',
       'w-16 h-16': size === 'md',
-      'w-20 h-20': size === 'lg'
+      'w-20 h-20': size === 'lg',
     }"
   >
     <app-icon
@@ -19,7 +19,9 @@
       [class]="size === 'sm' ? 'w-6 h-6' : size === 'md' ? 'w-8 h-8' : 'w-10 h-10'"
     ></app-icon>
 
-    <span class="absolute -inset-1 rounded-[17px] bg-purple-500/10 dark:bg-purple-400/10 animate-pulse -z-10"></span>
+    <span
+      class="absolute -inset-1 rounded-[17px] bg-purple-500/10 dark:bg-purple-400/10 animate-pulse -z-10"
+    ></span>
   </div>
 
   <h3
@@ -27,7 +29,7 @@
     [ngClass]="{
       'text-base': size === 'sm',
       'text-lg sm:text-xl': size === 'md',
-      'text-xl sm:text-2xl': size === 'lg'
+      'text-xl sm:text-2xl': size === 'lg',
     }"
   >
     {{ displayTitle }}
@@ -39,7 +41,7 @@
       [ngClass]="{
         'text-xs': size === 'sm',
         'text-sm': size === 'md',
-        'text-base': size === 'lg'
+        'text-base': size === 'lg',
       }"
     >
       {{ displayDescription }}
@@ -50,23 +52,13 @@
     <ng-content></ng-content>
 
     @if (secondaryActionText) {
-      <button
-        app-button
-        variant="cancel"
-        [size]="size"
-        (click)="secondaryAction.emit()"
-      >
+      <button app-button variant="cancel" [size]="size" (click)="secondaryAction.emit()">
         {{ secondaryActionText }}
       </button>
     }
 
     @if (actionText) {
-      <button
-        app-button
-        variant="primary"
-        [size]="size"
-        (click)="action.emit()"
-      >
+      <button app-button variant="primary" [size]="size" (click)="action.emit()">
         {{ actionText }}
       </button>
     }

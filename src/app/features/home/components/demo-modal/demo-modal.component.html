@@ -1,11 +1,11 @@
 <div class="flex flex-col gap-5">
   <div
-    class="flex flex-col gap-2.5 p-3 bg-slate-50/50 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 rounded-xl space-y-1.5"
+    class="flex flex-col gap-2.5 p-3 bg-slate-100/50 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 rounded-xl space-y-1.5"
   >
     <div class="flex items-center justify-between">
-      <span class="text-xs font-bold text-slate-500 dark:text-slate-400"
-        >{{ 'cards.date_picker.label_max_date' | translate }}</span
-      >
+      <span class="text-xs font-bold text-slate-500 dark:text-slate-400">{{
+        'cards.date_picker.label_max_date' | translate
+      }}</span>
       <app-custom-switch
         [checked]="limitDatePicker()"
         (checkedChange)="limitDatePicker.set($event)"
@@ -13,9 +13,9 @@
     </div>
 
     <div class="flex items-center justify-between">
-      <span class="text-xs font-bold text-slate-500 dark:text-slate-400"
-        >{{ 'cards.date_picker.option_min_date' | translate }}</span
-      >
+      <span class="text-xs font-bold text-slate-500 dark:text-slate-400">{{
+        'cards.date_picker.option_min_date' | translate
+      }}</span>
       <app-custom-switch
         [checked]="limitDatePickerMax()"
         (checkedChange)="limitDatePickerMax.set($event)"
@@ -23,9 +23,9 @@
     </div>
 
     <div class="flex items-center justify-between">
-      <span class="text-xs font-bold text-slate-500 dark:text-slate-400"
-        >{{ 'cards.date_picker.option_presets' | translate }}</span
-      >
+      <span class="text-xs font-bold text-slate-500 dark:text-slate-400">{{
+        'cards.date_picker.option_presets' | translate
+      }}</span>
       <app-custom-switch
         [checked]="demoDatePickerShowPresets()"
         (checkedChange)="demoDatePickerShowPresets.set($event)"
@@ -144,7 +144,9 @@
 
     <div class="text-xs font-semibold text-slate-500 dark:text-slate-400 flex items-center gap-1">
       <span>{{ 'showcase.tip_press' | translate }}</span>
-      <kbd app-kbd [appTooltip]="'showcase.escape_key_tooltip' | translate" tooltipPlacement="top">ESC</kbd>
+      <kbd app-kbd [appTooltip]="'showcase.escape_key_tooltip' | translate" tooltipPlacement="top"
+        >ESC</kbd
+      >
       <span>{{ 'showcase.tip_close' | translate }}</span>
     </div>
 
@@ -171,14 +173,17 @@
     </div>
 
     <app-accordion>
-      <app-accordion-item [title]="'cards.accordion.item1_title' | translate" [subtitle]="'cards.accordion.subtitle' | translate">
+      <app-accordion-item
+        [title]="'cards.accordion.item1_title' | translate"
+        [subtitle]="'cards.accordion.subtitle' | translate"
+      >
         {{ 'cards.accordion.item1_content' | translate }}
       </app-accordion-item>
     </app-accordion>
   </div>
 
   <div
-    class="bg-slate-50 dark:bg-slate-950/40 rounded-xl p-4 space-y-1.5 border border-slate-200/30 dark:border-slate-800/30"
+    class="bg-slate-100 dark:bg-slate-950/40 rounded-xl p-4 space-y-1.5 border border-slate-200/30 dark:border-slate-800/30"
   >
     <h5 class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-2">
       {{ 'showcase.current_value' | translate }}
@@ -206,11 +211,21 @@
     </div>
   </div>
 
-  <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-100 dark:border-slate-800/60 mt-1 shrink-0 -mx-6 px-6">
+  <div
+    class="flex items-center justify-end gap-3 pt-4 border-t border-slate-100 dark:border-slate-800/60 mt-1 shrink-0 -mx-6 px-6"
+  >
     <button app-button variant="cancel" size="md" (click)="cancel()">
       {{ 'modal_demo.cancel' | translate }}
     </button>
-    <button app-button variant="primary" size="md" (click)="confirm()" [appTooltip]="'modal_demo.confirm' | translate" tooltipIcon="save" tooltipPlacement="top">
+    <button
+      app-button
+      variant="primary"
+      size="md"
+      (click)="confirm()"
+      [appTooltip]="'modal_demo.confirm' | translate"
+      tooltipIcon="save"
+      tooltipPlacement="top"
+    >
       <app-icon name="check" class="w-4 h-4" strokeWidth="2.5" />
       {{ 'modal_demo.confirm' | translate }}
     </button>

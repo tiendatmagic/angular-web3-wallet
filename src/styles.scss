@@ -56,8 +56,6 @@ button:disabled,
   cursor: not-allowed;
 }
 
-
-
 .transition-all-300 {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -203,12 +201,12 @@ body.dark .btn-danger-light:hover {
 .form-input {
   padding-left: 1rem !important;
   padding-right: 1rem !important;
-  @apply h-[42px] w-full text-sm font-semibold rounded-xl bg-slate-50 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 text-slate-800 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]/20;
+  @apply h-[42px] w-full text-sm font-semibold rounded-xl bg-slate-100 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 text-slate-800 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]/20;
 }
 
 .form-textarea {
   padding: 0.75rem 1rem !important;
-  @apply w-full text-sm font-semibold rounded-xl bg-slate-50 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 text-slate-800 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]/20 transition-all duration-200 resize-none;
+  @apply w-full text-sm font-semibold rounded-xl bg-slate-100 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 text-slate-800 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]/20 transition-all duration-200 resize-none;
 }
 
 .form-field {
@@ -222,7 +220,7 @@ body.dark .btn-danger-light:hover {
 .search-input {
   padding-left: 2.25rem !important;
   padding-right: 1rem !important;
-  @apply h-[42px] w-full text-sm font-semibold rounded-xl bg-slate-50 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 text-slate-800 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]/20 transition-all duration-200;
+  @apply h-[42px] w-full text-sm font-semibold rounded-xl bg-slate-100 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 text-slate-800 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]/20 transition-all duration-200;
 }
 
 .tab-group {
@@ -265,7 +263,7 @@ body.dark .btn-danger-light:hover {
   background-color: currentColor;
   opacity: 0.3;
   transform: scale(0);
-  animation: 
+  animation:
     app-ripple-scale 500ms cubic-bezier(0.1, 0.8, 0.3, 1) forwards,
     app-ripple-fade 500ms linear forwards;
 }
@@ -453,28 +451,14 @@ html.dark .alert-error-bordered {
 @keyframes popoverIn {
   from {
     opacity: 0;
-    transform: scale(0.97) translateY(-3px);
   }
   to {
     opacity: 1;
-    transform: scale(1) translateY(0);
   }
 }
 
 .dropdown-menu-popover,
 .date-picker-popover,
 .date-time-range-popover {
-  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-  backdrop-filter: blur(20px) saturate(180%) !important;
-  background-color: rgba(255, 255, 255, 0.85) !important;
   animation: popoverIn 150ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-html.dark .dropdown-menu-popover,
-html.dark .date-picker-popover,
-html.dark .date-time-range-popover,
-.dark .dropdown-menu-popover,
-.dark .date-picker-popover,
-.dark .date-time-range-popover {
-  background-color: rgba(15, 23, 42, 0.8) !important;
 }

@@ -1,5 +1,5 @@
 <main class="max-w-[1530px] mx-auto w-full px-4 sm:px-6 py-6 md:py-10 space-y-6 md:space-y-8">
-    @if (stateService.isWeb3Enabled && !stateService.isConnected()) {
+  @if (stateService.isWeb3Enabled && !stateService.isConnected()) {
     <div app-card class="text-center max-w-2xl mx-auto">
       <div
         class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 text-primary border border-primary/20"
@@ -21,9 +21,9 @@
     </div>
   }
 
-    @if (stateService.isWeb3Enabled && stateService.isConnected()) {
+  @if (stateService.isWeb3Enabled && stateService.isConnected()) {
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 items-start">
-            <div class="lg:col-span-5 space-y-5 md:space-y-6">
+      <div class="lg:col-span-5 space-y-5 md:space-y-6">
         <div app-card>
           <h3
             class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4"
@@ -33,9 +33,9 @@
 
           <div class="space-y-4">
             <div class="flex flex-col py-1">
-              <span class="text-xs font-bold text-slate-400 dark:text-slate-500"
-                >{{ 'wallet.balance' | translate }}</span
-              >
+              <span class="text-xs font-bold text-slate-400 dark:text-slate-500">{{
+                'wallet.balance' | translate
+              }}</span>
               <span
                 class="text-3xl sm:text-4xl font-black text-transparent bg-gradient-to-r from-secondary to-primary bg-clip-text mt-0.5"
               >
@@ -45,9 +45,7 @@
 
             <div class="form-field">
               <label>{{ 'wallet.account_address' | translate }}</label>
-              <div
-                class="form-input flex items-center justify-between !pl-4 !pr-1.5 py-0"
-              >
+              <div class="form-input flex items-center justify-between !pl-4 !pr-1.5 py-0">
                 <span
                   class="font-mono text-xs font-bold text-slate-600 dark:text-slate-300 min-w-0 flex-1 truncate"
                 >
@@ -63,17 +61,21 @@
               </div>
             </div>
 
-                        <div
+            <div
               class="grid grid-cols-2 gap-4 border-t border-slate-100 dark:border-slate-800/40 pt-4"
             >
               <div class="flex flex-col">
-                <span class="text-[10px] font-bold text-slate-400 uppercase">{{ 'wallet.network' | translate }}</span>
+                <span class="text-[10px] font-bold text-slate-400 uppercase">{{
+                  'wallet.network' | translate
+                }}</span>
                 <span class="text-sm font-extrabold text-slate-700 dark:text-slate-200 truncate">
                   {{ stateService.networkName() }}
                 </span>
               </div>
               <div class="flex flex-col">
-                <span class="text-[10px] font-bold text-slate-400 uppercase">{{ 'showcase.chain_id' | translate }}</span>
+                <span class="text-[10px] font-bold text-slate-400 uppercase">{{
+                  'showcase.chain_id' | translate
+                }}</span>
                 <span class="text-sm font-mono font-bold text-slate-700 dark:text-slate-200">
                   {{ stateService.chainId() }}
                 </span>
@@ -101,10 +103,18 @@
           <div class="grid grid-cols-2 gap-3">
             @for (chain of stateService.POPULAR_CHAINS; track chain.chainId) {
               <button
-                [class.!border-primary]="(stateService.isConnected() ? stateService.chainId() : +stateService.configuredChainId()) === +chain.chainId"
-                [class.!text-primary]="(stateService.isConnected() ? stateService.chainId() : +stateService.configuredChainId()) === +chain.chainId"
+                [class.!border-primary]="
+                  (stateService.isConnected()
+                    ? stateService.chainId()
+                    : +stateService.configuredChainId()) === +chain.chainId
+                "
+                [class.!text-primary]="
+                  (stateService.isConnected()
+                    ? stateService.chainId()
+                    : +stateService.configuredChainId()) === +chain.chainId
+                "
                 (click)="stateService.switchNetwork(+chain.chainId)"
-                class="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800/60 text-xs font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-50/50 dark:hover:bg-slate-900/50 transition-all cursor-pointer"
+                class="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800/60 text-xs font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100/50 dark:hover:bg-slate-900/50 transition-all cursor-pointer"
               >
                 <span
                   [style.backgroundColor]="chain.color || '#94a3b8'"
@@ -117,8 +127,8 @@
         </div>
       </div>
 
-            <div class="lg:col-span-7 space-y-6">
-                <div app-card>
+      <div class="lg:col-span-7 space-y-6">
+        <div app-card>
           <div class="flex items-center gap-3 mb-6">
             <div
               class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary border border-primary/10"
@@ -130,7 +140,10 @@
                 {{ 'showcase.send_transaction_title' | translate }}
               </h3>
               <p class="text-xs text-slate-400 dark:text-slate-500">
-                {{ 'showcase.send_transaction_description' | translate : { symbol: stateService.chainSymbol() } }}
+                {{
+                  'showcase.send_transaction_description'
+                    | translate: { symbol: stateService.chainSymbol() }
+                }}
               </p>
             </div>
           </div>
@@ -147,7 +160,9 @@
             </div>
 
             <div class="form-field">
-              <label>{{ 'home.tx_amount_label' | translate : { symbol: stateService.chainSymbol() } }}</label>
+              <label>{{
+                'home.tx_amount_label' | translate: { symbol: stateService.chainSymbol() }
+              }}</label>
               <app-custom-input
                 type="number"
                 placeholder="0.01"
@@ -202,7 +217,9 @@
                 class="bg-red-500/10 border border-red-500/25 rounded-xl p-4 text-xs font-bold text-red-500 flex items-start gap-2"
               >
                 <app-icon name="warning" class="w-4 h-4 mt-0.5 flex-shrink-0" />
-                <span class="break-words min-w-0">{{ 'home.error_prefix' | translate }}: {{ txError() }}</span>
+                <span class="break-words min-w-0"
+                  >{{ 'home.error_prefix' | translate }}: {{ txError() }}</span
+                >
               </div>
             }
           </div>
@@ -216,7 +233,9 @@
               <app-icon name="pen" class="w-5 h-5" />
             </div>
             <div>
-              <h3 class="text-base font-black text-slate-800 dark:text-white">{{ 'home.sign_demo_title' | translate }}</h3>
+              <h3 class="text-base font-black text-slate-800 dark:text-white">
+                {{ 'home.sign_demo_title' | translate }}
+              </h3>
               <p class="text-xs text-slate-400 dark:text-slate-500">
                 {{ 'showcase.sign_message_description' | translate }}
               </p>
@@ -226,11 +245,7 @@
           <div class="space-y-4">
             <div class="form-field">
               <label>{{ 'home.sign_message_content' | translate }}</label>
-              <textarea
-                rows="2"
-                [(ngModel)]="messageToSign"
-                class="form-textarea"
-              ></textarea>
+              <textarea rows="2" [(ngModel)]="messageToSign" class="form-textarea"></textarea>
             </div>
 
             <button
@@ -250,12 +265,8 @@
             </button>
 
             @if (signature()) {
-              <div
-                class="bg-primary/10 border border-primary/20 rounded-xl p-4 space-y-2 mt-4"
-              >
-                <div
-                  class="flex items-center justify-between text-primary text-xs font-bold"
-                >
+              <div class="bg-primary/10 border border-primary/20 rounded-xl p-4 space-y-2 mt-4">
+                <div class="flex items-center justify-between text-primary text-xs font-bold">
                   <div class="flex items-center gap-2">
                     <app-icon name="pen" class="w-4 h-4" />
                     <span>{{ 'home.sign_success_title' | translate }}</span>
@@ -285,7 +296,9 @@
                 class="bg-red-500/10 border border-red-500/25 rounded-xl p-4 text-xs font-bold text-red-500 flex items-start gap-2"
               >
                 <app-icon name="warning" class="w-4 h-4 mt-0.5 flex-shrink-0" />
-                <span class="break-words min-w-0">{{ 'home.error_prefix' | translate }}: {{ signError() }}</span>
+                <span class="break-words min-w-0"
+                  >{{ 'home.error_prefix' | translate }}: {{ signError() }}</span
+                >
               </div>
             }
           </div>
@@ -293,7 +306,7 @@
       </div>
     </div>
   }
-        <div class="space-y-4">
+  <div class="space-y-4">
     <div class="flex items-center gap-3">
       <div
         class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary border border-primary/10"
@@ -301,7 +314,9 @@
         <app-icon name="grid" class="w-5 h-5" />
       </div>
       <div>
-        <h3 class="text-base font-black text-slate-800 dark:text-white">{{ 'home.showcase_title' | translate }}</h3>
+        <h3 class="text-base font-black text-slate-800 dark:text-white">
+          {{ 'home.showcase_title' | translate }}
+        </h3>
         <p class="text-xs text-slate-400 dark:text-slate-500">
           {{ 'home.showcase_subtitle' | translate }}
         </p>
@@ -313,17 +328,14 @@
         <h4
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
         >
-          <app-icon
-            name="toggle"
-            class="w-3.5 h-3.5 text-primary"
-          />
+          <app-icon name="toggle" class="w-3.5 h-3.5 text-primary" />
           {{ 'showcase.custom_switch' | translate }}
         </h4>
         <div class="space-y-4">
           <div class="flex items-center justify-between">
-            <span class="text-sm font-semibold text-slate-600 dark:text-slate-300"
-              >{{ 'showcase.compact_toggle' | translate }}</span
-            >
+            <span class="text-sm font-semibold text-slate-600 dark:text-slate-300">{{
+              'showcase.compact_toggle' | translate
+            }}</span>
             <app-custom-switch
               [checked]="demoSwitchChecked()"
               (checkedChange)="demoSwitchChecked.set($event)"
@@ -333,12 +345,15 @@
           <app-custom-switch
             type="full"
             [label]="'showcase.confirm_transaction' | translate"
-            [description]="'showcase.confirm_transaction_description' | translate : { symbol: stateService.chainSymbol() }"
+            [description]="
+              'showcase.confirm_transaction_description'
+                | translate: { symbol: stateService.chainSymbol() }
+            "
             [checked]="demoSwitchFull()"
             (checkedChange)="demoSwitchFull.set($event)"
           />
           <div
-            class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2"
+            class="text-xs font-mono text-slate-400 bg-slate-100 dark:bg-slate-950/40 rounded-lg px-3 py-2"
           >
             compact={{ demoSwitchChecked() }} &nbsp;|&nbsp; full={{ demoSwitchFull() }}
           </div>
@@ -349,10 +364,7 @@
         <h4
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
         >
-          <app-icon
-            name="radio"
-            class="w-3.5 h-3.5 text-primary"
-          />
+          <app-icon name="radio" class="w-3.5 h-3.5 text-primary" />
           {{ 'showcase.custom_radio' | translate }}
         </h4>
         <div class="space-y-3">
@@ -367,7 +379,7 @@
             />
           }
           <div
-            class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2"
+            class="text-xs font-mono text-slate-400 bg-slate-100 dark:bg-slate-950/40 rounded-lg px-3 py-2"
           >
             selected={{ demoRadioValue() }}
           </div>
@@ -389,7 +401,7 @@
             [description]="'showcase.checkbox_description' | translate"
           />
           <div
-            class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2"
+            class="text-xs font-mono text-slate-400 bg-slate-100 dark:bg-slate-950/40 rounded-lg px-3 py-2"
           >
             checked={{ demoCheckboxValue() }}
           </div>
@@ -412,7 +424,7 @@
             (valueChange)="demoSearchQuery.set($event)"
           />
           <div
-            class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2"
+            class="text-xs font-mono text-slate-400 bg-slate-100 dark:bg-slate-950/40 rounded-lg px-3 py-2"
           >
             query="{{ demoSearchQuery() || ('showcase.empty_value' | translate) }}"
           </div>
@@ -428,7 +440,10 @@
         </h4>
         <div class="space-y-4">
           <div class="form-field">
-            <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider select-none">{{ 'cards.selects.label_single' | translate }}</label>
+            <label
+              class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider select-none"
+              >{{ 'cards.selects.label_single' | translate }}</label
+            >
             <app-custom-select
               placeholder="-- {{ 'cards.selects.title' | translate }} --"
               [options]="demoChainOptions"
@@ -440,14 +455,17 @@
               (valueChange)="demoSelectValue.set($event)"
             />
             <div
-              class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2"
+              class="text-xs font-mono text-slate-400 bg-slate-100 dark:bg-slate-950/40 rounded-lg px-3 py-2"
             >
               selected = {{ demoSelectValue() ?? ('cards.inputs.not_selected' | translate) }}
             </div>
           </div>
 
           <div class="form-field">
-            <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider select-none">{{ 'cards.selects.label_ten' | translate }}</label>
+            <label
+              class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider select-none"
+              >{{ 'cards.selects.label_ten' | translate }}</label
+            >
             <app-custom-select
               placeholder="-- {{ 'cards.selects.title' | translate }} --"
               [options]="demoTenChainOptions"
@@ -459,14 +477,18 @@
               (valueChange)="demoSelectTenChainsValue.set($event)"
             />
             <div
-              class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2"
+              class="text-xs font-mono text-slate-400 bg-slate-100 dark:bg-slate-950/40 rounded-lg px-3 py-2"
             >
-              selected = {{ demoSelectTenChainsValue() ?? ('cards.inputs.not_selected' | translate) }}
+              selected =
+              {{ demoSelectTenChainsValue() ?? ('cards.inputs.not_selected' | translate) }}
             </div>
           </div>
 
-                    <div class="form-field">
-            <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider select-none">{{ 'cards.selects.label_multi' | translate }}</label>
+          <div class="form-field">
+            <label
+              class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider select-none"
+              >{{ 'cards.selects.label_multi' | translate }}</label
+            >
             <app-custom-select
               placeholder="-- {{ 'cards.selects.title' | translate }} --"
               [options]="demoMultiSelectOptions()"
@@ -479,9 +501,10 @@
               (valueChange)="demoMultiSelectValue.set($event)"
             />
             <div
-              class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2"
+              class="text-xs font-mono text-slate-400 bg-slate-100 dark:bg-slate-950/40 rounded-lg px-3 py-2"
             >
-              selected = [ {{ demoMultiSelectValue().join(', ') || ('cards.input_otp.empty_val' | translate) }} ]
+              selected = [
+              {{ demoMultiSelectValue().join(', ') || ('cards.input_otp.empty_val' | translate) }} ]
             </div>
           </div>
         </div>
@@ -495,17 +518,23 @@
           {{ 'showcase.custom_date_picker' | translate }}
         </h4>
         <div class="flex flex-col gap-3.5">
-                    <div class="flex flex-col gap-2.5 p-3 bg-slate-50/50 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 rounded-xl space-y-1.5">
+          <div
+            class="flex flex-col gap-2.5 p-3 bg-slate-100/50 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 rounded-xl space-y-1.5"
+          >
             <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-slate-500 dark:text-slate-400">{{ 'cards.date_picker.option_min_date' | translate }}</span>
+              <span class="text-xs font-bold text-slate-500 dark:text-slate-400">{{
+                'cards.date_picker.option_min_date' | translate
+              }}</span>
               <app-custom-switch
                 [checked]="limitDatePicker()"
                 (checkedChange)="limitDatePicker.set($event)"
               />
             </div>
-            
+
             <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-slate-500 dark:text-slate-400">{{ 'cards.date_picker.option_presets' | translate }}</span>
+              <span class="text-xs font-bold text-slate-500 dark:text-slate-400">{{
+                'cards.date_picker.option_presets' | translate
+              }}</span>
               <app-custom-switch
                 [checked]="demoDatePickerShowPresets()"
                 (checkedChange)="demoDatePickerShowPresets.set($event)"
@@ -513,7 +542,9 @@
             </div>
 
             @if (limitDatePicker()) {
-              <div class="form-field pt-1 border-t border-slate-200/30 dark:border-slate-800/30 animate-in fade-in duration-200">
+              <div
+                class="form-field pt-1 border-t border-slate-200/30 dark:border-slate-800/30 animate-in fade-in duration-200"
+              >
                 <label>{{ 'cards.date_picker.label_min_date' | translate }}</label>
                 <input
                   type="text"
@@ -537,7 +568,7 @@
             />
           </div>
           <div
-            class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2"
+            class="text-xs font-mono text-slate-400 bg-slate-100 dark:bg-slate-950/40 rounded-lg px-3 py-2"
           >
             selected={{ demoDatePickerValue() || ('showcase.not_selected' | translate) }}
           </div>
@@ -552,8 +583,12 @@
           {{ 'showcase.custom_accordion' | translate }}
         </h4>
         <div class="space-y-4">
-          <div class="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800/40">
-            <span class="text-xs font-bold text-slate-500 dark:text-slate-400">{{ 'cards.accordion.option_multiple' | translate }}</span>
+          <div
+            class="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800/40"
+          >
+            <span class="text-xs font-bold text-slate-500 dark:text-slate-400">{{
+              'cards.accordion.option_multiple' | translate
+            }}</span>
             <app-custom-switch
               [checked]="demoAccordionMultiple()"
               (checkedChange)="demoAccordionMultiple.set($event)"
@@ -561,57 +596,104 @@
           </div>
 
           <app-accordion [multiple]="demoAccordionMultiple()">
-            <app-accordion-item [title]="'showcase.accordion_connect_title' | translate" [subtitle]="'showcase.accordion_connect_subtitle' | translate">
+            <app-accordion-item
+              [title]="'showcase.accordion_connect_title' | translate"
+              [subtitle]="'showcase.accordion_connect_subtitle' | translate"
+            >
               {{ 'showcase.accordion_connect_content' | translate }}
             </app-accordion-item>
-            <app-accordion-item [title]="'showcase.accordion_network_title' | translate" [subtitle]="'showcase.accordion_network_subtitle' | translate">
+            <app-accordion-item
+              [title]="'showcase.accordion_network_title' | translate"
+              [subtitle]="'showcase.accordion_network_subtitle' | translate"
+            >
               {{ 'showcase.accordion_network_content' | translate }}
             </app-accordion-item>
-            <app-accordion-item [title]="'showcase.accordion_sign_title' | translate" [subtitle]="'showcase.accordion_sign_subtitle' | translate">
+            <app-accordion-item
+              [title]="'showcase.accordion_sign_title' | translate"
+              [subtitle]="'showcase.accordion_sign_subtitle' | translate"
+            >
               {{ 'showcase.accordion_sign_content' | translate }}
             </app-accordion-item>
           </app-accordion>
         </div>
       </div>
 
-            <div app-card>
+      <div app-card>
         <h4
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
         >
           <app-icon name="check-badge" class="w-3.5 h-3.5 text-primary" strokeWidth="2.5" />
           {{ 'cards.badges.title' | translate }}
         </h4>
-        
+
         <div class="space-y-5">
           <div class="space-y-2">
-            <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider select-none">{{ 'showcase.tooltip_placement' | translate }}</label>
+            <label
+              class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider select-none"
+              >{{ 'showcase.tooltip_placement' | translate }}</label
+            >
             <div class="flex flex-wrap gap-2.5 pt-1">
-              <button app-button variant="cancel" size="sm" [appTooltip]="'showcase.tooltip_top' | translate" tooltipIcon="sparkles" tooltipPlacement="top">
+              <button
+                app-button
+                variant="cancel"
+                size="sm"
+                [appTooltip]="'showcase.tooltip_top' | translate"
+                tooltipIcon="sparkles"
+                tooltipPlacement="top"
+              >
                 {{ 'showcase.position_top' | translate }}
               </button>
-              <button app-button variant="cancel" size="sm" [appTooltip]="'showcase.tooltip_bottom' | translate" tooltipIcon="sparkles" tooltipPlacement="bottom">
+              <button
+                app-button
+                variant="cancel"
+                size="sm"
+                [appTooltip]="'showcase.tooltip_bottom' | translate"
+                tooltipIcon="sparkles"
+                tooltipPlacement="bottom"
+              >
                 {{ 'showcase.position_bottom' | translate }}
               </button>
-              <button app-button variant="cancel" size="sm" [appTooltip]="'showcase.tooltip_left' | translate" tooltipIcon="chevron-left" tooltipPlacement="left">
+              <button
+                app-button
+                variant="cancel"
+                size="sm"
+                [appTooltip]="'showcase.tooltip_left' | translate"
+                tooltipIcon="chevron-left"
+                tooltipPlacement="left"
+              >
                 {{ 'showcase.position_left' | translate }}
               </button>
-              <button app-button variant="cancel" size="sm" [appTooltip]="'showcase.tooltip_right' | translate" tooltipIcon="chevron-right" tooltipPlacement="right">
+              <button
+                app-button
+                variant="cancel"
+                size="sm"
+                [appTooltip]="'showcase.tooltip_right' | translate"
+                tooltipIcon="chevron-right"
+                tooltipPlacement="right"
+              >
                 {{ 'showcase.position_right' | translate }}
               </button>
             </div>
           </div>
 
           <div class="space-y-2">
-            <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider select-none">{{ 'showcase.badge_variants' | translate }}</label>
+            <label
+              class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider select-none"
+              >{{ 'showcase.badge_variants' | translate }}</label
+            >
             <div class="flex flex-wrap gap-2 pt-1">
               <app-badge variant="primary">{{ 'showcase.primary' | translate }}</app-badge>
               <app-badge variant="secondary">{{ 'showcase.secondary' | translate }}</app-badge>
-              <app-badge variant="success" [pulse]="true">{{ 'common.success' | translate }}</app-badge>
+              <app-badge variant="success" [pulse]="true">{{
+                'common.success' | translate
+              }}</app-badge>
               <app-badge variant="warning">{{ 'showcase.warning' | translate }}</app-badge>
               <app-badge variant="danger">{{ 'showcase.danger' | translate }}</app-badge>
               <app-badge variant="info">{{ 'showcase.info' | translate }}</app-badge>
               <app-badge variant="neutral">{{ 'showcase.neutral' | translate }}</app-badge>
-              <app-badge variant="ultra" [interactive]="true">{{ 'showcase.ultra' | translate }}</app-badge>
+              <app-badge variant="ultra" [interactive]="true">{{
+                'showcase.ultra' | translate
+              }}</app-badge>
             </div>
           </div>
         </div>
@@ -624,16 +706,16 @@
           <app-icon name="tabs" class="w-3.5 h-3.5 text-primary" strokeWidth="2.5" />
           {{ 'showcase.custom_tab_group' | translate }}
         </h4>
-        
+
         <div class="space-y-4">
           <app-tab-group
             [options]="demoTabOptions()"
             [activeValue]="demoTabValue()"
             (valueChange)="demoTabValue.set($event)"
           ></app-tab-group>
-          
+
           <div
-            class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2.5"
+            class="text-xs font-mono text-slate-400 bg-slate-100 dark:bg-slate-950/40 rounded-lg px-3 py-2.5"
           >
             activeTab = "{{ demoTabValue() }}"
           </div>
@@ -644,10 +726,14 @@
         <h4
           class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
         >
-          <app-icon name="sliders-horizontal" class="w-3.5 h-3.5 text-emerald-500" strokeWidth="2.5" />
+          <app-icon
+            name="sliders-horizontal"
+            class="w-3.5 h-3.5 text-emerald-500"
+            strokeWidth="2.5"
+          />
           {{ 'showcase.custom_slider' | translate }}
         </h4>
-        
+
         <div class="space-y-4">
           <div class="form-field">
             <label>{{ 'cards.slider.gas_priority' | translate }}</label>
@@ -662,7 +748,7 @@
             ></app-custom-slider>
           </div>
           <div
-            class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2"
+            class="text-xs font-mono text-slate-400 bg-slate-100 dark:bg-slate-950/40 rounded-lg px-3 py-2"
           >
             priorityVal = {{ demoSliderVal1() }} (min: 0, max: 10, step: 1)
           </div>
@@ -680,7 +766,7 @@
             ></app-custom-slider>
           </div>
           <div
-            class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2"
+            class="text-xs font-mono text-slate-400 bg-slate-100 dark:bg-slate-950/40 rounded-lg px-3 py-2"
           >
             tokenVal = {{ demoSliderVal2() }}% (min: 0, max: 100, step: 5)
           </div>
@@ -696,7 +782,7 @@
         </h4>
 
         <div class="space-y-4">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div class="form-field">
               <label>{{ 'cards.inputs.birthday' | translate }}</label>
               <app-custom-date-picker
@@ -717,7 +803,7 @@
             </div>
           </div>
 
-                    <div class="form-field">
+          <div class="form-field">
             <label>{{ 'cards.inputs.wallet_address' | translate }}</label>
             <app-custom-input
               placeholder="0x..."
@@ -727,11 +813,15 @@
           </div>
 
           <div
-            class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2.5 space-y-0.5"
+            class="text-xs font-mono text-slate-400 bg-slate-100 dark:bg-slate-950/40 rounded-lg px-3 py-2.5 space-y-0.5"
           >
-            <div>birthday = "{{ demoProfileBirthday() || ('cards.inputs.not_selected' | translate) }}"</div>
+            <div>
+              birthday = "{{ demoProfileBirthday() || ('cards.inputs.not_selected' | translate) }}"
+            </div>
             <div>gender = "{{ demoProfileGender() }}"</div>
-            <div>wallet = "{{ demoProfileWallet() || ('cards.inputs.not_entered' | translate) }}"</div>
+            <div>
+              wallet = "{{ demoProfileWallet() || ('cards.inputs.not_entered' | translate) }}"
+            </div>
           </div>
         </div>
       </div>
@@ -766,8 +856,11 @@
             />
           </div>
 
-                    <div class="form-field">
-            <label>{{ 'cards.date_picker.limited_range' | translate }} (Min: 2026-07-10, Max: 2026-07-20)</label>
+          <div class="form-field">
+            <label
+              >{{ 'cards.date_picker.limited_range' | translate }} (Min: 2026-07-10, Max:
+              2026-07-20)</label
+            >
             <app-custom-date-time-range
               [placeholder]="'showcase.limited_range_placeholder' | translate"
               minDate="2026-07-10"
@@ -779,11 +872,27 @@
           </div>
 
           <div
-            class="text-xs font-mono text-slate-400 bg-slate-50 dark:bg-slate-950/40 rounded-lg px-3 py-2.5 space-y-1"
+            class="text-xs font-mono text-slate-400 bg-slate-100 dark:bg-slate-950/40 rounded-lg px-3 py-2.5 space-y-1"
           >
-            <div>range = start: "{{ demoRangeValue().startDate || ('showcase.empty_value' | translate) }}" | end: "{{ demoRangeValue().endDate || ('showcase.empty_value' | translate) }}"</div>
-            <div>rangeWithTime = start: "{{ demoRangeWithTimeValue().startDate || ('showcase.empty_value' | translate) }}" | end: "{{ demoRangeWithTimeValue().endDate || ('showcase.empty_value' | translate) }}"</div>
-            <div>rangeLimit = start: "{{ demoRangeLimitValue().startDate || ('showcase.empty_value' | translate) }}" | end: "{{ demoRangeLimitValue().endDate || ('showcase.empty_value' | translate) }}"</div>
+            <div>
+              range = start: "{{
+                demoRangeValue().startDate || ('showcase.empty_value' | translate)
+              }}" | end: "{{ demoRangeValue().endDate || ('showcase.empty_value' | translate) }}"
+            </div>
+            <div>
+              rangeWithTime = start: "{{
+                demoRangeWithTimeValue().startDate || ('showcase.empty_value' | translate)
+              }}" | end: "{{
+                demoRangeWithTimeValue().endDate || ('showcase.empty_value' | translate)
+              }}"
+            </div>
+            <div>
+              rangeLimit = start: "{{
+                demoRangeLimitValue().startDate || ('showcase.empty_value' | translate)
+              }}" | end: "{{
+                demoRangeLimitValue().endDate || ('showcase.empty_value' | translate)
+              }}"
+            </div>
           </div>
         </div>
       </div>
@@ -797,7 +906,7 @@
         </h4>
 
         <div class="space-y-4">
-                    <div
+          <div
             appRipple
             [appRippleCentered]="demoRippleCentered()"
             [appRippleDisabled]="demoRippleDisabled()"
@@ -805,15 +914,23 @@
             [appRippleColor]="demoRippleCustomColor() || demoRippleColor()"
             [appRippleDuration]="demoRippleDuration()"
             [appRippleOpacity]="demoRippleOpacity()"
-            class="h-32 rounded-[15px] border-2 border-dashed border-slate-200 dark:border-slate-800 flex flex-col items-center justify-center cursor-pointer select-none bg-slate-50/50 dark:bg-slate-950/20 hover:bg-slate-100/50 dark:hover:bg-slate-900/10 transition-colors duration-200"
+            class="h-32 rounded-[15px] border-2 border-dashed border-slate-200 dark:border-slate-800 flex flex-col items-center justify-center cursor-pointer select-none bg-slate-100/50 dark:bg-slate-950/20 hover:bg-slate-100/50 dark:hover:bg-slate-900/10 transition-colors duration-200"
           >
-            <span class="text-xs font-bold text-slate-500 dark:text-slate-400">{{ 'cards.ripple.click_touch_here' | translate }}</span>
-            <span class="text-[10px] text-slate-400 dark:text-slate-500 mt-1">{{ 'cards.ripple.experience_ripple' | translate }}</span>
+            <span class="text-xs font-bold text-slate-500 dark:text-slate-400">{{
+              'cards.ripple.click_touch_here' | translate
+            }}</span>
+            <span class="text-[10px] text-slate-400 dark:text-slate-500 mt-1">{{
+              'cards.ripple.experience_ripple' | translate
+            }}</span>
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 border-t border-slate-100 dark:border-slate-800/40 pt-4">
+          <div
+            class="grid grid-cols-1 sm:grid-cols-3 gap-4 border-t border-slate-100 dark:border-slate-800/40 pt-4"
+          >
             <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-slate-500 dark:text-slate-400">{{ 'cards.ripple.center_ripple' | translate }}</span>
+              <span class="text-xs font-bold text-slate-500 dark:text-slate-400">{{
+                'cards.ripple.center_ripple' | translate
+              }}</span>
               <app-custom-switch
                 [checked]="demoRippleCentered()"
                 (checkedChange)="demoRippleCentered.set($event)"
@@ -821,7 +938,9 @@
             </div>
 
             <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-slate-500 dark:text-slate-400">{{ 'cards.ripple.disabled' | translate }}</span>
+              <span class="text-xs font-bold text-slate-500 dark:text-slate-400">{{
+                'cards.ripple.disabled' | translate
+              }}</span>
               <app-custom-switch
                 [checked]="demoRippleDisabled()"
                 (checkedChange)="demoRippleDisabled.set($event)"
@@ -829,7 +948,9 @@
             </div>
 
             <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-slate-500 dark:text-slate-400">{{ 'cards.ripple.unbounded' | translate }}</span>
+              <span class="text-xs font-bold text-slate-500 dark:text-slate-400">{{
+                'cards.ripple.unbounded' | translate
+              }}</span>
               <app-custom-switch
                 [checked]="demoRippleUnbounded()"
                 (checkedChange)="demoRippleUnbounded.set($event)"
@@ -856,9 +977,13 @@
                 app-button
                 variant="cancel"
                 size="sm"
-                [class.ring-2]="demoRippleColor() === 'rgba(255, 0, 221, 0.2)' && !demoRippleCustomColor()"
+                [class.ring-2]="
+                  demoRippleColor() === 'rgba(255, 0, 221, 0.2)' && !demoRippleCustomColor()
+                "
                 [class.ring-primary]="demoRippleColor() === 'rgba(255, 0, 221, 0.2)'"
-                (click)="demoRippleColor.set('rgba(255, 0, 221, 0.2)'); demoRippleCustomColor.set('')"
+                (click)="
+                  demoRippleColor.set('rgba(255, 0, 221, 0.2)'); demoRippleCustomColor.set('')
+                "
                 class="!py-1.5 text-xs font-bold text-primary"
               >
                 {{ 'showcase.primary' | translate }}
@@ -867,9 +992,13 @@
                 app-button
                 variant="cancel"
                 size="sm"
-                [class.ring-2]="demoRippleColor() === 'rgba(128, 0, 255, 0.2)' && !demoRippleCustomColor()"
+                [class.ring-2]="
+                  demoRippleColor() === 'rgba(128, 0, 255, 0.2)' && !demoRippleCustomColor()
+                "
                 [class.ring-secondary]="demoRippleColor() === 'rgba(128, 0, 255, 0.2)'"
-                (click)="demoRippleColor.set('rgba(128, 0, 255, 0.2)'); demoRippleCustomColor.set('')"
+                (click)="
+                  demoRippleColor.set('rgba(128, 0, 255, 0.2)'); demoRippleCustomColor.set('')
+                "
                 class="!py-1.5 text-xs font-bold text-secondary"
               >
                 {{ 'showcase.secondary' | translate }}
@@ -878,9 +1007,13 @@
                 app-button
                 variant="cancel"
                 size="sm"
-                [class.ring-2]="demoRippleColor() === 'rgba(239, 68, 68, 0.2)' && !demoRippleCustomColor()"
+                [class.ring-2]="
+                  demoRippleColor() === 'rgba(239, 68, 68, 0.2)' && !demoRippleCustomColor()
+                "
                 [class.ring-red-500]="demoRippleColor() === 'rgba(239, 68, 68, 0.2)'"
-                (click)="demoRippleColor.set('rgba(239, 68, 68, 0.2)'); demoRippleCustomColor.set('')"
+                (click)="
+                  demoRippleColor.set('rgba(239, 68, 68, 0.2)'); demoRippleCustomColor.set('')
+                "
                 class="!py-1.5 text-xs font-bold text-red-500"
               >
                 {{ 'showcase.danger' | translate }}
@@ -888,7 +1021,9 @@
             </div>
           </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-slate-100 dark:border-slate-800/40 pt-4">
+          <div
+            class="grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-slate-100 dark:border-slate-800/40 pt-4"
+          >
             <div class="form-field justify-start">
               <label>{{ 'cards.ripple.custom_color' | translate }}</label>
               <div class="flex gap-2">
@@ -900,18 +1035,22 @@
                 />
                 <input
                   type="color"
-                  [value]="demoRippleCustomColor().startsWith('#') ? demoRippleCustomColor() : '#8000ff'"
+                  [value]="
+                    demoRippleCustomColor().startsWith('#') ? demoRippleCustomColor() : '#8000ff'
+                  "
                   (input)="demoRippleCustomColor.set($any($event.target).value)"
-                  class="w-10 h-[42px] p-1 rounded-xl border border-slate-200/40 dark:border-slate-800/40 cursor-pointer bg-slate-50 dark:bg-slate-950/40"
+                  class="w-10 h-[42px] p-1 rounded-xl border border-slate-200/40 dark:border-slate-800/40 cursor-pointer bg-slate-100 dark:bg-slate-950/40"
                 />
               </div>
             </div>
 
-                        <div class="space-y-4">
+            <div class="space-y-4">
               <div class="form-field">
                 <div class="flex justify-between items-center">
                   <label class="!mb-0">{{ 'cards.ripple.duration' | translate }}</label>
-                  <span class="text-xs font-mono font-bold text-primary">{{ demoRippleDuration() }}ms</span>
+                  <span class="text-xs font-mono font-bold text-primary"
+                    >{{ demoRippleDuration() }}ms</span
+                  >
                 </div>
                 <app-custom-slider
                   [min]="200"
@@ -925,7 +1064,9 @@
               <div class="form-field">
                 <div class="flex justify-between items-center">
                   <label class="!mb-0">{{ 'cards.ripple.opacity' | translate }}</label>
-                  <span class="text-xs font-mono font-bold text-secondary">{{ demoRippleOpacity() }}</span>
+                  <span class="text-xs font-mono font-bold text-secondary">{{
+                    demoRippleOpacity()
+                  }}</span>
                 </div>
                 <app-custom-slider
                   [min]="0.1"
@@ -969,7 +1110,7 @@
               >
                 {{ 'showcase.secondary_white_ripple' | translate }}
               </button>
-                            <button
+              <button
                 appRipple
                 [appRippleCentered]="demoRippleCentered()"
                 [appRippleDisabled]="demoRippleDisabled()"
@@ -996,7 +1137,9 @@
         </h4>
 
         <div class="space-y-6">
-                    <div class="flex justify-center items-center py-6 bg-slate-50/50 dark:bg-slate-950/20 rounded-[15px] border border-slate-200/20 dark:border-slate-800/20">
+          <div
+            class="flex justify-center items-center py-6 bg-slate-100/50 dark:bg-slate-950/20 rounded-[15px] border border-slate-200/20 dark:border-slate-800/20"
+          >
             <app-aura
               [variant]="demoAuraVariant()"
               [size]="demoAuraSize()"
@@ -1005,15 +1148,21 @@
               [speed]="demoAuraSpeed()"
               [radius]="demoAuraRadius()"
             >
-              <div class="bg-white dark:bg-slate-900 px-8 py-6 rounded-[inherit] border border-slate-200/50 dark:border-slate-800/50 flex flex-col items-center justify-center text-center max-w-sm select-none">
+              <div
+                class="bg-white dark:bg-slate-900 px-8 py-6 rounded-[inherit] border border-slate-200/50 dark:border-slate-800/50 flex flex-col items-center justify-center text-center max-w-sm select-none"
+              >
                 <app-icon name="bolt" class="w-8 h-8 text-primary mb-3 animate-pulse" />
-                <span class="text-sm font-extrabold text-slate-800 dark:text-white">{{ 'cards.aura.wrapper_active' | translate }}</span>
-                <span class="text-xs text-slate-400 dark:text-slate-500 mt-1">{{ 'cards.aura.glow_border_effect' | translate }}</span>
+                <span class="text-sm font-extrabold text-slate-800 dark:text-white">{{
+                  'cards.aura.wrapper_active' | translate
+                }}</span>
+                <span class="text-xs text-slate-400 dark:text-slate-500 mt-1">{{
+                  'cards.aura.glow_border_effect' | translate
+                }}</span>
               </div>
             </app-aura>
           </div>
 
-                    <div class="space-y-4">
+          <div class="space-y-4">
             <div class="form-field">
               <label>{{ 'cards.aura.variant_type' | translate }}</label>
               <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -1127,9 +1276,13 @@
               </div>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-slate-100 dark:border-slate-800/40 pt-4">
-                            <div class="flex items-center justify-between">
-                <span class="text-xs font-bold text-slate-500 dark:text-slate-400">{{ 'cards.aura.glow_wide' | translate }}</span>
+            <div
+              class="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-slate-100 dark:border-slate-800/40 pt-4"
+            >
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-slate-500 dark:text-slate-400">{{
+                  'cards.aura.glow_wide' | translate
+                }}</span>
                 <app-custom-switch
                   [checked]="demoAuraGlow()"
                   (checkedChange)="demoAuraGlow.set($event)"
@@ -1137,7 +1290,9 @@
               </div>
 
               <div class="flex items-center justify-between">
-                <span class="text-xs font-bold text-slate-500 dark:text-slate-400">{{ 'cards.aura.paused' | translate }}</span>
+                <span class="text-xs font-bold text-slate-500 dark:text-slate-400">{{
+                  'cards.aura.paused' | translate
+                }}</span>
                 <app-custom-switch
                   [checked]="demoAuraPaused()"
                   (checkedChange)="demoAuraPaused.set($event)"
@@ -1145,7 +1300,9 @@
               </div>
             </div>
 
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-slate-100 dark:border-slate-800/40 pt-4">
+            <div
+              class="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-slate-100 dark:border-slate-800/40 pt-4"
+            >
               <div class="form-field">
                 <label>{{ 'cards.aura.speed' | translate }}</label>
                 <div class="grid grid-cols-3 gap-2">
@@ -1159,7 +1316,13 @@
                       (click)="demoAuraSpeed.set(spd)"
                       class="!py-1.5 text-xs font-bold"
                     >
-                      {{ spd === '2s' ? ('tx_speed.fast' | translate) + ' (2s)' : spd === '4s' ? ('tx_speed.default' | translate) + ' (4s)' : ('cards.controls.radio_slow' | translate) + ' (8s)' }}
+                      {{
+                        spd === '2s'
+                          ? ('tx_speed.fast' | translate) + ' (2s)'
+                          : spd === '4s'
+                            ? ('tx_speed.default' | translate) + ' (4s)'
+                            : ('cards.controls.radio_slow' | translate) + ' (8s)'
+                      }}
                     </button>
                   }
                 </div>
@@ -1178,14 +1341,20 @@
                       (click)="demoAuraRadius.set(rad)"
                       class="!py-1.5 text-xs font-bold"
                     >
-                      {{ rad === '15px' ? ('tx_speed.default' | translate) + ' (15px)' : rad === '8px' ? ('showcase.radius_small' | translate) : ('showcase.radius_circle' | translate) }}
+                      {{
+                        rad === '15px'
+                          ? ('tx_speed.default' | translate) + ' (15px)'
+                          : rad === '8px'
+                            ? ('showcase.radius_small' | translate)
+                            : ('showcase.radius_circle' | translate)
+                      }}
                     </button>
                   }
                 </div>
               </div>
             </div>
 
-                        <div class="form-field border-t border-slate-100 dark:border-slate-800/40 pt-4">
+            <div class="form-field border-t border-slate-100 dark:border-slate-800/40 pt-4">
               <label>{{ 'cards.aura.practical_application' | translate }}</label>
               <div class="flex flex-wrap items-center gap-6 justify-start py-2">
                 <app-aura variant="dual" size="xs" radius="12px">
@@ -1195,13 +1364,17 @@
                 </app-aura>
 
                 <app-aura variant="holo" size="sm" radius="9999px">
-                  <div class="w-10 h-10 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center font-black text-xs text-white">
+                  <div
+                    class="w-10 h-10 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center font-black text-xs text-white"
+                  >
                     W3
                   </div>
                 </app-aura>
 
                 <app-aura variant="gold" size="xs" radius="10px">
-                  <div class="bg-slate-950 text-yellow-500 px-4 py-2 text-xs font-extrabold rounded-[inherit] tracking-widest">
+                  <div
+                    class="bg-slate-950 text-yellow-500 px-4 py-2 text-xs font-extrabold rounded-[inherit] tracking-widest"
+                  >
                     VIP DAPP
                   </div>
                 </app-aura>
@@ -1212,70 +1385,94 @@
       </div>
     </div>
 
-        <div app-card class="mt-6">
-      <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-6 flex items-center gap-2 select-none">
-        <app-icon name="tables" class="w-3.5 h-3.5 text-[var(--color-primary)] animate-pulse" strokeWidth="2.5" />
+    <div app-card class="mt-6">
+      <h4
+        class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-6 flex items-center gap-2 select-none"
+      >
+        <app-icon
+          name="tables"
+          class="w-3.5 h-3.5 text-[var(--color-primary)] animate-pulse"
+          strokeWidth="2.5"
+        />
         {{ 'cards.table.title' | translate }}
       </h4>
 
       <div class="space-y-6">
-          <div class="flex flex-col xl:flex-row xl:items-center justify-between gap-4">
-            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1 max-w-2xl">
-              <div class="w-full sm:w-80">
-                <app-custom-search-input
-                  [placeholder]="'cards.table.search_placeholder' | translate"
-                  [debounce]="200"
-                  [clearable]="true"
-                  [ngModel]="demoTableSearchQuery()"
-                  (valueChange)="demoTableSearchQuery.set($event); demoTableCurrentPage.set(1)"
-                />
-              </div>
-              <div class="w-full sm:w-56">
-                <app-custom-select
-                  [options]="tableStatusOptions()"
-                  valueKey="value"
-                  labelKey="label"
-                  [(value)]="demoTableStatusFilter"
-                  (valueChange)="demoTableCurrentPage.set(1)"
-                  [placeholder]="'cards.table.filter_all' | translate"
-                />
-              </div>
+        <div class="flex flex-col xl:flex-row xl:items-center justify-between gap-4">
+          <div
+            class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1 max-w-2xl"
+          >
+            <div class="w-full sm:w-80">
+              <app-custom-search-input
+                [placeholder]="'cards.table.search_placeholder' | translate"
+                [debounce]="200"
+                [clearable]="true"
+                [ngModel]="demoTableSearchQuery()"
+                (valueChange)="demoTableSearchQuery.set($event); demoTableCurrentPage.set(1)"
+              />
             </div>
-
-            <div class="flex flex-wrap items-center gap-x-4 gap-y-2.5 bg-slate-50 dark:bg-slate-950/20 p-2.5 rounded-xl border border-slate-200/40 dark:border-slate-800/40 max-w-full">
-              <div class="flex items-center gap-2">
-                <span class="text-xs font-bold text-slate-500 dark:text-slate-400 select-none whitespace-nowrap">{{ 'cards.table.sim_loading' | translate }}</span>
-                <app-custom-switch
-                  [checked]="demoTableLoading()"
-                  (checkedChange)="demoTableLoading.set($event)"
-                />
-              </div>
-              <div class="hidden sm:block h-4 w-px bg-slate-200 dark:bg-slate-800"></div>
-              <div class="flex items-center gap-2">
-                <span class="text-xs font-bold text-slate-500 dark:text-slate-400 select-none whitespace-nowrap">{{ 'cards.table.sim_empty' | translate }}</span>
-                <app-custom-switch
-                  [checked]="demoTableEmpty()"
-                  (checkedChange)="demoTableEmpty.set($event)"
-                />
-              </div>
-              @if (demoTableSearchQuery() || demoTableStatusFilter() !== 'all' || demoTableEmpty() || demoTableLoading()) {
-                <div class="hidden sm:block h-4 w-px bg-slate-200 dark:bg-slate-800"></div>
-                <button
-                  (click)="resetTableFilters()"
-                  class="text-xs font-bold text-primary hover:opacity-80 transition-opacity flex items-center gap-1 cursor-pointer"
-                >
-                  <app-icon name="close" class="w-3 h-3" />
-                  {{ 'showcase.reset' | translate }}
-                </button>
-              }
+            <div class="w-full sm:w-56">
+              <app-custom-select
+                [options]="tableStatusOptions()"
+                valueKey="value"
+                labelKey="label"
+                [(value)]="demoTableStatusFilter"
+                (valueChange)="demoTableCurrentPage.set(1)"
+                [placeholder]="'cards.table.filter_all' | translate"
+              />
             </div>
           </div>
 
-                <app-table
+          <div
+            class="flex flex-wrap items-center gap-x-4 gap-y-2.5 bg-slate-100 dark:bg-slate-950/20 p-2.5 rounded-xl border border-slate-200/40 dark:border-slate-800/40 max-w-full"
+          >
+            <div class="flex items-center gap-2">
+              <span
+                class="text-xs font-bold text-slate-500 dark:text-slate-400 select-none whitespace-nowrap"
+                >{{ 'cards.table.sim_loading' | translate }}</span
+              >
+              <app-custom-switch
+                [checked]="demoTableLoading()"
+                (checkedChange)="demoTableLoading.set($event)"
+              />
+            </div>
+            <div class="hidden sm:block h-4 w-px bg-slate-200 dark:bg-slate-800"></div>
+            <div class="flex items-center gap-2">
+              <span
+                class="text-xs font-bold text-slate-500 dark:text-slate-400 select-none whitespace-nowrap"
+                >{{ 'cards.table.sim_empty' | translate }}</span
+              >
+              <app-custom-switch
+                [checked]="demoTableEmpty()"
+                (checkedChange)="demoTableEmpty.set($event)"
+              />
+            </div>
+            @if (
+              demoTableSearchQuery() ||
+              demoTableStatusFilter() !== 'all' ||
+              demoTableEmpty() ||
+              demoTableLoading()
+            ) {
+              <div class="hidden sm:block h-4 w-px bg-slate-200 dark:bg-slate-800"></div>
+              <button
+                (click)="resetTableFilters()"
+                class="text-xs font-bold text-primary hover:opacity-80 transition-opacity flex items-center gap-1 cursor-pointer"
+              >
+                <app-icon name="close" class="w-3 h-3" />
+                {{ 'showcase.reset' | translate }}
+              </button>
+            }
+          </div>
+        </div>
+
+        <app-table
           [columns]="demoTableColumns()"
           [data]="paginatedTransactions()"
           [loading]="demoTableLoading()"
-          [emptyText]="(demoTableEmpty() ? 'showcase.table_empty_simulated' : 'showcase.table_empty_filtered') | translate"
+          [emptyText]="
+            (demoTableEmpty() ? 'showcase.table_empty_simulated' : 'showcase.table_empty_filtered')
+              | translate
+          "
           [emptyIcon]="demoTableEmpty() ? 'warning' : 'search'"
           [hoverable]="true"
           [localSort]="false"
@@ -1283,7 +1480,7 @@
           [sortDirection]="demoTableSortDirection()"
           (sortChange)="onSortChange($event)"
         >
-                    <ng-template appTableCell="txHash" let-value>
+          <ng-template appTableCell="txHash" let-value>
             <div class="flex items-center gap-2 font-mono">
               <app-icon name="link-chain" class="w-3.5 h-3.5 text-slate-400 dark:text-slate-600" />
               <a
@@ -1296,48 +1493,62 @@
             </div>
           </ng-template>
 
-                    <ng-template appTableCell="method" let-value>
-            <span class="px-2.5 py-1 rounded-[8px] bg-slate-100 dark:bg-slate-800 text-xs font-extrabold text-slate-650 dark:text-slate-350 border border-slate-200/30 dark:border-slate-700/30">
+          <ng-template appTableCell="method" let-value>
+            <span
+              class="px-2.5 py-1 rounded-[8px] bg-slate-100 dark:bg-slate-800 text-xs font-extrabold text-slate-650 dark:text-slate-350 border border-slate-200/30 dark:border-slate-700/30"
+            >
               {{ value }}
             </span>
           </ng-template>
 
-                    <ng-template appTableCell="block" let-value>
+          <ng-template appTableCell="block" let-value>
             <span class="font-mono text-xs font-bold text-slate-500 dark:text-slate-400">
               #{{ value }}
             </span>
           </ng-template>
 
-                    <ng-template appTableCell="from" let-value>
-            <span class="font-mono text-xs text-slate-500 dark:text-slate-500 cursor-help" [title]="value">
+          <ng-template appTableCell="from" let-value>
+            <span
+              class="font-mono text-xs text-slate-500 dark:text-slate-500 cursor-help"
+              [title]="value"
+            >
               {{ value.substring(0, 6) }}...{{ value.substring(value.length - 4) }}
             </span>
           </ng-template>
 
-                    <ng-template appTableCell="to" let-value>
-            <span class="font-mono text-xs text-slate-500 dark:text-slate-500 cursor-help" [title]="value">
+          <ng-template appTableCell="to" let-value>
+            <span
+              class="font-mono text-xs text-slate-500 dark:text-slate-500 cursor-help"
+              [title]="value"
+            >
               {{ value.substring(0, 6) }}...{{ value.substring(value.length - 4) }}
             </span>
           </ng-template>
 
-                    <ng-template appTableCell="value" let-value>
+          <ng-template appTableCell="value" let-value>
             <span class="font-black text-slate-800 dark:text-white">
               {{ value }}
             </span>
           </ng-template>
 
-                    <ng-template appTableCell="status" let-value>
+          <ng-template appTableCell="status" let-value>
             @if (value === 'success') {
-              <app-badge variant="success" rounded="full" size="sm">{{ 'cards.table.status_success' | translate }}</app-badge>
+              <app-badge variant="success" rounded="full" size="sm">{{
+                'cards.table.status_success' | translate
+              }}</app-badge>
             } @else if (value === 'pending') {
-              <app-badge variant="warning" rounded="full" size="sm" [pulse]="true">{{ 'cards.table.status_pending' | translate }}</app-badge>
+              <app-badge variant="warning" rounded="full" size="sm" [pulse]="true">{{
+                'cards.table.status_pending' | translate
+              }}</app-badge>
             } @else {
-              <app-badge variant="danger" rounded="full" size="sm">{{ 'cards.table.status_failed' | translate }}</app-badge>
+              <app-badge variant="danger" rounded="full" size="sm">{{
+                'cards.table.status_failed' | translate
+              }}</app-badge>
             }
           </ng-template>
         </app-table>
 
-                @if (!demoTableLoading() && filteredTransactions().length > 0) {
+        @if (!demoTableLoading() && filteredTransactions().length > 0) {
           <div class="mt-2">
             <app-pagination
               [currentPage]="demoTableCurrentPage()"
@@ -1362,8 +1573,12 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div class="space-y-3">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-slate-700 dark:text-slate-300">{{ 'cards.code_block.demo1_title' | translate }}</span>
-              <app-badge variant="primary" rounded="full" size="sm">{{ 'showcase.typescript_badge' | translate }}</app-badge>
+              <span class="text-xs font-bold text-slate-700 dark:text-slate-300">{{
+                'cards.code_block.demo1_title' | translate
+              }}</span>
+              <app-badge variant="primary" rounded="full" size="sm">{{
+                'showcase.typescript_badge' | translate
+              }}</app-badge>
             </div>
             <app-code-block
               [code]="demoSingleCode"
@@ -1375,18 +1590,24 @@
 
           <div class="space-y-3">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-slate-700 dark:text-slate-300">{{ 'cards.code_block.demo2_title' | translate }}</span>
-              <app-badge variant="secondary" rounded="full" size="sm">{{ 'showcase.multi_tab' | translate }}</app-badge>
+              <span class="text-xs font-bold text-slate-700 dark:text-slate-300">{{
+                'cards.code_block.demo2_title' | translate
+              }}</span>
+              <app-badge variant="secondary" rounded="full" size="sm">{{
+                'showcase.multi_tab' | translate
+              }}</app-badge>
             </div>
-            <app-code-block
-              [files]="demoMultiCodeFiles"
-            ></app-code-block>
+            <app-code-block [files]="demoMultiCodeFiles"></app-code-block>
           </div>
 
           <div class="col-span-full space-y-3 pt-2">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-slate-700 dark:text-slate-300">{{ 'cards.code_block.demo3_title' | translate }}</span>
-              <app-badge variant="neutral" rounded="full" size="sm">{{ 'showcase.collapsible' | translate }}</app-badge>
+              <span class="text-xs font-bold text-slate-700 dark:text-slate-300">{{
+                'cards.code_block.demo3_title' | translate
+              }}</span>
+              <app-badge variant="neutral" rounded="full" size="sm">{{
+                'showcase.collapsible' | translate
+              }}</app-badge>
             </div>
             <app-code-block
               [code]="demoCollapsibleCode"
@@ -1410,8 +1631,12 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div class="space-y-3">
             <div class="flex flex-wrap items-center justify-between gap-2">
-              <span class="text-xs font-bold text-slate-700 dark:text-slate-300">{{ 'cards.file_upload.demo1_title' | translate }}</span>
-              <app-badge variant="primary" rounded="full" size="sm" class="shrink-0">{{ 'cards.file_upload.badge_sql' | translate }}</app-badge>
+              <span class="text-xs font-bold text-slate-700 dark:text-slate-300">{{
+                'cards.file_upload.demo1_title' | translate
+              }}</span>
+              <app-badge variant="primary" rounded="full" size="sm" class="shrink-0">{{
+                'cards.file_upload.badge_sql' | translate
+              }}</app-badge>
             </div>
             <app-file-upload
               variant="horizontal"
@@ -1428,8 +1653,12 @@
 
           <div class="space-y-3">
             <div class="flex flex-wrap items-center justify-between gap-2">
-              <span class="text-xs font-bold text-slate-700 dark:text-slate-300">{{ 'cards.file_upload.demo2_title' | translate }}</span>
-              <app-badge variant="secondary" rounded="full" size="sm" class="shrink-0">{{ 'cards.file_upload.badge_max_20mb' | translate }}</app-badge>
+              <span class="text-xs font-bold text-slate-700 dark:text-slate-300">{{
+                'cards.file_upload.demo2_title' | translate
+              }}</span>
+              <app-badge variant="secondary" rounded="full" size="sm" class="shrink-0">{{
+                'cards.file_upload.badge_max_20mb' | translate
+              }}</app-badge>
             </div>
             <app-file-upload
               variant="horizontal"
@@ -1448,8 +1677,12 @@
           <div class="col-span-full grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
             <div class="md:col-span-2 space-y-3">
               <div class="flex flex-wrap items-center justify-between gap-2">
-                <span class="text-xs font-bold text-slate-700 dark:text-slate-300">{{ 'cards.file_upload.demo3_title' | translate }}</span>
-                <app-badge variant="info" rounded="full" size="sm" class="shrink-0">{{ 'showcase.dropzone_mode' | translate }}</app-badge>
+                <span class="text-xs font-bold text-slate-700 dark:text-slate-300">{{
+                  'cards.file_upload.demo3_title' | translate
+                }}</span>
+                <app-badge variant="info" rounded="full" size="sm" class="shrink-0">{{
+                  'showcase.dropzone_mode' | translate
+                }}</app-badge>
               </div>
               <app-file-upload
                 variant="dropzone"
@@ -1464,8 +1697,12 @@
 
             <div class="space-y-3">
               <div class="flex flex-wrap items-center justify-between gap-2">
-                <span class="text-xs font-bold text-slate-700 dark:text-slate-300">{{ 'cards.file_upload.demo4_title' | translate }}</span>
-                <app-badge variant="neutral" rounded="full" size="sm" class="shrink-0">{{ 'showcase.avatar_mode' | translate }}</app-badge>
+                <span class="text-xs font-bold text-slate-700 dark:text-slate-300">{{
+                  'cards.file_upload.demo4_title' | translate
+                }}</span>
+                <app-badge variant="neutral" rounded="full" size="sm" class="shrink-0">{{
+                  'showcase.avatar_mode' | translate
+                }}</app-badge>
               </div>
               <app-file-upload
                 variant="avatar"
@@ -1490,13 +1727,21 @@
         </h4>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div class="space-y-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
+          <div
+            class="space-y-4 p-4 rounded-xl bg-slate-100/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60"
+          >
             <div class="flex flex-wrap items-center justify-between gap-2">
               <div>
-                <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.input_otp.demo1_title' | translate }}</span>
-                <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.input_otp.demo1_desc' | translate }}</span>
+                <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{
+                  'cards.input_otp.demo1_title' | translate
+                }}</span>
+                <span class="text-[11px] text-slate-500 dark:text-slate-400">{{
+                  'cards.input_otp.demo1_desc' | translate
+                }}</span>
               </div>
-              <app-badge variant="primary" rounded="full" size="sm" class="shrink-0">{{ 'showcase.standard_grouping' | translate }}</app-badge>
+              <app-badge variant="primary" rounded="full" size="sm" class="shrink-0">{{
+                'showcase.standard_grouping' | translate
+              }}</app-badge>
             </div>
 
             <div class="flex flex-col items-start gap-3 pt-1">
@@ -1512,7 +1757,10 @@
 
               <div class="flex flex-wrap items-center justify-between gap-2 w-full pt-1">
                 <span class="text-xs font-mono text-slate-500">
-                  {{ 'cards.input_otp.input_val' | translate }}: <strong class="text-purple-600 dark:text-purple-400 font-bold">{{ demoOtpStandard() || ('cards.input_otp.empty_val' | translate) }}</strong>
+                  {{ 'cards.input_otp.input_val' | translate }}:
+                  <strong class="text-purple-600 dark:text-purple-400 font-bold">{{
+                    demoOtpStandard() || ('cards.input_otp.empty_val' | translate)
+                  }}</strong>
                 </span>
 
                 <button
@@ -1529,13 +1777,21 @@
             </div>
           </div>
 
-          <div class="space-y-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
+          <div
+            class="space-y-4 p-4 rounded-xl bg-slate-100/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60"
+          >
             <div class="flex flex-wrap items-center justify-between gap-2">
               <div>
-                <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.input_otp.demo2_title' | translate }}</span>
-                <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.input_otp.demo2_desc' | translate }}</span>
+                <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{
+                  'cards.input_otp.demo2_title' | translate
+                }}</span>
+                <span class="text-[11px] text-slate-500 dark:text-slate-400">{{
+                  'cards.input_otp.demo2_desc' | translate
+                }}</span>
               </div>
-              <app-badge variant="secondary" rounded="full" size="sm" class="shrink-0">{{ 'showcase.pin_mask' | translate }}</app-badge>
+              <app-badge variant="secondary" rounded="full" size="sm" class="shrink-0">{{
+                'showcase.pin_mask' | translate
+              }}</app-badge>
             </div>
 
             <div class="flex flex-col items-start gap-3 pt-1">
@@ -1551,7 +1807,10 @@
 
               <div class="flex flex-wrap items-center justify-between gap-2 w-full pt-1">
                 <span class="text-xs font-mono text-slate-500">
-                  {{ 'showcase.pin_label' | translate }} <strong class="text-emerald-600 dark:text-emerald-400 font-bold">{{ demoOtpMaskToggle() ? demoOtpPin() : '••••' }}</strong>
+                  {{ 'showcase.pin_label' | translate }}
+                  <strong class="text-emerald-600 dark:text-emerald-400 font-bold">{{
+                    demoOtpMaskToggle() ? demoOtpPin() : '••••'
+                  }}</strong>
                 </span>
 
                 <button
@@ -1560,19 +1819,31 @@
                   size="sm"
                   (click)="demoOtpMaskToggle.set(!demoOtpMaskToggle())"
                 >
-                  {{ demoOtpMaskToggle() ? ('cards.input_otp.hide_pin' | translate) : ('cards.input_otp.show_pin' | translate) }}
+                  {{
+                    demoOtpMaskToggle()
+                      ? ('cards.input_otp.hide_pin' | translate)
+                      : ('cards.input_otp.show_pin' | translate)
+                  }}
                 </button>
               </div>
             </div>
           </div>
 
-          <div class="space-y-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
+          <div
+            class="space-y-4 p-4 rounded-xl bg-slate-100/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60"
+          >
             <div class="flex flex-wrap items-center justify-between gap-2">
               <div>
-                <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.input_otp.demo3_title' | translate }}</span>
-                <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.input_otp.demo3_desc' | translate }}</span>
+                <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{
+                  'cards.input_otp.demo3_title' | translate
+                }}</span>
+                <span class="text-[11px] text-slate-500 dark:text-slate-400">{{
+                  'cards.input_otp.demo3_desc' | translate
+                }}</span>
               </div>
-              <app-badge variant="info" rounded="full" size="sm" class="shrink-0">{{ 'showcase.alphanumeric' | translate }}</app-badge>
+              <app-badge variant="info" rounded="full" size="sm" class="shrink-0">{{
+                'showcase.alphanumeric' | translate
+              }}</app-badge>
             </div>
 
             <div class="flex flex-col items-start gap-3 pt-1">
@@ -1587,26 +1858,41 @@
 
               <div class="flex flex-wrap items-center justify-between gap-2 w-full pt-1">
                 <span class="text-xs font-mono text-slate-500">
-                  {{ 'showcase.referral_code_label' | translate }} <strong class="text-sky-600 dark:text-sky-400 font-bold">{{ demoOtpAlpha() || ('cards.input_otp.empty_val' | translate) }}</strong>
+                  {{ 'showcase.referral_code_label' | translate }}
+                  <strong class="text-sky-600 dark:text-sky-400 font-bold">{{
+                    demoOtpAlpha() || ('cards.input_otp.empty_val' | translate)
+                  }}</strong>
                 </span>
 
-                <span class="text-[11px] text-slate-400">{{ 'cards.input_otp.paste_support' | translate }}</span>
+                <span class="text-[11px] text-slate-400">{{
+                  'cards.input_otp.paste_support' | translate
+                }}</span>
               </div>
             </div>
           </div>
 
-          <div class="space-y-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
+          <div
+            class="space-y-4 p-4 rounded-xl bg-slate-100/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60"
+          >
             <div class="flex flex-wrap items-center justify-between gap-2">
               <div>
-                <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.input_otp.invalid_title' | translate }}</span>
-                <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.input_otp.invalid_desc' | translate }}</span>
+                <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{
+                  'cards.input_otp.invalid_title' | translate
+                }}</span>
+                <span class="text-[11px] text-slate-500 dark:text-slate-400">{{
+                  'cards.input_otp.invalid_desc' | translate
+                }}</span>
               </div>
-              <app-badge variant="danger" rounded="full" size="sm" class="shrink-0">{{ 'showcase.invalid_disabled' | translate }}</app-badge>
+              <app-badge variant="danger" rounded="full" size="sm" class="shrink-0">{{
+                'showcase.invalid_disabled' | translate
+              }}</app-badge>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
               <div class="space-y-1.5">
-                <span class="text-[11px] font-semibold text-rose-500 block">{{ 'cards.input_otp.incorrect_code' | translate }}</span>
+                <span class="text-[11px] font-semibold text-rose-500 block">{{
+                  'cards.input_otp.incorrect_code' | translate
+                }}</span>
                 <app-input-otp
                   [ngModel]="demoOtpError()"
                   (ngModelChange)="demoOtpError.set($event)"
@@ -1618,7 +1904,9 @@
               </div>
 
               <div class="space-y-1.5">
-                <span class="text-[11px] font-semibold text-slate-400 block">{{ 'cards.input_otp.disabled_label' | translate }}</span>
+                <span class="text-[11px] font-semibold text-slate-400 block">{{
+                  'cards.input_otp.disabled_label' | translate
+                }}</span>
                 <app-input-otp
                   [ngModel]="demoOtpDisabled()"
                   [length]="6"
@@ -1632,21 +1920,28 @@
         </div>
       </div>
 
-
       <div app-card class="mt-8">
         <div class="space-y-6">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200/80 dark:border-slate-800/80">
+          <div
+            class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200/80 dark:border-slate-800/80"
+          >
             <div>
               <div class="flex flex-wrap items-center gap-2.5">
-                <h3 class="text-base font-extrabold text-slate-900 dark:text-white">{{ 'cards.dropdown.card_title' | translate }}</h3>
-                <app-badge variant="primary" rounded="full" size="sm" class="shrink-0">{{ 'showcase.dropdown_style' | translate }}</app-badge>
+                <h3 class="text-base font-extrabold text-slate-900 dark:text-white">
+                  {{ 'cards.dropdown.card_title' | translate }}
+                </h3>
+                <app-badge variant="primary" rounded="full" size="sm" class="shrink-0">{{
+                  'showcase.dropdown_style' | translate
+                }}</app-badge>
               </div>
               <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
                 {{ 'cards.dropdown.card_desc' | translate }}
               </p>
             </div>
 
-            <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-purple-50 dark:bg-purple-950/40 border border-purple-200/60 dark:border-purple-800/50 shrink-0">
+            <div
+              class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-purple-50 dark:bg-purple-950/40 border border-purple-200/60 dark:border-purple-800/50 shrink-0"
+            >
               <app-icon name="info" class="w-4 h-4 text-purple-500 shrink-0"></app-icon>
               <span class="text-xs font-semibold text-purple-700 dark:text-purple-300">
                 {{ demoDropdownLastAction() }}
@@ -1655,13 +1950,21 @@
           </div>
 
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div class="space-y-3 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
+            <div
+              class="space-y-3 p-4 rounded-xl bg-slate-100/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60"
+            >
               <div class="flex flex-wrap items-center justify-between gap-2">
                 <div>
-                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.dropdown.demo1_title' | translate }}</span>
-                  <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.dropdown.demo1_desc' | translate }}</span>
+                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{
+                    'cards.dropdown.demo1_title' | translate
+                  }}</span>
+                  <span class="text-[11px] text-slate-500 dark:text-slate-400">{{
+                    'cards.dropdown.demo1_desc' | translate
+                  }}</span>
                 </div>
-                <app-badge variant="success" rounded="full" size="sm" class="shrink-0">{{ 'showcase.profile_menu' | translate }}</app-badge>
+                <app-badge variant="success" rounded="full" size="sm" class="shrink-0">{{
+                  'showcase.profile_menu' | translate
+                }}</app-badge>
               </div>
 
               <div class="flex flex-wrap items-center gap-3 pt-2">
@@ -1688,13 +1991,21 @@
               </div>
             </div>
 
-            <div class="space-y-3 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
+            <div
+              class="space-y-3 p-4 rounded-xl bg-slate-100/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60"
+            >
               <div class="flex flex-wrap items-center justify-between gap-2">
                 <div>
-                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.dropdown.demo2_title' | translate }}</span>
-                  <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.dropdown.demo2_desc' | translate }}</span>
+                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{
+                    'cards.dropdown.demo2_title' | translate
+                  }}</span>
+                  <span class="text-[11px] text-slate-500 dark:text-slate-400">{{
+                    'cards.dropdown.demo2_desc' | translate
+                  }}</span>
                 </div>
-                <app-badge variant="info" rounded="full" size="sm" class="shrink-0">{{ 'showcase.config_items' | translate }}</app-badge>
+                <app-badge variant="info" rounded="full" size="sm" class="shrink-0">{{
+                  'showcase.config_items' | translate
+                }}</app-badge>
               </div>
 
               <div class="flex flex-wrap items-center gap-3 pt-2">
@@ -1712,13 +2023,21 @@
               </div>
             </div>
 
-            <div class="space-y-3 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
+            <div
+              class="space-y-3 p-4 rounded-xl bg-slate-100/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60"
+            >
               <div class="flex flex-wrap items-center justify-between gap-2">
                 <div>
-                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.dropdown.demo3_title' | translate }}</span>
-                  <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.dropdown.demo3_desc' | translate }}</span>
+                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{
+                    'cards.dropdown.demo3_title' | translate
+                  }}</span>
+                  <span class="text-[11px] text-slate-500 dark:text-slate-400">{{
+                    'cards.dropdown.demo3_desc' | translate
+                  }}</span>
                 </div>
-                <app-badge variant="warning" rounded="full" size="sm" class="shrink-0">{{ 'showcase.nested_submenu' | translate }}</app-badge>
+                <app-badge variant="warning" rounded="full" size="sm" class="shrink-0">{{
+                  'showcase.nested_submenu' | translate
+                }}</app-badge>
               </div>
 
               <div class="flex flex-wrap items-center gap-3 pt-2">
@@ -1735,13 +2054,21 @@
               </div>
             </div>
 
-            <div class="space-y-3 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
+            <div
+              class="space-y-3 p-4 rounded-xl bg-slate-100/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60"
+            >
               <div class="flex flex-wrap items-center justify-between gap-2">
                 <div>
-                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.dropdown.demo4_title' | translate }}</span>
-                  <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.dropdown.demo4_desc' | translate }}</span>
+                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{
+                    'cards.dropdown.demo4_title' | translate
+                  }}</span>
+                  <span class="text-[11px] text-slate-500 dark:text-slate-400">{{
+                    'cards.dropdown.demo4_desc' | translate
+                  }}</span>
                 </div>
-                <app-badge variant="primary" rounded="full" size="sm" class="shrink-0">{{ 'showcase.icon_placements' | translate }}</app-badge>
+                <app-badge variant="primary" rounded="full" size="sm" class="shrink-0">{{
+                  'showcase.icon_placements' | translate
+                }}</app-badge>
               </div>
 
               <div class="flex flex-wrap items-center gap-3 pt-2">
@@ -1773,7 +2100,10 @@
                   placement="bottom-right"
                   (itemClick)="onDropdownSelect($event)"
                 >
-                  <div dropdown-trigger class="px-3 py-1.5 rounded-full bg-gradient-to-r from-pink-500 to-rose-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-md hover:opacity-90">
+                  <div
+                    dropdown-trigger
+                    class="px-3 py-1.5 rounded-full bg-gradient-to-r from-pink-500 to-rose-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-md hover:opacity-90"
+                  >
                     <app-icon name="sparkles" class="w-3.5 h-3.5"></app-icon>
                     <span>{{ 'showcase.custom_trigger' | translate }}</span>
                   </div>
@@ -1781,16 +2111,31 @@
               </div>
             </div>
 
-            <div class="space-y-3 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60 col-span-1 lg:col-span-2">
+            <div
+              class="space-y-3 p-4 rounded-xl bg-slate-100/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60 col-span-1 lg:col-span-2"
+            >
               <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2">
                 <div class="space-y-1 min-w-0 flex-1">
                   <div class="flex flex-wrap items-center gap-2">
-                    <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'showcase.voice_demo_title' | translate }}</span>
-                    <span class="px-2 py-0.5 text-[10px] font-black rounded-full bg-teal-100 dark:bg-teal-950 text-teal-600 dark:text-teal-300 border border-teal-200/60 dark:border-teal-800/60 animate-pulse shrink-0">{{ 'showcase.morphing_animation' | translate }}</span>
+                    <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{
+                      'showcase.voice_demo_title' | translate
+                    }}</span>
+                    <span
+                      class="px-2 py-0.5 text-[10px] font-black rounded-full bg-teal-100 dark:bg-teal-950 text-teal-600 dark:text-teal-300 border border-teal-200/60 dark:border-teal-800/60 animate-pulse shrink-0"
+                      >{{ 'showcase.morphing_animation' | translate }}</span
+                    >
                   </div>
-                  <span class="text-[11px] text-slate-500 dark:text-slate-400 block leading-snug">{{ 'cards.voice_chat.morphing_desc' | translate }}</span>
+                  <span class="text-[11px] text-slate-500 dark:text-slate-400 block leading-snug">{{
+                    'cards.voice_chat.morphing_desc' | translate
+                  }}</span>
                 </div>
-                <app-badge variant="success" rounded="full" size="sm" class="shrink-0 self-start sm:self-auto">{{ 'showcase.voice_exact' | translate }}</app-badge>
+                <app-badge
+                  variant="success"
+                  rounded="full"
+                  size="sm"
+                  class="shrink-0 self-start sm:self-auto"
+                  >{{ 'showcase.voice_exact' | translate }}</app-badge
+                >
               </div>
 
               <div class="flex flex-col items-center justify-center py-6">
@@ -1803,11 +2148,17 @@
 
       <div app-card class="mt-8">
         <div class="space-y-6">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200/80 dark:border-slate-800/80">
+          <div
+            class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200/80 dark:border-slate-800/80"
+          >
             <div>
               <div class="flex flex-wrap items-center gap-2.5">
-                <h3 class="text-base font-extrabold text-slate-900 dark:text-white">{{ 'cards.progress.card_title' | translate }}</h3>
-                <app-badge variant="primary" rounded="full" size="sm" class="shrink-0">{{ 'showcase.progress_style' | translate }}</app-badge>
+                <h3 class="text-base font-extrabold text-slate-900 dark:text-white">
+                  {{ 'cards.progress.card_title' | translate }}
+                </h3>
+                <app-badge variant="primary" rounded="full" size="sm" class="shrink-0">{{
+                  'showcase.progress_style' | translate
+                }}</app-badge>
               </div>
               <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
                 {{ 'cards.progress.card_desc' | translate }}
@@ -1827,55 +2178,142 @@
           </div>
 
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div class="space-y-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
+            <div
+              class="space-y-4 p-4 rounded-xl bg-slate-100/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60"
+            >
               <div class="flex items-center justify-between">
                 <div>
-                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.progress.demo1_title' | translate }}</span>
-                  <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.progress.demo1_desc' | translate }}</span>
+                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{
+                    'cards.progress.demo1_title' | translate
+                  }}</span>
+                  <span class="text-[11px] text-slate-500 dark:text-slate-400">{{
+                    'cards.progress.demo1_desc' | translate
+                  }}</span>
                 </div>
-              <app-badge variant="primary" rounded="full" size="sm">{{ 'showcase.five_sizes' | translate }}</app-badge>
+                <app-badge variant="primary" rounded="full" size="sm">{{
+                  'showcase.five_sizes' | translate
+                }}</app-badge>
               </div>
 
               <div class="space-y-3 pt-1">
-              <app-progress [label]="'showcase.size_xs' | translate" [value]="25" size="xs" [showValue]="true" />
-              <app-progress [label]="'showcase.size_sm' | translate" [value]="45" size="sm" [showValue]="true" />
-              <app-progress [label]="'showcase.size_md' | translate" [value]="65" size="md" [showValue]="true" />
-              <app-progress [label]="'showcase.size_lg' | translate" [value]="80" size="lg" [showValue]="true" valuePosition="inside" />
-              <app-progress [label]="'showcase.size_xl' | translate" [value]="95" size="xl" [showValue]="true" valuePosition="inside" />
+                <app-progress
+                  [label]="'showcase.size_xs' | translate"
+                  [value]="25"
+                  size="xs"
+                  [showValue]="true"
+                />
+                <app-progress
+                  [label]="'showcase.size_sm' | translate"
+                  [value]="45"
+                  size="sm"
+                  [showValue]="true"
+                />
+                <app-progress
+                  [label]="'showcase.size_md' | translate"
+                  [value]="65"
+                  size="md"
+                  [showValue]="true"
+                />
+                <app-progress
+                  [label]="'showcase.size_lg' | translate"
+                  [value]="80"
+                  size="lg"
+                  [showValue]="true"
+                  valuePosition="inside"
+                />
+                <app-progress
+                  [label]="'showcase.size_xl' | translate"
+                  [value]="95"
+                  size="xl"
+                  [showValue]="true"
+                  valuePosition="inside"
+                />
               </div>
             </div>
 
-            <div class="space-y-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
+            <div
+              class="space-y-4 p-4 rounded-xl bg-slate-100/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60"
+            >
               <div class="flex items-center justify-between">
                 <div>
-                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.progress.demo2_title' | translate }}</span>
-                  <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.progress.demo2_desc' | translate }}</span>
+                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{
+                    'cards.progress.demo2_title' | translate
+                  }}</span>
+                  <span class="text-[11px] text-slate-500 dark:text-slate-400">{{
+                    'cards.progress.demo2_desc' | translate
+                  }}</span>
                 </div>
-                <app-badge variant="info" rounded="full" size="sm">{{ 'showcase.variants' | translate }}</app-badge>
+                <app-badge variant="info" rounded="full" size="sm">{{
+                  'showcase.variants' | translate
+                }}</app-badge>
               </div>
 
               <div class="space-y-3.5 pt-1">
-              <app-progress [label]="'showcase.progress_primary' | translate" [value]="75" variant="primary" size="sm" [showValue]="true" />
-              <app-progress [label]="'showcase.progress_success' | translate" [value]="100" variant="success" size="sm" [showValue]="true" />
-              <app-progress [label]="'showcase.progress_warning' | translate" [value]="55" variant="warning" size="sm" [showValue]="true" />
-              <app-progress [label]="'showcase.progress_danger' | translate" [value]="30" variant="danger" size="sm" [showValue]="true" />
-              <app-progress [label]="'showcase.progress_info' | translate" [value]="85" variant="info" size="sm" [showValue]="true" />
-              <app-progress [label]="'showcase.progress_gradient' | translate" [value]="90" variant="gradient" size="md" [showValue]="true" />
+                <app-progress
+                  [label]="'showcase.progress_primary' | translate"
+                  [value]="75"
+                  variant="primary"
+                  size="sm"
+                  [showValue]="true"
+                />
+                <app-progress
+                  [label]="'showcase.progress_success' | translate"
+                  [value]="100"
+                  variant="success"
+                  size="sm"
+                  [showValue]="true"
+                />
+                <app-progress
+                  [label]="'showcase.progress_warning' | translate"
+                  [value]="55"
+                  variant="warning"
+                  size="sm"
+                  [showValue]="true"
+                />
+                <app-progress
+                  [label]="'showcase.progress_danger' | translate"
+                  [value]="30"
+                  variant="danger"
+                  size="sm"
+                  [showValue]="true"
+                />
+                <app-progress
+                  [label]="'showcase.progress_info' | translate"
+                  [value]="85"
+                  variant="info"
+                  size="sm"
+                  [showValue]="true"
+                />
+                <app-progress
+                  [label]="'showcase.progress_gradient' | translate"
+                  [value]="90"
+                  variant="gradient"
+                  size="md"
+                  [showValue]="true"
+                />
               </div>
             </div>
 
-            <div class="space-y-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
+            <div
+              class="space-y-4 p-4 rounded-xl bg-slate-100/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60"
+            >
               <div class="flex items-center justify-between">
                 <div>
-                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.progress.demo3_title' | translate }}</span>
-                  <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.progress.demo3_desc' | translate }}</span>
+                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{
+                    'cards.progress.demo3_title' | translate
+                  }}</span>
+                  <span class="text-[11px] text-slate-500 dark:text-slate-400">{{
+                    'cards.progress.demo3_desc' | translate
+                  }}</span>
                 </div>
-                <app-badge variant="warning" rounded="full" size="sm">{{ 'showcase.animations' | translate }}</app-badge>
+                <app-badge variant="warning" rounded="full" size="sm">{{
+                  'showcase.animations' | translate
+                }}</app-badge>
               </div>
 
               <div class="space-y-4 pt-1">
                 <app-progress
-                [label]="'showcase.striped_static' | translate"
+                  [label]="'showcase.striped_static' | translate"
                   [value]="60"
                   variant="primary"
                   size="md"
@@ -1903,13 +2341,21 @@
               </div>
             </div>
 
-            <div class="space-y-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60">
+            <div
+              class="space-y-4 p-4 rounded-xl bg-slate-100/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60"
+            >
               <div class="flex items-center justify-between">
                 <div>
-                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.progress.demo4_title' | translate }}</span>
-                  <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.progress.demo4_desc' | translate }}</span>
+                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{
+                    'cards.progress.demo4_title' | translate
+                  }}</span>
+                  <span class="text-[11px] text-slate-500 dark:text-slate-400">{{
+                    'cards.progress.demo4_desc' | translate
+                  }}</span>
                 </div>
-                <app-badge variant="success" rounded="full" size="sm">{{ 'showcase.steps_segments' | translate }}</app-badge>
+                <app-badge variant="success" rounded="full" size="sm">{{
+                  'showcase.steps_segments' | translate
+                }}</app-badge>
               </div>
 
               <div class="space-y-4 pt-1">
@@ -1928,7 +2374,9 @@
                     [segments]="demoProgressSegments()"
                     size="lg"
                   />
-                  <div class="flex items-center justify-between flex-wrap gap-2 text-[11px] text-slate-500 dark:text-slate-400 pt-1">
+                  <div
+                    class="flex items-center justify-between flex-wrap gap-2 text-[11px] text-slate-500 dark:text-slate-400 pt-1"
+                  >
                     <div class="flex items-center gap-1.5">
                       <span class="w-2.5 h-2.5 rounded-full bg-purple-500 inline-block"></span>
                       <span>{{ 'showcase.dapps_segment' | translate }}</span>
@@ -1942,7 +2390,9 @@
                       <span>{{ 'showcase.nfts_segment' | translate }}</span>
                     </div>
                     <div class="flex items-center gap-1.5">
-                      <span class="w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-700 inline-block"></span>
+                      <span
+                        class="w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-700 inline-block"
+                      ></span>
                       <span>{{ 'cards.progress.empty_label' | translate }} (20%)</span>
                     </div>
                   </div>
@@ -1950,13 +2400,21 @@
               </div>
             </div>
 
-            <div class="space-y-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60 col-span-1">
+            <div
+              class="space-y-4 p-4 rounded-xl bg-slate-100/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60 col-span-1"
+            >
               <div class="flex items-center justify-between">
                 <div>
-                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.progress.demo5_title' | translate }}</span>
-                  <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.progress.demo5_desc' | translate }}</span>
+                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{
+                    'cards.progress.demo5_title' | translate
+                  }}</span>
+                  <span class="text-[11px] text-slate-500 dark:text-slate-400">{{
+                    'cards.progress.demo5_desc' | translate
+                  }}</span>
                 </div>
-                <app-badge variant="secondary" rounded="full" size="sm">{{ 'showcase.interactive' | translate }}</app-badge>
+                <app-badge variant="secondary" rounded="full" size="sm">{{
+                  'showcase.interactive' | translate
+                }}</app-badge>
               </div>
 
               <div class="space-y-4 pt-1">
@@ -1974,7 +2432,9 @@
                 <div class="space-y-1.5">
                   <div class="flex justify-between text-xs text-slate-500">
                     <span>{{ 'cards.progress.adjust_value' | translate }}:</span>
-                    <strong class="font-mono text-purple-600 dark:text-purple-400">{{ demoProgressValue() }}%</strong>
+                    <strong class="font-mono text-purple-600 dark:text-purple-400"
+                      >{{ demoProgressValue() }}%</strong
+                    >
                   </div>
                   <app-custom-slider
                     [min]="0"
@@ -1987,13 +2447,21 @@
               </div>
             </div>
 
-            <div class="space-y-4 p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60 col-span-1">
+            <div
+              class="space-y-4 p-4 rounded-xl bg-slate-100/50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60 col-span-1"
+            >
               <div class="flex items-center justify-between">
                 <div>
-                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ 'cards.progress.demo6_title' | translate }}</span>
-                  <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ 'cards.progress.demo6_desc' | translate }}</span>
+                  <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{
+                    'cards.progress.demo6_title' | translate
+                  }}</span>
+                  <span class="text-[11px] text-slate-500 dark:text-slate-400">{{
+                    'cards.progress.demo6_desc' | translate
+                  }}</span>
                 </div>
-                <app-badge variant="ultra" rounded="full" size="sm">{{ 'showcase.svg_gauges' | translate }}</app-badge>
+                <app-badge variant="ultra" rounded="full" size="sm">{{
+                  'showcase.svg_gauges' | translate
+                }}</app-badge>
               </div>
 
               <div class="grid grid-cols-2 gap-4 items-center justify-items-center pt-2">
@@ -2048,11 +2516,9 @@
             </div>
 
             <div
-              class="bg-slate-50/60 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 rounded-xl p-4 space-y-2"
+              class="bg-slate-100/60 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 rounded-xl p-4 space-y-2"
             >
-              <h5
-                class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-2"
-              >
+              <h5 class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-2">
                 {{ 'cards.lang_showcase.active_lang' | translate }}
               </h5>
               <div class="flex items-center gap-3">
@@ -2087,7 +2553,9 @@
             <div
               class="bg-gradient-to-br from-primary/5 to-secondary/5 border border-primary/10 rounded-xl p-4 space-y-3"
             >
-              <h5 class="text-xs font-extrabold text-slate-700 dark:text-slate-200 flex items-center gap-2">
+              <h5
+                class="text-xs font-extrabold text-slate-700 dark:text-slate-200 flex items-center gap-2"
+              >
                 <app-icon name="code" class="w-4 h-4 text-primary" />
                 {{ 'showcase.i18n_architecture' | translate }}
               </h5>
@@ -2117,7 +2585,9 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-6">
       <div app-card>
-        <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 flex items-center gap-2">
+        <h4
+          class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 flex items-center gap-2"
+        >
           <app-icon name="user" class="w-3.5 h-3.5 text-primary" />
           {{ 'cards.avatar.title' | translate }}
         </h4>
@@ -2127,18 +2597,38 @@
 
         <div class="space-y-6">
           <div class="space-y-2">
-            <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider">{{ 'cards.avatar.single_label' | translate }}</label>
+            <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider">{{
+              'cards.avatar.single_label' | translate
+            }}</label>
             <div class="flex flex-wrap items-center gap-4 pt-1">
               <app-avatar size="xs" name="Satoshi Nakamoto" status="online" />
               <app-avatar size="sm" name="Vitalik Buterin" status="busy" />
-              <app-avatar size="md" name="Elena Rostova" status="away" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&auto=format&fit=crop&q=80" />
-              <app-avatar size="lg" name="Nguyễn Tiến Đạt" status="online" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" />
-              <app-avatar size="xl" name="Marcus Vance" shape="square" status="online" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80" />
+              <app-avatar
+                size="md"
+                name="Elena Rostova"
+                status="away"
+                src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&auto=format&fit=crop&q=80"
+              />
+              <app-avatar
+                size="lg"
+                name="Nguyễn Tiến Đạt"
+                status="online"
+                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80"
+              />
+              <app-avatar
+                size="xl"
+                name="Marcus Vance"
+                shape="square"
+                status="online"
+                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80"
+              />
             </div>
           </div>
 
           <div class="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-800/40">
-            <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider">{{ 'cards.avatar.group_label' | translate }}</label>
+            <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider">{{
+              'cards.avatar.group_label' | translate
+            }}</label>
             <div class="flex flex-col gap-3 pt-1">
               <app-avatar [avatars]="demoAvatarList" [max]="4" size="md" />
               <app-avatar [avatars]="demoAvatarList" [max]="3" size="lg" shape="square" />
@@ -2148,7 +2638,9 @@
       </div>
 
       <div app-card>
-        <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 flex items-center gap-2">
+        <h4
+          class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 flex items-center gap-2"
+        >
           <app-icon name="search" class="w-3.5 h-3.5 text-primary" />
           {{ 'cards.empty_state.title' | translate }}
         </h4>
@@ -2163,15 +2655,27 @@
           [actionText]="'cards.empty_state.action_btn' | translate"
           [secondaryActionText]="'cards.empty_state.secondary_btn' | translate"
           size="md"
-          (action)="stateService.showToast(translationService.translate('cards.empty_state.action_btn'), 'success')"
-          (secondaryAction)="stateService.showToast(translationService.translate('cards.empty_state.secondary_btn'), 'success')"
+          (action)="
+            stateService.showToast(
+              translationService.translate('cards.empty_state.action_btn'),
+              'success'
+            )
+          "
+          (secondaryAction)="
+            stateService.showToast(
+              translationService.translate('cards.empty_state.secondary_btn'),
+              'success'
+            )
+          "
         />
       </div>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-6">
       <div app-card>
-        <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 flex items-center gap-2">
+        <h4
+          class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 flex items-center gap-2"
+        >
           <app-icon name="alert" class="w-3.5 h-3.5 text-primary" />
           {{ 'cards.alert.title' | translate }}
         </h4>
@@ -2212,7 +2716,9 @@
       </div>
 
       <div app-card>
-        <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 flex items-center gap-2">
+        <h4
+          class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 flex items-center gap-2"
+        >
           <app-icon name="sidebar" class="w-3.5 h-3.5 text-primary" />
           {{ 'cards.drawer.title' | translate }}
         </h4>
@@ -2221,8 +2727,12 @@
         </p>
 
         <div class="space-y-4">
-          <div class="p-4 rounded-xl bg-slate-50/50 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 space-y-3">
-            <span class="text-xs font-bold text-slate-500 dark:text-slate-400 block">{{ 'showcase.click_open_drawer' | translate }}</span>
+          <div
+            class="p-4 rounded-xl bg-slate-100/50 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 space-y-3"
+          >
+            <span class="text-xs font-bold text-slate-500 dark:text-slate-400 block">{{
+              'showcase.click_open_drawer' | translate
+            }}</span>
             <div class="flex flex-wrap gap-2.5">
               <button app-button variant="primary" size="md" (click)="openDemoDrawer('right')">
                 <app-icon name="chevron-right" class="w-4 h-4" />
@@ -2255,7 +2765,9 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-6">
       <div app-card class="lg:col-span-2 overflow-hidden">
-        <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 flex items-center gap-2">
+        <h4
+          class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 flex items-center gap-2"
+        >
           <app-icon name="layers" class="w-3.5 h-3.5 text-primary" />
           {{ 'cards.stepper.title' | translate }}
         </h4>
@@ -2271,20 +2783,24 @@
             (activeIndexChange)="demoStepperActive.set($event)"
           />
 
-          <div class="flex flex-wrap items-center justify-between gap-2 pt-4 border-t border-slate-200/50 dark:border-slate-800/50">
+          <div
+            class="flex flex-wrap items-center justify-between gap-2 pt-4 border-t border-slate-200/50 dark:border-slate-800/50"
+          >
             <button
               app-button
               variant="cancel"
               size="sm"
               class="!px-2.5 sm:!px-3 text-xs"
               [disabled]="demoStepperActive() <= 0"
-              (click)="demoStepperActive.update(v => Math.max(0, v - 1))"
+              (click)="demoStepperActive.update((v) => Math.max(0, v - 1))"
             >
               &larr; {{ 'cards.stepper.prev_btn' | translate }}
             </button>
 
             <span class="text-[11px] sm:text-xs font-mono text-slate-400 shrink-0">
-              {{ 'showcase.active' | translate }}: {{ demoStepperActive() + 1 }}/{{ demoStepperSteps().length }}
+              {{ 'showcase.active' | translate }}: {{ demoStepperActive() + 1 }}/{{
+                demoStepperSteps().length
+              }}
             </span>
 
             <button
@@ -2293,7 +2809,9 @@
               size="sm"
               class="!px-2.5 sm:!px-3 text-xs"
               [disabled]="demoStepperActive() >= demoStepperSteps().length - 1"
-              (click)="demoStepperActive.update(v => Math.min(demoStepperSteps().length - 1, v + 1))"
+              (click)="
+                demoStepperActive.update((v) => Math.min(demoStepperSteps().length - 1, v + 1))
+              "
             >
               {{ 'cards.stepper.next_btn' | translate }} &rarr;
             </button>
@@ -2334,7 +2852,9 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-6">
       <div app-card>
-        <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 flex items-center gap-2">
+        <h4
+          class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 flex items-center gap-2"
+        >
           <app-icon name="route" class="w-3.5 h-3.5 text-primary" />
           {{ 'cards.breadcrumb.title' | translate }}
         </h4>
@@ -2344,12 +2864,18 @@
 
         <div class="space-y-4 pt-1">
           <app-breadcrumb [items]="demoBreadcrumbItems()" separatorIcon="chevron-right" />
-          <app-breadcrumb [items]="demoBreadcrumbItems()" separatorIcon="slash" [showHome]="false" />
+          <app-breadcrumb
+            [items]="demoBreadcrumbItems()"
+            separatorIcon="slash"
+            [showHome]="false"
+          />
         </div>
       </div>
 
       <div app-card>
-        <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 flex items-center gap-2">
+        <h4
+          class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 flex items-center gap-2"
+        >
           <app-icon name="minus" class="w-3.5 h-3.5 text-primary" strokeWidth="2.5" />
           {{ 'cards.divider.title' | translate }}
         </h4>
@@ -2358,16 +2884,30 @@
         </p>
 
         <div class="space-y-3">
-          <app-divider [label]="'cards.divider.label_or' | translate" labelAlign="center" variant="solid" />
-          <app-divider [label]="'cards.divider.label_dashed' | translate" labelAlign="left" variant="dashed" />
-          <app-divider [label]="'cards.divider.label_gradient' | translate" labelAlign="right" variant="gradient" />
+          <app-divider
+            [label]="'cards.divider.label_or' | translate"
+            labelAlign="center"
+            variant="solid"
+          />
+          <app-divider
+            [label]="'cards.divider.label_dashed' | translate"
+            labelAlign="left"
+            variant="dashed"
+          />
+          <app-divider
+            [label]="'cards.divider.label_gradient' | translate"
+            labelAlign="right"
+            variant="gradient"
+          />
         </div>
       </div>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-6">
       <div app-card class="lg:col-span-2">
-        <h4 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 flex items-center gap-2">
+        <h4
+          class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 flex items-center gap-2"
+        >
           <app-icon name="copy" class="w-3.5 h-3.5 text-primary" />
           {{ 'cards.copy_to_clipboard.title' | translate }}
         </h4>
@@ -2376,14 +2916,29 @@
         </p>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="flex items-center justify-between p-3.5 rounded-xl bg-slate-50/60 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40">
-            <span class="text-xs font-mono text-slate-600 dark:text-slate-300 truncate pr-2">0x71C7656EC7ab88b098defB751B7401B5f6d8976F</span>
-            <app-copy-to-clipboard textToCopy="0x71C7656EC7ab88b098defB751B7401B5f6d8976F" [label]="'cards.copy_to_clipboard.copy_btn' | translate" size="sm" />
+          <div
+            class="flex items-center justify-between p-3.5 rounded-xl bg-slate-100/60 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40"
+          >
+            <span class="text-xs font-mono text-slate-600 dark:text-slate-300 truncate pr-2"
+              >0x71C7656EC7ab88b098defB751B7401B5f6d8976F</span
+            >
+            <app-copy-to-clipboard
+              textToCopy="0x71C7656EC7ab88b098defB751B7401B5f6d8976F"
+              [label]="'cards.copy_to_clipboard.copy_btn' | translate"
+              size="sm"
+            />
           </div>
 
-          <div class="flex items-center justify-between p-3.5 rounded-xl bg-slate-50/60 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40">
-            <span class="text-xs font-mono text-slate-600 dark:text-slate-300 truncate pr-2">TX #0x9a8f1234567890abcdef1234567890abcdef4e1b</span>
-            <app-copy-to-clipboard textToCopy="0x9a8f1234567890abcdef1234567890abcdef4e1b" size="sm" />
+          <div
+            class="flex items-center justify-between p-3.5 rounded-xl bg-slate-100/60 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40"
+          >
+            <span class="text-xs font-mono text-slate-600 dark:text-slate-300 truncate pr-2"
+              >TX #0x9a8f1234567890abcdef1234567890abcdef4e1b</span
+            >
+            <app-copy-to-clipboard
+              textToCopy="0x9a8f1234567890abcdef1234567890abcdef4e1b"
+              size="sm"
+            />
           </div>
         </div>
       </div>
@@ -2398,7 +2953,11 @@
   [subtitle]="'cards.drawer.panel_subtitle' | translate"
 >
   <div class="space-y-4">
-    <app-alert type="success" [title]="'cards.alert.success_title' | translate" [message]="'cards.alert.success_msg' | translate" />
+    <app-alert
+      type="success"
+      [title]="'cards.alert.success_title' | translate"
+      [message]="'cards.alert.success_msg' | translate"
+    />
 
     <div class="space-y-3 text-xs">
       <div class="flex justify-between py-2 border-b border-slate-100 dark:border-slate-800">
@@ -2421,8 +2980,16 @@
   </div>
 
   <div drawer-footer class="flex items-center justify-end gap-3">
-    <button app-button variant="cancel" size="md" (click)="demoDrawerOpen.set(false)">{{ 'action.cancel' | translate }}</button>
-    <button app-button variant="primary" size="md" (click)="stateService.showToast(translationService.t('header.view_explorer'), 'success')">{{ 'header.view_explorer' | translate }}</button>
+    <button app-button variant="cancel" size="md" (click)="demoDrawerOpen.set(false)">
+      {{ 'action.cancel' | translate }}
+    </button>
+    <button
+      app-button
+      variant="primary"
+      size="md"
+      (click)="stateService.showToast(translationService.t('header.view_explorer'), 'success')"
+    >
+      {{ 'header.view_explorer' | translate }}
+    </button>
   </div>
 </app-drawer>
-

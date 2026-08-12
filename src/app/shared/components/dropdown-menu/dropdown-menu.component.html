@@ -1,4 +1,4 @@
-<div class="relative inline-block text-left" [ngClass]="{'w-full': triggerVariant === 'default'}">
+<div class="relative inline-block text-left" [ngClass]="{ 'w-full': triggerVariant === 'default' }">
   @if (customTrigger) {
     <div (click)="toggleOpen($event)" class="cursor-pointer inline-block">
       <ng-content select="[dropdown-trigger]"></ng-content>
@@ -10,25 +10,41 @@
       (click)="toggleOpen($event)"
       class="inline-flex items-center justify-center transition-all duration-200 focus:outline-none select-none font-semibold"
       [ngClass]="{
-        'px-3 py-1.5 text-xs rounded-[10px] justify-between gap-2': triggerVariant !== 'icon' && triggerVariant !== 'avatar' && triggerSize === 'sm',
-        'px-3.5 py-2 text-xs rounded-[12px] justify-between gap-2': triggerVariant !== 'icon' && triggerVariant !== 'avatar' && triggerSize === 'md',
-        'px-4.5 py-2.5 text-sm rounded-[14px] justify-between gap-2': triggerVariant !== 'icon' && triggerVariant !== 'avatar' && triggerSize === 'lg',
+        'px-3 py-1.5 text-xs rounded-[10px] justify-between gap-2':
+          triggerVariant !== 'icon' && triggerVariant !== 'avatar' && triggerSize === 'sm',
+        'px-3.5 py-2 text-xs rounded-[12px] justify-between gap-2':
+          triggerVariant !== 'icon' && triggerVariant !== 'avatar' && triggerSize === 'md',
+        'px-4.5 py-2.5 text-sm rounded-[14px] justify-between gap-2':
+          triggerVariant !== 'icon' && triggerVariant !== 'avatar' && triggerSize === 'lg',
 
-        'w-8 h-8 !p-0 !grid !place-items-center shrink-0': (triggerVariant === 'icon' || triggerVariant === 'avatar') && triggerSize === 'sm',
-        'w-10 h-10 !p-0 !grid !place-items-center shrink-0': (triggerVariant === 'icon' || triggerVariant === 'avatar') && triggerSize === 'md',
-        'w-12 h-12 !p-0 !grid !place-items-center shrink-0': (triggerVariant === 'icon' || triggerVariant === 'avatar') && triggerSize === 'lg',
+        'w-8 h-8 !p-0 !grid !place-items-center shrink-0':
+          (triggerVariant === 'icon' || triggerVariant === 'avatar') && triggerSize === 'sm',
+        'w-10 h-10 !p-0 !grid !place-items-center shrink-0':
+          (triggerVariant === 'icon' || triggerVariant === 'avatar') && triggerSize === 'md',
+        'w-12 h-12 !p-0 !grid !place-items-center shrink-0':
+          (triggerVariant === 'icon' || triggerVariant === 'avatar') && triggerSize === 'lg',
 
-        'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/80 shadow-sm': triggerVariant === 'outline' || triggerVariant === 'default',
-        'bg-slate-100 dark:bg-slate-800/60 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700/70': triggerVariant === 'secondary',
-        'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md shadow-purple-500/20 hover:opacity-95': triggerVariant === 'primary',
-        'hover:bg-slate-100 dark:hover:bg-slate-800/60 text-slate-700 dark:text-slate-200': triggerVariant === 'ghost',
-        'rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 !p-0 overflow-hidden': triggerVariant === 'avatar',
-        'rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/80': triggerVariant === 'icon',
-        'opacity-50 cursor-not-allowed': disabled
+        'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80 shadow-sm':
+          triggerVariant === 'outline' || triggerVariant === 'default',
+        'bg-slate-100 dark:bg-slate-800/60 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700/70':
+          triggerVariant === 'secondary',
+        'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md shadow-purple-500/20 hover:opacity-95':
+          triggerVariant === 'primary',
+        'hover:bg-slate-100 dark:hover:bg-slate-800/60 text-slate-700 dark:text-slate-200':
+          triggerVariant === 'ghost',
+        'rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 !p-0 overflow-hidden':
+          triggerVariant === 'avatar',
+        'rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/80':
+          triggerVariant === 'icon',
+        'opacity-50 cursor-not-allowed': disabled,
       }"
     >
       @if (triggerVariant === 'avatar' && avatarUrl) {
-        <img [src]="avatarUrl" [alt]="'showcase.avatar_alt' | translate" class="w-full h-full rounded-full object-cover ring-2 ring-purple-500/30" />
+        <img
+          [src]="avatarUrl"
+          [alt]="'showcase.avatar_alt' | translate"
+          class="w-full h-full rounded-full object-cover ring-2 ring-purple-500/30"
+        />
       } @else if (triggerVariant === 'icon') {
         <app-icon [name]="triggerIcon" class="w-5 h-5"></app-icon>
       } @else {
@@ -51,27 +67,41 @@
 
   @if (isOpen()) {
     <div
-      class="absolute z-50 {{ width }} min-w-[220px] {{ getPlacementClasses() }} dropdown-menu-popover bg-white/85 dark:bg-slate-900/80 backdrop-blur-xl backdrop-saturate-180 border border-slate-200/80 dark:border-slate-800/80 shadow-lg shadow-slate-900/10 dark:shadow-slate-950/50 rounded-[15px] p-2 text-slate-800 dark:text-slate-100 focus:outline-none"
+      class="absolute z-50 {{ width }} min-w-[220px] {{
+        getPlacementClasses()
+      }} dropdown-menu-popover bg-white/85 dark:bg-slate-900/80 backdrop-blur-xl border border-slate-200/80 dark:border-slate-800/80 shadow-lg shadow-slate-900/10 dark:shadow-slate-950/50 rounded-[15px] p-2 text-slate-800 dark:text-slate-100 focus:outline-none"
     >
       <ng-content select="[dropdown-content]"></ng-content>
 
       @if (header) {
-        <div class="px-3.5 py-3 mb-1.5 bg-slate-50/80 dark:bg-slate-800/40 rounded-[12px] border border-slate-100 dark:border-slate-800/50">
+        <div
+          class="px-3.5 py-3 mb-1.5 bg-slate-100/80 dark:bg-slate-800/40 rounded-[12px] border border-slate-100 dark:border-slate-800/50"
+        >
           <div class="flex items-center gap-3">
             @if (header.avatar) {
-              <img [src]="header.avatar" [alt]="header.title" class="w-10 h-10 rounded-full object-cover ring-2 ring-purple-500/20" />
+              <img
+                [src]="header.avatar"
+                [alt]="header.title"
+                class="w-10 h-10 rounded-full object-cover ring-2 ring-purple-500/20"
+              />
             }
             <div class="flex-1 min-w-0">
               <div class="flex items-center gap-1.5">
-                <span class="text-sm font-bold text-slate-900 dark:text-slate-100 truncate">{{ header.title }}</span>
+                <span class="text-sm font-bold text-slate-900 dark:text-slate-100 truncate">{{
+                  header.title
+                }}</span>
                 @if (header.statusBadge) {
-                  <span class="px-2 py-0.5 text-[11px] font-extrabold rounded-md bg-purple-100 dark:bg-purple-950/80 text-purple-600 dark:text-purple-300 border border-purple-200 dark:border-purple-800/50">
+                  <span
+                    class="px-2 py-0.5 text-[11px] font-extrabold rounded-md bg-purple-100 dark:bg-purple-950/80 text-purple-600 dark:text-purple-300 border border-purple-200 dark:border-purple-800/50"
+                  >
                     {{ header.statusBadge }}
                   </span>
                 }
               </div>
               @if (header.subtitle) {
-                <p class="text-xs text-slate-500 dark:text-slate-400 truncate">{{ header.subtitle }}</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400 truncate">
+                  {{ header.subtitle }}
+                </p>
               }
             </div>
           </div>
@@ -83,7 +113,9 @@
           @if (item.type === 'separator') {
             <div class="my-1.5 h-px bg-slate-200/70 dark:bg-slate-800/70"></div>
           } @else if (item.type === 'header') {
-            <div class="px-3 py-2 text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 select-none">
+            <div
+              class="px-3 py-2 text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 select-none"
+            >
               {{ item.label }}
             </div>
           } @else if (item.type === 'sub') {
@@ -95,23 +127,39 @@
                 (mouseenter)="activeSubmenuId.set(item.id || item.label || '')"
                 class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-colors text-left"
                 [ngClass]="{
-                  'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80': !item.disabled && activeSubmenuId() !== (item.id || item.label),
-                  'bg-purple-50 dark:bg-purple-950/40 text-purple-600 dark:text-purple-300 font-bold': activeSubmenuId() === (item.id || item.label),
-                  'opacity-40 cursor-not-allowed': item.disabled
+                  'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80':
+                    !item.disabled && activeSubmenuId() !== (item.id || item.label),
+                  'bg-purple-50 dark:bg-purple-950/40 text-purple-600 dark:text-purple-300 font-bold':
+                    activeSubmenuId() === (item.id || item.label),
+                  'opacity-40 cursor-not-allowed': item.disabled,
                 }"
               >
                 <div class="flex items-center gap-3 truncate min-w-0">
                   @if (item.icon) {
-                    <app-icon [name]="item.icon" class="w-4.5 h-4.5 shrink-0 {{ item.iconColor || 'text-slate-400 dark:text-slate-400' }}"></app-icon>
+                    <app-icon
+                      [name]="item.icon"
+                      class="w-4.5 h-4.5 shrink-0 {{
+                        item.iconColor || 'text-slate-400 dark:text-slate-400'
+                      }}"
+                    ></app-icon>
                   }
                   <span class="truncate">{{ item.label }}</span>
                 </div>
-                <app-icon name="chevron-right" class="w-4 h-4 shrink-0 text-slate-400 ml-2"></app-icon>
+                <app-icon
+                  name="chevron-right"
+                  class="w-4 h-4 shrink-0 text-slate-400 ml-2"
+                ></app-icon>
               </button>
 
-              @if (activeSubmenuId() === (item.id || item.label) && item.children && item.children.length > 0) {
+              @if (
+                activeSubmenuId() === (item.id || item.label) &&
+                item.children &&
+                item.children.length > 0
+              ) {
                 <div
-                  class="absolute left-full top-0 ml-2 {{ width }} min-w-[200px] bg-white/85 dark:bg-slate-900/80 backdrop-blur-xl backdrop-saturate-180 border border-slate-200/80 dark:border-slate-800/80 shadow-lg shadow-slate-900/10 dark:shadow-slate-950/50 rounded-[15px] p-2 space-y-0.5 z-50 dropdown-menu-popover"
+                  class="absolute left-full top-0 ml-2 {{
+                    width
+                  }} min-w-[200px] bg-white/85 dark:bg-slate-900/80 backdrop-blur-xl border border-slate-200/80 dark:border-slate-800/80 shadow-lg shadow-slate-900/10 dark:shadow-slate-950/50 rounded-[15px] p-2 space-y-0.5 z-50 dropdown-menu-popover"
                 >
                   @for (subItem of item.children; track subItem.id || subItem.label || $index) {
                     <button
@@ -120,19 +168,26 @@
                       (click)="onItemClick(subItem, $event)"
                       class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-colors text-left"
                       [ngClass]="{
-                        'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80': !subItem.disabled && subItem.variant !== 'danger',
-                        'text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40': subItem.variant === 'danger',
-                        'opacity-40 cursor-not-allowed': subItem.disabled
+                        'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80':
+                          !subItem.disabled && subItem.variant !== 'danger',
+                        'text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40':
+                          subItem.variant === 'danger',
+                        'opacity-40 cursor-not-allowed': subItem.disabled,
                       }"
                     >
                       <div class="flex items-center gap-3 truncate min-w-0">
                         @if (subItem.icon) {
-                          <app-icon [name]="subItem.icon" class="w-4.5 h-4.5 shrink-0 {{ subItem.iconColor || 'text-slate-400' }}"></app-icon>
+                          <app-icon
+                            [name]="subItem.icon"
+                            class="w-4.5 h-4.5 shrink-0 {{ subItem.iconColor || 'text-slate-400' }}"
+                          ></app-icon>
                         }
                         <span class="truncate">{{ subItem.label }}</span>
                       </div>
                       @if (subItem.shortcut) {
-                        <span class="px-1.5 py-0.5 text-[11px] font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200/60 dark:border-slate-700/60">
+                        <span
+                          class="px-1.5 py-0.5 text-[11px] font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200/60 dark:border-slate-700/60"
+                        >
                           {{ subItem.shortcut }}
                         </span>
                       }
@@ -148,16 +203,19 @@
               (click)="onItemClick(item, $event)"
               class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-colors text-left"
               [ngClass]="{
-                'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80': !item.disabled,
-                'opacity-40 cursor-not-allowed': item.disabled
+                'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80':
+                  !item.disabled,
+                'opacity-40 cursor-not-allowed': item.disabled,
               }"
             >
               <div class="flex items-center gap-3 truncate min-w-0">
-                <div class="w-4.5 h-4.5 rounded border flex items-center justify-center transition-colors shrink-0"
+                <div
+                  class="w-4.5 h-4.5 rounded border flex items-center justify-center transition-colors shrink-0"
                   [ngClass]="{
                     'bg-purple-600 border-purple-600 text-white': item.checked,
-                    'border-slate-300 dark:border-slate-700 bg-transparent': !item.checked
-                  }">
+                    'border-slate-300 dark:border-slate-700 bg-transparent': !item.checked,
+                  }"
+                >
                   @if (item.checked) {
                     <app-icon name="check" class="w-3.5 h-3.5 stroke-[3]"></app-icon>
                   }
@@ -165,7 +223,9 @@
                 <span class="truncate">{{ item.label }}</span>
               </div>
               @if (item.shortcut) {
-                <span class="px-1.5 py-0.5 text-[11px] font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200/60 dark:border-slate-700/60">
+                <span
+                  class="px-1.5 py-0.5 text-[11px] font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200/60 dark:border-slate-700/60"
+                >
                   {{ item.shortcut }}
                 </span>
               }
@@ -177,16 +237,20 @@
               (click)="onItemClick(item, $event)"
               class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-colors text-left"
               [ngClass]="{
-                'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80': !item.disabled,
-                'opacity-40 cursor-not-allowed': item.disabled
+                'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80':
+                  !item.disabled,
+                'opacity-40 cursor-not-allowed': item.disabled,
               }"
             >
               <div class="flex items-center gap-3 truncate min-w-0">
-                <div class="w-4.5 h-4.5 rounded-full border flex items-center justify-center transition-colors shrink-0"
+                <div
+                  class="w-4.5 h-4.5 rounded-full border flex items-center justify-center transition-colors shrink-0"
                   [ngClass]="{
                     'border-purple-600 text-purple-600': activeRadioValue === item.radioValue,
-                    'border-slate-300 dark:border-slate-700 bg-transparent': activeRadioValue !== item.radioValue
-                  }">
+                    'border-slate-300 dark:border-slate-700 bg-transparent':
+                      activeRadioValue !== item.radioValue,
+                  }"
+                >
                   @if (activeRadioValue === item.radioValue) {
                     <div class="w-2.5 h-2.5 rounded-full bg-purple-600"></div>
                   }
@@ -201,20 +265,33 @@
               (click)="onItemClick(item, $event)"
               class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-colors text-left"
               [ngClass]="{
-                'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80': !item.disabled && item.variant !== 'danger' && item.variant !== 'success',
-                'text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40': item.variant === 'danger' && !item.disabled,
-                'text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/40': item.variant === 'success' && !item.disabled,
-                'opacity-40 cursor-not-allowed': item.disabled
+                'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80':
+                  !item.disabled && item.variant !== 'danger' && item.variant !== 'success',
+                'text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40':
+                  item.variant === 'danger' && !item.disabled,
+                'text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/40':
+                  item.variant === 'success' && !item.disabled,
+                'opacity-40 cursor-not-allowed': item.disabled,
               }"
             >
               <div class="flex items-center gap-3 truncate min-w-0">
                 @if (item.icon) {
-                  <app-icon [name]="item.icon" class="w-4.5 h-4.5 shrink-0 {{ item.iconColor || (item.variant === 'danger' ? 'text-rose-500' : 'text-slate-400 dark:text-slate-400') }}"></app-icon>
+                  <app-icon
+                    [name]="item.icon"
+                    class="w-4.5 h-4.5 shrink-0 {{
+                      item.iconColor ||
+                        (item.variant === 'danger'
+                          ? 'text-rose-500'
+                          : 'text-slate-400 dark:text-slate-400')
+                    }}"
+                  ></app-icon>
                 }
                 <div class="flex flex-col truncate min-w-0">
                   <span class="truncate">{{ item.label }}</span>
                   @if (item.description) {
-                    <span class="text-xs font-normal text-slate-400 dark:text-slate-500 truncate">{{ item.description }}</span>
+                    <span class="text-xs font-normal text-slate-400 dark:text-slate-500 truncate">{{
+                      item.description
+                    }}</span>
                   }
                 </div>
               </div>
@@ -222,13 +299,18 @@
               <div class="flex items-center gap-1.5 shrink-0 ml-2">
                 @if (item.badge) {
                   <span
-                    class="px-2 py-0.5 text-[11px] font-extrabold rounded-md {{ item.badgeColor || 'bg-purple-100 dark:bg-purple-950 text-purple-600 dark:text-purple-300 border border-purple-200 dark:border-purple-800/50' }}"
+                    class="px-2 py-0.5 text-[11px] font-extrabold rounded-md {{
+                      item.badgeColor ||
+                        'bg-purple-100 dark:bg-purple-950 text-purple-600 dark:text-purple-300 border border-purple-200 dark:border-purple-800/50'
+                    }}"
                   >
                     {{ item.badge }}
                   </span>
                 }
                 @if (item.shortcut) {
-                  <span class="px-1.5 py-0.5 text-[11px] font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200/60 dark:border-slate-700/60">
+                  <span
+                    class="px-1.5 py-0.5 text-[11px] font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200/60 dark:border-slate-700/60"
+                  >
                     {{ item.shortcut }}
                   </span>
                 }

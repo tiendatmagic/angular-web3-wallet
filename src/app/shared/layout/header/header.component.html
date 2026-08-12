@@ -50,7 +50,11 @@
             [class.bg-red-500]="stateService.isWrongChain()"
             class="w-1.5 h-1.5 rounded-full inline-block"
           ></span>
-          {{ stateService.isWrongChain() ? ('header.wrong_network' | translate) : stateService.networkName() }}
+          {{
+            stateService.isWrongChain()
+              ? ('header.wrong_network' | translate)
+              : stateService.networkName()
+          }}
         </div>
       }
     </div>
@@ -144,7 +148,7 @@
     </nav>
 
     <div
-      class="px-5 py-4 border-t border-slate-100 dark:border-slate-800/60 bg-slate-50/30 dark:bg-slate-900/10 space-y-4"
+      class="px-5 py-4 border-t border-slate-100 dark:border-slate-800/60 bg-slate-100/30 dark:bg-slate-900/10 space-y-4"
     >
       <app-language-selector variant="full" direction="up" />
       @if (stateService.isWeb3Enabled) {

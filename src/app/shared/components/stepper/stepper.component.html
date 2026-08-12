@@ -27,11 +27,11 @@
             }"
           >
             @if (getStepState($index) === 'completed') {
-              <app-icon name="check" class="w-5 h-5 text-white stroke-[3]"></app-icon>
+              <app-icon name="check" class="w-5 h-5 text-white stroke-[3] flex items-center justify-center"></app-icon>
             } @else if (getStepState($index) === 'error') {
-              <app-icon name="close" class="w-5 h-5 text-white stroke-[3]"></app-icon>
+              <app-icon name="close" class="w-5 h-5 text-white stroke-[3] flex items-center justify-center"></app-icon>
             } @else if (step.icon) {
-              <app-icon [name]="step.icon" class="w-5 h-5" [ngClass]="getStepState($index) === 'pending' ? 'text-slate-400 dark:text-slate-500' : 'text-white'"></app-icon>
+              <app-icon [name]="step.icon" class="w-5 h-5 flex items-center justify-center" [ngClass]="getStepState($index) === 'pending' ? 'text-slate-400 dark:text-slate-500' : 'text-white'"></app-icon>
             } @else {
               <span>{{ $index + 1 }}</span>
             }
@@ -86,11 +86,11 @@
             }"
           >
             @if (getStepState($index) === 'completed') {
-              <app-icon name="check" class="w-5 h-5 text-white stroke-[3]"></app-icon>
+              <app-icon name="check" class="w-5 h-5 text-white stroke-[3] flex items-center justify-center"></app-icon>
             } @else if (getStepState($index) === 'error') {
-              <app-icon name="close" class="w-5 h-5 text-white stroke-[3]"></app-icon>
+              <app-icon name="close" class="w-5 h-5 text-white stroke-[3] flex items-center justify-center"></app-icon>
             } @else if (step.icon) {
-              <app-icon [name]="step.icon" class="w-5 h-5" [ngClass]="getStepState($index) === 'pending' ? 'text-slate-400 dark:text-slate-500' : 'text-white'"></app-icon>
+              <app-icon [name]="step.icon" class="w-5 h-5 flex items-center justify-center" [ngClass]="getStepState($index) === 'pending' ? 'text-slate-400 dark:text-slate-500' : 'text-white'"></app-icon>
             } @else {
               <span>{{ $index + 1 }}</span>
             }
@@ -147,11 +147,11 @@
             }"
           >
             @if (getStepState($index) === 'completed') {
-              <app-icon name="check" class="w-5 h-5 text-white stroke-[3]"></app-icon>
+              <app-icon name="check" class="w-5 h-5 text-white stroke-[3] flex items-center justify-center"></app-icon>
             } @else if (getStepState($index) === 'error') {
-              <app-icon name="close" class="w-5 h-5 text-white stroke-[3]"></app-icon>
+              <app-icon name="close" class="w-5 h-5 text-white stroke-[3] flex items-center justify-center"></app-icon>
             } @else if (step.icon) {
-              <app-icon [name]="step.icon" class="w-5 h-5" [ngClass]="getStepState($index) === 'pending' ? 'text-slate-400 dark:text-slate-500' : 'text-white'"></app-icon>
+              <app-icon [name]="step.icon" class="w-5 h-5 flex items-center justify-center" [ngClass]="getStepState($index) === 'pending' ? 'text-slate-400 dark:text-slate-500' : 'text-white'"></app-icon>
             } @else {
               <span>{{ $index + 1 }}</span>
             }
@@ -208,11 +208,11 @@
             }"
           >
             @if (getStepState($index) === 'completed') {
-              <app-icon name="check" class="w-5 h-5 text-white stroke-[3]"></app-icon>
+              <app-icon name="check" class="w-5 h-5 text-white stroke-[3] flex items-center justify-center"></app-icon>
             } @else if (getStepState($index) === 'error') {
-              <app-icon name="close" class="w-5 h-5 text-white stroke-[3]"></app-icon>
+              <app-icon name="close" class="w-5 h-5 text-white stroke-[3] flex items-center justify-center"></app-icon>
             } @else if (step.icon) {
-              <app-icon [name]="step.icon" class="w-5 h-5" [ngClass]="getStepState($index) === 'pending' ? 'text-slate-400 dark:text-slate-500' : 'text-white'"></app-icon>
+              <app-icon [name]="step.icon" class="w-5 h-5 flex items-center justify-center" [ngClass]="getStepState($index) === 'pending' ? 'text-slate-400 dark:text-slate-500' : 'text-white'"></app-icon>
             } @else {
               <span>{{ $index + 1 }}</span>
             }

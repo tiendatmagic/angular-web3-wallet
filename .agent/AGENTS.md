@@ -1,6 +1,27 @@
-# Lịch sử yêu cầu và xử lý của Agent
+### Yêu cầu: Khắc Phục Lỗi Lệch Nền Trong Suốt & Đơn Giản Hóa Cấu Trúc Glassmorphism Cho Popover Dropdown
+- **Nội dung yêu cầu:** Khắc phục tình trạng Popover Menu Cha bị mất màu nền dẫn tới trong suốt 100% gây đè chữ rối mắt trên giao diện trang chủ, đồng thời chuẩn hóa hiệu ứng Kính Mờ Glassmorphism cho cả Menu Cha và Submenu Con.
+- **Phân tích nguyên nhân:**
+  1. Việc tự tạo thêm thẻ `div` nền mờ tuyệt đối (`absolute inset-0`) với z-index âm khi container không có Stacking Context riêng khiến thẻ nền bị chìm xuống đằng sau Card trang chủ, làm Popover bị trong suốt hoàn toàn và lộ chữ trang web đằng sau.
+  2. Bị thiếu khai báo ép thuộc tính `-webkit-backdrop-filter: blur(20px) saturate(180%) !important;` và `will-change: backdrop-filter;` toàn cục trong CSS.
+- **Giải pháp:**
+  1. **Khôi Phục Cấu Trúc Lớp Nền Chuẩn:** Loại bỏ các thẻ `div` nền tuyệt đối dư thừa. Đưa bộ class mờ kính chuẩn `bg-white/85 dark:bg-slate-900/80 backdrop-blur-xl border border-slate-200/80 dark:border-slate-800/80 shadow-lg` trực tiếp về thẻ bọc Popover của cả Menu Cha và Submenu Con.
+  2. **Tối Ưu Rendering Engine:** Khai báo `-webkit-backdrop-filter: blur(20px) saturate(180%) !important;` và `will-change: backdrop-filter;` trong `src/styles.scss` trên class `.dropdown-menu-popover`.
+- **Xác thực:** Runs `npx tsc --noEmit` đạt 0 lỗi type. Production build thành công 100%.
 
-## Ngày 12/08/2026
+### Yêu cầu: Khắc Phục Lỗi Căn Giữa Dọc (Vertical Centering) Toàn Diện Cho Tất Cả Nút Đóng & Icon Trên Toàn Bộ Ứng Dụng
+- **Nội dung yêu cầu:** Rà soát toàn bộ dự án để kiểm tra và khắc phục triệt để lỗi căn giữa dọc (vertical alignment / centering) cho các nút đóng (`x`), nút xóa, icon trạng thái trên Toast, Modal, Drawer, Search Input, Alert, File Upload và Stepper components.
+- **Phân tích nguyên nhân & Rà soát:**
+  1. **Toast Component (`toast.component.html`):** Container bị dùng `items-start`, nút đóng `x` dùng `position: absolute; top: 3.5; right: 3.5` khiến icon bị lệch lên góc trên cùng right.
+  2. **Modal & Modal Wrapper (`modal.component.html`, `modal-wrapper.component.html`):** Thẻ `<app-icon name="close">` trong nút đóng header thiếu `flex items-center justify-center` làm icon SVG lệch vị trí trong nút 28x28px.
+  3. **Drawer Component (`drawer.component.html`):** Nút đóng drawer chưa bổ sung `flex items-center justify-center` cho SVG icon.
+  4. **Search Input (`custom-search-input.component.html`):** Nút xóa từ khóa tìm kiếm (`clearable`) chưa có class căn giữa tâm icon.
+  5. **File Upload (`file-upload.component.html`):** Nút xóa tệp tin và nút đóng modal xem trước ảnh preview bị lệch icon.
+  6. **Alert Component (`alert.component.html`):** Nút đóng thông báo dismissible chưa có căn giữa icon.
+  7. **Stepper Component (`stepper.component.html`):** Các icon check/close/number trong vòng tròn bước step (w-10 h-10) chưa có class căn giữa tâm.
+- **Giải pháp:**
+  1. Đổi `items-start` sang `flex items-center gap-3` trong `toast.component.html`, loại bỏ `position: absolute` trên nút đóng Toast và chuyển thành flex child căn lề `ml-auto`.
+  2. Bổ sung `flex items-center justify-center` cho 100% các icon và nút đóng trong Modal, Modal Wrapper, Drawer, Search Input, Alert, File Upload và Stepper components.
+- **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Tất cả nút bấm và icon trên toàn hệ thống đều đạt độ căn giữa dọc & ngang tuyệt đối 100%.
 
 ### Yêu cầu: Khắc Phục Lỗi Ẩn Khung Chọn Giờ/Phút & Dải Presets (Hôm Nay, Hôm Qua, 7 Ngày...) Cho Component CustomDateTimeRange (`app-custom-date-time-range`)
 - **Nội dung yêu cầu:** Khắc phục lỗi khi người dùng click vào ô "KHOẢNG THỜI GIAN HOẠT ĐỘNG (KÈM GIỜ & PHÚT)" trong Hộp thoại Modal / Trang chủ, Popover mở ra chỉ có bảng lịch mà KHÔNG HIỂN THỊ bộ chọn Giờ & Phút (Start Time / End Time) và KHÔNG CÓ dải nút bấm chọn nhanh Presets ("Hôm nay", "Hôm qua", "7 ngày qua", "30 ngày qua", "Tháng này").

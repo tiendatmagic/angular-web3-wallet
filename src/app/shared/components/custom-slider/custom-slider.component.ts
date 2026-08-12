@@ -60,8 +60,8 @@ export class CustomSliderComponent implements ControlValueAccessor {
     return positions;
   });
 
-  private onChange: (value: any) => void = () => {};
-  private onTouched: () => void = () => {};
+  private onChange: (value: any) => void = () => { };
+  private onTouched: () => void = () => { };
 
   public onInput(event: Event): void {
     if (this.disabled) return;
@@ -100,7 +100,7 @@ export class CustomSliderComponent implements ControlValueAccessor {
       case 'secondary':
         return 'bg-[var(--color-secondary)]';
       case 'neutral':
-        return 'bg-slate-400 dark:bg-slate-500';
+        return 'bg-slate-400 dark:bg-slate-1000';
     }
   }
 
@@ -111,7 +111,7 @@ export class CustomSliderComponent implements ControlValueAccessor {
       case 'secondary':
         return 'bg-[var(--color-secondary)] hover:scale-110 active:scale-95 focus:ring-4 focus:ring-[var(--color-secondary)]/20';
       case 'neutral':
-        return 'bg-slate-400 dark:bg-slate-500 hover:scale-110 active:scale-95 focus:ring-4 focus:ring-slate-500/20';
+        return 'bg-slate-400 dark:bg-slate-1000 hover:scale-110 active:scale-95 focus:ring-4 focus:ring-slate-500/20';
     }
   }
 

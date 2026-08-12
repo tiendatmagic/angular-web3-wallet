@@ -9,14 +9,22 @@
       [attr.aria-expanded]="isOpen()"
     >
       <span class="relative flex h-2 w-2 sm:h-2.5 sm:w-2.5 shrink-0">
-        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-        <span class="relative inline-flex rounded-full h-2 w-2 sm:h-2.5 sm:w-2.5 bg-emerald-500"></span>
+        <span
+          class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"
+        ></span>
+        <span
+          class="relative inline-flex rounded-full h-2 w-2 sm:h-2.5 sm:w-2.5 bg-emerald-500"
+        ></span>
       </span>
       <div class="flex flex-col text-left select-none leading-none sm:leading-tight">
-        <span class="font-mono text-[10px] sm:text-[13px] font-extrabold text-slate-700 dark:text-slate-200">
+        <span
+          class="font-mono text-[10px] sm:text-[13px] font-extrabold text-slate-700 dark:text-slate-200"
+        >
           {{ stateService.address() | appShortAddress }}
         </span>
-        <span class="text-[9px] sm:text-[10px] font-black text-primary tracking-tight mt-0.5 sm:mt-0">
+        <span
+          class="text-[9px] sm:text-[10px] font-black text-primary tracking-tight mt-0.5 sm:mt-0"
+        >
           {{ stateService.balance() }} {{ stateService.chainSymbol() }}
         </span>
       </div>
@@ -31,9 +39,11 @@
 
     @if (isOpen()) {
       <div
-        class="fixed top-[3.75rem] left-3 right-3 sm:absolute sm:top-full sm:right-0 sm:left-auto sm:mt-2 sm:w-72 dropdown-menu-popover bg-white/85 dark:bg-slate-900/80 backdrop-blur-xl backdrop-saturate-180 border border-slate-200/80 dark:border-slate-800/80 shadow-lg shadow-slate-900/10 dark:shadow-slate-950/50 rounded-[15px] p-2 text-slate-800 dark:text-slate-100 focus:outline-none z-[200]"
+        class="fixed top-[3.75rem] left-3 right-3 sm:absolute sm:top-full sm:right-0 sm:left-auto sm:mt-2 sm:w-72 dropdown-menu-popover bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-slate-200/80 dark:border-slate-800/80 shadow-xl shadow-slate-900/10 dark:shadow-slate-950/50 rounded-[15px] p-2 text-slate-800 dark:text-slate-100 focus:outline-none z-[200]"
       >
-        <div class="px-3.5 py-3 mb-1.5 bg-slate-50/80 dark:bg-slate-800/40 rounded-[12px] border border-slate-100 dark:border-slate-800/50 select-none">
+        <div
+          class="px-3.5 py-3 mb-1.5 bg-slate-100/80 dark:bg-slate-800/40 rounded-[12px] border border-slate-100 dark:border-slate-800/50 select-none"
+        >
           <div class="flex items-center gap-3">
             @if (avatarUrl) {
               <img
@@ -44,17 +54,22 @@
             }
             <div class="flex-1 min-w-0">
               <div class="flex items-center gap-1.5">
-                <span class="text-sm font-bold text-slate-900 dark:text-slate-100 font-mono truncate">
+                <span
+                  class="text-sm font-bold text-slate-900 dark:text-slate-100 font-mono truncate"
+                >
                   {{ stateService.address() | appShortAddress }}
                 </span>
                 @if (statusBadge) {
-                  <span class="px-2 py-0.5 text-[10px] font-extrabold rounded-md bg-purple-100 dark:bg-purple-950/80 text-purple-600 dark:text-purple-300 border border-purple-200 dark:border-purple-800/50 shrink-0">
+                  <span
+                    class="px-2 py-0.5 text-[10px] font-extrabold rounded-md bg-purple-100 dark:bg-purple-950/80 text-purple-600 dark:text-purple-300 border border-purple-200 dark:border-purple-800/50 shrink-0"
+                  >
                     {{ statusBadge }}
                   </span>
                 }
               </div>
               <p class="text-xs text-slate-500 dark:text-slate-400 font-mono truncate mt-0.5">
-                {{ stateService.balance() }} {{ stateService.chainSymbol() }} • {{ stateService.networkName() }}
+                {{ stateService.balance() }} {{ stateService.chainSymbol() }} •
+                {{ stateService.networkName() }}
               </p>
             </div>
           </div>
@@ -67,8 +82,13 @@
             class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-colors text-left cursor-pointer group"
           >
             <div class="flex items-center gap-3 truncate min-w-0">
-              <app-icon name="copy" class="w-4.5 h-4.5 shrink-0 text-slate-400 dark:text-slate-400 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors" />
-              <span class="truncate group-hover:text-purple-600 dark:group-hover:text-purple-300 transition-colors">
+              <app-icon
+                name="copy"
+                class="w-4.5 h-4.5 shrink-0 text-slate-400 dark:text-slate-400 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors"
+              />
+              <span
+                class="truncate group-hover:text-purple-600 dark:group-hover:text-purple-300 transition-colors"
+              >
                 {{ 'header.copy_address' | translate }}
               </span>
             </div>
@@ -80,8 +100,13 @@
             class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-colors text-left cursor-pointer group"
           >
             <div class="flex items-center gap-3 truncate min-w-0">
-              <app-icon name="wallet" class="w-4.5 h-4.5 shrink-0 text-slate-400 dark:text-slate-400 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors" />
-              <span class="truncate group-hover:text-purple-600 dark:group-hover:text-purple-300 transition-colors">
+              <app-icon
+                name="wallet"
+                class="w-4.5 h-4.5 shrink-0 text-slate-400 dark:text-slate-400 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors"
+              />
+              <span
+                class="truncate group-hover:text-purple-600 dark:group-hover:text-purple-300 transition-colors"
+              >
                 {{ 'header.wallet_details' | translate }}
               </span>
             </div>
@@ -93,8 +118,13 @@
             class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-colors text-left cursor-pointer group"
           >
             <div class="flex items-center gap-3 truncate min-w-0">
-              <app-icon name="external-link" class="w-4.5 h-4.5 shrink-0 text-slate-400 dark:text-slate-400 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors" />
-              <span class="truncate group-hover:text-purple-600 dark:group-hover:text-purple-300 transition-colors">
+              <app-icon
+                name="external-link"
+                class="w-4.5 h-4.5 shrink-0 text-slate-400 dark:text-slate-400 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors"
+              />
+              <span
+                class="truncate group-hover:text-purple-600 dark:group-hover:text-purple-300 transition-colors"
+              >
                 {{ 'header.view_explorer' | translate }}
               </span>
             </div>

@@ -10,7 +10,7 @@
     [class.ring-[var(--color-primary)]/20]="isOpen()"
   >
     <span [class.text-slate-400]="!value()" class="truncate">
-      {{ value() ? displayValue() : (placeholder || lang.translate('date.select')) }}
+      {{ value() ? displayValue() : placeholder || lang.translate('date.select') }}
     </span>
     <app-icon name="calendar" class="w-4 h-4 text-slate-400 dark:text-slate-500 shrink-0 ml-2" />
   </div>
@@ -18,11 +18,13 @@
   @if (isOpen()) {
     <div
       [ngStyle]="popoverStyle"
-      class="date-picker-popover dropdown-menu-popover bg-white/85 dark:bg-slate-900/80 backdrop-blur-xl backdrop-saturate-150 border border-slate-200/80 dark:border-slate-800/80 shadow-lg shadow-slate-900/10 dark:shadow-slate-950/50 rounded-[15px] p-4 flex flex-col gap-4"
+      class="date-picker-popover dropdown-menu-popover bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-slate-200/80 dark:border-slate-800/80 shadow-xl shadow-slate-900/10 dark:shadow-slate-950/50 rounded-[15px] p-4 flex flex-col gap-4"
       (click)="$event.stopPropagation()"
     >
       @if (showPresets) {
-        <div class="grid grid-cols-3 gap-2 pb-3.5 border-b border-slate-100 dark:border-slate-800/60">
+        <div
+          class="grid grid-cols-3 gap-2 pb-3.5 border-b border-slate-100 dark:border-slate-800/60"
+        >
           @for (p of presets; track p.days) {
             <button
               type="button"
@@ -34,7 +36,7 @@
               [class.shadow-sm]="selectedPresetDays() === p.days"
               [class.shadow-[var(--color-primary)]/20]="selectedPresetDays() === p.days"
               [class.font-bold]="selectedPresetDays() === p.days"
-              [class.bg-slate-50]="selectedPresetDays() !== p.days"
+              [class.bg-slate-100]="selectedPresetDays() !== p.days"
               [class.dark:bg-slate-800/60]="selectedPresetDays() !== p.days"
               [class.border-slate-200/60]="selectedPresetDays() !== p.days"
               [class.dark:border-slate-700/60]="selectedPresetDays() !== p.days"
@@ -99,10 +101,8 @@
                 [class.dark:text-slate-300]="
                   isCurrentMonth(day) && !isSelected(day) && !isDateDisabled(day)
                 "
-                [class.hover:bg-slate-50]="!isSelected(day) && !isDateDisabled(day)"
-                [class.dark:hover:bg-slate-800]="
-                  !isSelected(day) && !isDateDisabled(day)
-                "
+                [class.hover:bg-slate-100]="!isSelected(day) && !isDateDisabled(day)"
+                [class.dark:hover:bg-slate-800]="!isSelected(day) && !isDateDisabled(day)"
                 [class.cursor-pointer]="!isDateDisabled(day)"
                 [class.font-extrabold]="isSelected(day)"
                 [class.bg-[var(--color-primary)]]="isSelected(day)"
@@ -121,18 +121,27 @@
       </div>
 
       @if (enableTime) {
-        <div class="pt-3.5 border-t border-slate-100 dark:border-slate-800/60 flex items-center justify-between gap-2">
-          <div class="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 font-bold">
+        <div
+          class="pt-3.5 border-t border-slate-100 dark:border-slate-800/60 flex items-center justify-between gap-2"
+        >
+          <div
+            class="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 font-bold"
+          >
             <app-icon name="clock" class="w-3.5 h-3.5 text-[var(--color-primary)] shrink-0" />
             <span>{{ 'date.hour' | translate }}:</span>
-            <div class="flex items-center gap-1 bg-slate-50 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700/60 rounded-lg px-2 py-1">
+            <div
+              class="flex items-center gap-1 bg-slate-100 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700/60 rounded-lg px-2 py-1"
+            >
               <select
                 [ngModel]="selectedHour()"
                 (ngModelChange)="onHourChange($event)"
                 class="bg-transparent text-xs font-black text-slate-800 dark:text-slate-200 outline-none cursor-pointer"
               >
                 @for (h of hours; track h) {
-                  <option [value]="h" class="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">
+                  <option
+                    [value]="h"
+                    class="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200"
+                  >
                     {{ pad2(h) }}
                   </option>
                 }
@@ -144,7 +153,10 @@
                 class="bg-transparent text-xs font-black text-slate-800 dark:text-slate-200 outline-none cursor-pointer"
               >
                 @for (m of minutes; track m) {
-                  <option [value]="m" class="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">
+                  <option
+                    [value]="m"
+                    class="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200"
+                  >
                     {{ pad2(m) }}
                   </option>
                 }
