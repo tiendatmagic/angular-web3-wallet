@@ -68,7 +68,7 @@ export class CustomDatePickerComponent implements ControlValueAccessor, AfterVie
   @Input() disabled: boolean = false;
   @Input() minDate: string = '';
   @Input() maxDate: string = '';
-  @Input() showPresets: boolean = false;
+  @Input() showPresets: boolean = true;
   @Input() enableTime: boolean = false;
 
   @Output() valueChange = new EventEmitter<string>();
@@ -114,10 +114,10 @@ export class CustomDatePickerComponent implements ControlValueAccessor, AfterVie
   public get presets() {
     return [
       { label: this.lang.translate('date.today'), days: 0 },
-      { label: this.lang.translate('date.days_7'), days: 7 },
-      { label: this.lang.translate('date.month_1'), days: 30 },
-      { label: this.lang.translate('date.months_3'), days: 90 },
-      { label: this.lang.translate('date.year_1'), days: 365 },
+      { label: this.lang.translate('date.yesterday'), days: -1 },
+      { label: this.lang.translate('date.last_7_days'), days: -7 },
+      { label: this.lang.translate('date.last_30_days'), days: -30 },
+      { label: this.lang.translate('date.this_month'), days: -31 }
     ];
   }
 
@@ -350,7 +350,11 @@ export class CustomDatePickerComponent implements ControlValueAccessor, AfterVie
     event.stopPropagation();
     this.selectedPresetDays.set(days);
     const target = new Date();
-    target.setDate(target.getDate() + days);
+    if (days === -31) {
+      target.setDate(1);
+    } else {
+      target.setDate(target.getDate() + days);
+    }
     this.currentYear.set(target.getFullYear());
     this.currentMonth.set(target.getMonth());
     if (this.enableTime) {

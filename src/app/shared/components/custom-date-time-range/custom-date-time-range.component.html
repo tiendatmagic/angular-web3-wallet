@@ -40,26 +40,28 @@
     >
       @if (showPresets) {
         <div
-          class="flex flex-wrap gap-1.5 pb-3.5 border-b border-slate-100 dark:border-slate-800/60"
+          class="grid grid-cols-3 gap-2 pb-3.5 border-b border-slate-100 dark:border-slate-800/60"
         >
           @for (p of presets; track p.id) {
             <button
               type="button"
               (click)="selectPreset(p.id, $event)"
-              class="text-xs font-bold px-2.5 py-1 rounded-lg transition-all cursor-pointer border whitespace-nowrap"
-              [class.bg-[var(--color-primary)]/15]="activePresetId() === p.id"
-              [class.border-[var(--color-primary)]/30]="activePresetId() === p.id"
-              [class.text-[var(--color-primary)]]="activePresetId() === p.id"
-              [class.font-extrabold]="activePresetId() === p.id"
+              class="text-xs font-semibold px-2 py-1.5 rounded-[12px] transition-all cursor-pointer border text-center flex items-center justify-center whitespace-nowrap"
+              [class.bg-[var(--color-primary)]]="activePresetId() === p.id"
+              [class.border-transparent]="activePresetId() === p.id"
+              [class.text-white]="activePresetId() === p.id"
+              [class.shadow-sm]="activePresetId() === p.id"
+              [class.shadow-[var(--color-primary)]/20]="activePresetId() === p.id"
+              [class.font-bold]="activePresetId() === p.id"
               [class.bg-slate-50]="activePresetId() !== p.id"
               [class.dark:bg-slate-800/60]="activePresetId() !== p.id"
-              [class.border-slate-200/50]="activePresetId() !== p.id"
+              [class.border-slate-200/60]="activePresetId() !== p.id"
               [class.dark:border-slate-700/60]="activePresetId() !== p.id"
               [class.text-slate-600]="activePresetId() !== p.id"
-              [class.dark:text-slate-400]="activePresetId() !== p.id"
+              [class.dark:text-slate-300]="activePresetId() !== p.id"
               [class.hover:text-[var(--color-primary)]]="activePresetId() !== p.id"
-              [class.hover:bg-[var(--color-primary)]/10]="activePresetId() !== p.id"
-              [class.hover:border-[var(--color-primary)]/20]="activePresetId() !== p.id"
+              [class.hover:bg-slate-100]="activePresetId() !== p.id"
+              [class.dark:hover:bg-slate-700/80]="activePresetId() !== p.id"
             >
               {{ p.label }}
             </button>
@@ -164,7 +166,7 @@
         </div>
       </div>
 
-      @if (showTime && tempStartDate()) {
+      @if (showTime) {
         <div class="flex flex-col gap-2 pt-3.5 border-t border-slate-100 dark:border-slate-800/60">
           <div class="grid grid-cols-2 gap-4">
             <div class="flex flex-col gap-1.5">
@@ -233,14 +235,12 @@
               <div class="flex items-center gap-1.5 relative">
                 <div class="relative flex-1">
                   <div
-                    [class.opacity-50]="!tempEndDate()"
-                    [class.pointer-events-none]="!tempEndDate()"
                     (click)="toggleDropdown('endHour', $event)"
                     class="w-full bg-slate-50 dark:bg-slate-800/60 border border-slate-200/50 dark:border-slate-700/60 rounded-xl p-2 text-xs font-semibold text-slate-700 dark:text-slate-200 cursor-pointer h-[38px] flex items-center justify-center hover:border-[var(--color-primary)] transition-all"
                   >
                     {{ endHour() }}
                   </div>
-                  @if (showEndHourDropdown() && tempEndDate()) {
+                  @if (showEndHourDropdown()) {
                     <div
                       class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 w-16 max-h-[300px] overflow-y-auto bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-slate-200/80 dark:border-slate-800/80 shadow-lg shadow-slate-900/10 dark:shadow-slate-950/50 rounded-xl z-50 p-1.5 custom-scrollbar"
                     >
@@ -262,14 +262,12 @@
 
                 <div class="relative flex-1">
                   <div
-                    [class.opacity-50]="!tempEndDate()"
-                    [class.pointer-events-none]="!tempEndDate()"
                     (click)="toggleDropdown('endMinute', $event)"
                     class="w-full bg-slate-50 dark:bg-slate-800/60 border border-slate-200/50 dark:border-slate-700/60 rounded-xl p-2 text-xs font-semibold text-slate-700 dark:text-slate-200 cursor-pointer h-[38px] flex items-center justify-center hover:border-[var(--color-primary)] transition-all"
                   >
                     {{ endMinute() }}
                   </div>
-                  @if (showEndMinuteDropdown() && tempEndDate()) {
+                  @if (showEndMinuteDropdown()) {
                     <div
                       class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 w-16 max-h-[300px] overflow-y-auto bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-slate-200/80 dark:border-slate-800/80 shadow-lg shadow-slate-900/10 dark:shadow-slate-950/50 rounded-xl z-50 p-1.5 custom-scrollbar"
                     >

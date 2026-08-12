@@ -22,25 +22,27 @@
       (click)="$event.stopPropagation()"
     >
       @if (showPresets) {
-        <div class="flex flex-wrap gap-1.5 pb-3.5 border-b border-slate-100 dark:border-slate-800/60">
+        <div class="grid grid-cols-3 gap-2 pb-3.5 border-b border-slate-100 dark:border-slate-800/60">
           @for (p of presets; track p.days) {
             <button
               type="button"
               (click)="selectPreset(p.days, $event)"
-              class="text-xs font-bold px-2.5 py-1 rounded-lg transition-all cursor-pointer border whitespace-nowrap"
-              [class.bg-[var(--color-primary)]/15]="selectedPresetDays() === p.days"
-              [class.border-[var(--color-primary)]/30]="selectedPresetDays() === p.days"
-              [class.text-[var(--color-primary)]]="selectedPresetDays() === p.days"
-              [class.font-extrabold]="selectedPresetDays() === p.days"
+              class="text-xs font-semibold px-2 py-1.5 rounded-[12px] transition-all cursor-pointer border text-center flex items-center justify-center whitespace-nowrap"
+              [class.bg-[var(--color-primary)]]="selectedPresetDays() === p.days"
+              [class.border-transparent]="selectedPresetDays() === p.days"
+              [class.text-white]="selectedPresetDays() === p.days"
+              [class.shadow-sm]="selectedPresetDays() === p.days"
+              [class.shadow-[var(--color-primary)]/20]="selectedPresetDays() === p.days"
+              [class.font-bold]="selectedPresetDays() === p.days"
               [class.bg-slate-50]="selectedPresetDays() !== p.days"
               [class.dark:bg-slate-800/60]="selectedPresetDays() !== p.days"
-              [class.border-slate-200/50]="selectedPresetDays() !== p.days"
+              [class.border-slate-200/60]="selectedPresetDays() !== p.days"
               [class.dark:border-slate-700/60]="selectedPresetDays() !== p.days"
               [class.text-slate-600]="selectedPresetDays() !== p.days"
-              [class.dark:text-slate-400]="selectedPresetDays() !== p.days"
+              [class.dark:text-slate-300]="selectedPresetDays() !== p.days"
               [class.hover:text-[var(--color-primary)]]="selectedPresetDays() !== p.days"
-              [class.hover:bg-[var(--color-primary)]/10]="selectedPresetDays() !== p.days"
-              [class.hover:border-[var(--color-primary)]/20]="selectedPresetDays() !== p.days"
+              [class.hover:bg-slate-100]="selectedPresetDays() !== p.days"
+              [class.dark:hover:bg-slate-700/80]="selectedPresetDays() !== p.days"
             >
               {{ p.label }}
             </button>

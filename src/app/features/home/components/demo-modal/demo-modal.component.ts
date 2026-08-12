@@ -78,7 +78,7 @@ export class DemoModalComponent {
   public demoDatePickerMinDate = signal(this.today);
   public limitDatePickerMax = signal(false);
   public demoDatePickerMaxDate = signal('2026-07-25');
-  public demoDatePickerShowPresets = signal(false);
+  public demoDatePickerShowPresets = signal(true);
 
   public readonly demoChainOptions = [
     { value: '1',     label: 'Ethereum Mainnet' },

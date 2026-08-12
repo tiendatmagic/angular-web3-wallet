@@ -72,7 +72,7 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
   @Input() placeholder: string = '';
   @Input() disabled: boolean = false;
   @Input() showTime: boolean = false;
-  @Input() showPresets: boolean = false;
+  @Input() showPresets: boolean = true;
   @Input() minDate: string = '';
   @Input() maxDate: string = '';
 
@@ -414,6 +414,12 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
 
   public selectTimeValue(type: 'startHour' | 'startMinute' | 'endHour' | 'endMinute', val: string, event: Event): void {
     event.stopPropagation();
+    if (!this.tempStartDate()) {
+      this.tempStartDate.set(this.formatDate(new Date()));
+    }
+    if ((type === 'endHour' || type === 'endMinute') && !this.tempEndDate()) {
+      this.tempEndDate.set(this.tempStartDate());
+    }
     if (type === 'startHour') this.startHour.set(val);
     if (type === 'startMinute') this.startMinute.set(val);
     if (type === 'endHour') this.endHour.set(val);
@@ -431,10 +437,13 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
   public apply(event?: Event): void {
     if (event) event.stopPropagation();
 
-    const start = this.tempStartDate();
+    let start = this.tempStartDate();
     let end = this.tempEndDate();
 
-    if (!start) return;
+    if (!start) {
+      start = this.formatDate(new Date());
+      this.tempStartDate.set(start);
+    }
     if (!end) end = start;
 
     let finalStart = start;

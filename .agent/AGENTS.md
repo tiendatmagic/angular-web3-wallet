@@ -2,6 +2,17 @@
 
 ## Ngày 12/08/2026
 
+### Yêu cầu: Khắc Phục Lỗi Ẩn Khung Chọn Giờ/Phút & Dải Presets (Hôm Nay, Hôm Qua, 7 Ngày...) Cho Component CustomDateTimeRange (`app-custom-date-time-range`)
+- **Nội dung yêu cầu:** Khắc phục lỗi khi người dùng click vào ô "KHOẢNG THỜI GIAN HOẠT ĐỘNG (KÈM GIỜ & PHÚT)" trong Hộp thoại Modal / Trang chủ, Popover mở ra chỉ có bảng lịch mà KHÔNG HIỂN THỊ bộ chọn Giờ & Phút (Start Time / End Time) và KHÔNG CÓ dải nút bấm chọn nhanh Presets ("Hôm nay", "Hôm qua", "7 ngày qua", "30 ngày qua", "Tháng này").
+- **Phân tích nguyên nhân:**
+  1. **Ẩn Khung Chọn Giờ/Phút:** Trong `custom-date-time-range.component.html`, điều kiện render khung chọn giờ bị khóa cứng bởi `@if (showTime && tempStartDate())`. Khi mới mở ô nhập liệu trống, `tempStartDate()` chưa có dữ liệu (`""`), làm điều kiện bị `false` và ẩn mất toàn bộ giao diện chọn Giờ & Phút. Ngoài ra, bộ chọn End Time bị gán `[class.opacity-50]="!tempEndDate()"` làm người dùng không tương tác được.
+  2. **Tắt Dải Nút Presets:** Thuộc tính `showPresets` mặc định là `false` ở component và `demoDatePickerShowPresets` signal mặc định là `false` khiến dải nút chọn nhanh Presets không xuất hiện.
+- **Giải pháp:**
+  1. **Hiển Thị Khung Giờ & Phút Ngay Lập Tức:** Đổi điều kiện render trong `custom-date-time-range.component.html` thành `@if (showTime)` để bất kỳ khi nào component có `showTime="true"`, Popover luôn hiển thị ngay khu vực chọn Giờ & Phút. Loại bỏ các class vô hiệu hóa trên End Time picker.
+  2. **Tự Động Khởi Tạo Ngày Khi Chọn Giờ/Phút:** Cập nhật hàm `selectTimeValue` và `apply` trong `custom-date-time-range.component.ts`: Nếu người dùng điều chỉnh Giờ/Phút hoặc bấm "Áp dụng" khi chưa chọn ngày trên lịch, hệ thống tự động gán ngày mặc định là ngày hôm nay.
+  3. **Đồng Bộ Dải Presets ("Hôm nay", "Hôm qua", "7 ngày qua", "30 ngày qua", "Tháng này"):** Đồng bộ 100% dải 5 Presets chuẩn ("Hôm nay", "Hôm qua", "7 ngày qua", "30 ngày qua", "Tháng này") cho cả `CustomDateTimeRangeComponent` và `CustomDatePickerComponent`. Bố cục hiển thị dạng `grid grid-cols-3 gap-2` chuẩn 2 hàng đẹp mắt trên giao diện. Cập nhật `demoDatePickerShowPresets = signal(true)` trong `home.component.ts` và `demo-modal.component.ts`.
+- **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Build production đóng gói Angular (`npm run build`) thành công 100%.
+
 ### Yêu cầu: Khôi Phục Hiệu Ứng Animation Nền Trượt Mượt (Sliding Pill) Cho Component TabGroup (`app-tab-group`)
 - **Nội dung yêu cầu:** Khắc phục tình trạng khi click chuyển giữa các tab trong `app-tab-group` (ví dụ: Nhóm Tab Tùy Biến, Giới Tính, Tốc Độ Giao Dịch...), thanh pill nền bị mất animation trượt mượt mà nhảy vụt từ tab này sang tab khác.
 - **Phân tích nguyên nhân:**
