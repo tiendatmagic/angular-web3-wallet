@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700;800;900&display=swap');
 @import 'tailwindcss' source('.');
 
-@variant dark (&:where(.dark, .dark *));
+@custom-variant dark (&:is(.dark, .dark *));
 
 @theme {
   --font-sans:
@@ -29,6 +29,7 @@ html {
 
 html.dark {
   background-color: #030712;
+  --dynamic-secondary: #c084fc;
 }
 
 body {
@@ -225,7 +226,7 @@ body.dark .btn-danger-light:hover {
 }
 
 .tab-group {
-  @apply h-[42px] flex items-center gap-1 bg-slate-100 dark:bg-slate-950 p-1 rounded-xl border border-slate-200/40 dark:border-slate-800/40 overflow-x-auto flex-nowrap shrink-0 max-w-full;
+  @apply h-[42px] flex items-center gap-1 bg-slate-100 dark:bg-slate-900/80 p-1 rounded-xl border border-slate-200/40 dark:border-slate-800/40 overflow-x-auto flex-nowrap shrink-0 max-w-full;
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
@@ -237,7 +238,7 @@ body.dark .btn-danger-light:hover {
   @apply h-8 px-4 rounded-lg text-xs font-semibold transition-all cursor-pointer inline-flex items-center justify-center gap-1.5 text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 whitespace-nowrap shrink-0;
 }
 .tab-item.active {
-  @apply bg-white dark:bg-slate-900 text-[var(--color-primary)] dark:text-[var(--color-secondary)] shadow-sm font-bold;
+  @apply bg-white dark:bg-slate-800 text-[var(--color-primary)] dark:text-[var(--color-secondary)] shadow-sm font-bold;
 }
 
 .app-card,

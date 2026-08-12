@@ -3310,6 +3310,14 @@
   3. **CSS/SCSS:** Xóa bỏ toàn bộ các comment block và comment dòng trong `styles.scss` và các component styles.
   4. **Kiểm tra:** Chạy `npm run build` thành công 100% không phát sinh lỗi biên dịch.
 
-
+### Yêu cầu: Khắc Phục Triệt Để Lỗi Dark Mode / Light Mode Cho Nút Trượt Pill (TabGroup & ThemeSwitcher)
+- **Nội dung yêu cầu:** Khắc phục lỗi khi giao diện đang ở chế độ Dark Mode nhưng các thanh nút trượt (sliding pill) của `app-tab-group` (Tốc độ giao dịch, Vị trí Tooltip, Custom Tabs...) và `app-theme-switcher` lại bị lòi nền màu TRẮNG SÁNG (`#ffffff`) với chữ màu tối, trông hoàn toàn lệch tông so với nền tối chung của ứng dụng.
+- **Phân tích nguyên nhân:**
+  1. **Lỗi CSS Specificity của `:where()` trong Tailwind v4:** Trong `styles.scss`, quy tắc `@variant dark (&:where(.dark, .dark *));` sử dụng pseudoclass `:where()` vốn có độ ưu tiên CSS bằng `0` (Specificity = 0). Khi Angular biên dịch scoped CSS cho component, selector `:where(.dark, .dark *) .dark\:bg-slate-800` chỉ có độ ưu tiên bằng đúng 1 class name `(0, 1, 0)`.
+  2. Class `bg-white` trên phần tử pill cũng có độ ưu tiên `(0, 1, 0)`. Khi `bg-white` xuất hiện sau `dark:bg-slate-800` trong CSS bundle, trình duyệt quyết định cho `bg-white` thắng thế và giữ màu nền của pill luôn là màu trắng sáng `#ffffff` ở Dark Mode.
+- **Giải pháp:**
+  1. **Sửa `@variant dark` trong `styles.scss`:** Đổi từ `@variant dark (&:where(.dark, .dark *));` sang `@variant dark (&:is(.dark, .dark *));`. Pseudoclass `:is()` giữ nguyên độ ưu tiên của `.dark` (`(0, 2, 0)`), giúp các class `dark:...` luôn đánh bại hoàn toàn `bg-white` (`(0, 1, 0)`) khi chế độ Dark Mode được bật.
+  2. **Chuẩn hóa Nền Pill Dark Mode (`tab-group.component.html` & `styles.scss`):** Đổi màu nền pill ở Dark Mode của `app-tab-group` từ `dark:bg-slate-900` thành `dark:bg-slate-800` để khớp 100% với `theme-switcher-pill`, tạo chiều sâu phân tầng đẹp mắt trên nền container `dark:bg-slate-900/80`.
+- **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Runs `npm run build` thành công 100%.
 
 

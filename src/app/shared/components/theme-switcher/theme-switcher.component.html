@@ -1,6 +1,8 @@
 <div class="flex items-center justify-between">
   <div class="flex items-center gap-1.5 leading-tight select-none">
-    <span class="text-xs font-bold text-slate-700 dark:text-slate-300">{{ 'theme.label' | translate }}</span>
+    <span class="text-xs font-bold text-slate-700 dark:text-slate-300">{{
+      'theme.label' | translate
+    }}</span>
     <span class="text-[11px] font-bold text-primary">
       {{
         stateService.themeMode() === 'light'
@@ -16,7 +18,7 @@
     class="relative flex items-center bg-slate-100 dark:bg-slate-900 p-0.5 rounded-full border border-slate-200/40 dark:border-slate-800/40"
   >
     <div
-      class="theme-switcher-pill absolute top-0.5 bottom-0.5 bg-white dark:bg-slate-800 rounded-full shadow-xs transition-all duration-300 ease-out z-0"
+      class="theme-switcher-pill absolute top-0.5 bottom-0.5 bg-white dark:bg-slate-800 rounded-full shadow-xs transition-[width,left] duration-300 ease-out z-0"
       [class.opacity-0]="!sliderStyle().ready"
       [class.opacity-100]="sliderStyle().ready"
       [style.width]="sliderStyle().width"
@@ -61,5 +63,3 @@
     </button>
   </div>
 </div>
-
-
