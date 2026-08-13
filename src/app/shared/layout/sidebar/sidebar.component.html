@@ -53,57 +53,25 @@
     [class.px-4]="!stateService.isSidebarCollapsed()"
     [class.px-2.5]="stateService.isSidebarCollapsed()"
   >
-    <a
-      routerLink="/home"
-      routerLinkActive="!bg-primary/10 !text-primary !font-extrabold"
-      [routerLinkActiveOptions]="{ exact: true }"
-      class="flex items-center rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/50 text-slate-600 dark:text-slate-400 font-semibold text-sm transition-all duration-200 cursor-pointer"
-      [class.gap-3.5]="!stateService.isSidebarCollapsed()"
-      [class.px-4]="!stateService.isSidebarCollapsed()"
-      [class.py-3]="!stateService.isSidebarCollapsed()"
-      [class.justify-center]="stateService.isSidebarCollapsed()"
-      [class.p-3]="stateService.isSidebarCollapsed()"
-      [attr.title]="stateService.isSidebarCollapsed() ? ('nav.home' | translate) : null"
-    >
-      <app-icon name="home" class="w-5 h-5 shrink-0" />
-      @if (!stateService.isSidebarCollapsed()) {
-        <span class="whitespace-nowrap overflow-hidden">{{ 'nav.home' | translate }}</span>
-      }
-    </a>
-
-    <a
-      routerLink="/about"
-      routerLinkActive="!bg-primary/10 !text-primary !font-extrabold"
-      class="flex items-center rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/50 text-slate-600 dark:text-slate-400 font-semibold text-sm transition-all duration-200 cursor-pointer"
-      [class.gap-3.5]="!stateService.isSidebarCollapsed()"
-      [class.px-4]="!stateService.isSidebarCollapsed()"
-      [class.py-3]="!stateService.isSidebarCollapsed()"
-      [class.justify-center]="stateService.isSidebarCollapsed()"
-      [class.p-3]="stateService.isSidebarCollapsed()"
-      [attr.title]="stateService.isSidebarCollapsed() ? ('nav.about' | translate) : null"
-    >
-      <app-icon name="info" class="w-5 h-5 shrink-0" />
-      @if (!stateService.isSidebarCollapsed()) {
-        <span class="whitespace-nowrap overflow-hidden">{{ 'nav.about' | translate }}</span>
-      }
-    </a>
-
-    <a
-      routerLink="/contact"
-      routerLinkActive="!bg-primary/10 !text-primary !font-extrabold"
-      class="flex items-center rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/50 text-slate-600 dark:text-slate-400 font-semibold text-sm transition-all duration-200 cursor-pointer"
-      [class.gap-3.5]="!stateService.isSidebarCollapsed()"
-      [class.px-4]="!stateService.isSidebarCollapsed()"
-      [class.py-3]="!stateService.isSidebarCollapsed()"
-      [class.justify-center]="stateService.isSidebarCollapsed()"
-      [class.p-3]="stateService.isSidebarCollapsed()"
-      [attr.title]="stateService.isSidebarCollapsed() ? ('nav.contact' | translate) : null"
-    >
-      <app-icon name="send" class="w-5 h-5 shrink-0" />
-      @if (!stateService.isSidebarCollapsed()) {
-        <span class="whitespace-nowrap overflow-hidden">{{ 'nav.contact' | translate }}</span>
-      }
-    </a>
+    @for (item of navItems; track item.path) {
+      <a
+        [routerLink]="item.path"
+        routerLinkActive="!bg-primary/10 !text-primary !font-extrabold"
+        [routerLinkActiveOptions]="{ exact: !!item.exact }"
+        class="flex items-center rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/50 text-slate-600 dark:text-slate-400 font-semibold text-sm transition-all duration-200 cursor-pointer"
+        [class.gap-3.5]="!stateService.isSidebarCollapsed()"
+        [class.px-4]="!stateService.isSidebarCollapsed()"
+        [class.py-3]="!stateService.isSidebarCollapsed()"
+        [class.justify-center]="stateService.isSidebarCollapsed()"
+        [class.p-3]="stateService.isSidebarCollapsed()"
+        [attr.title]="stateService.isSidebarCollapsed() ? (item.labelKey | translate) : null"
+      >
+        <app-icon [name]="item.icon" class="w-5 h-5 shrink-0" />
+        @if (!stateService.isSidebarCollapsed()) {
+          <span class="whitespace-nowrap overflow-hidden">{{ item.labelKey | translate }}</span>
+        }
+      </a>
+    }
   </nav>
 
   <div
@@ -168,36 +136,18 @@
     </a>
 
     <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
-      <a
-        routerLink="/home"
-        routerLinkActive="!bg-primary/10 !text-primary !font-extrabold"
-        [routerLinkActiveOptions]="{ exact: true }"
-        (click)="stateService.showMobileMenu.set(false)"
-        class="flex items-center gap-3.5 px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/50 text-slate-600 dark:text-slate-400 font-semibold text-sm transition-colors duration-200 cursor-pointer"
-      >
-        <app-icon name="home" class="w-5 h-5 shrink-0" />
-        <span>{{ 'nav.home' | translate }}</span>
-      </a>
-
-      <a
-        routerLink="/about"
-        routerLinkActive="!bg-primary/10 !text-primary !font-extrabold"
-        (click)="stateService.showMobileMenu.set(false)"
-        class="flex items-center gap-3.5 px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/50 text-slate-600 dark:text-slate-400 font-semibold text-sm transition-colors duration-200 cursor-pointer"
-      >
-        <app-icon name="info" class="w-5 h-5 shrink-0" />
-        <span>{{ 'nav.about' | translate }}</span>
-      </a>
-
-      <a
-        routerLink="/contact"
-        routerLinkActive="!bg-primary/10 !text-primary !font-extrabold"
-        (click)="stateService.showMobileMenu.set(false)"
-        class="flex items-center gap-3.5 px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/50 text-slate-600 dark:text-slate-400 font-semibold text-sm transition-colors duration-200 cursor-pointer"
-      >
-        <app-icon name="send" class="w-5 h-5 shrink-0" />
-        <span>{{ 'nav.contact' | translate }}</span>
-      </a>
+      @for (item of navItems; track item.path) {
+        <a
+          [routerLink]="item.path"
+          routerLinkActive="!bg-primary/10 !text-primary !font-extrabold"
+          [routerLinkActiveOptions]="{ exact: !!item.exact }"
+          (click)="stateService.showMobileMenu.set(false)"
+          class="flex items-center gap-3.5 px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/50 text-slate-600 dark:text-slate-400 font-semibold text-sm transition-colors duration-200 cursor-pointer"
+        >
+          <app-icon [name]="item.icon" class="w-5 h-5 shrink-0" />
+          <span>{{ item.labelKey | translate }}</span>
+        </a>
+      }
     </nav>
 
     <div

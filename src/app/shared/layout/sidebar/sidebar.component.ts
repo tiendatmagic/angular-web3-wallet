@@ -10,6 +10,13 @@ import { TxSpeedSelectorComponent } from '@shared/components/tx-speed-selector/t
 import { LanguageSelectorComponent } from '@shared/components/language-selector/language-selector.component';
 import { TranslatePipe } from '@shared/pipes/translate.pipe';
 
+export interface NavItem {
+  readonly labelKey: string;
+  readonly path: string;
+  readonly icon: string;
+  readonly exact?: boolean;
+}
+
 @Component({
   selector: 'app-sidebar',
   imports: [
@@ -68,4 +75,10 @@ import { TranslatePipe } from '@shared/pipes/translate.pipe';
 export class SidebarComponent {
   public stateService = inject(StateService);
   public translationService = inject(TranslationService);
+
+  public readonly navItems: readonly NavItem[] = [
+    { labelKey: 'nav.home', path: '/home', icon: 'home', exact: true },
+    { labelKey: 'nav.about', path: '/about', icon: 'info' },
+    { labelKey: 'nav.contact', path: '/contact', icon: 'send' },
+  ];
 }

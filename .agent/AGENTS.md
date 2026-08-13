@@ -1,11 +1,11 @@
-### Yêu cầu: Tái Cấu Trúc (Refactor) Gom Mobile Drawer Menu Về Thư Mục Sidebar (`app-sidebar`)
-- **Nội dung yêu cầu:** Gom toàn bộ giao diện và logic của Mobile Drawer Sidebar từ `HeaderComponent` (`src/app/shared/layout/header/`) về chung `SidebarComponent` (`src/app/shared/layout/sidebar/`) để thống nhất quản lý navigation.
+### Yêu cầu: Tái Cấu Trúc & Tối Ưu Hóa DRY Cho Sidebar Menu (`app-sidebar`)
+- **Nội dung yêu cầu:** Gom toàn bộ giao diện và logic của Mobile Drawer Sidebar từ `HeaderComponent` về chung `SidebarComponent`, đồng thời loại bỏ toàn bộ việc hardcode và lặp lại danh sách navigation links giữa Desktop và Mobile theo nguyên tắc DRY (Don't Repeat Yourself).
 - **Phân tích nguyên nhân & Kiến trúc:**
-  1. Trước đây, do nút Hamburger nằm trên thanh Header nên phần Mobile Drawer Menu được viết trực tiếp trong `header.component.html`, gây phân tán navigation links (`/home`, `/about`, `/contact`) giữa Header và Sidebar.
-  2. Gom về `SidebarComponent` giúp tăng tính gắn kết (High Cohesion), tách bạch rõ ràng trách nhiệm (Separation of Concerns: `Header` chỉ quản lý Top bar, `Sidebar` quản lý toàn bộ Menu Desktop & Mobile).
+  1. Trước đây, các menu `/home`, `/about`, `/contact` bị viết thủ công (hardcoded) lặp lại 2 lần riêng biệt ở 2 thẻ `<nav>` trong template Desktop và Mobile Drawer.
+  2. Gom về `SidebarComponent` và cấu hình động giúp quản lý navigation tập trung, dễ mở rộng thêm route mới mà chỉ cần chỉnh sửa 1 dòng code duy nhất trong TypeScript.
 - **Giải pháp:**
-  1. Chuyển khối HTML của Mobile Drawer (`.mobile-menu-shell`, `.mobile-menu-backdrop`, `.mobile-menu-panel`) từ `header.component.html` sang `sidebar.component.html`.
-  2. Bổ sung `LanguageSelectorComponent` và chuyển các CSS classes của Mobile Menu sang `sidebar.component.ts`.
+  1. Định nghĩa `interface NavItem` và khai báo mảng động `public readonly navItems: readonly NavItem[]` trong `sidebar.component.ts`.
+  2. Chuyển toàn bộ các khối `<nav>` Desktop và Mobile Drawer trong `sidebar.component.html` sang sử dụng cú pháp vòng lặp `@for (item of navItems; track item.path)`.
   3. Dọn dẹp imports và styles thừa trong `header.component.ts`.
 - **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Build production (`npm run build`) thành công 100%.
 
