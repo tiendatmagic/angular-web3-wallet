@@ -69,7 +69,7 @@
     <div
       class="absolute z-50 {{ width }} min-w-[220px] {{
         getPlacementClasses()
-      }} dropdown-menu-popover bg-white/85 dark:bg-slate-900/80 backdrop-blur-xl border border-slate-200/80 dark:border-slate-800/80 shadow-lg shadow-slate-900/10 dark:shadow-slate-950/50 rounded-[15px] p-2 text-slate-800 dark:text-slate-100 focus:outline-none"
+      }} dropdown-menu-popover bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-slate-200/80 dark:border-slate-800/80 shadow-xl shadow-slate-900/10 dark:shadow-slate-950/50 rounded-[15px] p-2 text-slate-800 dark:text-slate-100 focus:outline-none"
     >
       <ng-content select="[dropdown-content]"></ng-content>
 
@@ -124,7 +124,7 @@
                 type="button"
                 [disabled]="item.disabled"
                 (click)="toggleSubmenu(item, $event)"
-                (mouseenter)="activeSubmenuId.set(item.id || item.label || '')"
+                (mouseenter)="openSubmenu(item, $event)"
                 class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-colors text-left"
                 [ngClass]="{
                   'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80':
@@ -150,51 +150,6 @@
                   class="w-4 h-4 shrink-0 text-slate-400 ml-2"
                 ></app-icon>
               </button>
-
-              @if (
-                activeSubmenuId() === (item.id || item.label) &&
-                item.children &&
-                item.children.length > 0
-              ) {
-                <div
-                  class="absolute left-full top-0 ml-2 {{
-                    width
-                  }} min-w-[200px] bg-white/85 dark:bg-slate-900/80 backdrop-blur-xl border border-slate-200/80 dark:border-slate-800/80 shadow-lg shadow-slate-900/10 dark:shadow-slate-950/50 rounded-[15px] p-2 space-y-0.5 z-50 dropdown-menu-popover"
-                >
-                  @for (subItem of item.children; track subItem.id || subItem.label || $index) {
-                    <button
-                      type="button"
-                      [disabled]="subItem.disabled"
-                      (click)="onItemClick(subItem, $event)"
-                      class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-colors text-left"
-                      [ngClass]="{
-                        'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80':
-                          !subItem.disabled && subItem.variant !== 'danger',
-                        'text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40':
-                          subItem.variant === 'danger',
-                        'opacity-40 cursor-not-allowed': subItem.disabled,
-                      }"
-                    >
-                      <div class="flex items-center gap-3 truncate min-w-0">
-                        @if (subItem.icon) {
-                          <app-icon
-                            [name]="subItem.icon"
-                            class="w-4.5 h-4.5 shrink-0 {{ subItem.iconColor || 'text-slate-400' }}"
-                          ></app-icon>
-                        }
-                        <span class="truncate">{{ subItem.label }}</span>
-                      </div>
-                      @if (subItem.shortcut) {
-                        <span
-                          class="px-1.5 py-0.5 text-[11px] font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200/60 dark:border-slate-700/60"
-                        >
-                          {{ subItem.shortcut }}
-                        </span>
-                      }
-                    </button>
-                  }
-                </div>
-              }
             </div>
           } @else if (item.type === 'checkbox') {
             <button
@@ -320,5 +275,48 @@
         }
       </div>
     </div>
+
+    @if (activeSubmenu(); as submenu) {
+      <div
+        class="absolute z-[60] {{
+          width
+        }} min-w-[200px] bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-slate-200/80 dark:border-slate-800/80 shadow-xl shadow-slate-900/10 dark:shadow-slate-950/50 rounded-[15px] p-2 space-y-0.5 text-slate-800 dark:text-slate-100 dropdown-menu-popover"
+        [style.left.px]="submenuPosition().left"
+        [style.top.px]="submenuPosition().top"
+      >
+        @for (subItem of submenu.children; track subItem.id || subItem.label || $index) {
+          <button
+            type="button"
+            [disabled]="subItem.disabled"
+            (click)="onItemClick(subItem, $event)"
+            class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-colors text-left"
+            [ngClass]="{
+              'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80':
+                !subItem.disabled && subItem.variant !== 'danger',
+              'text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40':
+                subItem.variant === 'danger',
+              'opacity-40 cursor-not-allowed': subItem.disabled,
+            }"
+          >
+            <div class="flex items-center gap-3 truncate min-w-0">
+              @if (subItem.icon) {
+                <app-icon
+                  [name]="subItem.icon"
+                  class="w-4.5 h-4.5 shrink-0 {{ subItem.iconColor || 'text-slate-400' }}"
+                ></app-icon>
+              }
+              <span class="truncate">{{ subItem.label }}</span>
+            </div>
+            @if (subItem.shortcut) {
+              <span
+                class="px-1.5 py-0.5 text-[11px] font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200/60 dark:border-slate-700/60"
+              >
+                {{ subItem.shortcut }}
+              </span>
+            }
+          </button>
+        }
+      </div>
+    }
   }
 </div>

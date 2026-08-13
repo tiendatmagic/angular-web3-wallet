@@ -8,7 +8,7 @@ import {
   signal,
   effect,
   ViewChild,
-  ChangeDetectorRef
+  ChangeDetectorRef,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '../icon/icon.component';
@@ -47,10 +47,10 @@ export interface DropdownMenuHeader {
   imports: [CommonModule, IconComponent, TranslatePipe],
   templateUrl: './dropdown-menu.component.html',
   host: {
-    'class': 'block',
+    class: 'block',
     '(document:click)': 'onClickOutside($event)',
-    '(document:keydown.escape)': 'onEscape()'
-  }
+    '(document:keydown.escape)': 'onEscape()',
+  },
 })
 export class DropdownMenuComponent {
   private readonly elementRef = inject(ElementRef);
@@ -64,10 +64,13 @@ export class DropdownMenuComponent {
   @Input() leadingIcon: string = '';
   @Input() triggerIcon: string = 'chevron-down';
   @Input() showChevron: boolean = true;
-  @Input() triggerVariant: 'default' | 'outline' | 'ghost' | 'primary' | 'secondary' | 'avatar' | 'icon' = 'outline';
+  @Input() triggerVariant:
+    'default' | 'outline' | 'ghost' | 'primary' | 'secondary' | 'avatar' | 'icon' = 'outline';
   @Input() triggerSize: 'sm' | 'md' | 'lg' = 'md';
   @Input() avatarUrl: string = '';
-  @Input() placement: 'bottom-left' | 'bottom-right' | 'top-left' | 'top-right' | 'bottom-center' | 'top-center' = 'bottom-left';
+  @Input() placement:
+    'bottom-left' | 'bottom-right' | 'top-left' | 'top-right' | 'bottom-center' | 'top-center' =
+    'bottom-left';
   @Input() width: string = 'w-64';
   @Input() disabled: boolean = false;
   @Input() closeOnSelect: boolean = true;
@@ -81,6 +84,7 @@ export class DropdownMenuComponent {
 
   public readonly isOpen = signal<boolean>(false);
   public readonly activeSubmenuId = signal<string | null>(null);
+  public readonly submenuPosition = signal({ left: 0, top: 0 });
 
   private readonly syncOpenState = effect(() => {
     const activeId = this.dropdownService.activeDropdownId();
@@ -141,7 +145,7 @@ export class DropdownMenuComponent {
 
     if (item.type === 'sub') {
       const current = this.activeSubmenuId();
-      this.activeSubmenuId.set(current === item.id ? null : (item.id || item.label || 'sub'));
+      this.activeSubmenuId.set(current === item.id ? null : item.id || item.label || 'sub');
       return;
     }
 
@@ -177,8 +181,28 @@ export class DropdownMenuComponent {
     if (this.activeSubmenuId() === itemId) {
       this.activeSubmenuId.set(null);
     } else {
-      this.activeSubmenuId.set(itemId);
+      this.openSubmenu(item, event);
     }
+  }
+
+  public openSubmenu(item: DropdownMenuItem, event: MouseEvent): void {
+    if (item.disabled || !item.children?.length) return;
+
+    const hostRect = this.elementRef.nativeElement.getBoundingClientRect();
+    const triggerRect = (event.currentTarget as HTMLElement).getBoundingClientRect();
+
+    this.submenuPosition.set({
+      left: triggerRect.right - hostRect.left + 8,
+      top: triggerRect.top - hostRect.top,
+    });
+    this.activeSubmenuId.set(item.id || item.label || '');
+  }
+
+  public activeSubmenu(): DropdownMenuItem | null {
+    const activeId = this.activeSubmenuId();
+    if (!activeId) return null;
+
+    return this.items.find((item) => (item.id || item.label) === activeId) ?? null;
   }
 
   public getPlacementClasses(): string {
@@ -199,4 +223,3 @@ export class DropdownMenuComponent {
     }
   }
 }
-
