@@ -1,4 +1,14 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  Output,
+  SimpleChanges,
+  inject,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '../icon/icon.component';
 import { TranslatePipe } from '../../pipes/translate.pipe';
@@ -11,7 +21,10 @@ import { TranslatePipe } from '../../pipes/translate.pipe';
   styleUrl: './drawer.component.scss',
   host: { class: 'block' },
 })
-export class DrawerComponent {
+export class DrawerComponent implements OnChanges, OnDestroy {
+  private readonly cdr = inject(ChangeDetectorRef);
+  private closeTimer?: ReturnType<typeof setTimeout>;
+
   @Input() isOpen: boolean = false;
   @Input() title: string = '';
   @Input() subtitle?: string;
@@ -21,9 +34,47 @@ export class DrawerComponent {
   @Output() isOpenChange = new EventEmitter<boolean>();
   @Output() close = new EventEmitter<void>();
 
+  public isRendered = false;
+  public isClosing = false;
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!changes['isOpen']) return;
+
+    if (this.isOpen) {
+      this.cancelPendingClose();
+      this.isRendered = true;
+      this.isClosing = false;
+    } else if (this.isRendered && !this.isClosing) {
+      this.startCloseAnimation();
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.cancelPendingClose();
+  }
+
   closeDrawer(): void {
-    this.isOpen = false;
+    if (this.isClosing) return;
+
+    this.startCloseAnimation();
     this.isOpenChange.emit(false);
     this.close.emit();
+  }
+
+  private startCloseAnimation(): void {
+    this.isClosing = true;
+    this.closeTimer = setTimeout(() => {
+      this.isRendered = false;
+      this.isClosing = false;
+      this.closeTimer = undefined;
+      this.cdr.markForCheck();
+    }, 300);
+  }
+
+  private cancelPendingClose(): void {
+    if (this.closeTimer) {
+      clearTimeout(this.closeTimer);
+      this.closeTimer = undefined;
+    }
   }
 }

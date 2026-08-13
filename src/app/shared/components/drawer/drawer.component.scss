@@ -34,6 +34,42 @@
   }
 }
 
+@keyframes drawerFadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes drawerSlideRightOut {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes drawerSlideLeftOut {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes drawerSlideDown {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+
 .animate-drawer-backdrop {
   animation: drawerFadeIn 250ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
@@ -48,4 +84,20 @@
 
 .animate-drawer-bottom {
   animation: drawerSlideUp 300ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-drawer-backdrop-out {
+  animation: drawerFadeOut 250ms ease-in forwards;
+}
+
+.animate-drawer-right-out {
+  animation: drawerSlideRightOut 300ms ease-in forwards;
+}
+
+.animate-drawer-left-out {
+  animation: drawerSlideLeftOut 300ms ease-in forwards;
+}
+
+.animate-drawer-bottom-out {
+  animation: drawerSlideDown 300ms ease-in forwards;
 }

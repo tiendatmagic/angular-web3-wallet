@@ -1,4 +1,4 @@
-@if (isOpen) {
+@if (isRendered) {
   <div
     class="drawer-backdrop fixed inset-0 z-50 flex"
     [ngClass]="{
@@ -9,17 +9,23 @@
   >
     <div
       aria-hidden="true"
-      class="absolute inset-0 bg-black/40 animate-drawer-backdrop"
+      class="absolute inset-0 bg-black/40"
+      [ngClass]="isClosing ? 'animate-drawer-backdrop-out' : 'animate-drawer-backdrop'"
       (click)="closeDrawer()"
     ></div>
 
     <div
       class="relative z-10 glass-dialog border-slate-200/60 dark:border-slate-800/80 flex flex-col overflow-hidden"
       [ngClass]="{
-        'h-full border-l animate-drawer-right': position === 'right',
-        'h-full border-r animate-drawer-left': position === 'left',
-        'w-full max-w-2xl border-t rounded-t-[15px] max-h-[85vh] animate-drawer-bottom':
-          position === 'bottom',
+        'h-full border-l': position === 'right',
+        'h-full border-r': position === 'left',
+        'w-full max-w-2xl border-t rounded-t-[15px] max-h-[85vh]': position === 'bottom',
+        'animate-drawer-right': position === 'right' && !isClosing,
+        'animate-drawer-left': position === 'left' && !isClosing,
+        'animate-drawer-bottom': position === 'bottom' && !isClosing,
+        'animate-drawer-right-out': position === 'right' && isClosing,
+        'animate-drawer-left-out': position === 'left' && isClosing,
+        'animate-drawer-bottom-out': position === 'bottom' && isClosing,
         'w-full sm:w-80': (position === 'right' || position === 'left') && size === 'sm',
         'w-full sm:w-[450px]': (position === 'right' || position === 'left') && size === 'md',
         'w-full sm:w-[600px]': (position === 'right' || position === 'left') && size === 'lg',
