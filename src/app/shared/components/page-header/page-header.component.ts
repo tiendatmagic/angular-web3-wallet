@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-page-header',
-  
+  standalone: true,
   imports: [CommonModule],
-  
-  templateUrl: './page-header.component.html'})
+  templateUrl: './page-header.component.html',
+  host: { 'class': 'block w-full' }
+})
 export class PageHeaderComponent {
   @Input() title = '';
   @Input() description = '';

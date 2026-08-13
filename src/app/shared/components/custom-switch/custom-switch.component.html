@@ -22,16 +22,27 @@
         [checked]="checked"
         (change)="onToggle($event)"
         [disabled]="disabled"
-        class="sr-only peer"
+        class="sr-only"
       />
       <div
-        class="w-11 h-6 bg-slate-200 dark:bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-slate-600 peer-checked:bg-[var(--color-primary)] transition-colors duration-200"
-      ></div>
+        class="relative w-11 h-6 rounded-full transition-colors duration-200 ease-in-out cursor-pointer"
+        [ngClass]="
+          checked
+            ? 'bg-[var(--color-primary)] shadow-sm shadow-[var(--color-primary)]/20'
+            : 'bg-slate-200 dark:bg-slate-800 border border-slate-300/60 dark:border-slate-700/60'
+        "
+      >
+        <div
+          class="absolute top-[2px] left-[2px] bg-white rounded-full h-5 w-5 transition-transform duration-200 ease-in-out shadow-sm"
+          [class.translate-x-5]="checked"
+          [class.translate-x-0]="!checked"
+        ></div>
+      </div>
     </label>
   </div>
 } @else {
   <label
-    class="relative inline-flex items-center cursor-pointer shrink-0"
+    class="relative inline-flex items-center cursor-pointer shrink-0 select-none"
     [class.opacity-50]="disabled"
     [class.pointer-events-none]="disabled"
   >
@@ -40,11 +51,22 @@
       [checked]="checked"
       (change)="onToggle($event)"
       [disabled]="disabled"
-      class="sr-only peer"
+      class="sr-only"
     />
     <div
-      class="w-11 h-6 bg-slate-200 dark:bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-slate-600 peer-checked:bg-[var(--color-primary)] transition-colors duration-200 shrink-0"
-    ></div>
+      class="relative w-11 h-6 rounded-full transition-colors duration-200 ease-in-out shrink-0"
+      [ngClass]="
+        checked
+          ? 'bg-[var(--color-primary)] shadow-sm shadow-[var(--color-primary)]/20'
+          : 'bg-slate-200 dark:bg-slate-800 border border-slate-300/60 dark:border-slate-700/60'
+      "
+    >
+      <div
+        class="absolute top-[2px] left-[2px] bg-white rounded-full h-5 w-5 transition-transform duration-200 ease-in-out shadow-sm"
+        [class.translate-x-5]="checked"
+        [class.translate-x-0]="!checked"
+      ></div>
+    </div>
     @if (label) {
       <span class="ml-3 text-sm font-semibold text-slate-700 dark:text-slate-300 select-none">
         {{ label }}

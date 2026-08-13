@@ -1,4 +1,4 @@
-﻿import { Component, Input, computed, signal } from '@angular/core';
+import { Component, Input, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '../icon/icon.component';
 
@@ -91,7 +91,7 @@ export class ProgressComponent {
   getVariantClasses(): string {
     switch (this.variant) {
       case 'primary':
-        return 'bg-purple-600 dark:bg-purple-500';
+        return 'bg-[var(--color-primary)]';
       case 'secondary':
         return 'bg-slate-600 dark:bg-slate-400';
       case 'success':
@@ -103,16 +103,16 @@ export class ProgressComponent {
       case 'info':
         return 'bg-sky-500 dark:bg-sky-400';
       case 'gradient':
-        return 'bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500';
+        return 'bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)]';
       default:
-        return 'bg-purple-600 dark:bg-purple-500';
+        return 'bg-[var(--color-primary)]';
     }
   }
 
   getVariantStrokeColor(): string {
     switch (this.variant) {
       case 'primary':
-        return 'stroke-purple-600 dark:stroke-purple-400';
+        return 'stroke-[var(--color-primary)]';
       case 'secondary':
         return 'stroke-slate-600 dark:stroke-slate-400';
       case 'success':
@@ -124,16 +124,16 @@ export class ProgressComponent {
       case 'info':
         return 'stroke-sky-500 dark:stroke-sky-400';
       case 'gradient':
-        return 'stroke-purple-500';
+        return 'stroke-[var(--color-primary)]';
       default:
-        return 'stroke-purple-600 dark:stroke-purple-400';
+        return 'stroke-[var(--color-primary)]';
     }
   }
 
   getVariantTextColor(): string {
     switch (this.variant) {
       case 'primary':
-        return 'text-purple-600 dark:text-purple-400';
+        return 'text-[var(--color-primary)]';
       case 'secondary':
         return 'text-slate-600 dark:text-slate-400';
       case 'success':
@@ -145,9 +145,9 @@ export class ProgressComponent {
       case 'info':
         return 'text-sky-600 dark:text-sky-400';
       case 'gradient':
-        return 'text-purple-600 dark:text-purple-400';
+        return 'text-[var(--color-primary)]';
       default:
-        return 'text-purple-600 dark:text-purple-400';
+        return 'text-[var(--color-primary)]';
     }
   }
 

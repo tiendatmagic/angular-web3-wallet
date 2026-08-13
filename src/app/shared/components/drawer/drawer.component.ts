@@ -30,6 +30,7 @@ export class DrawerComponent implements OnChanges, OnDestroy {
   @Input() subtitle?: string;
   @Input() position: 'right' | 'left' | 'bottom' = 'right';
   @Input() size: 'sm' | 'md' | 'lg' | 'full' = 'md';
+  @Input() hasFooter: boolean = true;
 
   @Output() isOpenChange = new EventEmitter<boolean>();
   @Output() close = new EventEmitter<void>();

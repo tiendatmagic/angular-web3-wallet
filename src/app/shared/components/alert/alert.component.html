@@ -35,7 +35,9 @@
       @if (title) {
         <h4 class="font-extrabold text-sm tracking-tight mb-0.5">{{ title }}</h4>
       }
-      <p class="text-xs sm:text-sm font-semibold opacity-90 leading-relaxed">{{ message }}</p>
+      @if (message) {
+        <p class="text-xs sm:text-sm font-semibold opacity-90 leading-relaxed">{{ message }}</p>
+      }
 
       <ng-content></ng-content>
     </div>

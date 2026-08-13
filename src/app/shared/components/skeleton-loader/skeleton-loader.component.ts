@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-skeleton-loader',
-  
+  standalone: true,
   imports: [CommonModule],
-  
-  templateUrl: './skeleton-loader.component.html'})
+  templateUrl: './skeleton-loader.component.html',
+  host: { 'class': 'block w-full' }
+})
 export class SkeletonLoaderComponent {
   @Input() type:
     | 'dashboard'

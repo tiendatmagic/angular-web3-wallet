@@ -1,3 +1,24 @@
+### Yêu cầu: Chuẩn Hóa Class Tailwind, Tối Ưu Hiển Thị Dark Mode & Nâng Cấp Logic / Props Cho Các Component Hiện Có
+- **Nội dung yêu cầu:** Rà soát toàn bộ 46 component hiện có trong dự án để sửa triệt để các class Tailwind phi tiêu chuẩn (`slate-350`, `slate-550`, `slate-650`, `slate-1000`, `slate-150`), khắc phục lỗi hiển thị tối mờ trong Dark Mode, đồng thời hoàn thiện logic form binding (`ControlValueAccessor`), căn chỉnh layout và props cho các component có sẵn mà không tạo component mới.
+- **Chi tiết các hạng mục đã thực hiện:**
+  1. **Sửa Lỗi Class CSS Không Hợp Lệ:**
+     - `table.component.html`: Sửa `text-slate-350` -> `text-slate-700 dark:text-slate-200`, `dark:text-slate-550` -> `dark:text-slate-400`, `dark:text-slate-650` -> `dark:text-slate-600`.
+     - `stat-card.component.html`: Sửa `bg-slate-1000/10` -> `bg-slate-500/10 dark:bg-slate-700/30 text-slate-600 dark:text-slate-400`.
+     - `custom-slider.component.ts`: Sửa `dark:bg-slate-1000` -> `dark:bg-slate-600`.
+     - `badge.component.ts`: Sửa `bg-slate-150/90 text-slate-650` -> `bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-400`.
+     - `home.component.html`: Sửa `text-slate-650 dark:text-slate-350` -> `text-slate-600 dark:text-slate-300`.
+  2. **Hoàn Thiện Logic & Tính Năng Component Có Sẵn:**
+     - `CustomSelectComponent`: Cải tiến kiểm tra placeholder `[class.text-slate-400]="!selectedLabel"` loại bỏ lỗi nhận diện sai khi giá trị được chọn là số `0`.
+     - `CustomSwitchComponent`: Implement `ControlValueAccessor` (`NG_VALUE_ACCESSOR`), hỗ trợ đầy đủ 2-way binding `[(ngModel)]` và Reactive Forms; bổ sung host bindings `[class.w-full]="type === 'full'"` và `[class.inline-flex]="type === 'compact'"`; khắc phục lỗi hiển thị màu nền khi bật switch trong Dark Mode bằng cách chuyển từ CSS `peer-checked:` sang binding `[ngClass]` trực tiếp `[class.bg-[var(--color-primary)]]="checked"`, đảm bảo khi switch bật luôn hiển thị màu tím chủ đạo rực rỡ và không bị class `dark:bg-slate-800` đè màu.
+     - `AlertComponent`: Bọc paragraph với `@if (message)` ngăn chặn việc render thẻ `<p>` rỗng khi chỉ truyền `ng-content`.
+     - `EmptyStateComponent`: Đưa aura bo góc `rounded-[17px]` về chuẩn tối đa `rounded-[15px]` theo Design System.
+     - `PaginationComponent`: Bổ sung `host: { class: 'block w-full' }`, thêm `@Input() hideOnSinglePage = true;`, đồng bộ màu nút active sang `bg-[var(--color-primary)]`.
+     - `ProgressComponent`: Đồng bộ biến thể `primary` và `gradient` sang CSS variable động `var(--color-primary)` và `var(--color-secondary)`.
+     - `DrawerComponent`: Thêm `@Input() hasFooter = true;` và bọc footer container với `@if (hasFooter)` giúp drawer linh hoạt không bị thừa viền dưới khi không cần footer.
+  3. **Rà Soát & Đối Chiếu Chuẩn Thiết Kế (`design.md` & `.agent/design.md`):**
+     - Đã kiểm tra 100% các tiêu chuẩn thiết kế: Typography (phông Quicksand), Hệ màu động (`--color-primary`, `--color-secondary`), Giới hạn bo góc tối đa `15px` (`--radius-xl` -> `--radius-4xl`), Bố cục container `max-w-[1530px]`, Nhãn trường `.form-field` (`uppercase text-xs font-bold tracking-wider select-none`), Hệ thống Glass 3 cấp (`.glass-popover`, `.glass-dialog`, `.glass-header`), Backdrop overlay `bg-black/40` (không `backdrop-blur-*`), 100% SVG inline icons (0 raw emoji), và bổ sung `host: { class: 'block w-full' }` cho `PageHeaderComponent` và `SkeletonLoaderComponent`.
+- **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Build production (`npm run build`) thành công 100%.
+
 ### Yêu cầu: Tái Cấu Trúc, Tối Ưu Hóa DRY, Chuẩn Hóa 100% Tailwind CSS & Triệt Tiêu Transition Trên Border Cho Sidebar & Header
 - **Nội dung yêu cầu:** Gom toàn bộ giao diện và logic của Mobile Drawer Sidebar từ `HeaderComponent` về chung `SidebarComponent`, loại bỏ toàn bộ việc hardcode lặp lại navigation links theo nguyên tắc DRY, chuyển đổi sang 100% Tailwind CSS utility classes, đồng thời loại bỏ hoàn toàn hiệu ứng transition trên các đường viền (border) và căn khớp tuyệt đối đường viền ngăn cách giữa Header và Sidebar.
 - **Phân tích nguyên nhân & Kiến trúc:**

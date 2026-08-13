@@ -14,7 +14,8 @@ import { TranslatePipe } from '@shared/pipes/translate.pipe';
   selector: 'app-pagination',
   standalone: true,
   imports: [CommonModule, IconComponent, TranslatePipe],
-  templateUrl: './pagination.component.html'
+  templateUrl: './pagination.component.html',
+  host: { 'class': 'block w-full' },
 })
 export class PaginationComponent implements OnChanges {
   @Input() currentPage: number = 1;
@@ -22,6 +23,7 @@ export class PaginationComponent implements OnChanges {
   @Input() totalItems: number = 0;
   @Input() itemsPerPage: number = 10;
   @Input() itemName: string = '';
+  @Input() hideOnSinglePage: boolean = true;
 
   @Output() pageChange = new EventEmitter<number>();
 

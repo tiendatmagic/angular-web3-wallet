@@ -1,4 +1,4 @@
-@if (totalPages > 1) {
+@if (!hideOnSinglePage || totalPages > 1) {
   <div
     class="px-5 py-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between gap-4 flex-wrap"
   >
@@ -27,7 +27,7 @@
             (click)="goToPage(toNumber(p))"
             [class]="
               currentPage === p
-                ? 'bg-[var(--dynamic-primary)] text-white border-transparent shadow-md shadow-[var(--dynamic-primary)]/20 font-extrabold'
+                ? 'bg-[var(--color-primary)] text-white border-transparent shadow-md shadow-[var(--color-primary)]/20 font-extrabold'
                 : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 font-semibold'
             "
             class="w-8.5 h-8.5 rounded-xl border text-xs transition-all active:scale-[0.98] flex items-center justify-center"

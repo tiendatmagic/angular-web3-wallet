@@ -12,7 +12,7 @@
   >
     <span
       class="font-semibold truncate"
-      [class.text-slate-400]="value === null || value === undefined || value === '' || value === 0"
+      [class.text-slate-400]="!selectedLabel"
     >
       {{ selectedLabel || effectivePlaceholder }}
     </span>
