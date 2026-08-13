@@ -1,15 +1,20 @@
 @if (isOpen) {
   <div
-    class="drawer-backdrop fixed inset-0 z-50 bg-black/40 flex animate-drawer-backdrop"
+    class="drawer-backdrop fixed inset-0 z-50 flex"
     [ngClass]="{
       'justify-end': position === 'right',
       'justify-start': position === 'left',
       'items-end justify-center': position === 'bottom',
     }"
-    (click)="onBackdropClick($event)"
   >
     <div
-      class="glass-dialog border-slate-200/60 dark:border-slate-800/80 flex flex-col overflow-hidden"
+      aria-hidden="true"
+      class="absolute inset-0 bg-black/40 animate-drawer-backdrop"
+      (click)="closeDrawer()"
+    ></div>
+
+    <div
+      class="relative z-10 glass-dialog border-slate-200/60 dark:border-slate-800/80 flex flex-col overflow-hidden"
       [ngClass]="{
         'h-full border-l animate-drawer-right': position === 'right',
         'h-full border-r animate-drawer-left': position === 'left',

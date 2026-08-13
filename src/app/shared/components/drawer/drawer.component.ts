@@ -9,7 +9,7 @@ import { TranslatePipe } from '../../pipes/translate.pipe';
   imports: [CommonModule, IconComponent, TranslatePipe],
   templateUrl: './drawer.component.html',
   styleUrl: './drawer.component.scss',
-  host: { 'class': 'block' },
+  host: { class: 'block' },
 })
 export class DrawerComponent {
   @Input() isOpen: boolean = false;
@@ -26,11 +26,4 @@ export class DrawerComponent {
     this.isOpenChange.emit(false);
     this.close.emit();
   }
-
-  onBackdropClick(event: MouseEvent): void {
-    if ((event.target as HTMLElement).classList.contains('drawer-backdrop')) {
-      this.closeDrawer();
-    }
-  }
 }
-
