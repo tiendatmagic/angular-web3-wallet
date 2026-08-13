@@ -108,6 +108,45 @@ Các biến dynamic được ánh xạ vào Tailwind CSS v4 thông qua `@theme`:
 ### 6.1. Thiết kế Kính mờ (Glassmorphism Cards & Banners)
 - Nền kính mờ: `bg-white/60 dark:bg-slate-900/60 backdrop-blur-md border border-slate-200/50 dark:border-slate-800/50 shadow-lg`.
 
+#### 6.1.1. Hệ thống Glass Surface 3 cấp
+
+Các bề mặt nổi phải dùng utility toàn cục trong `src/styles.scss`; không lặp lại các class `bg-*`, `backdrop-blur-*` và `shadow-*` tại từng component:
+
+```scss
+.glass-popover {
+  @apply bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl
+    shadow-xl shadow-slate-900/10 dark:shadow-slate-950/50;
+}
+
+.glass-dialog {
+  @apply bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl
+    shadow-2xl shadow-slate-900/15 dark:shadow-slate-950/60;
+}
+
+.glass-header {
+  @apply bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl;
+}
+```
+
+- `glass-popover`: Custom Select, Date Picker, DateTime Range, menu chọn giờ/phút, Dropdown Menu, nested submenu, Language Selector, Network Selector và Account Dropdown.
+- `glass-dialog`: Modal, Modal Wrapper, Confirm Modal, Drawer, mobile sidebar và modal xem trước File Upload.
+- `glass-header`: sticky header; không dùng `shadow-xl` cho header.
+- Border, radius, positioning, overflow và z-index vẫn khai báo riêng theo cấu trúc từng component.
+
+#### 6.1.2. Quy tắc Backdrop Root và Popover lồng nhau
+
+- Không đặt popover cần blur bên trong phần tử cha có `backdrop-filter`, `filter`, opacity animation hoặc transform animation. Chúng có thể tạo backdrop/stacking context và làm blur của component con mất tác dụng.
+- Glass background của sticky header phải là layer `absolute inset-0` độc lập. Nội dung header và dropdown nằm ở sibling layer `relative` để dropdown blur trực tiếp nội dung trang.
+- Nested submenu của `app-dropdown-menu` phải render ngang hàng với menu cha, không nằm bên trong surface có `backdrop-filter`.
+- Overlay của Drawer phải là sibling của drawer surface. Chỉ overlay fade opacity; không animate opacity trên container cha chứa `glass-dialog`.
+
+#### 6.1.3. Drawer và Mobile Sidebar Motion
+
+- Click overlay bên ngoài Drawer/mobile sidebar phải đóng component; click bên trong surface không đóng.
+- Drawer giữ DOM trong 300ms khi đóng: drawer trượt ra ngoài, bottom drawer trượt xuống và overlay fade-out trước khi tháo DOM.
+- Mobile sidebar phải có trạng thái đóng ngay trong CSS mặc định: shell `visibility: hidden`, backdrop `opacity: 0`, panel `translateX(-100%)`. Chỉ modifier `--open` mới hiển thị panel.
+- Khi đóng mobile sidebar, trì hoãn `visibility: hidden` 300ms để transition chạy xong. Quy tắc này ngăn sidebar xuất hiện trong frame đầu khi reload.
+
 ### 6.2. Backdrop Overlay cho Modal & Drawer
 - Màu sắc: `bg-black/40` thống nhất.
 - Không dùng `backdrop-blur-*` để tối ưu hiệu năng đồ họa trên mọi thiết bị.
