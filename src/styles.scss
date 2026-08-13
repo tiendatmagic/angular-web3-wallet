@@ -130,25 +130,25 @@ body.dark ::-webkit-scrollbar-thumb {
 }
 
 .btn-secondary {
-  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-all duration-150 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5;
+  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-all duration-150 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 shadow-xs;
   background-color: color-mix(in srgb, var(--color-primary) 8%, transparent);
-  border: 1px solid color-mix(in srgb, var(--color-primary) 20%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 25%, transparent);
   color: var(--color-primary);
 }
 .btn-secondary:hover {
   background-color: color-mix(in srgb, var(--color-primary) 15%, transparent);
-  border: 1px solid color-mix(in srgb, var(--color-primary) 30%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 40%, transparent);
 }
 .dark .btn-secondary,
 body.dark .btn-secondary {
   background-color: color-mix(in srgb, var(--color-secondary) 12%, transparent);
-  border: 1px solid color-mix(in srgb, var(--color-secondary) 30%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-secondary) 35%, transparent);
   color: var(--color-secondary);
 }
 .dark .btn-secondary:hover,
 body.dark .btn-secondary:hover {
   background-color: color-mix(in srgb, var(--color-secondary) 20%, transparent);
-  border: 1px solid color-mix(in srgb, var(--color-secondary) 45%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-secondary) 55%, transparent);
 }
 
 .btn-danger {
@@ -156,25 +156,29 @@ body.dark .btn-secondary:hover {
 }
 
 .btn-danger-light {
-  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-all duration-150 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5;
+  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-all duration-150 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 shadow-xs;
   background-color: rgba(244, 63, 94, 0.08);
-  color: rgb(244, 63, 94);
+  border: 1px solid rgba(244, 63, 94, 0.25);
+  color: rgb(225, 29, 72);
 }
 .btn-danger-light:hover {
   background-color: rgba(244, 63, 94, 0.15);
+  border: 1px solid rgba(244, 63, 94, 0.4);
 }
 .dark .btn-danger-light,
 body.dark .btn-danger-light {
-  background-color: rgba(251, 113, 133, 0.15);
+  background-color: rgba(251, 113, 133, 0.12);
+  border: 1px solid rgba(251, 113, 133, 0.35);
   color: rgb(251, 113, 133);
 }
 .dark .btn-danger-light:hover,
 body.dark .btn-danger-light:hover {
-  background-color: rgba(251, 113, 133, 0.25);
+  background-color: rgba(251, 113, 133, 0.22);
+  border: 1px solid rgba(251, 113, 133, 0.55);
 }
 
 .btn-cancel {
-  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-all duration-150 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800/80 dark:hover:bg-slate-700/80 text-slate-700 dark:text-slate-300;
+  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-all duration-150 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-slate-100/90 hover:bg-slate-200/90 dark:bg-slate-800/80 dark:hover:bg-slate-700/90 text-slate-700 dark:text-slate-200 border border-slate-200/90 hover:border-slate-300 dark:border-slate-700/80 dark:hover:border-slate-600 shadow-xs;
 }
 
 .btn-success {

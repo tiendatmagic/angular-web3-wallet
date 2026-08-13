@@ -1,3 +1,21 @@
+### Yêu cầu: Bổ Sung Border Rõ Nét & Tối Ưu Độ Nhận Diện Nút Bấm (Button) Cho Light Mode & Dark Mode
+- **Nội dung yêu cầu:** Rà soát và bổ sung viền (border) cho các nút bấm (như nút Làm mới / Refresh, nút Cancel, Secondary, Danger-light) vốn trước đó chưa có border nên bị chìm màu, khó phân biệt với nền container trong cả Light Mode và Dark Mode.
+- **Phân tích nguyên nhân:**
+  1. Class `.btn-cancel` (dùng cho các nút Hủy, Làm mới, Quay lại, Preset...) chỉ có màu nền `bg-slate-100 dark:bg-slate-800/80` mà KHÔNG có `border`, dẫn tới việc khi đặt trên nền Card/Modal/Empty-state thì nút bị phẳng lì, chìm vào nền và khó nhận diện ranh giới nút bấm.
+  2. Class `.btn-danger-light` thiếu thuộc tính viền `border` ở cả 2 theme.
+  3. Class `.btn-secondary` có độ tương phản viền mỏng cần được tăng cường nhẹ để sắc nét hơn.
+- **Giải pháp:**
+  1. **Nâng cấp `.btn-cancel` trong `src/styles.scss`:**
+     - Bổ sung `border border-slate-200/90 hover:border-slate-300 dark:border-slate-700/80 dark:hover:border-slate-600 shadow-xs`.
+     - Tối ưu màu chữ `text-slate-700 dark:text-slate-200` và nền `bg-slate-100/90 hover:bg-slate-200/90 dark:bg-slate-800/80 dark:hover:bg-slate-700/90`.
+  2. **Nâng cấp `.btn-danger-light` trong `src/styles.scss`:**
+     - Bổ sung `border: 1px solid rgba(244, 63, 94, 0.25)` (hover `0.4`), Dark Mode `border: 1px solid rgba(251, 113, 133, 0.35)` (hover `0.55`).
+  3. **Nâng cấp `.btn-secondary` trong `src/styles.scss`:**
+     - Tăng độ tương phản viền `color-mix` lên `25%` (hover `40%`), Dark Mode `35%` (hover `55%`) cùng `shadow-xs`.
+  4. **Tối ưu nút Cancel trong footer `CustomDateTimeRangeComponent`:**
+     - Đồng bộ class viền `border-slate-200/90 dark:border-slate-700/80` và `text-slate-700 dark:text-slate-200`.
+- **Xác thực:** Chạy `npm run build` hoàn thành 100% với exit code 0.
+
 ### Yêu cầu: Chuẩn Hóa Class Tailwind, Tối Ưu Hiển Thị Dark Mode & Nâng Cấp Logic / Props Cho Các Component Hiện Có
 - **Nội dung yêu cầu:** Rà soát toàn bộ 46 component hiện có trong dự án để sửa triệt để các class Tailwind phi tiêu chuẩn (`slate-350`, `slate-550`, `slate-650`, `slate-1000`, `slate-150`), khắc phục lỗi hiển thị tối mờ trong Dark Mode, đồng thời hoàn thiện logic form binding (`ControlValueAccessor`), căn chỉnh layout và props cho các component có sẵn mà không tạo component mới.
 - **Chi tiết các hạng mục đã thực hiện:**
