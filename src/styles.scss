@@ -461,6 +461,14 @@ html.dark .alert-error-bordered {
   @apply bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-xl shadow-slate-900/10 dark:shadow-slate-950/50;
 }
 
+.glass-dialog {
+  @apply bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl shadow-2xl shadow-slate-900/15 dark:shadow-slate-950/60;
+}
+
+.glass-header {
+  @apply bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl;
+}
+
 .dropdown-menu-popover,
 .date-picker-popover,
 .date-time-range-popover {
