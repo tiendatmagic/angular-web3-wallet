@@ -1,3 +1,14 @@
+### Yêu cầu: Tái Cấu Trúc (Refactor) Gom Mobile Drawer Menu Về Thư Mục Sidebar (`app-sidebar`)
+- **Nội dung yêu cầu:** Gom toàn bộ giao diện và logic của Mobile Drawer Sidebar từ `HeaderComponent` (`src/app/shared/layout/header/`) về chung `SidebarComponent` (`src/app/shared/layout/sidebar/`) để thống nhất quản lý navigation.
+- **Phân tích nguyên nhân & Kiến trúc:**
+  1. Trước đây, do nút Hamburger nằm trên thanh Header nên phần Mobile Drawer Menu được viết trực tiếp trong `header.component.html`, gây phân tán navigation links (`/home`, `/about`, `/contact`) giữa Header và Sidebar.
+  2. Gom về `SidebarComponent` giúp tăng tính gắn kết (High Cohesion), tách bạch rõ ràng trách nhiệm (Separation of Concerns: `Header` chỉ quản lý Top bar, `Sidebar` quản lý toàn bộ Menu Desktop & Mobile).
+- **Giải pháp:**
+  1. Chuyển khối HTML của Mobile Drawer (`.mobile-menu-shell`, `.mobile-menu-backdrop`, `.mobile-menu-panel`) từ `header.component.html` sang `sidebar.component.html`.
+  2. Bổ sung `LanguageSelectorComponent` và chuyển các CSS classes của Mobile Menu sang `sidebar.component.ts`.
+  3. Dọn dẹp imports và styles thừa trong `header.component.ts`.
+- **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Build production (`npm run build`) thành công 100%.
+
 ### Yêu cầu: Khắc Phục Lỗi Di Chuyển Hiệu Ứng Nền (Initial Transition Glitch / Position Mismatch) Cho Component TabGroup (`app-tab-group`) Khi Reload Trang
 - **Nội dung yêu cầu:** Khắc phục lỗi khi vừa reload lại trang, thanh pill nền (`.tab-group-pill`) trong `app-tab-group` (ví dụ: Tab Tốc Độ Giao Dịch "Mặc định / Nhanh / Tùy chọn") bị trượt giật từ vị trí `0px` sang tab active hoặc bị lệch vị trí do kích thước button tính sai lúc chưa nạp xong Web Font / layout reflow.
 - **Phân tích nguyên nhân:**

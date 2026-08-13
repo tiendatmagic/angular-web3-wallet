@@ -8,8 +8,6 @@ import { TranslationService } from '@core/services/translation.service';
 import { IconComponent } from '@shared/components/icon/icon.component';
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { LogoComponent } from '@shared/components/logo/logo.component';
-import { ThemeSwitcherComponent } from '@shared/components/theme-switcher/theme-switcher.component';
-import { TxSpeedSelectorComponent } from '@shared/components/tx-speed-selector/tx-speed-selector.component';
 import { LanguageSelectorComponent } from '@shared/components/language-selector/language-selector.component';
 import { NetworkSelectorComponent } from '@shared/components/network-selector/network-selector.component';
 import { AccountDropdownComponent } from '@shared/components/account-dropdown/account-dropdown.component';
@@ -25,8 +23,6 @@ import { TranslatePipe } from '@shared/pipes/translate.pipe';
     RouterModule,
     FormsModule,
     LogoComponent,
-    ThemeSwitcherComponent,
-    TxSpeedSelectorComponent,
     LanguageSelectorComponent,
     NetworkSelectorComponent,
     AccountDropdownComponent,
@@ -37,40 +33,6 @@ import { TranslatePipe } from '@shared/pipes/translate.pipe';
     `
       :host {
         display: contents;
-      }
-
-      .mobile-menu-shell {
-        visibility: hidden;
-        pointer-events: none;
-        transition: visibility 0s linear 300ms;
-      }
-
-      .mobile-menu-shell--open {
-        visibility: visible;
-        pointer-events: auto;
-        transition-delay: 0s;
-      }
-
-      .mobile-menu-backdrop {
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 300ms ease-in-out;
-      }
-
-      .mobile-menu-backdrop--open {
-        opacity: 1;
-        pointer-events: auto;
-      }
-
-      .mobile-menu-panel {
-        transform: translateX(-100%);
-        pointer-events: none;
-        transition: transform 300ms ease-in-out;
-      }
-
-      .mobile-menu-panel--open {
-        transform: translateX(0);
-        pointer-events: auto;
       }
     `,
   ],
