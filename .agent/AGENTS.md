@@ -1,3 +1,17 @@
+### Yêu cầu: Khắc Phục Lỗi Núm Tròn Trắng Bị Lệch Xuống Dưới (Vertical Alignment) Cho Component CustomSwitch (`app-custom-switch`)
+- **Nội dung yêu cầu:** Khắc phục tình trạng ở trạng thái unchecked (tắt), núm tròn trắng của nút Switch (`app-custom-switch`) bị tụt lệch hẳn xuống dưới đáy của thanh trượt (như ở khung "ACCORDION TÙY BIẾN -> Cho phép mở nhiều mục cùng lúc").
+- **Phân tích nguyên nhân:**
+  1. Thẻ track bọc ngoài switch có kích thước `w-11 h-6` (44px x 24px). Khi ở trạng thái unchecked (`!checked`), thẻ được gán class viền `border border-slate-300/60 dark:border-slate-700/60` (1px).
+  2. Do `box-sizing: border-box`, viền 1px làm chiều cao vùng đệm bên trong (padding-box) co lại còn `22px`.
+  3. Núm tròn trắng có kích thước `w-5 h-5` (20px x 20px) và được đặt `absolute top-[2px] left-[2px]`. Khi tính tọa độ từ viền trong, khoảng cách trên là 2px + 20px chiều cao núm tròn = 22px, khiến khoảng cách từ đáy núm tròn đến viền dưới bị rút về `0px` (dính sát sạt mép viền đáy) và lệch 2px so với đỉnh.
+  4. Ngoài ra, khi chuyển giữa trạng thái checked (không có border, chiều cao trong 24px) và unchecked (có border, chiều cao trong 22px) dẫn đến sự giật layout và không nhất quán.
+- **Giải pháp:**
+  1. Cấu trúc lại track switch thành Flexbox container: `relative w-11 h-6 p-0.5 rounded-full flex items-center transition-colors duration-200 ease-in-out shrink-0`.
+  2. Thay thế `border` bằng `ring-1 ring-inset ring-slate-300/80 dark:ring-slate-700/80` cho trạng thái unchecked. Cơ chế `ring-inset` vẽ bóng viền bên trong mà không làm biến dạng box model hoặc làm co hẹp không gian render của phần tử con.
+  3. Núm tròn trắng: `bg-white rounded-full h-5 w-5 transition-transform duration-200 ease-in-out shadow-xs pointer-events-none`.
+  4. Với `p-0.5` (2px padding), chiều dọc là `2px (top) + 20px (thumb) + 2px (bottom) = 24px` -> Núm tròn luôn luôn nằm chính tâm đối xứng 100% theo phương dọc. Chiều ngang khi unchecked cách mép trái 2px (`translate-x-0`), khi checked trượt qua phải cách mép phải đúng 2px (`translate-x-5`).
+- **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Build production (`npm run build`) thành công 100%.
+
 ### Yêu cầu: Bổ Sung Border Rõ Nét & Tối Ưu Độ Nhận Diện Nút Bấm (Button) Cho Light Mode & Dark Mode
 - **Nội dung yêu cầu:** Rà soát và bổ sung viền (border) cho các nút bấm (như nút Làm mới / Refresh, nút Cancel, Secondary, Danger-light) vốn trước đó chưa có border nên bị chìm màu, khó phân biệt với nền container trong cả Light Mode và Dark Mode.
 - **Phân tích nguyên nhân:**
