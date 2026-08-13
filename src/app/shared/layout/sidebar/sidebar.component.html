@@ -1,5 +1,5 @@
 <aside
-  class="fixed inset-y-0 left-0 z-50 bg-white dark:bg-slate-950 border-r border-slate-200/50 dark:border-slate-900/50 hidden md:flex flex-col shadow-sm select-none transition-[width] duration-300 ease-in-out group/sidebar"
+  class="fixed inset-y-0 left-0 z-50 h-full h-[100dvh] bg-white dark:bg-slate-950 border-r border-slate-200/50 dark:border-slate-900/50 hidden md:flex flex-col shadow-sm select-none transition-[width] duration-300 ease-in-out group/sidebar"
   [class.w-72]="!stateService.isSidebarCollapsed()"
   [class.w-20]="stateService.isSidebarCollapsed()"
 >
@@ -23,7 +23,7 @@
 
   <a
     routerLink="/"
-    class="h-14 sm:h-20 flex items-center border-b border-slate-200/50 dark:border-slate-900/50 cursor-pointer transition-[padding,gap] duration-300 ease-in-out"
+    class="h-16 sm:h-20 flex items-center border-b border-slate-200/50 dark:border-slate-900/50 cursor-pointer transition-[padding,gap] duration-300 ease-in-out shrink-0"
     [class.gap-3.5]="!stateService.isSidebarCollapsed()"
     [class.pl-6]="!stateService.isSidebarCollapsed()"
     [class.pr-8]="!stateService.isSidebarCollapsed()"
@@ -75,7 +75,7 @@
   </nav>
 
   <div
-    class="py-4 border-t border-slate-200/50 dark:border-slate-900/50 bg-slate-100/30 dark:bg-slate-900/10 space-y-4"
+    class="py-4 border-t border-slate-200/50 dark:border-slate-900/50 bg-slate-100/30 dark:bg-slate-900/10 space-y-4 shrink-0 mt-auto"
     [class.px-5]="!stateService.isSidebarCollapsed()"
     [class.px-2]="stateService.isSidebarCollapsed()"
   >
@@ -121,7 +121,7 @@
   ></div>
 
   <div
-    class="fixed inset-y-0 left-0 z-[70] w-[280px] sm:w-[300px] glass-dialog flex flex-col transition-transform duration-300 ease-in-out"
+    class="fixed inset-y-0 left-0 z-[70] w-72 sm:w-80 h-full h-[100dvh] glass-dialog flex flex-col border-r border-slate-200/50 dark:border-slate-900/50 transition-transform duration-300 ease-in-out"
     [class.-translate-x-full]="!stateService.showMobileMenu()"
     [class.pointer-events-none]="!stateService.showMobileMenu()"
     [class.translate-x-0]="stateService.showMobileMenu()"
@@ -132,11 +132,13 @@
     <a
       routerLink="/"
       (click)="stateService.showMobileMenu.set(false)"
-      class="flex items-center gap-3 px-5 pt-5 pb-4 border-b border-slate-200/50 dark:border-slate-900/50 cursor-pointer"
+      class="h-16 sm:h-20 flex items-center gap-3.5 pl-6 pr-6 border-b border-slate-200/50 dark:border-slate-900/50 cursor-pointer shrink-0"
     >
       <app-logo class="w-11 h-11 shrink-0" />
-      <div class="flex flex-col select-none">
-        <span class="text-base font-black tracking-tight leading-none mb-1.5">
+      <div class="flex flex-col select-none overflow-hidden whitespace-nowrap">
+        <span
+          class="text-base font-black tracking-tight leading-none text-slate-800 dark:text-white mb-1.5"
+        >
           <span class="text-primary">Angular</span>
           <span class="text-secondary">Web3</span>
         </span>
@@ -148,7 +150,7 @@
       </div>
     </a>
 
-    <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+    <nav class="flex-1 py-6 px-4 space-y-1.5 overflow-y-auto">
       @for (item of navItems; track item.path) {
         <a
           [routerLink]="item.path"
@@ -158,13 +160,13 @@
           class="flex items-center gap-3.5 px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/50 text-slate-600 dark:text-slate-400 font-semibold text-sm transition-colors duration-200 cursor-pointer"
         >
           <app-icon [name]="item.icon" class="w-5 h-5 shrink-0" />
-          <span>{{ item.labelKey | translate }}</span>
+          <span class="whitespace-nowrap overflow-hidden">{{ item.labelKey | translate }}</span>
         </a>
       }
     </nav>
 
     <div
-      class="px-5 py-4 border-t border-slate-200/50 dark:border-slate-900/50 bg-slate-100/30 dark:bg-slate-900/10 space-y-4"
+      class="py-4 px-5 border-t border-slate-200/50 dark:border-slate-900/50 bg-slate-100/30 dark:bg-slate-900/10 space-y-4 shrink-0 mt-auto"
     >
       <app-language-selector variant="full" direction="up" />
       @if (stateService.isWeb3Enabled) {

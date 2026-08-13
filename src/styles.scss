@@ -467,7 +467,6 @@ html.dark .alert-error-bordered {
 
 .glass-dialog {
   @apply bg-transparent shadow-lg shadow-slate-900/15 dark:shadow-slate-950/60;
-  position: relative;
   isolation: isolate;
 }
 

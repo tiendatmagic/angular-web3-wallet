@@ -1,3 +1,18 @@
+### Yêu cầu: Khắc Phục Lỗi Sidebar Menu (Mobile Drawer) Không Đạt Chiều Cao Full Màn Hình (Full Height) & Thiếu Padding Header Logo / Navigation
+- **Nội dung yêu cầu:** Sửa lỗi sidebar menu trên màn hình di động/drawer (`app-sidebar`) bị cắt ngang ở bên dưới mục "Giao diện Tự động", chiều cao không kéo dài hết màn hình (`full height`), đồng thời khắc phục tình trạng phần Header Logo và danh sách Navigation trên Mobile Drawer bị thiếu padding, chật chội và không đồng bộ với Desktop Sidebar.
+- **Phân tích nguyên nhân:**
+  1. Class `.glass-dialog` trong `src/styles.scss` bị gán cứng thuộc tính `position: relative;`. Khi phần tử Mobile Drawer sử dụng `class="fixed inset-y-0 left-0 z-[70] ... glass-dialog"`, thuộc tính `position: relative;` từ CSS đã ghi đè lên `position: fixed` của Tailwind CSS, làm mất tác dụng của `inset-y-0` khiến Drawer co lại theo content.
+  2. Phần Header Logo trên Mobile Drawer trước đó dùng `h-14` (56px) với logo `w-11 h-11` (44px) dẫn đến khoảng cách trên/dưới chỉ còn 6px, kết hợp `px-5` và `gap-3` (trong khi desktop là `h-16 sm:h-20`, `pl-6 pr-6/pr-8`, `gap-3.5`).
+  3. Khung Navigation trên Mobile Drawer dùng `px-3 py-4 space-y-1` làm mục "Trang chủ" nằm quá sát lên mép trên (chỉ cách 16px) và hẹp hai bên so với Desktop (`px-4 py-6 space-y-1.5`).
+- **Giải pháp:**
+  1. **Loại bỏ `position: relative;` cứng trong `.glass-dialog` (`src/styles.scss`):** Cho phép các phần tử linh hoạt sử dụng `fixed`, `relative`, hoặc `absolute` tùy ngữ cảnh mà không bị CSS class đè position.
+  2. **Chuẩn hóa Full Height & Đồng bộ Padding 100% cho Mobile Drawer (`sidebar.component.html`):**
+     - Container Drawer: `w-72 sm:w-80 h-full h-[100dvh] border-r border-slate-200/50 dark:border-slate-900/50` và đảm bảo `fixed inset-y-0 left-0` hoạt động chính xác 100% viewport height.
+     - Header Logo: Chuẩn hóa `h-16 sm:h-20 pl-6 pr-6 gap-3.5 border-b border-slate-200/50 dark:border-slate-900/50 shrink-0` mang lại không gian đệm rộng rãi, thoáng đãng như Desktop.
+     - Navigation: `flex-1 py-6 px-4 space-y-1.5 overflow-y-auto` đồng bộ hoàn toàn với Desktop Sidebar, tạo khoảng cách đệm 24px thoáng mắt giữa Header Logo và mục "Trang chủ".
+     - Footer: `py-4 px-5 shrink-0 mt-auto` cố định chắc chắn ở đáy sidebar.
+- **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Build production (`npm run build`) thành công 100%.
+
 ### Yêu cầu: Khắc Phục Lỗi Núm Tròn Trắng Bị Lệch Xuống Dưới (Vertical Alignment) Cho Component CustomSwitch (`app-custom-switch`)
 - **Nội dung yêu cầu:** Khắc phục tình trạng ở trạng thái unchecked (tắt), núm tròn trắng của nút Switch (`app-custom-switch`) bị tụt lệch hẳn xuống dưới đáy của thanh trượt (như ở khung "ACCORDION TÙY BIẾN -> Cho phép mở nhiều mục cùng lúc").
 - **Phân tích nguyên nhân:**

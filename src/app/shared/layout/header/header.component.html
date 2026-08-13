@@ -13,7 +13,7 @@
         app-button
         variant="cancel"
         (click)="stateService.showMobileMenu.set(true)"
-        class="flex md:hidden w-9 h-9 sm:w-10 sm:h-10 !p-0 shrink-0 flex items-center justify-center"
+        class="flex md:hidden min-w-9 w-9 h-9 sm:w-9 sm:h-10 !p-0 shrink-0 flex items-center justify-center"
         [attr.aria-label]="'header.open_menu' | translate"
       >
         <app-icon name="hamburger" class="w-5 h-5" />
