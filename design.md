@@ -106,6 +106,7 @@ Các biến dynamic được ánh xạ vào Tailwind CSS v4 thông qua `@theme`:
 ## 6. Thành phần Giao diện Đặc trưng (Web3 UI Component Specifications)
 
 ### 6.1. Thiết kế Kính mờ (Glassmorphism Cards & Banners)
+
 - Nền kính mờ: `bg-white/60 dark:bg-slate-900/60 backdrop-blur-md border border-slate-200/50 dark:border-slate-800/50 shadow-lg`.
 
 #### 6.1.1. Hệ thống Glass Surface 3 cấp
@@ -119,8 +120,14 @@ Các bề mặt nổi phải dùng utility toàn cục trong `src/styles.scss`; 
 }
 
 .glass-dialog {
-  @apply bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl
-    shadow-2xl shadow-slate-900/15 dark:shadow-slate-950/60;
+  @apply bg-transparent shadow-2xl shadow-slate-900/15 dark:shadow-slate-950/60;
+  position: relative;
+  isolation: isolate;
+}
+
+.glass-dialog-backdrop {
+  @apply absolute inset-0 -z-10 rounded-[inherit] pointer-events-none
+    bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl;
 }
 
 .glass-header {
@@ -137,6 +144,7 @@ Các bề mặt nổi phải dùng utility toàn cục trong `src/styles.scss`; 
 
 - Không đặt popover cần blur bên trong phần tử cha có `backdrop-filter`, `filter`, opacity animation hoặc transform animation. Chúng có thể tạo backdrop/stacking context và làm blur của component con mất tác dụng.
 - Glass background của sticky header phải là layer `absolute inset-0` độc lập. Nội dung header và dropdown nằm ở sibling layer `relative` để dropdown blur trực tiếp nội dung trang.
+- `glass-dialog` phải có một DOM layer con `glass-dialog-backdrop` đứng trước nội dung. Không dùng pseudo-element với `dark:*` và không đặt `backdrop-filter` trực tiếp lên dialog cha. Quy tắc này cho phép Tailwind biên dịch dark mode đúng và cho Date Picker, DateTime Range, Select cùng dropdown bên trong Modal blur độc lập.
 - Nested submenu của `app-dropdown-menu` phải render ngang hàng với menu cha, không nằm bên trong surface có `backdrop-filter`.
 - Overlay của Drawer phải là sibling của drawer surface. Chỉ overlay fade opacity; không animate opacity trên container cha chứa `glass-dialog`.
 
@@ -148,22 +156,28 @@ Các bề mặt nổi phải dùng utility toàn cục trong `src/styles.scss`; 
 - Khi đóng mobile sidebar, trì hoãn `visibility: hidden` 300ms để transition chạy xong. Quy tắc này ngăn sidebar xuất hiện trong frame đầu khi reload.
 
 ### 6.2. Backdrop Overlay cho Modal & Drawer
+
 - Màu sắc: `bg-black/40` thống nhất.
 - Không dùng `backdrop-blur-*` để tối ưu hiệu năng đồ họa trên mọi thiết bị.
 
 ### 6.3. Kiến trúc Modal Động & Không Animation Delay
+
 - Điều khiển qua `ModalService` và `ModalRef`.
 - Loại bỏ animation delay (`fade-in`, `zoom-in-95`...) giúp modal bật mở tức thì.
 
 ### 6.4. Nút bấm (Buttons)
+
 - **Primary Button**: Gradient chuyển màu thương hiệu `bg-gradient-to-r from-[var(--dynamic-primary)] to-[var(--dynamic-secondary)] text-white font-extrabold shadow-md shadow-purple-500/20`.
 - **Secondary/Outline Button**: `bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20`.
 
 ### 6.5. Biểu tượng Vector SVG (100% NO Raw Emojis)
+
 - Tuyệt đối không dùng Emoji thô trong UI. Sử dụng 100% inline SVG icons qua `<app-icon>`.
 
 ### 6.6. Đa ngôn ngữ (i18n Dropdown Component)
+
 - Component `app-language-selector` hỗ trợ 2 biến thể `compact` (Header) và `full` (Sidebar). Hiển thị cờ quốc gia SVG và tick mark active.
 
 ### 6.7. Các Component Cao cấp Khác (Progress, File Upload, OTP Input, Code Block, Table, Voice Chat, Theme Switcher)
+
 - Tất cả các component đều thiết lập `:host { display: block; }`, hỗ trợ đầy đủ Light Mode / Dark Mode và tuân thủ giới hạn bo góc 15px.

@@ -6,6 +6,8 @@
       <div
         class="relative glass-dialog rounded-[15px] border border-slate-200 dark:border-slate-800 p-6 max-w-sm w-full text-slate-800 dark:text-slate-200 text-center"
       >
+        <div aria-hidden="true" class="glass-dialog-backdrop"></div>
+
         <ng-container *ngTemplateOutlet="confirmContent"></ng-container>
       </div>
     </div>

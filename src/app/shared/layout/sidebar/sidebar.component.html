@@ -127,6 +127,8 @@
     [class.translate-x-0]="stateService.showMobileMenu()"
     [class.pointer-events-auto]="stateService.showMobileMenu()"
   >
+    <div aria-hidden="true" class="glass-dialog-backdrop"></div>
+
     <a
       routerLink="/"
       (click)="stateService.showMobileMenu.set(false)"
