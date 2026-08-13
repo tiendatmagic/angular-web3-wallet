@@ -49,10 +49,11 @@ export class TabGroupComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   private resizeObserver?: ResizeObserver;
 
-  public readonly sliderStyle = signal<{ left: string; width: string; ready: boolean }>({
+  public readonly sliderStyle = signal<{ left: string; width: string; ready: boolean; animated: boolean }>({
     left: '0px',
     width: '0px',
-    ready: false
+    ready: false,
+    animated: false
   });
 
   public get activeIndex(): number {
@@ -60,20 +61,35 @@ export class TabGroupComponent implements AfterViewInit, OnChanges, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.updateSliderPosition();
-    requestAnimationFrame(() => this.updateSliderPosition());
+    this.updateSliderPosition(false);
 
-    if (typeof ResizeObserver !== 'undefined' && this.containerEl) {
-      this.resizeObserver = new ResizeObserver(() => {
-        this.updateSliderPosition();
+    requestAnimationFrame(() => {
+      this.updateSliderPosition(false);
+      requestAnimationFrame(() => {
+        if (this.sliderStyle().ready) {
+          this.sliderStyle.update((s) => ({ ...s, animated: true }));
+        }
       });
-      this.resizeObserver.observe(this.containerEl.nativeElement);
+    });
+
+    setTimeout(() => this.updateSliderPosition(true), 50);
+    setTimeout(() => this.updateSliderPosition(true), 150);
+
+    if (typeof document !== 'undefined' && 'fonts' in document) {
+      document.fonts.ready.then(() => {
+        this.updateSliderPosition(true);
+      });
     }
+
+    this.setupResizeObserver();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['activeValue'] || changes['options']) {
-      this.updateSliderPosition();
+      this.updateSliderPosition(true);
+      if (changes['options']) {
+        setTimeout(() => this.setupResizeObserver(), 0);
+      }
     }
   }
 
@@ -84,18 +100,42 @@ export class TabGroupComponent implements AfterViewInit, OnChanges, OnDestroy {
   }
 
   onResize(): void {
-    this.updateSliderPosition();
+    this.updateSliderPosition(true);
+  }
+
+  private setupResizeObserver(): void {
+    if (typeof ResizeObserver === 'undefined') return;
+
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+    }
+
+    this.resizeObserver = new ResizeObserver(() => {
+      this.updateSliderPosition(true);
+    });
+
+    if (this.containerEl?.nativeElement) {
+      this.resizeObserver.observe(this.containerEl.nativeElement);
+    }
+
+    if (this.tabButtons) {
+      this.tabButtons.forEach((btn) => {
+        if (btn.nativeElement) {
+          this.resizeObserver?.observe(btn.nativeElement);
+        }
+      });
+    }
   }
 
   public onSelect(value: any): void {
     if (value !== this.activeValue) {
       this.valueChange.emit(value);
       this.activeValue = value;
-      this.updateSliderPosition();
+      this.updateSliderPosition(true);
     }
   }
 
-  public updateSliderPosition(): void {
+  public updateSliderPosition(enableAnimation: boolean = true): void {
     if (!this.tabButtons || !this.containerEl) return;
 
     const buttons = this.tabButtons.toArray();
@@ -106,9 +146,18 @@ export class TabGroupComponent implements AfterViewInit, OnChanges, OnDestroy {
       const nextLeft = `${activeEl.offsetLeft}px`;
       const nextWidth = `${activeEl.offsetWidth}px`;
 
+      if (activeEl.offsetWidth === 0) return;
+
       const current = this.sliderStyle();
-      if (current.left !== nextLeft || current.width !== nextWidth || !current.ready) {
-        this.sliderStyle.set({ left: nextLeft, width: nextWidth, ready: true });
+      const shouldAnimate = enableAnimation && current.ready;
+
+      if (current.left !== nextLeft || current.width !== nextWidth || !current.ready || current.animated !== shouldAnimate) {
+        this.sliderStyle.set({
+          left: nextLeft,
+          width: nextWidth,
+          ready: true,
+          animated: shouldAnimate
+        });
       }
 
       const container = this.containerEl.nativeElement;
@@ -125,7 +174,7 @@ export class TabGroupComponent implements AfterViewInit, OnChanges, OnDestroy {
     } else {
       const current = this.sliderStyle();
       if (current.left !== '0px' || current.width !== '0px' || current.ready) {
-        this.sliderStyle.set({ left: '0px', width: '0px', ready: false });
+        this.sliderStyle.set({ left: '0px', width: '0px', ready: false, animated: false });
       }
     }
   }

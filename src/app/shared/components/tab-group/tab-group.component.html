@@ -7,7 +7,10 @@
 >
   @if (options.length > 0 && activeIndex !== -1) {
     <div
-      class="tab-group-pill absolute top-1 bottom-1 bg-white dark:bg-slate-800 rounded-lg shadow-sm transition-[left,width] duration-300 ease-out z-0"
+      class="tab-group-pill absolute top-1 bottom-1 bg-white dark:bg-slate-800 rounded-lg shadow-sm z-0"
+      [class.transition-[left,width]]="sliderStyle().animated"
+      [class.duration-300]="sliderStyle().animated"
+      [class.ease-out]="sliderStyle().animated"
       [class.opacity-0]="!sliderStyle().ready"
       [class.opacity-100]="sliderStyle().ready"
       [style.width]="sliderStyle().width"

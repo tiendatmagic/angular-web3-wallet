@@ -1,3 +1,15 @@
+### Yêu cầu: Khắc Phục Lỗi Di Chuyển Hiệu Ứng Nền (Initial Transition Glitch / Position Mismatch) Cho Component TabGroup (`app-tab-group`) Khi Reload Trang
+- **Nội dung yêu cầu:** Khắc phục lỗi khi vừa reload lại trang, thanh pill nền (`.tab-group-pill`) trong `app-tab-group` (ví dụ: Tab Tốc Độ Giao Dịch "Mặc định / Nhanh / Tùy chọn") bị trượt giật từ vị trí `0px` sang tab active hoặc bị lệch vị trí do kích thước button tính sai lúc chưa nạp xong Web Font / layout reflow.
+- **Phân tích nguyên nhân:**
+  1. Class CSS transition `transition-[left,width] duration-300` nằm cố định trên thẻ `.tab-group-pill` ngay từ frame render đầu tiên. Khi `ngAfterViewInit` gán vị trí `left` và `width` lần đầu tiên (từ `0px` sang `xx px`), trình duyệt tự động kích hoạt animation trượt 300ms khiến người dùng vừa reload trang sẽ thấy pill bị nảy / trượt từ góc trái lướt sang tab active.
+  2. Khi vừa khởi tạo trang, Web Fonts (Google Fonts Quicksand) chưa tải xong hoặc container layout reflow chưa hoàn tất, dẫn tới `offsetWidth` và `offsetLeft` của button bị tính sai kích thước ngắn hơn / lệch vị trí.
+  3. `ResizeObserver` cũ chỉ quan sát container mà không quan sát các button con `#tabBtn`.
+- **Giải pháp:**
+  1. **Tách biệt Trạng thái Animation (`animated` signal):** Thêm thuộc tính `animated: boolean` vào signal `sliderStyle`. Ở lần khởi tạo vị trí ban đầu (initial load), gán `animated = false` để tắt hoàn toàn CSS transition `transition-[left,width]` làm pill lập tức đứng yên êm ái đúng tab active mà KHÔNG BỊ TRƯỢT GIẬT TỪ 0PX.
+  2. **Bật Animation Cho Thao Tác Tiếp Theo:** Sau khi layout và font nạp xong qua `requestAnimationFrame`, gán `animated = true` để khi người dùng click chuyển tab ("Nhanh", "Tùy chọn"...), hiệu ứng trượt mượt 300ms diễn ra trơn mượt.
+  3. **Lắng nghe Web Fonts & Quan sát Button Resize:** Thêm `document.fonts.ready.then(...)` và mở rộng `ResizeObserver` quan sát cả container lẫn từng tab button `#tabBtn` để tự động cập nhật vị trí pill chuẩn xác 100% khi font tải xong hay layout thay đổi.
+- **Xác thực:** Runs `npx tsc --noEmit` đạt 0 lỗi type. Production build Angular (`npm run build`) thành công 100%.
+
 ### Yêu cầu: Khắc Phục Lỗi Lệch Nền Trong Suốt & Đơn Giản Hóa Cấu Trúc Glassmorphism Cho Popover Dropdown
 - **Nội dung yêu cầu:** Khắc phục tình trạng Popover Menu Cha bị mất màu nền dẫn tới trong suốt 100% gây đè chữ rối mắt trên giao diện trang chủ, đồng thời chuẩn hóa hiệu ứng Kính Mờ Glassmorphism cho cả Menu Cha và Submenu Con.
 - **Phân tích nguyên nhân:**
