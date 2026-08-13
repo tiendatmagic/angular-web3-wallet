@@ -74,28 +74,19 @@
 </header>
 
 <div
-  [class.invisible]="!stateService.showMobileMenu()"
-  [class.visible]="stateService.showMobileMenu()"
-  [class.pointer-events-none]="!stateService.showMobileMenu()"
-  [class.pointer-events-auto]="stateService.showMobileMenu()"
-  class="fixed inset-0 z-[60] md:hidden select-none overflow-hidden transition-all duration-300 ease-in-out"
+  class="mobile-menu-shell fixed inset-0 z-[60] md:hidden select-none overflow-hidden"
+  [class.mobile-menu-shell--open]="stateService.showMobileMenu()"
 >
   <div
-    [class.opacity-0]="!stateService.showMobileMenu()"
-    [class.opacity-100]="stateService.showMobileMenu()"
-    [class.pointer-events-none]="!stateService.showMobileMenu()"
-    [class.pointer-events-auto]="stateService.showMobileMenu()"
-    class="fixed inset-0 bg-black/50 transition-opacity duration-300 ease-in-out"
+    class="mobile-menu-backdrop fixed inset-0 bg-black/50"
+    [class.mobile-menu-backdrop--open]="stateService.showMobileMenu()"
     (click)="stateService.showMobileMenu.set(false)"
     aria-hidden="true"
   ></div>
 
   <div
-    [class.-translate-x-full]="!stateService.showMobileMenu()"
-    [class.translate-x-0]="stateService.showMobileMenu()"
-    [class.pointer-events-none]="!stateService.showMobileMenu()"
-    [class.pointer-events-auto]="stateService.showMobileMenu()"
-    class="fixed inset-y-0 left-0 z-[70] w-[280px] sm:w-[300px] glass-dialog flex flex-col transition-transform duration-300 ease-in-out"
+    class="mobile-menu-panel fixed inset-y-0 left-0 z-[70] w-[280px] sm:w-[300px] glass-dialog flex flex-col"
+    [class.mobile-menu-panel--open]="stateService.showMobileMenu()"
   >
     <a
       routerLink="/"

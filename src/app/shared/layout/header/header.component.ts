@@ -38,8 +38,42 @@ import { TranslatePipe } from '@shared/pipes/translate.pipe';
       :host {
         display: contents;
       }
+
+      .mobile-menu-shell {
+        visibility: hidden;
+        pointer-events: none;
+        transition: visibility 0s linear 300ms;
+      }
+
+      .mobile-menu-shell--open {
+        visibility: visible;
+        pointer-events: auto;
+        transition-delay: 0s;
+      }
+
+      .mobile-menu-backdrop {
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 300ms ease-in-out;
+      }
+
+      .mobile-menu-backdrop--open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .mobile-menu-panel {
+        transform: translateX(-100%);
+        pointer-events: none;
+        transition: transform 300ms ease-in-out;
+      }
+
+      .mobile-menu-panel--open {
+        transform: translateX(0);
+        pointer-events: auto;
+      }
     `,
-  ]
+  ],
 })
 export class HeaderComponent {
   public stateService = inject(StateService);
