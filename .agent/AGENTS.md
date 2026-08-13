@@ -1,12 +1,13 @@
-### Yêu cầu: Tái Cấu Trúc & Tối Ưu Hóa DRY Cho Sidebar Menu (`app-sidebar`)
-- **Nội dung yêu cầu:** Gom toàn bộ giao diện và logic của Mobile Drawer Sidebar từ `HeaderComponent` về chung `SidebarComponent`, đồng thời loại bỏ toàn bộ việc hardcode và lặp lại danh sách navigation links giữa Desktop và Mobile theo nguyên tắc DRY (Don't Repeat Yourself).
+### Yêu cầu: Tái Cấu Trúc, Tối Ưu Hóa DRY & Chuẩn Hóa 100% Tailwind CSS Cho Sidebar (`app-sidebar`)
+- **Nội dung yêu cầu:** Gom toàn bộ giao diện và logic của Mobile Drawer Sidebar từ `HeaderComponent` về chung `SidebarComponent`, loại bỏ toàn bộ việc hardcode và lặp lại danh sách navigation links giữa Desktop và Mobile theo nguyên tắc DRY, đồng thời chuyển đổi toàn bộ các class CSS tùy biến sang 100% Tailwind CSS utility classes.
 - **Phân tích nguyên nhân & Kiến trúc:**
-  1. Trước đây, các menu `/home`, `/about`, `/contact` bị viết thủ công (hardcoded) lặp lại 2 lần riêng biệt ở 2 thẻ `<nav>` trong template Desktop và Mobile Drawer.
-  2. Gom về `SidebarComponent` và cấu hình động giúp quản lý navigation tập trung, dễ mở rộng thêm route mới mà chỉ cần chỉnh sửa 1 dòng code duy nhất trong TypeScript.
+  1. Các menu `/home`, `/about`, `/contact` bị viết lặp lại 2 lần riêng biệt ở Desktop và Mobile Drawer.
+  2. Khối `styles` trong `sidebar.component.ts` chứa gần 40 dòng CSS tùy biến (`.mobile-menu-shell`, `.mobile-menu-backdrop`, `.mobile-menu-panel`) không đồng bộ với phong cách Tailwind của dự án.
 - **Giải pháp:**
   1. Định nghĩa `interface NavItem` và khai báo mảng động `public readonly navItems: readonly NavItem[]` trong `sidebar.component.ts`.
   2. Chuyển toàn bộ các khối `<nav>` Desktop và Mobile Drawer trong `sidebar.component.html` sang sử dụng cú pháp vòng lặp `@for (item of navItems; track item.path)`.
-  3. Dọn dẹp imports và styles thừa trong `header.component.ts`.
+  3. Chuẩn hóa 100% sang Tailwind CSS utility classes kết hợp Angular Class Binding (`invisible/visible`, `delay-300/delay-0`, `opacity-0/opacity-100`, `-translate-x-full/translate-x-0`).
+  4. Rút gọn khối `styles` trong `sidebar.component.ts` về duy nhất `:host { display: contents; }`.
 - **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Build production (`npm run build`) thành công 100%.
 
 ### Yêu cầu: Khắc Phục Lỗi Di Chuyển Hiệu Ứng Nền (Initial Transition Glitch / Position Mismatch) Cho Component TabGroup (`app-tab-group`) Khi Reload Trang
