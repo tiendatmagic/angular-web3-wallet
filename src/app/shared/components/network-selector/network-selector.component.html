@@ -13,22 +13,29 @@
 
   @if (isOpen()) {
     <div
-      class="fixed top-[3.75rem] left-3 right-3 sm:absolute sm:top-full sm:right-0 sm:left-auto sm:mt-2 sm:w-64 dropdown-menu-popover bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-slate-200/80 dark:border-slate-800/80 shadow-xl shadow-slate-900/10 dark:shadow-slate-950/50 rounded-[15px] p-2 text-slate-800 dark:text-slate-100 focus:outline-none z-[200]"
+      class="fixed top-[3.75rem] left-3 right-3 sm:absolute sm:top-full sm:right-0 sm:left-auto sm:mt-2 sm:w-64 dropdown-menu-popover glass-popover border border-slate-200/80 dark:border-slate-800/80 rounded-[15px] p-2 text-slate-800 dark:text-slate-100 focus:outline-none z-[200]"
     >
-      <div class="px-3 py-2 text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 select-none">
+      <div
+        class="px-3 py-2 text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 select-none"
+      >
         {{ 'header.popular_networks' | translate }}
       </div>
 
       <div class="space-y-0.5">
         @for (chain of stateService.POPULAR_CHAINS; track chain.chainId) {
-          @let isSelected = (stateService.isConnected() ? stateService.chainId() : +stateService.configuredChainId()) === +chain.chainId;
+          @let isSelected =
+            (stateService.isConnected()
+              ? stateService.chainId()
+              : +stateService.configuredChainId()) === +chain.chainId;
           <button
             type="button"
             (click)="switchNetwork(+chain.chainId, $event)"
             class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-colors text-left cursor-pointer"
             [ngClass]="{
-              'bg-purple-50 dark:bg-purple-950/40 text-purple-600 dark:text-purple-300 font-bold': isSelected,
-              'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80': !isSelected
+              'bg-purple-50 dark:bg-purple-950/40 text-purple-600 dark:text-purple-300 font-bold':
+                isSelected,
+              'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80':
+                !isSelected,
             }"
           >
             <div class="flex items-center gap-3 truncate min-w-0">
@@ -43,9 +50,14 @@
 
             <div class="flex items-center gap-2 shrink-0 ml-2">
               @if (isSelected) {
-                <app-icon name="check" class="w-4 h-4 text-purple-600 dark:text-purple-400 stroke-[3]" />
+                <app-icon
+                  name="check"
+                  class="w-4 h-4 text-purple-600 dark:text-purple-400 stroke-[3]"
+                />
               } @else {
-                <span class="px-1.5 py-0.5 text-[11px] font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200/60 dark:border-slate-700/60">
+                <span
+                  class="px-1.5 py-0.5 text-[11px] font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200/60 dark:border-slate-700/60"
+                >
                   {{ chain.chainId }}
                 </span>
               }

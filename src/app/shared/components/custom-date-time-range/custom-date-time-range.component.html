@@ -35,7 +35,7 @@
   @if (isOpen()) {
     <div
       [ngStyle]="popoverStyle"
-      class="date-time-range-popover dropdown-menu-popover bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-slate-200/80 dark:border-slate-800/80 shadow-xl shadow-slate-900/10 dark:shadow-slate-950/50 rounded-[15px] p-4 flex flex-col gap-4"
+      class="date-time-range-popover dropdown-menu-popover glass-popover border border-slate-200/80 dark:border-slate-800/80 rounded-[15px] p-4 flex flex-col gap-4"
       (click)="$event.stopPropagation()"
     >
       @if (showPresets) {
@@ -177,7 +177,7 @@
                   </div>
                   @if (showStartHourDropdown()) {
                     <div
-                      class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 w-16 max-h-[300px] overflow-y-auto bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-slate-200/80 dark:border-slate-800/80 shadow-lg shadow-slate-900/10 dark:shadow-slate-950/50 rounded-xl z-50 p-1.5 custom-scrollbar"
+                      class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 w-16 max-h-[300px] overflow-y-auto glass-popover border border-slate-200/80 dark:border-slate-800/80 rounded-xl z-50 p-1.5 custom-scrollbar"
                     >
                       @for (h of hoursArray; track h) {
                         <div
@@ -204,7 +204,7 @@
                   </div>
                   @if (showStartMinuteDropdown()) {
                     <div
-                      class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 w-16 max-h-[300px] overflow-y-auto bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-slate-200/80 dark:border-slate-800/80 shadow-lg shadow-slate-900/10 dark:shadow-slate-950/50 rounded-xl z-50 p-1.5 custom-scrollbar"
+                      class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 w-16 max-h-[300px] overflow-y-auto glass-popover border border-slate-200/80 dark:border-slate-800/80 rounded-xl z-50 p-1.5 custom-scrollbar"
                     >
                       @for (m of minutesArray; track m) {
                         <div
@@ -236,7 +236,7 @@
                   </div>
                   @if (showEndHourDropdown()) {
                     <div
-                      class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 w-16 max-h-[300px] overflow-y-auto bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-slate-200/80 dark:border-slate-800/80 shadow-lg shadow-slate-900/10 dark:shadow-slate-950/50 rounded-xl z-50 p-1.5 custom-scrollbar"
+                      class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 w-16 max-h-[300px] overflow-y-auto glass-popover border border-slate-200/80 dark:border-slate-800/80 rounded-xl z-50 p-1.5 custom-scrollbar"
                     >
                       @for (h of hoursArray; track h) {
                         <div
@@ -263,7 +263,7 @@
                   </div>
                   @if (showEndMinuteDropdown()) {
                     <div
-                      class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 w-16 max-h-[300px] overflow-y-auto bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-slate-200/80 dark:border-slate-800/80 shadow-lg shadow-slate-900/10 dark:shadow-slate-950/50 rounded-xl z-50 p-1.5 custom-scrollbar"
+                      class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 w-16 max-h-[300px] overflow-y-auto glass-popover border border-slate-200/80 dark:border-slate-800/80 rounded-xl z-50 p-1.5 custom-scrollbar"
                     >
                       @for (m of minutesArray; track m) {
                         <div

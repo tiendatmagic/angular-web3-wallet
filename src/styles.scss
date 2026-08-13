@@ -457,6 +457,10 @@ html.dark .alert-error-bordered {
   }
 }
 
+.glass-popover {
+  @apply bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-xl shadow-slate-900/10 dark:shadow-slate-950/50;
+}
+
 .dropdown-menu-popover,
 .date-picker-popover,
 .date-time-range-popover {
