@@ -8,7 +8,7 @@
       type="button"
       [disabled]="disabled"
       (click)="toggleOpen($event)"
-      class="inline-flex items-center justify-center transition-all duration-200 focus:outline-none select-none font-semibold"
+      class="inline-flex items-center justify-center transition-all duration-200 focus:outline-none select-none font-semibold cursor-pointer active:scale-[0.98] border border-slate-200/60 dark:border-slate-800/60 shadow-xs"
       [ngClass]="{
         'px-3 py-1.5 text-xs rounded-[10px] justify-between gap-2':
           triggerVariant !== 'icon' && triggerVariant !== 'avatar' && triggerSize === 'sm',
@@ -24,19 +24,19 @@
         'w-12 h-12 !p-0 !grid !place-items-center shrink-0':
           (triggerVariant === 'icon' || triggerVariant === 'avatar') && triggerSize === 'lg',
 
-        'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80 shadow-sm':
+        'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800':
           triggerVariant === 'outline' || triggerVariant === 'default',
-        'bg-slate-100 dark:bg-slate-800/60 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700/70':
+        'bg-slate-100 hover:bg-slate-200/90 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200':
           triggerVariant === 'secondary',
-        'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md shadow-purple-500/20 hover:opacity-95':
+        '!border-transparent bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md shadow-purple-500/20 hover:opacity-95':
           triggerVariant === 'primary',
-        'hover:bg-slate-100 dark:hover:bg-slate-800/60 text-slate-700 dark:text-slate-200':
+        'bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200':
           triggerVariant === 'ghost',
-        'rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 !p-0 overflow-hidden':
+        '!border-transparent rounded-full ring-2 ring-purple-500/30 hover:ring-purple-500/50 transition-all !p-0 overflow-hidden':
           triggerVariant === 'avatar',
-        'rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/80':
+        'rounded-xl bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800':
           triggerVariant === 'icon',
-        'opacity-50 cursor-not-allowed': disabled,
+        'opacity-50 cursor-not-allowed pointer-events-none': disabled,
       }"
     >
       @if (triggerVariant === 'avatar' && avatarUrl) {

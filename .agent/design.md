@@ -86,8 +86,9 @@ Các biến dynamic được ánh xạ vào Tailwind CSS v4 thông qua `@theme`:
   - Nút bấm, ô nhập liệu sử dụng `rounded-xl` hoặc `rounded-2xl` (tương đương tối đa `15px`).
 - **Đường viền (Borders)**:
   - Đường viền 1px mảnh mờ hiện đại theo phong cách Glassmorphism:
-    - Chế độ Sáng: `border border-slate-200/50` hoặc `border-slate-200/40`.
-    - Chế độ Tối: `dark:border-slate-800/50` hoặc `dark:border-slate-800/40`.
+    - Chế độ Sáng: `border border-slate-200/60` hoặc `border-slate-200/50`.
+    - Chế độ Tối: `dark:border-slate-800/60` hoặc `dark:border-slate-800/50`.
+  - **Nút bấm inline & Cancel Button**: Toàn bộ nút inline, nút cancel, dropdown menu triggers sử dụng đồng bộ `border border-slate-200/60 dark:border-slate-800/60 shadow-xs`.
   - **Phẳng hóa giao diện (Flat Design)**: Không dùng các đường kẻ vạch nằm ngang (`border-t`) để chia cắt tiểu mục. Sử dụng khoảng cách dọc đồng bộ (`space-y-6`) để tạo sự mạch lạc tự nhiên.
 
 ---
@@ -116,11 +117,11 @@ Các bề mặt nổi phải dùng utility toàn cục trong `src/styles.scss`; 
 ```scss
 .glass-popover {
   @apply bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl
-    shadow-xl shadow-slate-900/10 dark:shadow-slate-950/50;
+    shadow-lg shadow-slate-900/10 dark:shadow-slate-950/50;
 }
 
 .glass-dialog {
-  @apply bg-transparent shadow-2xl shadow-slate-900/15 dark:shadow-slate-950/60;
+  @apply bg-transparent shadow-lg shadow-slate-900/15 dark:shadow-slate-950/60;
   position: relative;
   isolation: isolate;
 }
@@ -137,7 +138,7 @@ Các bề mặt nổi phải dùng utility toàn cục trong `src/styles.scss`; 
 
 - `glass-popover`: Custom Select, Date Picker, DateTime Range, menu chọn giờ/phút, Dropdown Menu, nested submenu, Language Selector, Network Selector và Account Dropdown.
 - `glass-dialog`: Modal, Modal Wrapper, Confirm Modal, Drawer, mobile sidebar và modal xem trước File Upload.
-- `glass-header`: sticky header; không dùng `shadow-xl` cho header.
+- `glass-header`: sticky header; không dùng shadow cho header.
 - Border, radius, positioning, overflow và z-index vẫn khai báo riêng theo cấu trúc từng component.
 
 #### 6.1.2. Quy tắc Backdrop Root và Popover lồng nhau
@@ -168,7 +169,8 @@ Các bề mặt nổi phải dùng utility toàn cục trong `src/styles.scss`; 
 ### 6.4. Nút bấm (Buttons)
 
 - **Primary Button**: Gradient chuyển màu thương hiệu `bg-gradient-to-r from-[var(--dynamic-primary)] to-[var(--dynamic-secondary)] text-white font-extrabold shadow-md shadow-purple-500/20`.
-- **Secondary/Outline Button**: `bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20`.
+- **Secondary/Outline Button**: `bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20` hoặc `border border-slate-200/60 dark:border-slate-800/60 shadow-xs`.
+- **Cancel / Inline Action Button**: `bg-slate-100 hover:bg-slate-200/90 dark:bg-slate-800/80 dark:hover:bg-slate-700/90 text-slate-700 dark:text-slate-200 border border-slate-200/60 dark:border-slate-800/60 shadow-xs`.
 
 ### 6.5. Biểu tượng Vector SVG (100% NO Raw Emojis)
 

@@ -12,22 +12,20 @@
   4. Với `p-0.5` (2px padding), chiều dọc là `2px (top) + 20px (thumb) + 2px (bottom) = 24px` -> Núm tròn luôn luôn nằm chính tâm đối xứng 100% theo phương dọc. Chiều ngang khi unchecked cách mép trái 2px (`translate-x-0`), khi checked trượt qua phải cách mép phải đúng 2px (`translate-x-5`).
 - **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Build production (`npm run build`) thành công 100%.
 
-### Yêu cầu: Bổ Sung Border Rõ Nét & Tối Ưu Độ Nhận Diện Nút Bấm (Button) Cho Light Mode & Dark Mode
-- **Nội dung yêu cầu:** Rà soát và bổ sung viền (border) cho các nút bấm (như nút Làm mới / Refresh, nút Cancel, Secondary, Danger-light) vốn trước đó chưa có border nên bị chìm màu, khó phân biệt với nền container trong cả Light Mode và Dark Mode.
-- **Phân tích nguyên nhân:**
-  1. Class `.btn-cancel` (dùng cho các nút Hủy, Làm mới, Quay lại, Preset...) chỉ có màu nền `bg-slate-100 dark:bg-slate-800/80` mà KHÔNG có `border`, dẫn tới việc khi đặt trên nền Card/Modal/Empty-state thì nút bị phẳng lì, chìm vào nền và khó nhận diện ranh giới nút bấm.
-  2. Class `.btn-danger-light` thiếu thuộc tính viền `border` ở cả 2 theme.
-  3. Class `.btn-secondary` có độ tương phản viền mỏng cần được tăng cường nhẹ để sắc nét hơn.
-- **Giải pháp:**
-  1. **Nâng cấp `.btn-cancel` trong `src/styles.scss`:**
-     - Bổ sung `border border-slate-200/90 hover:border-slate-300 dark:border-slate-700/80 dark:hover:border-slate-600 shadow-xs`.
-     - Tối ưu màu chữ `text-slate-700 dark:text-slate-200` và nền `bg-slate-100/90 hover:bg-slate-200/90 dark:bg-slate-800/80 dark:hover:bg-slate-700/90`.
-  2. **Nâng cấp `.btn-danger-light` trong `src/styles.scss`:**
-     - Bổ sung `border: 1px solid rgba(244, 63, 94, 0.25)` (hover `0.4`), Dark Mode `border: 1px solid rgba(251, 113, 133, 0.35)` (hover `0.55`).
-  3. **Nâng cấp `.btn-secondary` trong `src/styles.scss`:**
-     - Tăng độ tương phản viền `color-mix` lên `25%` (hover `40%`), Dark Mode `35%` (hover `55%`) cùng `shadow-xs`.
-  4. **Tối ưu nút Cancel trong footer `CustomDateTimeRangeComponent`:**
-     - Đồng bộ class viền `border-slate-200/90 dark:border-slate-700/80` và `text-slate-700 dark:text-slate-200`.
+### Yêu cầu: Bổ Sung & Chuẩn Hóa Border Nút Bấm (`border border-slate-200/60 dark:border-slate-800/60`) Cho Toàn Bộ Ứng Dụng
+- **Nội dung yêu cầu:** Chuẩn hóa toàn bộ các nút bấm inline, nút cancel, dropdown menu triggers, nút chuyển mạng, nút modal/drawer action sang hệ viền chuẩn **`border border-slate-200/60 dark:border-slate-800/60`** đồng bộ theo ngôn ngữ thiết kế của ứng dụng.
+- **Chi tiết các thành phần đã áp dụng:**
+  1. **Class `.btn-cancel` (`src/styles.scss`):**
+     - Áp dụng chuẩn: `@apply ... border border-slate-200/60 dark:border-slate-800/60 shadow-xs;`.
+     - Tác động tới toàn bộ các nút `app-button variant="cancel"` (nút Hủy, Đóng Drawer, Nút Reset, v.v.).
+  2. **Component Dropdown Menu (`dropdown-menu.component.html`):**
+     - `triggerVariant="outline"` & `triggerVariant="default"`: `bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 shadow-xs`.
+     - `triggerVariant="secondary"`: `bg-slate-100 hover:bg-slate-200/90 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/60 dark:border-slate-800/60 shadow-xs`.
+     - `triggerVariant="ghost"`: `bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200/60 dark:border-slate-800/60 shadow-xs`.
+     - `triggerVariant="icon"`: `rounded-xl bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 shadow-xs`.
+  3. **Nút Chuyển Mạng & Nút Action Khác (`home.component.html`, `custom-date-time-range.component.html`):**
+     - Nút switch network: `border border-slate-200/60 dark:border-slate-800/60 shadow-xs`.
+     - Nút footer cancel: `border border-slate-200/60 dark:border-slate-800/60 shadow-xs`.
 - **Xác thực:** Chạy `npm run build` hoàn thành 100% với exit code 0.
 
 ### Yêu cầu: Chuẩn Hóa Class Tailwind, Tối Ưu Hiển Thị Dark Mode & Nâng Cấp Logic / Props Cho Các Component Hiện Có

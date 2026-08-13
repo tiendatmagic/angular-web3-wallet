@@ -178,7 +178,7 @@ body.dark .btn-danger-light:hover {
 }
 
 .btn-cancel {
-  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-all duration-150 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-slate-100/90 hover:bg-slate-200/90 dark:bg-slate-800/80 dark:hover:bg-slate-700/90 text-slate-700 dark:text-slate-200 border border-slate-200/90 hover:border-slate-300 dark:border-slate-700/80 dark:hover:border-slate-600 shadow-xs;
+  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-all duration-150 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-slate-100 hover:bg-slate-200/90 dark:bg-slate-800/80 dark:hover:bg-slate-700/90 text-slate-700 dark:text-slate-200 border border-slate-200/60 dark:border-slate-800/60 shadow-xs;
 }
 
 .btn-success {
@@ -462,11 +462,11 @@ html.dark .alert-error-bordered {
 }
 
 .glass-popover {
-  @apply bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-xl shadow-slate-900/10 dark:shadow-slate-950/50;
+  @apply bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-lg shadow-slate-900/10 dark:shadow-slate-950/50;
 }
 
 .glass-dialog {
-  @apply bg-transparent shadow-2xl shadow-slate-900/15 dark:shadow-slate-950/60;
+  @apply bg-transparent shadow-lg shadow-slate-900/15 dark:shadow-slate-950/60;
   position: relative;
   isolation: isolate;
 }
