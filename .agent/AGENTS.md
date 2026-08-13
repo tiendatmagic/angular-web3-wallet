@@ -1,13 +1,13 @@
-### Yêu cầu: Tái Cấu Trúc, Tối Ưu Hóa DRY & Chuẩn Hóa 100% Tailwind CSS Cho Sidebar (`app-sidebar`)
-- **Nội dung yêu cầu:** Gom toàn bộ giao diện và logic của Mobile Drawer Sidebar từ `HeaderComponent` về chung `SidebarComponent`, loại bỏ toàn bộ việc hardcode và lặp lại danh sách navigation links giữa Desktop và Mobile theo nguyên tắc DRY, đồng thời chuyển đổi toàn bộ các class CSS tùy biến sang 100% Tailwind CSS utility classes.
+### Yêu cầu: Tái Cấu Trúc, Tối Ưu Hóa DRY, Chuẩn Hóa 100% Tailwind CSS & Triệt Tiêu Transition Trên Border Cho Sidebar & Header
+- **Nội dung yêu cầu:** Gom toàn bộ giao diện và logic của Mobile Drawer Sidebar từ `HeaderComponent` về chung `SidebarComponent`, loại bỏ toàn bộ việc hardcode lặp lại navigation links theo nguyên tắc DRY, chuyển đổi sang 100% Tailwind CSS utility classes, đồng thời loại bỏ hoàn toàn hiệu ứng transition trên các đường viền (border) và căn khớp tuyệt đối đường viền ngăn cách giữa Header và Sidebar.
 - **Phân tích nguyên nhân & Kiến trúc:**
-  1. Các menu `/home`, `/about`, `/contact` bị viết lặp lại 2 lần riêng biệt ở Desktop và Mobile Drawer.
-  2. Khối `styles` trong `sidebar.component.ts` chứa gần 40 dòng CSS tùy biến (`.mobile-menu-shell`, `.mobile-menu-backdrop`, `.mobile-menu-panel`) không đồng bộ với phong cách Tailwind của dự án.
+  1. Thẻ logo link trong Sidebar sử dụng `transition-all duration-300` khiến thuộc tính `border-b` bị kích hoạt animation chuyển động chậm/giật khi thay đổi trạng thái hoặc theme.
+  2. Màu viền và độ cao giữa Header (`h-14 sm:h-20`, `border-slate-200/50 dark:border-slate-900/50`) và Sidebar Logo Header (`h-16 sm:h-20`, `border-slate-100 dark:border-slate-800/60`) bị lệch nhau.
 - **Giải pháp:**
-  1. Định nghĩa `interface NavItem` và khai báo mảng động `public readonly navItems: readonly NavItem[]` trong `sidebar.component.ts`.
-  2. Chuyển toàn bộ các khối `<nav>` Desktop và Mobile Drawer trong `sidebar.component.html` sang sử dụng cú pháp vòng lặp `@for (item of navItems; track item.path)`.
-  3. Chuẩn hóa 100% sang Tailwind CSS utility classes kết hợp Angular Class Binding (`invisible/visible`, `delay-300/delay-0`, `opacity-0/opacity-100`, `-translate-x-full/translate-x-0`).
-  4. Rút gọn khối `styles` trong `sidebar.component.ts` về duy nhất `:host { display: contents; }`.
+  1. Thay thế `transition-all` bằng `transition-[padding,gap]` trên Sidebar logo link, đảm bảo các đường viền (`border-b`, `border-t`, `border-r`) KHÔNG có bất kỳ transition nào.
+  2. Đồng bộ màu viền chuẩn `border-slate-200/50 dark:border-slate-900/50` và chiều cao cố định `h-14 sm:h-20` giữa Header và Sidebar Logo Header giúp đường viền ngang khớp tuyệt đối từ mép trái sang phải.
+  3. Định nghĩa `interface NavItem` và dùng `@for (item of navItems; track item.path)` cho cả Desktop và Mobile Drawer.
+  4. Rút gọn `styles` trong `sidebar.component.ts` về duy nhất `:host { display: contents; }`.
 - **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Build production (`npm run build`) thành công 100%.
 
 ### Yêu cầu: Khắc Phục Lỗi Di Chuyển Hiệu Ứng Nền (Initial Transition Glitch / Position Mismatch) Cho Component TabGroup (`app-tab-group`) Khi Reload Trang
