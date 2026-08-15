@@ -1,3 +1,25 @@
+### Yêu cầu: Tối Ưu Hóa Quá Trình Cài Đặt NPM (`.npmrc`) & Xử Lý Cảnh Báo Xung Đột Peer Dependencies Gián Tiếp
+- **Nội dung yêu cầu:** Xử lý và giải thích tình trạng khi chạy `npm i` xuất hiện hàng loạt cảnh báo `npm warn ERESOLVE overriding peer dependency` do xung đột giữa TypeScript của dự án (TS 6.x / Angular 22) và các gói phụ thuộc gián tiếp của Solana SDK trong `@reown/appkit` (yêu cầu `typescript@^5.0.0`), giúp việc cài đặt gói sạch sẽ, mượt mà.
+- **Phân tích nguyên nhân & Giải pháp:**
+  1. **Nguyên nhân:** npm v7+ (đặc biệt npm 11) kiểm tra peer dependencies rất khắt khe. Các thư viện Web3 Solana trong `@reown/appkit` khai báo `peerOptional: typescript@^5.0.0` trong khi dự án sử dụng `typescript@~6.0.2`. npm tự động override và in ra cảnh báo.
+  2. **Giải pháp:** Tạo file `.npmrc` với cấu hình `legacy-peer-deps=true` tại thư mục gốc của dự án.
+- **Xác thực:** Chạy `npm i` hoàn thành sạch sẽ trong 2s không còn spam cảnh báo `ERESOLVE`. `npx tsc --noEmit` đạt 0 lỗi type. `npm run build` thành công 100%.
+
+### Yêu cầu: Chuẩn Hóa Khoảng Cách Section Card (Card 18 & Các Card Đơn Lẻ) & Chuẩn Hóa Kích Thước Hình Vuông Cho InputOtpComponent (`app-input-otp`)
+- **Nội dung yêu cầu:** Khắc phục tình trạng Card 18 (Component Input OTP Cao Cấp) và các section card lân cận bị dính sát vào nhau do thiếu khoảng cách `margin-top` đồng bộ với các card khác trong trang; đồng thời căn chỉnh các ô nhập mã OTP trong `InputOtpComponent` thành hình vuông 1:1 (`aspect-square` cân đối tuyệt đối) thay vì hình chữ nhật đứng trước đó.
+- **Phân tích nguyên nhân:**
+  1. **Khoảng cách Card (`home.component.html`):** Các section card sau bảng Table (Card 15, 16, 17, 18) nằm ngoài CSS grid nhưng Card 16, 17, 18 lại mang class `col-span-full` thay vì `mt-8`, dẫn đến margin-top bị 0px và dính sát vào nhau.
+  2. **Tỷ lệ ô OTP (`input-otp.component.html`):** Kích thước các ô slot trước đó được đặt không bằng nhau (ví dụ: `w-7.5 h-9`, `sm:w-11 sm:h-12`, `w-8.5 h-10`), làm các ô bị kéo dài theo chiều dọc thành hình chữ nhật.
+- **Giải pháp:**
+  1. **Đồng bộ khoảng cách Section Cards (`home.component.html`):** Chuyển toàn bộ các card đơn lẻ (Card 15, 16, 17, 18) sang chuẩn `class="mt-8"` đồng bộ hoàn toàn với Card 19 và Card 20.
+  2. **Chuẩn hóa tỷ lệ ô OTP hình vuông 1:1 (`input-otp.component.html`):**
+     - Thêm `aspect-square` vào container mỗi ô slot OTP.
+     - Kích thước `size === 'sm'`: `w-8 h-8 text-xs sm:w-9 sm:h-9 sm:text-sm rounded-[8px] sm:rounded-[10px]` (32px x 32px / 36px x 36px).
+     - Kích thước `size === 'md'`: `w-10 h-10 text-sm sm:w-12 sm:h-12 sm:text-base rounded-[10px] sm:rounded-[12px]` (40px x 40px / 48px x 48px).
+     - Kích thước `size === 'lg'`: `w-12 h-12 text-base sm:w-14 sm:h-14 sm:text-xl rounded-[12px] sm:rounded-[14px]` (48px x 48px / 56px x 56px).
+     - Đồng bộ màu hover/focus/caret sang CSS variable động `var(--color-primary)` theo Design System.
+- **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Build thành công 100% (`Application bundle generation complete`).
+
 ### Yêu cầu: Tích Hợp Cơ Chế Auto-Flip & Edge Collision Detection (Chống Tràn Viền Màn Hình Tự Động) Cho DropdownMenuComponent & CustomSelectComponent
 - **Nội dung yêu cầu:** Khắc phục tình trạng khi người dùng click vào nút menu (ví dụ: nút 3 chấm Trigger Icon ở mép trái màn hình trong mục "Nút Trigger Icon & Vị Trí Placement"), menu dropdown bị văng ra ngoài mép trái màn hình làm cắt cụt chữ ("Giao dịch mới" -> "ao dịch mới", "Sao chép..." -> "ép..."). Tự động hóa toàn diện cơ chế phát hiện kích thước viewport và biên màn hình cho Dropdown Menu, đảm bảo menu luôn luôn hiển thị trọn vẹn và không bao giờ bị khuất.
 - **Phân tích nguyên nhân:**
