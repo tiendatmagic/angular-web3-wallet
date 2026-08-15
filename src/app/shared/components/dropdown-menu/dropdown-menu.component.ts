@@ -9,6 +9,8 @@ import {
   effect,
   ViewChild,
   ChangeDetectorRef,
+  HostListener,
+  AfterViewChecked,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '../icon/icon.component';
@@ -46,17 +48,22 @@ export interface DropdownMenuHeader {
   standalone: true,
   imports: [CommonModule, IconComponent, TranslatePipe],
   templateUrl: './dropdown-menu.component.html',
+  styleUrls: ['./dropdown-menu.component.scss'],
   host: {
     class: 'block',
     '(document:click)': 'onClickOutside($event)',
     '(document:keydown.escape)': 'onEscape()',
   },
 })
-export class DropdownMenuComponent {
+export class DropdownMenuComponent implements AfterViewChecked {
   private readonly elementRef = inject(ElementRef);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly dropdownService = inject(DropdownService);
   public readonly instanceId = 'dropdown_menu_' + Math.random().toString(36).substring(2, 9);
+
+  @ViewChild('triggerWrapper') triggerWrapper?: ElementRef<HTMLElement>;
+  @ViewChild('popoverEl') popoverEl?: ElementRef<HTMLElement>;
+  @ViewChild('submenuEl') submenuEl?: ElementRef<HTMLElement>;
 
   @Input() items: DropdownMenuItem[] = [];
   @Input() header: DropdownMenuHeader | null = null;
@@ -86,11 +93,19 @@ export class DropdownMenuComponent {
   public readonly activeSubmenuId = signal<string | null>(null);
   public readonly submenuPosition = signal({ left: 0, top: 0 });
 
+  public popoverStyle: Record<string, string> = {};
+  public submenuStyle: Record<string, string> = {};
+
+  private lastSubmenuTriggerRect: DOMRect | null = null;
+  private lastSubmenuItem: DropdownMenuItem | null = null;
+
   private readonly syncOpenState = effect(() => {
     const activeId = this.dropdownService.activeDropdownId();
     if (activeId !== this.instanceId && this.isOpen()) {
       this.isOpen.set(false);
       this.activeSubmenuId.set(null);
+      this.lastSubmenuTriggerRect = null;
+      this.lastSubmenuItem = null;
       this.openChange.emit(false);
     }
   });
@@ -104,9 +119,12 @@ export class DropdownMenuComponent {
     this.isOpen.set(newState);
     if (newState) {
       this.dropdownService.open(this.instanceId);
+      this.updateMenuPosition();
     } else {
       this.dropdownService.close(this.instanceId);
       this.activeSubmenuId.set(null);
+      this.lastSubmenuTriggerRect = null;
+      this.lastSubmenuItem = null;
     }
     this.openChange.emit(newState);
   }
@@ -115,6 +133,7 @@ export class DropdownMenuComponent {
     if (this.disabled || this.isOpen()) return;
     this.isOpen.set(true);
     this.dropdownService.open(this.instanceId);
+    this.updateMenuPosition();
     this.openChange.emit(true);
   }
 
@@ -123,12 +142,19 @@ export class DropdownMenuComponent {
     this.isOpen.set(false);
     this.dropdownService.close(this.instanceId);
     this.activeSubmenuId.set(null);
+    this.lastSubmenuTriggerRect = null;
+    this.lastSubmenuItem = null;
     this.openChange.emit(false);
   }
 
   public onClickOutside(event: MouseEvent): void {
     if (!this.isOpen()) return;
-    if (!this.elementRef.nativeElement.contains(event.target)) {
+    const target = event.target as Node;
+    const isInsideHost = this.elementRef.nativeElement.contains(target);
+    const isInsidePopover = this.popoverEl?.nativeElement?.contains(target);
+    const isInsideSubmenu = this.submenuEl?.nativeElement?.contains(target);
+
+    if (!isInsideHost && !isInsidePopover && !isInsideSubmenu) {
       this.close();
     }
   }
@@ -145,7 +171,13 @@ export class DropdownMenuComponent {
 
     if (item.type === 'sub') {
       const current = this.activeSubmenuId();
-      this.activeSubmenuId.set(current === item.id ? null : item.id || item.label || 'sub');
+      if (current === (item.id || item.label)) {
+        this.activeSubmenuId.set(null);
+        this.lastSubmenuTriggerRect = null;
+        this.lastSubmenuItem = null;
+      } else {
+        this.openSubmenu(item, event);
+      }
       return;
     }
 
@@ -180,6 +212,8 @@ export class DropdownMenuComponent {
     const itemId = item.id || item.label || '';
     if (this.activeSubmenuId() === itemId) {
       this.activeSubmenuId.set(null);
+      this.lastSubmenuTriggerRect = null;
+      this.lastSubmenuItem = null;
     } else {
       this.openSubmenu(item, event);
     }
@@ -188,14 +222,10 @@ export class DropdownMenuComponent {
   public openSubmenu(item: DropdownMenuItem, event: MouseEvent): void {
     if (item.disabled || !item.children?.length) return;
 
-    const hostRect = this.elementRef.nativeElement.getBoundingClientRect();
-    const triggerRect = (event.currentTarget as HTMLElement).getBoundingClientRect();
-
-    this.submenuPosition.set({
-      left: triggerRect.right - hostRect.left + 8,
-      top: triggerRect.top - hostRect.top,
-    });
+    this.lastSubmenuTriggerRect = (event.currentTarget as HTMLElement).getBoundingClientRect();
+    this.lastSubmenuItem = item;
     this.activeSubmenuId.set(item.id || item.label || '');
+    this.updateSubmenuPosition();
   }
 
   public activeSubmenu(): DropdownMenuItem | null {
@@ -205,21 +235,181 @@ export class DropdownMenuComponent {
     return this.items.find((item) => (item.id || item.label) === activeId) ?? null;
   }
 
-  public getPlacementClasses(): string {
-    switch (this.placement) {
-      case 'bottom-right':
-        return 'top-full right-0 mt-2 origin-top-right';
-      case 'top-left':
-        return 'bottom-full left-0 mb-2 origin-bottom-left';
-      case 'top-right':
-        return 'bottom-full right-0 mb-2 origin-bottom-right';
-      case 'top-center':
-        return 'bottom-full left-1/2 -translate-x-1/2 mb-2 origin-bottom';
-      case 'bottom-center':
-        return 'top-full left-1/2 -translate-x-1/2 mt-2 origin-top';
-      case 'bottom-left':
-      default:
-        return 'top-full left-0 mt-2 origin-top-left';
+  private parseWidthClass(widthStr: string): number {
+    if (!widthStr) return 256;
+    if (widthStr.includes('w-48')) return 192;
+    if (widthStr.includes('w-56')) return 224;
+    if (widthStr.includes('w-60')) return 240;
+    if (widthStr.includes('w-64')) return 256;
+    if (widthStr.includes('w-72')) return 288;
+    if (widthStr.includes('w-80')) return 320;
+    if (widthStr.includes('w-96')) return 384;
+    const match = widthStr.match(/\[(\d+)px\]/);
+    if (match) return parseInt(match[1], 10);
+    return 256;
+  }
+
+  public updateMenuPosition(): void {
+    const trigger = this.triggerWrapper?.nativeElement || this.elementRef.nativeElement;
+    if (!trigger) return;
+
+    const triggerRect = trigger.getBoundingClientRect();
+    const gap = 6;
+
+    let popoverWidth = this.popoverEl?.nativeElement?.offsetWidth || 0;
+    if (!popoverWidth) {
+      popoverWidth = this.parseWidthClass(this.width);
+    }
+    popoverWidth = Math.max(popoverWidth, 220);
+
+    let popoverHeight = this.popoverEl?.nativeElement?.offsetHeight || 0;
+    if (!popoverHeight) {
+      const itemCount = this.items.length || 4;
+      popoverHeight = (this.header ? 64 : 0) + itemCount * 42 + 20;
+    }
+
+    const spaceBelow = window.innerHeight - triggerRect.bottom - gap;
+    const spaceAbove = triggerRect.top - gap;
+
+    // Vertical placement (Top vs Bottom auto flip)
+    let placeBottom = true;
+    if (this.placement.startsWith('top')) {
+      if (spaceAbove >= popoverHeight || spaceAbove >= spaceBelow) {
+        placeBottom = false;
+      } else {
+        placeBottom = true;
+      }
+    } else {
+      if (spaceBelow >= popoverHeight || spaceBelow >= spaceAbove) {
+        placeBottom = true;
+      } else {
+        placeBottom = false;
+      }
+    }
+
+    let top = 0;
+    if (placeBottom) {
+      top = triggerRect.bottom + gap;
+      if (top + popoverHeight > window.innerHeight - 8) {
+        top = Math.max(8, window.innerHeight - 8 - popoverHeight);
+      }
+      if (top < 8) top = 8;
+    } else {
+      top = triggerRect.top - gap - popoverHeight;
+      if (top < 8) {
+        top = 8;
+      }
+      if (top + popoverHeight > window.innerHeight - 8) {
+        top = Math.max(8, window.innerHeight - 8 - popoverHeight);
+      }
+    }
+
+    // Horizontal placement (Left vs Right vs Center with collision protection)
+    let left = triggerRect.left;
+
+    if (this.placement.endsWith('right')) {
+      left = triggerRect.right - popoverWidth;
+      // Auto flip / shift if spilling off left edge of viewport (<= 8px)
+      if (left < 8) {
+        left = Math.max(8, triggerRect.left);
+      }
+      if (left + popoverWidth > window.innerWidth - 8) {
+        left = Math.max(8, window.innerWidth - 8 - popoverWidth);
+      }
+    } else if (this.placement.endsWith('center')) {
+      left = triggerRect.left + (triggerRect.width - popoverWidth) / 2;
+      if (left < 8) left = 8;
+      if (left + popoverWidth > window.innerWidth - 8) {
+        left = Math.max(8, window.innerWidth - 8 - popoverWidth);
+      }
+    } else {
+      // 'bottom-left' or 'top-left'
+      left = triggerRect.left;
+      // Auto flip / shift if spilling off right edge of viewport
+      if (left + popoverWidth > window.innerWidth - 8) {
+        left = Math.max(8, triggerRect.right - popoverWidth);
+      }
+      if (left < 8) left = 8;
+      if (left + popoverWidth > window.innerWidth - 8) {
+        left = Math.max(8, window.innerWidth - 8 - popoverWidth);
+      }
+    }
+
+    const availableHeight = placeBottom
+      ? Math.max(120, window.innerHeight - top - 8)
+      : Math.max(120, triggerRect.top - gap - 8);
+    const maxHeight = Math.min(availableHeight, 480);
+
+    this.popoverStyle = {
+      position: 'fixed',
+      top: `${top}px`,
+      left: `${left}px`,
+      maxHeight: `${maxHeight}px`,
+      zIndex: '9999',
+    };
+  }
+
+  public updateSubmenuPosition(): void {
+    if (!this.lastSubmenuTriggerRect || !this.lastSubmenuItem) return;
+
+    const triggerRect = this.lastSubmenuTriggerRect;
+    let subWidth = this.submenuEl?.nativeElement?.offsetWidth || 0;
+    if (!subWidth) {
+      subWidth = this.parseWidthClass(this.width);
+    }
+    subWidth = Math.max(subWidth, 200);
+
+    let subHeight = this.submenuEl?.nativeElement?.offsetHeight || 0;
+    if (!subHeight) {
+      subHeight = (this.lastSubmenuItem.children?.length ?? 2) * 42 + 20;
+    }
+
+    // Try right side first
+    let subLeft = triggerRect.right + 6;
+    if (subLeft + subWidth > window.innerWidth - 8) {
+      // Flip to left side of item
+      subLeft = triggerRect.left - subWidth - 6;
+    }
+    if (subLeft < 8) subLeft = 8;
+    if (subLeft + subWidth > window.innerWidth - 8) {
+      subLeft = Math.max(8, window.innerWidth - 8 - subWidth);
+    }
+
+    let subTop = triggerRect.top;
+    if (subTop + subHeight > window.innerHeight - 8) {
+      subTop = Math.max(8, window.innerHeight - 8 - subHeight);
+    }
+    if (subTop < 8) subTop = 8;
+
+    const maxHeight = Math.min(window.innerHeight - 16, 420);
+
+    this.submenuStyle = {
+      position: 'fixed',
+      left: `${subLeft}px`,
+      top: `${subTop}px`,
+      maxHeight: `${maxHeight}px`,
+      zIndex: '10000',
+    };
+  }
+
+  ngAfterViewChecked(): void {
+    if (this.isOpen()) {
+      this.updateMenuPosition();
+      if (this.activeSubmenuId()) {
+        this.updateSubmenuPosition();
+      }
+    }
+  }
+
+  @HostListener('window:scroll')
+  @HostListener('window:resize')
+  onWindowChange(): void {
+    if (this.isOpen()) {
+      this.updateMenuPosition();
+      if (this.activeSubmenuId()) {
+        this.updateSubmenuPosition();
+      }
     }
   }
 }
+

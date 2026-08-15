@@ -1,9 +1,10 @@
 <div class="relative inline-block text-left" [ngClass]="{ 'w-full': triggerVariant === 'default' }">
-  @if (customTrigger) {
-    <div (click)="toggleOpen($event)" class="cursor-pointer inline-block">
-      <ng-content select="[dropdown-trigger]"></ng-content>
-    </div>
-  } @else {
+  <div #triggerWrapper class="inline-block" [ngClass]="{ 'w-full': triggerVariant === 'default' }">
+    @if (customTrigger) {
+      <div (click)="toggleOpen($event)" class="cursor-pointer inline-block">
+        <ng-content select="[dropdown-trigger]"></ng-content>
+      </div>
+    } @else {
     <button
       type="button"
       [disabled]="disabled"
@@ -64,12 +65,13 @@
       }
     </button>
   }
+  </div>
 
   @if (isOpen()) {
     <div
-      class="absolute z-50 {{ width }} min-w-[220px] {{
-        getPlacementClasses()
-      }} dropdown-menu-popover glass-popover border border-slate-200/80 dark:border-slate-800/80 rounded-[15px] p-2 text-slate-800 dark:text-slate-100 focus:outline-none"
+      #popoverEl
+      class="fixed z-[9999] {{ width }} min-w-[220px] dropdown-menu-popover glass-popover border border-slate-200/80 dark:border-slate-800/80 rounded-[15px] p-2 text-slate-800 dark:text-slate-100 focus:outline-none overflow-y-auto"
+      [ngStyle]="popoverStyle"
     >
       <ng-content select="[dropdown-content]"></ng-content>
 
@@ -278,11 +280,11 @@
 
     @if (activeSubmenu(); as submenu) {
       <div
-        class="absolute z-[60] {{
+        #submenuEl
+        class="fixed z-[10000] {{
           width
-        }} min-w-[200px] glass-popover border border-slate-200/80 dark:border-slate-800/80 rounded-[15px] p-2 space-y-0.5 text-slate-800 dark:text-slate-100 dropdown-menu-popover"
-        [style.left.px]="submenuPosition().left"
-        [style.top.px]="submenuPosition().top"
+        }} min-w-[200px] glass-popover border border-slate-200/80 dark:border-slate-800/80 rounded-[15px] p-2 space-y-0.5 text-slate-800 dark:text-slate-100 dropdown-menu-popover overflow-y-auto"
+        [ngStyle]="submenuStyle"
       >
         @for (subItem of submenu.children; track subItem.id || subItem.label || $index) {
           <button

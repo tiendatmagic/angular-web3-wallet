@@ -1,3 +1,19 @@
+### Yêu cầu: Tích Hợp Cơ Chế Auto-Flip & Edge Collision Detection (Chống Tràn Viền Màn Hình Tự Động) Cho DropdownMenuComponent & CustomSelectComponent
+- **Nội dung yêu cầu:** Khắc phục tình trạng khi người dùng click vào nút menu (ví dụ: nút 3 chấm Trigger Icon ở mép trái màn hình trong mục "Nút Trigger Icon & Vị Trí Placement"), menu dropdown bị văng ra ngoài mép trái màn hình làm cắt cụt chữ ("Giao dịch mới" -> "ao dịch mới", "Sao chép..." -> "ép..."). Tự động hóa toàn diện cơ chế phát hiện kích thước viewport và biên màn hình cho Dropdown Menu, đảm bảo menu luôn luôn hiển thị trọn vẹn và không bao giờ bị khuất.
+- **Phân tích nguyên nhân:**
+  1. `DropdownMenuComponent` trước đó sử dụng class CSS Tailwind tĩnh (`absolute right-0`, `left-0`, `top-full`). Khi nút trigger nằm sát mép trái nhưng cấu hình `placement="bottom-right"` (hoặc màn hình nhỏ), class `right-0` căn mép phải của menu (rộng 224px) theo mép phải nút (rộng 40px), đẩy toàn bộ menu sang trái 184px và tràn ra ngoài mép trái của viewport.
+  2. Chưa có cơ chế đo khoảng trống thực tế (Bounding Rect & Collision Engine) để tự động đổi chiều (auto-flip) trên/dưới và tự căn chỉnh toạ độ trái/phải khi vượt qua mép viewport (left < 8px, right > innerWidth - 8px, bottom > innerHeight - 8px).
+- **Giải pháp:**
+  1. **Nâng cấp `DropdownMenuComponent` (`dropdown-menu.component.ts` & `html`):**
+     - Chuyển container Menu và Submenu sang `position: fixed` với `zIndex: 9999` (Menu chính) và `10000` (Submenu), loại bỏ hoàn toàn nguy cơ bị cắt bởi các thẻ cha có `overflow: hidden` hoặc `max-w`.
+     - Tích hợp hàm `updateMenuPosition()` và `updateSubmenuPosition()`:
+       - **Trục dọc (Y):** Đo khoảng cách `spaceBelow` và `spaceAbove`. Nếu phía dưới không đủ không gian thì tự động lật (flip) lên trên, kèm mốc chặn an toàn `top >= 8px` và `maxHeight` cuộn mượt mà.
+       - **Trục ngang (X):** Tự động phát hiện va chạm mép màn hình. Nếu `left < 8px` (bị đẩy tràn sang trái như lỗi ban đầu), hệ thống tự động kéo/lật menu về vị trí an toàn (`Math.max(8, triggerRect.left)`). Nếu tràn mép phải, tự động bám theo `innerWidth - 8px - width`.
+       - **Submenu cấp 2:** Tự động mở sang phải; nếu chạm mép phải màn hình thì tự động lật sang trái của Menu cha.
+     - Lắng nghe `@HostListener('window:scroll')`, `@HostListener('window:resize')`, và `ngAfterViewChecked()` để cập nhật tọa độ liên tục theo thời gian thực.
+  2. **Bổ sung Edge Clamping Cho `CustomSelectComponent` (`custom-select.component.ts`):** Thêm tính toán chống tràn ngang (`left + width > window.innerWidth - 8` và `left < 8`) giúp Select UI đạt độ ổn định 100% trên mọi kích thước màn hình.
+- **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Vượt qua 100% bộ unit tests (6/6 tests). Đóng gói Production (`npm run build`) thành công 100%.
+
 ### Yêu cầu: Bổ Sung & Cấu Hình Thiết Lập Animation Trượt Menu (Sliding Pill Indicator) Cho Desktop Sidebar Trực Tiếp Trong File .ts
 - **Nội dung yêu cầu:** Bổ sung tính năng hiệu ứng indicator lướt trượt menu item cho Desktop Sidebar (giống TabGroup) và tắt nền xám khi hover. Không hiển thị UI switch/toggle trên giao diện Sidebar HTML mà thiết lập trực tiếp thông qua thuộc tính / signal trong file TypeScript (`sidebar.component.ts`), mặc định tắt (`false`).
 - **Phân tích & Giải pháp:**

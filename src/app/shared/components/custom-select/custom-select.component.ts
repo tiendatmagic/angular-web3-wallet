@@ -157,22 +157,29 @@ export class CustomSelectComponent implements ControlValueAccessor, AfterViewChe
 
     this.resolvedPlacement = placeFinal;
 
+    let left = rect.left;
+    let selectWidth = rect.width;
+    if (left + selectWidth > window.innerWidth - 8) {
+      left = Math.max(8, window.innerWidth - 8 - selectWidth);
+    }
+    if (left < 8) left = 8;
+
     if (placeFinal === 'bottom') {
       this.dropdownStyle = {
         position: 'fixed',
         top: `${rect.bottom + gap}px`,
-        left: `${rect.left}px`,
-        width: `${rect.width}px`,
-        maxHeight: `${Math.min(dropdownMaxHeight, spaceBelow)}px`,
+        left: `${left}px`,
+        width: `${selectWidth}px`,
+        maxHeight: `${Math.min(dropdownMaxHeight, Math.max(80, spaceBelow))}px`,
         zIndex: '9999',
       };
     } else {
       this.dropdownStyle = {
         position: 'fixed',
         top: `${rect.top - gap}px`,
-        left: `${rect.left}px`,
-        width: `${rect.width}px`,
-        maxHeight: `${Math.min(dropdownMaxHeight, spaceAbove)}px`,
+        left: `${left}px`,
+        width: `${selectWidth}px`,
+        maxHeight: `${Math.min(dropdownMaxHeight, Math.max(80, spaceAbove))}px`,
         transform: 'translateY(-100%)',
         zIndex: '9999',
       };
