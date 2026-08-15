@@ -28,14 +28,14 @@
     @for (slotIndex of slotsSignal(); track slotIndex) {
       <div
         (click)="onSlotClick(slotIndex)"
-        class="relative flex items-center justify-center font-mono transition-all duration-200 cursor-pointer shadow-xs border border-solid shrink-0"
+        class="relative flex items-center justify-center font-mono transition-all duration-200 cursor-pointer shadow-xs border border-solid shrink-0 aspect-square"
         [ngClass]="{
-          'w-6.5 h-8 text-[11px] sm:w-8 sm:h-9 sm:text-sm rounded-[7px] sm:rounded-[10px]': size === 'sm',
-          'w-7.5 h-9 text-xs sm:w-11 sm:h-12 sm:text-base rounded-[8px] sm:rounded-[12px]': size === 'md',
-          'w-8.5 h-10 text-xs sm:w-14 sm:h-14 sm:text-xl rounded-[10px] sm:rounded-[14px]': size === 'lg',
-          'bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 border-slate-200 dark:border-slate-700 hover:border-purple-400 dark:hover:border-purple-500 hover:bg-purple-50/20 dark:hover:bg-purple-950/20':
+          'w-8 h-8 text-xs sm:w-9 sm:h-9 sm:text-sm rounded-[8px] sm:rounded-[10px]': size === 'sm',
+          'w-10 h-10 text-sm sm:w-12 sm:h-12 sm:text-base rounded-[10px] sm:rounded-[12px]': size === 'md',
+          'w-12 h-12 text-base sm:w-14 sm:h-14 sm:text-xl rounded-[12px] sm:rounded-[14px]': size === 'lg',
+          'bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 border-slate-200 dark:border-slate-700 hover:border-[var(--color-primary)] hover:bg-[var(--color-primary)]/5':
             !isSlotFocused(slotIndex) && !invalid && !disabled,
-          'border-purple-500 dark:border-purple-500 ring-4 ring-purple-500/20 dark:ring-purple-500/30 bg-purple-50/40 dark:bg-purple-950/30 text-slate-900 dark:text-white z-10 scale-[1.02] shadow-sm shadow-purple-500/10':
+          'border-[var(--color-primary)] ring-4 ring-[var(--color-primary)]/20 bg-[var(--color-primary)]/10 text-slate-900 dark:text-white z-10 scale-[1.02] shadow-sm shadow-[var(--color-primary)]/10':
             isSlotFocused(slotIndex) && !invalid && !disabled,
           'border-rose-500 dark:border-rose-500 text-rose-600 dark:text-rose-400 bg-rose-50/40 dark:bg-rose-950/25 ring-2 ring-rose-500/20 z-10':
             invalid && !disabled,
@@ -55,7 +55,7 @@
 
         @if (isCaretVisible(slotIndex) && !disabled && !readonly) {
           <span
-            class="otp-caret-blink inline-block bg-purple-600 dark:bg-purple-400 rounded-full"
+            class="otp-caret-blink inline-block bg-[var(--color-primary)] rounded-full"
             [ngClass]="{
               'h-4 w-0.5': size === 'sm',
               'h-5 w-0.5': size === 'md',
