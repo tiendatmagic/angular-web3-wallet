@@ -14,6 +14,9 @@ export interface TranslationDictionary {
     contact: string;
     tagline: string;
   };
+  sidebar: {
+    menu_animation: string;
+  };
   header: {
     open_menu: string;
     select_network: string;

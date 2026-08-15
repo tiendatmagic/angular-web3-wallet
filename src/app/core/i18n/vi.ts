@@ -7,6 +7,9 @@ export const VI_TRANSLATIONS: TranslationDictionary = {
     contact: 'Liên hệ',
     tagline: 'Mẫu Web3'
   },
+  sidebar: {
+    menu_animation: 'Hiệu ứng lướt menu'
+  },
   header: {
     open_menu: 'Mở menu',
     select_network: 'Chọn nhanh mạng lưới',

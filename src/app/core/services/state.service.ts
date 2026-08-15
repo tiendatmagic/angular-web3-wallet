@@ -20,6 +20,7 @@ export class StateService {
   public readonly showNetworkDropdown = this.uiStateService.showNetworkDropdown;
   public readonly isLoading = this.uiStateService.isLoading;
   public readonly isSidebarCollapsed = this.uiStateService.isSidebarCollapsed;
+  public readonly isSidebarAnimationEnabled = this.uiStateService.isSidebarAnimationEnabled;
 
   public readonly isDarkMode = this.themeService.isDarkMode;
   public readonly themeMode = this.themeService.themeMode;
@@ -49,6 +50,18 @@ export class StateService {
     this.uiStateService.isSidebarCollapsed.set(nextState);
     if (typeof window !== 'undefined') {
       localStorage.setItem('angular_web3_sidebar_collapsed', String(nextState));
+    }
+  }
+
+  public toggleSidebarAnimation() {
+    const nextState = !this.uiStateService.isSidebarAnimationEnabled();
+    this.setSidebarAnimation(nextState);
+  }
+
+  public setSidebarAnimation(enabled: boolean) {
+    this.uiStateService.isSidebarAnimationEnabled.set(enabled);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('angular_web3_sidebar_animation', String(enabled));
     }
   }
 

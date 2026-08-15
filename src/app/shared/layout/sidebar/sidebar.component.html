@@ -49,16 +49,42 @@
   </a>
 
   <nav
-    class="flex-1 py-6 space-y-1.5 overflow-y-auto"
+    #desktopNavEl
+    class="relative flex-1 py-6 space-y-1.5 overflow-y-auto"
     [class.px-4]="!stateService.isSidebarCollapsed()"
     [class.px-2.5]="stateService.isSidebarCollapsed()"
   >
-    @for (item of navItems; track item.path) {
+    @if (isSidebarAnimationEnabled() && indicatorStyle().ready) {
+      <div
+        class="sidebar-menu-pill absolute rounded-xl bg-primary/10 pointer-events-none z-0"
+        [class.transition-[top,height,left,width]]="indicatorStyle().animated"
+        [class.duration-300]="indicatorStyle().animated"
+        [class.ease-out]="indicatorStyle().animated"
+        [class.opacity-0]="!indicatorStyle().ready"
+        [class.opacity-100]="indicatorStyle().ready"
+        [style.top]="indicatorStyle().top"
+        [style.height]="indicatorStyle().height"
+        [style.left]="indicatorStyle().left"
+        [style.width]="indicatorStyle().width"
+      ></div>
+    }
+
+    @for (item of navItems; track item.path; let idx = $index) {
       <a
+        #desktopNavItemEl
+        #rla="routerLinkActive"
         [routerLink]="item.path"
-        routerLinkActive="!bg-primary/10 !text-primary !font-extrabold"
         [routerLinkActiveOptions]="{ exact: !!item.exact }"
-        class="flex items-center rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/50 text-slate-600 dark:text-slate-400 font-semibold text-sm transition-colors duration-200 cursor-pointer"
+        routerLinkActive=""
+        (click)="onNavItemClick(idx)"
+        class="relative z-10 flex items-center rounded-xl font-semibold text-sm transition-colors duration-200 cursor-pointer"
+        [class.text-slate-600]="!rla.isActive"
+        [class.dark:text-slate-400]="!rla.isActive"
+        [class.text-primary]="rla.isActive"
+        [class.font-extrabold]="rla.isActive"
+        [class.bg-primary/10]="rla.isActive && !isSidebarAnimationEnabled()"
+        [class.hover:bg-slate-100]="!rla.isActive && !isSidebarAnimationEnabled()"
+        [class.dark:hover:bg-slate-800/50]="!rla.isActive && !isSidebarAnimationEnabled()"
         [class.gap-3.5]="!stateService.isSidebarCollapsed()"
         [class.px-4]="!stateService.isSidebarCollapsed()"
         [class.py-3]="!stateService.isSidebarCollapsed()"

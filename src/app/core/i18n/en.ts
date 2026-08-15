@@ -7,6 +7,9 @@ export const EN_TRANSLATIONS: TranslationDictionary = {
     contact: 'Contact',
     tagline: 'Web3 Template'
   },
+  sidebar: {
+    menu_animation: 'Menu Slide Animation'
+  },
   header: {
     open_menu: 'Open menu',
     select_network: 'Quick Select Network',

@@ -11,4 +11,7 @@ export class UiStateService {
   public readonly isSidebarCollapsed = signal<boolean>(
     typeof window !== 'undefined' && localStorage.getItem('angular_web3_sidebar_collapsed') === 'true'
   );
+  public readonly isSidebarAnimationEnabled = signal<boolean>(
+    typeof window !== 'undefined' && localStorage.getItem('angular_web3_sidebar_animation') === 'true'
+  );
 }

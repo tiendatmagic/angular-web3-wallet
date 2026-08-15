@@ -1,3 +1,18 @@
+### Yêu cầu: Bổ Sung & Cấu Hình Thiết Lập Animation Trượt Menu (Sliding Pill Indicator) Cho Desktop Sidebar Trực Tiếp Trong File .ts
+- **Nội dung yêu cầu:** Bổ sung tính năng hiệu ứng indicator lướt trượt menu item cho Desktop Sidebar (giống TabGroup) và tắt nền xám khi hover. Không hiển thị UI switch/toggle trên giao diện Sidebar HTML mà thiết lập trực tiếp thông qua thuộc tính / signal trong file TypeScript (`sidebar.component.ts`), mặc định tắt (`false`).
+- **Phân tích & Giải pháp:**
+  1. **Cấu hình trực tiếp trong TypeScript (`sidebar.component.ts`):**
+     - Khai báo signal `public readonly isSidebarAnimationEnabled = signal<boolean>(false);` kèm `@Input() set enableMenuAnimation(value: boolean)`.
+     - Cho phép bật/tắt thiết lập dễ dàng trong code `.ts` hoặc binding từ parent component mà không cần đặt UI switch trên Sidebar.
+  2. **Giao diện Sidebar HTML sạch sẽ (`sidebar.component.html`):**
+     - Xóa bỏ hoàn toàn hàng công tắc switch và nút bấm sparkles khỏi footer Desktop Sidebar, giữ nguyên giao diện nguyên bản tinh gọn.
+  3. **Cơ chế Animation Sliding Pill Indicator:**
+     - Đặt thẻ `<div class="sidebar-menu-pill absolute ...">` trong container `<nav #desktopNavEl class="relative ...">`.
+     - Sử dụng signal `indicatorStyle` theo dõi `top, height, left, width, ready, animated`.
+     - Ở lần khởi tạo ban đầu, gán `animated = false` để loại bỏ 100% lỗi giật từ 0px khi reload trang. Sau khi layout nạp xong, gán `animated = true` giúp hiệu ứng trượt 300ms (`transition-[top,height,left,width] duration-300 ease-out`) diễn ra êm ái.
+     - Sử dụng `#rla="routerLinkActive"` với class binding trực tiếp `[class.bg-primary/10]="rla.isActive && !isSidebarAnimationEnabled()"` và `[class.hover:bg-slate-100]="!rla.isActive && !isSidebarAnimationEnabled()"` để triệt tiêu hoàn toàn xung đột 2 nền tím và loại bỏ nền xám hover khi bật animation.
+- **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Chạy `npx ng test --no-watch` vượt qua 100% test suites (6/6 tests). Đóng gói Production (`npm run build`) thành công 100%.
+
 ### Yêu cầu: Khắc Phục Lỗi Sidebar Menu (Mobile Drawer) Không Đạt Chiều Cao Full Màn Hình (Full Height) & Thiếu Padding Header Logo / Navigation
 - **Nội dung yêu cầu:** Sửa lỗi sidebar menu trên màn hình di động/drawer (`app-sidebar`) bị cắt ngang ở bên dưới mục "Giao diện Tự động", chiều cao không kéo dài hết màn hình (`full height`), đồng thời khắc phục tình trạng phần Header Logo và danh sách Navigation trên Mobile Drawer bị thiếu padding, chật chội và không đồng bộ với Desktop Sidebar.
 - **Phân tích nguyên nhân:**
