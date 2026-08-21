@@ -1,3 +1,15 @@
+### Hướng Dẫn Kỹ Thuật: Quy Trình Đổi Tên Dự Án (Project Name / Branding)
+- **Mục đích:** Cung cấp danh sách chính xác các vị trí cần cập nhật khi đổi tên dự án hoặc clone template sang dApp mới, giúp AI Agent và Developer đổi tên nhanh chóng, không bị sót gây lỗi build/deploy.
+- **1. Cấu hình Kỹ thuật (Build / Package / Deploy):**
+  - `package.json`: Cập nhật `"name": "ten-du-an-moi"`.
+  - `angular.json`: Cập nhật tên project trong `projects: { "ten-du-an-moi": { ... } }` và các chuỗi `buildTarget` (`"ten-du-an-moi:build:production"`, `"ten-du-an-moi:build:development"`).
+  - `netlify.toml` (nếu dùng Netlify): Cập nhật đường dẫn output `publish = "dist/ten-du-an-moi/browser"`.
+  - `package-lock.json`: Chạy lệnh `npm install` để tự động đồng bộ tên mới.
+- **2. Cấu hình Hiển thị & Thương hiệu (Branding / UI / Web3 AppKit):**
+  - `src/index.html`: Cập nhật thẻ `<title>Tên Ứng Dụng Mới</title>` và favicon/logo nếu cần.
+  - `src/app/core/services/web3.service.ts`: Cập nhật `metadata.name` trong hàm `createAppKit` (tên hiển thị trên popup kết nối ví Web3/WalletConnect).
+  - `src/app/core/i18n/vi.ts` & `src/app/core/i18n/en.ts`: Cập nhật các chuỗi tiêu đề, mô tả ứng dụng trong Header, Sidebar, About.
+
 ### Yêu cầu: Rà Soát Toàn Bộ dApp & Chuyển Đổi Triệt Để CSS/SCSS Tùy Biến Sang Chuẩn Tailwind CSS v4
 - **Nội dung yêu cầu:** Xem lại toàn bộ dApp, chuyển đổi các phần đang dùng CSS/SCSS thủ công, các file `.scss` component phân tán và inline `styles: [...]` sang hệ thống Design System **Tailwind CSS v4** (`@theme`, `@utility`, `@keyframes`, arbitrary utility classes), giúp dự án tinh gọn 100% (DRY).
 - **Chi tiết các hạng mục đã thực hiện:**

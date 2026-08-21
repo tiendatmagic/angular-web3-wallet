@@ -178,3 +178,79 @@ src/app/
    - Sử dụng Vitest (`npm run test`) để chạy các unit test cho component và service.
 3. **Đảm bảo trước khi Commit Code:**
    - Luôn chạy build thành công 100% trước khi hoàn thành bất kỳ nhiệm vụ nào.
+
+---
+
+## 🏷️ 6. HƯỚNG DẪN ĐỔI TÊN DỰ ÁN & THƯƠNG HIỆU (PROJECT RENAMING & BRANDING GUIDE)
+
+Khi nhân bản (clone) template này sang dApp mới hoặc đổi tên dự án, AI Agent và Developer thực hiện theo quy trình chuẩn 3 bước sau:
+
+### Bước 1: Cập Nhật Tên Kỹ Thuật (Build, Package & Deploy)
+
+1. **[package.json](file:///d:/git/angular-web3-wallet/package.json):**
+   - Cập nhật trường `"name"`:
+     ```json
+     "name": "ten-du-an-moi"
+     ```
+2. **[angular.json](file:///d:/git/angular-web3-wallet/angular.json):**
+   - Đổi tên key dự án trong object `projects`:
+     ```json
+     "projects": {
+       "ten-du-an-moi": { ... }
+     }
+     ```
+   - Đổi các chuỗi `buildTarget` trong mục `serve` (dòng ~71 & ~74):
+     ```json
+     "production": {
+       "buildTarget": "ten-du-an-moi:build:production"
+     },
+     "development": {
+       "buildTarget": "ten-du-an-moi:build:development"
+     }
+     ```
+3. **[netlify.toml](file:///d:/git/angular-web3-wallet/netlify.toml) (hoặc cấu hình CI/CD Hosting khác):**
+   - Cập nhật thư mục output build:
+     ```toml
+     publish = "dist/ten-du-an-moi/browser"
+     ```
+4. **Đồng bộ [package-lock.json](file:///d:/git/angular-web3-wallet/package-lock.json):**
+   - Chạy lệnh `npm install` để npm tự động đồng bộ tên mới vào lockfile.
+
+---
+
+### Bước 2: Cập Nhật Tên Hiển Thị & Thương Hiệu (UI, Branding & Web3 Modal)
+
+1. **[src/index.html](file:///d:/git/angular-web3-wallet/src/index.html):**
+   - Cập nhật tiêu đề tab trình duyệt và logo/favicon:
+     ```html
+     <title>Tên Ứng Dụng Mới</title>
+     <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+     ```
+2. **[src/app/core/services/web3.service.ts](file:///d:/git/angular-web3-wallet/src/app/core/services/web3.service.ts):**
+   - Cập nhật `metadata.name` trong hàm `createAppKit` (tên hiển thị trên modal kết nối ví Reown AppKit / WalletConnect):
+     ```typescript
+     metadata: {
+       name: 'Tên Ứng Dụng Mới',
+       description: this.translationService.t('about.subtitle'),
+       url: window.location.origin,
+       icons: [window.location.origin + '/assets/logo.svg']
+     }
+     ```
+3. **Từ Điển Đa Ngôn Ngữ ([src/app/core/i18n/vi.ts](file:///d:/git/angular-web3-wallet/src/app/core/i18n/vi.ts) & [src/app/core/i18n/en.ts](file:///d:/git/angular-web3-wallet/src/app/core/i18n/en.ts)):**
+   - Cập nhật các chuỗi định danh thương hiệu trong Header, Sidebar, About Page và Footer.
+
+---
+
+### Bước 3: Kiểm Tra & Xác Thực (Verification)
+
+1. **Kiểm tra TypeScript & Angular Build:**
+   ```bash
+   npm run build
+   ```
+   - Đảm bảo thư mục output sinh ra chính xác tại `dist/ten-du-an-moi/browser` và quá trình build đạt exit code `0`.
+2. **Kiểm tra Unit Tests:**
+   ```bash
+   npm run test
+   ```
+
+
