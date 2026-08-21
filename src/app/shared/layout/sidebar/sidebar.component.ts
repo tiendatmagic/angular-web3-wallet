@@ -45,13 +45,9 @@ export interface NavItem {
     TranslatePipe,
   ],
   templateUrl: './sidebar.component.html',
-  styles: [
-    `
-      :host {
-        display: contents;
-      }
-    `,
-  ],
+  host: {
+    class: 'contents',
+  },
 })
 export class SidebarComponent implements AfterViewInit, OnDestroy {
   public stateService = inject(StateService);

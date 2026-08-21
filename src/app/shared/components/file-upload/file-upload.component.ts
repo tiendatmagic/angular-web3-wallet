@@ -35,7 +35,6 @@ export interface UploadFileItem {
   imports: [CommonModule, IconComponent, TooltipDirective, TranslatePipe],
   templateUrl: './file-upload.component.html',
   host: { 'class': 'block' },
-  styleUrl: './file-upload.component.scss',
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

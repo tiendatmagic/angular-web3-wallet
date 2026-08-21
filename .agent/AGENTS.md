@@ -1,3 +1,21 @@
+### Yêu cầu: Rà Soát Toàn Bộ dApp & Chuyển Đổi Triệt Để CSS/SCSS Tùy Biến Sang Chuẩn Tailwind CSS v4
+- **Nội dung yêu cầu:** Xem lại toàn bộ dApp, chuyển đổi các phần đang dùng CSS/SCSS thủ công, các file `.scss` component phân tán và inline `styles: [...]` sang hệ thống Design System **Tailwind CSS v4** (`@theme`, `@utility`, `@keyframes`, arbitrary utility classes), giúp dự án tinh gọn 100% (DRY).
+- **Chi tiết các hạng mục đã thực hiện:**
+  1. **Hợp Nhất Toàn Diện Vào `src/styles.scss` (Tailwind CSS v4):**
+     - Mở rộng `@theme` với đầy đủ token animations: `--animate-toast-in`, `--animate-toast-progress-success`, `--animate-toast-progress-error`, `--animate-popover-in`, `--animate-drawer-*`, `--animate-scale-up`, `--animate-otp-caret`, `--animate-fade-in`, `--animate-wave-*`, `--animate-progress-*`.
+     - Quy chuẩn hóa các bộ utilities bằng `@utility`: Buttons (`btn`, `btn-primary`, `btn-secondary`, `btn-cancel`, `btn-danger`, v.v.), Form controls (`form-input`, `form-textarea`, `search-input`, `form-field`), Cards (`app-card`, `app-card-interactive`), Tabs (`tab-group`, `tab-item`), Glass surfaces (`glass-popover`, `glass-dialog`, `glass-dialog-backdrop`, `glass-header`), Progress bar (`progress-striped`, `progress-animated`, `progress-fill-indeterminate`), Custom scrollbar (`custom-scrollbar`, `no-scrollbar`), Houdini Aura System (`aura-wrapper`, `gradient-*`, `aura-glow`, `aura-border`, `aura-content`), và CodeBlock syntax highlighting (`.tok-*`).
+  2. **Dọn Dẹp Typescript Components & Chuẩn Hóa Host Class Binding:**
+     - Loại bỏ `styles: [...]` và chuyển sang `host: { class: 'contents' }` cho `SidebarComponent` và `HeaderComponent`.
+     - Loại bỏ `styles: [...]` và chuyển sang `host: { class: 'block' }` cho `DemoModalComponent`.
+     - Loại bỏ `styleUrl` rải rác trong `AppComponent`, `CardComponent`, `DrawerComponent`, `DropdownMenuComponent`, `VoiceChatComponent`, `FileUploadComponent`, `AuraComponent`, `CodeBlockComponent`.
+  3. **Tối Ưu Template HTML Sang Class Utility Tailwind v4:**
+     - `voice-chat.component.html`: Thay thế toàn bộ inline `style="..."` bằng utility classes Tailwind (`left-3 top-1/2 -translate-y-1/2 z-10`, `right-4`, `top-[42px]`, `top-[66px]`, `top-2 z-1`, `bottom-[52px]`, `bottom-[18px]`).
+     - `toast.component.html`: Chuyển animation inline sang `animate-[toastProgress_linear_forwards]`.
+  4. **Xóa Bỏ 13 File SCSS Component Phân Tán:**
+     - Xóa: `app.scss`, `aura.component.scss`, `card.component.scss`, `code-block.component.scss`, `custom-date-time-range.component.scss`, `custom-radio.component.scss`, `divider.component.scss`, `drawer.component.scss`, `dropdown-menu.component.scss`, `voice-chat.component.scss`, `file-upload.component.scss`, `input-otp.component.scss`, `progress.component.scss`.
+     - Toàn bộ codebase hiện chỉ dùng duy nhất 1 file stylesheet tập trung `src/styles.scss` chuẩn Tailwind CSS v4.
+- **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Unit tests đạt 100% (6/6 tests passed). Build production (`npm run build`) thành công 100%. Quét toàn bộ codebase đảm bảo 100% comments trong code được viết bằng tiếng Anh chuẩn theo quy tắc Universal Rules.
+
 ### Yêu cầu: Tối Ưu Hóa Quá Trình Cài Đặt NPM (`.npmrc`) & Xử Lý Cảnh Báo Xung Đột Peer Dependencies Gián Tiếp
 - **Nội dung yêu cầu:** Xử lý và giải thích tình trạng khi chạy `npm i` xuất hiện hàng loạt cảnh báo `npm warn ERESOLVE overriding peer dependency` do xung đột giữa TypeScript của dự án (TS 6.x / Angular 22) và các gói phụ thuộc gián tiếp của Solana SDK trong `@reown/appkit` (yêu cầu `typescript@^5.0.0`), giúp việc cài đặt gói sạch sẽ, mượt mà.
 - **Phân tích nguyên nhân & Giải pháp:**

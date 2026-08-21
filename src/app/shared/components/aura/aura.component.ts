@@ -1,12 +1,11 @@
-﻿import { Component, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-aura, [app-aura]',
   imports: [CommonModule],
   templateUrl: './aura.component.html',
-  host: { 'class': 'inline-block relative z-0' },
-  styleUrl: './aura.component.scss'
+  host: { 'class': 'inline-block relative z-0' }
 })
 export class AuraComponent {
   @Input() variant: 'primary' | 'secondary' | 'dual' | 'rainbow' | 'holo' | 'gold' | 'silver' | 'glow' = 'dual';

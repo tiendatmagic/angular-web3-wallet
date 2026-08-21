@@ -1,4 +1,4 @@
-﻿import { Component, Input, computed, signal, inject } from '@angular/core';
+import { Component, Input, computed, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '../icon/icon.component';
 import { RippleDirective } from '../ripple/ripple.directive';
@@ -18,8 +18,7 @@ export interface CodeFile {
   standalone: true,
   imports: [CommonModule, IconComponent, RippleDirective, TooltipDirective, TranslatePipe],
   templateUrl: './code-block.component.html',
-  host: { 'class': 'block' },
-  styleUrl: './code-block.component.scss'
+  host: { 'class': 'block' }
 })
 export class CodeBlockComponent {
   public translationService = inject(TranslationService);

@@ -15,7 +15,6 @@ export interface VoiceParticipant {
   standalone: true,
   imports: [CommonModule, IconComponent, TranslatePipe],
   templateUrl: './voice-chat.component.html',
-  styleUrl: './voice-chat.component.scss',
   host: { 'class': 'block w-full flex justify-center' },
 })
 export class VoiceChatComponent {

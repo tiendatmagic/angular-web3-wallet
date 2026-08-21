@@ -23,7 +23,7 @@ import { TranslatePipe } from '@shared/pipes/translate.pipe';
     TranslatePipe
   ],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  host: { class: 'block' }
 })
 export class App {
   public stateService = inject(StateService);

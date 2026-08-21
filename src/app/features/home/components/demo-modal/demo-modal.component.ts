@@ -46,13 +46,9 @@ import { TranslatePipe } from '@shared/pipes/translate.pipe';
     TranslatePipe
   ],
   templateUrl: './demo-modal.component.html',
-  styles: [
-    `
-      :host {
-        display: block;
-      }
-    `
-  ]
+  host: {
+    class: 'block'
+  }
 })
 export class DemoModalComponent {
   private readonly modalRef = inject(ModalRef);

@@ -18,7 +18,6 @@ import { TranslatePipe } from '../../pipes/translate.pipe';
   standalone: true,
   imports: [CommonModule, IconComponent, TranslatePipe],
   templateUrl: './drawer.component.html',
-  styleUrl: './drawer.component.scss',
   host: { class: 'block' },
 })
 export class DrawerComponent implements OnChanges, OnDestroy {

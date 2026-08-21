@@ -29,13 +29,9 @@ import { TranslatePipe } from '@shared/pipes/translate.pipe';
     TranslatePipe,
   ],
   templateUrl: './header.component.html',
-  styles: [
-    `
-      :host {
-        display: contents;
-      }
-    `,
-  ],
+  host: {
+    class: 'contents',
+  },
 })
 export class HeaderComponent {
   public stateService = inject(StateService);

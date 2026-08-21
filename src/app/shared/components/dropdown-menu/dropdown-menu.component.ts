@@ -48,7 +48,6 @@ export interface DropdownMenuHeader {
   standalone: true,
   imports: [CommonModule, IconComponent, TranslatePipe],
   templateUrl: './dropdown-menu.component.html',
-  styleUrls: ['./dropdown-menu.component.scss'],
   host: {
     class: 'block',
     '(document:click)': 'onClickOutside($event)',
