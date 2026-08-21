@@ -1,14 +1,12 @@
-### Yêu cầu: Khắc Phục Lỗi Nút Ghost Trong Dropdown Menu (`app-dropdown-menu`) Bị Trắng Nền & Mất Tương Phản Khi Hover Trong Dark Mode
-- **Nội dung yêu cầu:** Sửa lỗi nút bấm "Nút Ghost" (`triggerVariant="ghost"`) trong phần demo Dropdown Menu (Card 19 / Mục 4 "Nút Trigger Icon & Vị Trí Placement") bị chuyển sang nền trắng toát và chữ màu trắng/sáng mờ nhạt khi di chuột (hover) trong Dark Mode, dẫn đến mất tương phản và không đọc được nội dung chữ.
-- **Phân tích nguyên nhân:**
-  1. Thẻ `<button>` gốc của `DropdownMenuComponent` bị gán tĩnh các class viền và đổ bóng (`border border-slate-200/60 dark:border-slate-800/60 shadow-xs`). Đối với biến thể `ghost`, các thuộc tính này không phù hợp với chuẩn thiết kế ghost button (không viền, không bóng tĩnh).
-  2. Lớp style hover trước đó (`bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200`) thiếu class đổi màu chữ khi hover (`hover:text-slate-900 dark:hover:text-white`) và màu nền hover trong dark mode chưa được tinh chỉnh với độ trong suốt tối ưu (`dark:hover:bg-slate-800/80`).
-- **Giải pháp:**
-  1. **Tách biệt viền và đổ bóng khỏi button gốc:** Chuyển `border border-slate-200/60 dark:border-slate-800/60 shadow-xs` vào cụ thể các biến thể có viền (`outline`, `default`, `secondary`, `icon`).
-  2. **Chuẩn hóa biến thể Ghost Button (`dropdown-menu.component.html`):**
-     - Áp dụng `border border-transparent bg-transparent hover:bg-slate-200/60 dark:hover:bg-slate-800/80 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white`.
-     - Đảm bảo ở cả Light Mode lẫn Dark Mode, khi hover nút sẽ có nền xám/slate dịu mắt kèm chữ đổi sang màu tương phản cao, không bao giờ bị lóa trắng hay biến mất nội dung.
-  3. **Đồng bộ hover text color cho các biến thể khác:** Thêm `hover:text-slate-900 dark:hover:text-white` cho `outline`, `default`, `secondary`, và `icon`.
+### Yêu cầu: Khắc Phục Triệt Để Lỗi Nút Ghost Dropdown Menu (`app-dropdown-menu`) Bị Nền Trắng Toát Trong Dark Mode & Bảo Toàn 100% Hiệu Ứng Hover
+- **Nội dung yêu cầu:** Sửa lỗi nút bấm "Nút Ghost" (`triggerVariant="ghost"`) trong phần demo Dropdown Menu (Card 19 / Mục 4 "Nút Trigger Icon & Vị Trí Placement") hiển thị một mảng nền hình chữ nhật màu trắng toát (`#ffffff` / User Agent `buttonface`) trong Dark Mode; đồng thời đảm bảo bảo toàn 100% hiệu ứng hover (nền xám đen mượt mà `dark:hover:bg-slate-800/80` và chữ sáng `dark:hover:text-white` như các menu item) cho toàn bộ các nút bấm và menu dropdown trong toàn ứng dụng.
+- **Phân tích nguyên nhân gốc rễ:**
+  1. Thẻ `<button>` là phần tử HTML mặc định có User Agent Stylesheet nền xám trắng sáng (`buttonface`) từ trình duyệt nếu không được reset tường minh.
+  2. Khi reset `button, [role='button'] { background-color: transparent; }` ở cấp độ unlayered CSS (ngoài `@layer`), theo quy tắc chuẩn CSS Cascade, unlayered CSS sẽ ghi đè (override) 100% tất cả các utility classes trong `@layer utilities` của Tailwind CSS (kể cả `hover:bg-...` và `dark:hover:bg-...`), làm biến mất hoàn toàn hiệu ứng hover của thẻ button.
+- **Giải pháp triệt để:**
+  1. **Đưa CSS Reset Vào `@layer base` (`src/styles.scss`):** Bọc toàn bộ các rule base (`html`, `body`, `button`, `[role='button']`) vào bên trong `@layer base { ... }`. Khi đó, các utility classes hover (`hover:bg-slate-100 dark:hover:bg-slate-800/80`) thuộc `@layer utilities` sẽ ghi đè `@layer base` chuẩn xác theo đúng thứ tự Cascade.
+  2. **Bổ sung Design System Utility (`src/styles.scss` & `button.component.ts`):** Tạo `@utility btn-ghost` sử dụng `@include btn-base;` kèm `@apply bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800/80 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white border border-transparent;`, đồng thời bổ sung `'ghost'` vào variant của `ButtonComponent`.
+  3. **Chuẩn hóa Button Trigger (`dropdown-menu.component.html`):** Gán trực tiếp `bg-transparent` vào class cơ sở của `<button>` và thiết lập hover `hover:bg-slate-100 dark:hover:bg-slate-800/80 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white` đồng bộ 100% với các menu item dropdown.
 - **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Vượt qua 100% bộ unit tests (6/6 tests). Đóng gói Production (`npm run build`) hoàn thành thành công 100%.
 
 ### Yêu cầu: Tối Ưu Hóa & Tinh Gọn File Stylesheet Tập Trung (`src/styles.scss`) Theo Chuẩn DRY & Modern SCSS / Tailwind CSS v4

@@ -19,6 +19,7 @@ export class ButtonComponent {
     | 'danger'
     | 'danger-light'
     | 'cancel'
+    | 'ghost'
     | 'info' = 'primary';
   @Input() size: 'sm' | 'md' | 'lg' = 'md';
   @Input() loading = false;
