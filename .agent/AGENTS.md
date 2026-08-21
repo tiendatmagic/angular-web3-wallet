@@ -1,3 +1,16 @@
+### Yêu cầu: Khắc Phục Lỗi Nút Ghost Trong Dropdown Menu (`app-dropdown-menu`) Bị Trắng Nền & Mất Tương Phản Khi Hover Trong Dark Mode
+- **Nội dung yêu cầu:** Sửa lỗi nút bấm "Nút Ghost" (`triggerVariant="ghost"`) trong phần demo Dropdown Menu (Card 19 / Mục 4 "Nút Trigger Icon & Vị Trí Placement") bị chuyển sang nền trắng toát và chữ màu trắng/sáng mờ nhạt khi di chuột (hover) trong Dark Mode, dẫn đến mất tương phản và không đọc được nội dung chữ.
+- **Phân tích nguyên nhân:**
+  1. Thẻ `<button>` gốc của `DropdownMenuComponent` bị gán tĩnh các class viền và đổ bóng (`border border-slate-200/60 dark:border-slate-800/60 shadow-xs`). Đối với biến thể `ghost`, các thuộc tính này không phù hợp với chuẩn thiết kế ghost button (không viền, không bóng tĩnh).
+  2. Lớp style hover trước đó (`bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200`) thiếu class đổi màu chữ khi hover (`hover:text-slate-900 dark:hover:text-white`) và màu nền hover trong dark mode chưa được tinh chỉnh với độ trong suốt tối ưu (`dark:hover:bg-slate-800/80`).
+- **Giải pháp:**
+  1. **Tách biệt viền và đổ bóng khỏi button gốc:** Chuyển `border border-slate-200/60 dark:border-slate-800/60 shadow-xs` vào cụ thể các biến thể có viền (`outline`, `default`, `secondary`, `icon`).
+  2. **Chuẩn hóa biến thể Ghost Button (`dropdown-menu.component.html`):**
+     - Áp dụng `border border-transparent bg-transparent hover:bg-slate-200/60 dark:hover:bg-slate-800/80 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white`.
+     - Đảm bảo ở cả Light Mode lẫn Dark Mode, khi hover nút sẽ có nền xám/slate dịu mắt kèm chữ đổi sang màu tương phản cao, không bao giờ bị lóa trắng hay biến mất nội dung.
+  3. **Đồng bộ hover text color cho các biến thể khác:** Thêm `hover:text-slate-900 dark:hover:text-white` cho `outline`, `default`, `secondary`, và `icon`.
+- **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Vượt qua 100% bộ unit tests (6/6 tests). Đóng gói Production (`npm run build`) hoàn thành thành công 100%.
+
 ### Yêu cầu: Tối Ưu Hóa & Tinh Gọn File Stylesheet Tập Trung (`src/styles.scss`) Theo Chuẩn DRY & Modern SCSS / Tailwind CSS v4
 - **Nội dung yêu cầu:** Rà soát và tối ưu toàn diện file `src/styles.scss`, loại bỏ triệt để các đoạn code styling bị lặp lại (DRY violations) như hệ thống Button utilities, Form controls, Alert system, Aura Conic Gradients và CodeBlock syntax tokens bằng cách tận dụng sức mạnh của SCSS mixins, nested selectors, và maps loop, đảm bảo không làm lỗi cú pháp CSS và giữ nguyên 100% giao diện hiển thị.
 - **Chi tiết các hạng mục đã tối ưu:**
