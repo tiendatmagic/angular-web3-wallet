@@ -1,3 +1,14 @@
+### Yêu cầu: Tối Ưu Hóa & Tinh Gọn File Stylesheet Tập Trung (`src/styles.scss`) Theo Chuẩn DRY & Modern SCSS / Tailwind CSS v4
+- **Nội dung yêu cầu:** Rà soát và tối ưu toàn diện file `src/styles.scss`, loại bỏ triệt để các đoạn code styling bị lặp lại (DRY violations) như hệ thống Button utilities, Form controls, Alert system, Aura Conic Gradients và CodeBlock syntax tokens bằng cách tận dụng sức mạnh của SCSS mixins, nested selectors, và maps loop, đảm bảo không làm lỗi cú pháp CSS và giữ nguyên 100% giao diện hiển thị.
+- **Chi tiết các hạng mục đã tối ưu:**
+  1. **Button Utilities:** Trích xuất `@mixin btn-base` chứa toàn bộ thuộc tính flex, layout, font, transition, states (active/disabled), loại bỏ việc copy-paste 8 lần chuỗi `@apply` dài trong các class `btn-primary`, `btn-secondary`, `btn-danger`, `btn-danger-light`, `btn-cancel`, `btn-success`, `btn-info`.
+  2. **Form Controls:** Trích xuất `@mixin form-control-base` chuẩn hóa cấu trúc bo góc, nền `slate-100`/`slate-950/40`, viền, font, placeholder và focus ring cho `form-input`, `form-textarea`, `search-input`.
+  3. **Alert System:** Chuyển đổi gần 180 dòng code tĩnh thành cấu trúc SCSS Map `$alert-themes` kết hợp vòng lặp `@each` tự động sinh 12 utilities (`soft`, `accent`, `bordered` cho 4 loại `info`, `success`, `warning`, `error`), sử dụng `@use 'sass:map'` và `map.get()` chuẩn Dart Sass hiện đại, giúp giảm hơn 75% dung lượng phần alert.
+  4. **Aura Conic Gradients:** Trích xuất `@mixin aura-conic($stops...)` tinh gọn cho 7 biến thể gradient xoay.
+  5. **CodeBlock Syntax Tokens:** Gộp 8 tokens từ 2 khối Light/Dark tách biệt sang cấu trúc lồng SCSS trực tiếp (`.tok-keyword { color: #7c3aed; .dark & { color: #c084fc; } ... }`).
+- **Hiệu quả:** Giảm từ 961 dòng xuống còn ~570 dòng (~40% dung lượng code dư thừa), loại bỏ 100% cảnh báo Dart Sass deprecation.
+- **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Vượt qua 100% bộ unit tests (6/6 tests). Đóng gói Production (`npm run build`) hoàn thành thành công 100%.
+
 ### Hướng Dẫn Kỹ Thuật: Quy Trình Đổi Tên Dự Án (Project Name / Branding)
 - **Mục đích:** Cung cấp danh sách chính xác các vị trí cần cập nhật khi đổi tên dự án hoặc clone template sang dApp mới, giúp AI Agent và Developer đổi tên nhanh chóng, không bị sót gây lỗi build/deploy.
 - **1. Cấu hình Kỹ thuật (Build / Package / Deploy):**
