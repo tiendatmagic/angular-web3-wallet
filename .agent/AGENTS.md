@@ -22,12 +22,12 @@
   2. **Thiếu hiệu ứng đổ bóng & Độ tương phản:** Chữ thiếu độ đậm đà khi đặt cạnh các nút Primary rực rỡ.
 - **Giải pháp triệt để:**
   1. **Nâng cấp Design System cho `.btn-cancel` (`src/styles.scss`):**
-     - Nâng cấp viền rõ nét (giữ nguyên màu viền khi hover): `border border-slate-300/90 dark:border-slate-600/80`.
+     - Nâng cấp viền rõ nét chuẩn Card Design System (giữ nguyên màu viền khi hover): `border border-slate-200/50 dark:border-slate-800/50`.
      - Nâng cấp màu nền & hover đậm đà: `bg-slate-200/90 hover:bg-slate-300/90 dark:bg-slate-800 dark:hover:bg-slate-700`.
      - Tăng cường độ sắc nét chữ: `text-slate-800 dark:text-slate-100 hover:text-slate-950 dark:hover:text-white font-bold`.
      - Bổ sung đổ bóng phân tách khối: `shadow-xs`.
   2. **Nâng cấp `.btn-danger-light`:** Bổ sung viền `border border-rose-500/20 hover:border-rose-500/30 dark:border-rose-400/30` và `shadow-xs`.
-  3. **Đồng bộ nút Cancel trong `CustomDateTimeRangeComponent`:** Áp dụng đầy đủ viền `border-slate-300/90 dark:border-slate-600/80`, nền `bg-slate-200/90 dark:bg-slate-800`, chữ `text-slate-800 dark:text-slate-100` và `shadow-xs`.
+  3. **Đồng bộ nút Cancel trong `CustomDateTimeRangeComponent`:** Áp dụng đầy đủ viền `border border-slate-200/50 dark:border-slate-800/50`, nền `bg-slate-200/90 dark:bg-slate-800`, chữ `text-slate-800 dark:text-slate-100` và `shadow-xs`.
 - **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Vượt qua 100% unit tests (6/6 tests passed).
 
 ### Yêu cầu: Chuẩn Hóa 100% Padding, Bo Góc, Icon & Kích Thước Giữa Dropdown Menu, Account Dropdown, Đa Chain & Đa Ngôn Ngữ

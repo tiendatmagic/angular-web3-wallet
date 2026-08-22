@@ -371,7 +371,7 @@ body.dark ::-webkit-scrollbar-thumb {
 }
 
 .btn-cancel {
-  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-all duration-200 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-slate-200/90 hover:bg-slate-300/90 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-300/90 dark:border-slate-600/80 text-slate-800 dark:text-slate-100 hover:text-slate-950 dark:hover:text-white shadow-xs;
+  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-all duration-200 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-slate-200/90 hover:bg-slate-300/90 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200/50 dark:border-slate-800/50 text-slate-800 dark:text-slate-100 hover:text-slate-950 dark:hover:text-white shadow-xs;
 }
 
 .btn-ghost {
@@ -388,7 +388,7 @@ body.dark ::-webkit-scrollbar-thumb {
 
 .btn-reload,
 .btn-outline {
-  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-all duration-200 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-white dark:bg-slate-950 border border-slate-200/80 dark:border-slate-800/80 text-slate-700 dark:text-slate-300 hover:bg-slate-50 hover:text-[var(--color-primary)] hover:border-slate-300 dark:hover:bg-slate-900 dark:hover:text-white dark:hover:border-slate-700 shadow-2xs;
+  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-all duration-200 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-white dark:bg-slate-950 border border-slate-200/50 dark:border-slate-800/50 text-slate-700 dark:text-slate-300 hover:bg-slate-50 hover:text-[var(--color-primary)] dark:hover:bg-slate-900 dark:hover:text-white shadow-2xs;
 }
 
 .btn-close {
