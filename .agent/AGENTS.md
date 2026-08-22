@@ -1,3 +1,20 @@
+### Yêu cầu: Thống Nhất Chung Hệ Thống Close Button (`.btn-close` / `.btn-close-sm`) & Cancel Button Trong Toàn Bộ Ứng Dụng
+- **Nội dung yêu cầu:** Chuẩn hóa và thống nhất toàn diện một hệ thống utility chung cho tất cả các nút đóng dấu X (`.btn-close` / `.btn-close-sm`) và nút Hủy bỏ (`.btn-cancel`), tránh việc mỗi component tự viết style phân mảnh.
+- **Giải pháp triệt để:**
+  1. **Định nghĩa Utility chuẩn trong `src/styles.scss`:**
+     - `.btn-close`: `w-8 h-8 flex items-center justify-center shrink-0 rounded-xl text-slate-400 hover:text-slate-800 dark:hover:text-white hover:bg-slate-200/90 dark:hover:bg-slate-800/90 active:scale-95 transition-all cursor-pointer`.
+     - `.btn-close-sm`: `w-7 h-7 flex items-center justify-center shrink-0 rounded-lg text-slate-400 hover:text-slate-800 dark:hover:text-white hover:bg-slate-200/90 dark:hover:bg-slate-800/90 active:scale-95 transition-all cursor-pointer`.
+  2. **Áp dụng đồng loạt vào 100% component:**
+     - `DrawerComponent` (`drawer.component.html`): Sử dụng class `.btn-close`.
+     - `ModalComponent` (`modal.component.html`): Sử dụng class `.btn-close`.
+     - `ModalWrapperComponent` (`modal-wrapper.component.html`): Sử dụng class `.btn-close`.
+     - `FileUploadComponent` (`file-upload.component.html`): Sử dụng class `.btn-close` cho modal preview.
+     - `VoiceChatComponent` (`voice-chat.component.html`): Sử dụng class `.btn-close !rounded-full`.
+     - `ToastComponent` (`toast.component.html`): Sử dụng class `.btn-close-sm ml-auto`.
+     - `AlertComponent` (`alert.component.html`): Sử dụng `hover:bg-black/10 dark:hover:bg-white/15 active:scale-95`.
+     - `CustomSearchInputComponent` (`custom-search-input.component.html`): Chuẩn hóa hover `hover:bg-slate-200/90 dark:hover:bg-slate-800/90 active:scale-95`.
+- **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Vượt qua 100% bộ unit tests (6/6 tests passed).
+
 ### Yêu cầu: Khắc Phục Lỗi Nút Bấm / Nút Hủy Bỏ (`.btn-cancel` / `variant="cancel"`) Bị Mờ Nhạt, Hòa Tan Vào Nền
 - **Nội dung yêu cầu:** Xem lại các nút bấm (đặc biệt là nút "Hủy bỏ" trong modal, drawer, popup, form) bị nhạt nhòa, khó nhìn trên cả giao diện sáng (Light mode) và tối (Dark mode).
 - **Phân tích nguyên nhân gốc rễ:**
