@@ -6,7 +6,6 @@ import { StateService } from '@core/services/state.service';
 import { TranslationService } from '@core/services/translation.service';
 
 import { IconComponent } from '@shared/components/icon/icon.component';
-import { ButtonComponent } from '@shared/components/button/button.component';
 import { LogoComponent } from '@shared/components/logo/logo.component';
 import { LanguageSelectorComponent } from '@shared/components/language-selector/language-selector.component';
 import { NetworkSelectorComponent } from '@shared/components/network-selector/network-selector.component';
@@ -19,7 +18,6 @@ import { TranslatePipe } from '@shared/pipes/translate.pipe';
   imports: [
     CommonModule,
     IconComponent,
-    ButtonComponent,
     RouterModule,
     FormsModule,
     LogoComponent,

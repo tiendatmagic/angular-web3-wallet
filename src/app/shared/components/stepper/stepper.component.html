@@ -9,7 +9,7 @@
         >
           @if (!isLast) {
             <div
-              class="absolute top-10 left-5 -translate-x-1/2 w-0.5 h-[calc(100%+24px-10px)] z-0 transition-colors duration-300 pointer-events-none"
+              class="absolute top-10 left-5 -translate-x-1/2 w-0.5 h-[calc(100%+24px-10px)] z-0 pointer-events-none"
               [ngClass]="{
                 'bg-purple-600 dark:bg-purple-500': $index < activeIndex,
                 'bg-slate-200 dark:bg-slate-800': $index >= activeIndex
@@ -18,7 +18,7 @@
           }
 
           <div
-            class="relative z-10 w-10 h-10 rounded-full flex items-center justify-center font-extrabold text-sm transition-all duration-300 shrink-0 select-none shadow-sm"
+            class="relative z-10 w-10 h-10 rounded-full flex items-center justify-center font-extrabold text-sm shrink-0 select-none shadow-sm"
             [ngClass]="{
               'bg-purple-600 dark:bg-purple-500 text-white shadow-purple-500/25 scale-105': getStepState($index) === 'completed',
               'bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 text-white ring-4 ring-purple-500/20 shadow-purple-500/30 scale-110': getStepState($index) === 'active',
@@ -39,7 +39,7 @@
 
           <div class="min-w-0 flex-1 pt-1">
             <span
-              class="block text-sm font-extrabold tracking-tight transition-colors duration-200 break-words leading-tight"
+              class="block text-sm font-extrabold tracking-tight break-words leading-tight"
               [ngClass]="{
                 'text-purple-600 dark:text-purple-400': getStepState($index) === 'active',
                 'text-slate-800 dark:text-slate-200': getStepState($index) === 'completed',
@@ -68,7 +68,7 @@
         >
           @if (!isLast) {
             <div
-              class="absolute top-5 left-[calc(50%+20px)] w-[calc(100%-40px)] h-0.5 z-0 transition-colors duration-300 pointer-events-none"
+              class="absolute top-5 left-[calc(50%+20px)] w-[calc(100%-40px)] h-0.5 z-0 pointer-events-none"
               [ngClass]="{
                 'bg-purple-600 dark:bg-purple-500': $index < activeIndex,
                 'bg-slate-200 dark:bg-slate-800': $index >= activeIndex
@@ -77,7 +77,7 @@
           }
 
           <div
-            class="relative z-10 w-10 h-10 rounded-full flex items-center justify-center font-extrabold text-sm transition-all duration-300 shrink-0 select-none shadow-sm"
+            class="relative z-10 w-10 h-10 rounded-full flex items-center justify-center font-extrabold text-sm shrink-0 select-none shadow-sm"
             [ngClass]="{
               'bg-purple-600 dark:bg-purple-500 text-white shadow-purple-500/25 scale-105': getStepState($index) === 'completed',
               'bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 text-white ring-4 ring-purple-500/20 shadow-purple-500/30 scale-110': getStepState($index) === 'active',
@@ -98,7 +98,7 @@
 
           <div class="min-w-0 w-full mt-3">
             <span
-              class="block text-xs sm:text-sm font-extrabold tracking-tight transition-colors duration-200 break-words leading-tight"
+              class="block text-xs sm:text-sm font-extrabold tracking-tight break-words leading-tight"
               [ngClass]="{
                 'text-purple-600 dark:text-purple-400': getStepState($index) === 'active',
                 'text-slate-800 dark:text-slate-200': getStepState($index) === 'completed',
@@ -129,7 +129,7 @@
         >
           @if (!isLast) {
             <div
-              class="absolute top-5 left-[calc(50%+20px)] w-[calc(100%-40px)] h-0.5 z-0 transition-colors duration-300 pointer-events-none"
+              class="absolute top-5 left-[calc(50%+20px)] w-[calc(100%-40px)] h-0.5 z-0 pointer-events-none"
               [ngClass]="{
                 'bg-purple-600 dark:bg-purple-500': $index < activeIndex,
                 'bg-slate-200 dark:bg-slate-800': $index >= activeIndex
@@ -138,7 +138,7 @@
           }
 
           <div
-            class="relative z-10 w-10 h-10 rounded-full flex items-center justify-center font-extrabold text-sm transition-all duration-300 shrink-0 select-none shadow-sm"
+            class="relative z-10 w-10 h-10 rounded-full flex items-center justify-center font-extrabold text-sm shrink-0 select-none shadow-sm"
             [ngClass]="{
               'bg-purple-600 dark:bg-purple-500 text-white shadow-purple-500/25 scale-105': getStepState($index) === 'completed',
               'bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 text-white ring-4 ring-purple-500/20 shadow-purple-500/30 scale-110': getStepState($index) === 'active',
@@ -159,7 +159,7 @@
 
           <div class="min-w-0 w-full mt-3">
             <span
-              class="block text-xs sm:text-sm font-extrabold tracking-tight transition-colors duration-200 break-words leading-tight"
+              class="block text-xs sm:text-sm font-extrabold tracking-tight break-words leading-tight"
               [ngClass]="{
                 'text-purple-600 dark:text-purple-400': getStepState($index) === 'active',
                 'text-slate-800 dark:text-slate-200': getStepState($index) === 'completed',
@@ -190,7 +190,7 @@
         >
           @if (!isLast) {
             <div
-              class="absolute top-10 left-5 -translate-x-1/2 w-0.5 h-[calc(100%+24px-10px)] z-0 transition-colors duration-300 pointer-events-none"
+              class="absolute top-10 left-5 -translate-x-1/2 w-0.5 h-[calc(100%+24px-10px)] z-0 pointer-events-none"
               [ngClass]="{
                 'bg-purple-600 dark:bg-purple-500': $index < activeIndex,
                 'bg-slate-200 dark:bg-slate-800': $index >= activeIndex
@@ -199,7 +199,7 @@
           }
 
           <div
-            class="relative z-10 w-10 h-10 rounded-full flex items-center justify-center font-extrabold text-sm transition-all duration-300 shrink-0 select-none shadow-sm"
+            class="relative z-10 w-10 h-10 rounded-full flex items-center justify-center font-extrabold text-sm shrink-0 select-none shadow-sm"
             [ngClass]="{
               'bg-purple-600 dark:bg-purple-500 text-white shadow-purple-500/25 scale-105': getStepState($index) === 'completed',
               'bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 text-white ring-4 ring-purple-500/20 shadow-purple-500/30 scale-110': getStepState($index) === 'active',
@@ -220,7 +220,7 @@
 
           <div class="min-w-0 flex-1 pt-1">
             <span
-              class="block text-sm font-extrabold tracking-tight transition-colors duration-200 break-words leading-tight"
+              class="block text-sm font-extrabold tracking-tight break-words leading-tight"
               [ngClass]="{
                 'text-purple-600 dark:text-purple-400': getStepState($index) === 'active',
                 'text-slate-800 dark:text-slate-200': getStepState($index) === 'completed',

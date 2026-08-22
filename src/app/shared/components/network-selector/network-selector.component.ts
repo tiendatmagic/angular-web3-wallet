@@ -3,13 +3,12 @@ import { CommonModule } from '@angular/common';
 import { StateService } from '@core/services/state.service';
 import { DropdownService } from '@core/services/dropdown.service';
 import { IconComponent } from '@shared/components/icon/icon.component';
-import { ButtonComponent } from '@shared/components/button/button.component';
 import { TranslatePipe } from '@shared/pipes/translate.pipe';
 
 @Component({
   selector: 'app-network-selector',
   standalone: true,
-  imports: [CommonModule, IconComponent, ButtonComponent, TranslatePipe],
+  imports: [CommonModule, IconComponent, TranslatePipe],
   templateUrl: './network-selector.component.html',
   host: {
     'class': 'block',

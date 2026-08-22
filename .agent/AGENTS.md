@@ -1,3 +1,29 @@
+### Yêu cầu: Đồng Bộ Hóa Layout UI, Viền Border & Box-Shadow Giữa Nút Đa Ngôn Ngữ (`LanguageSelector`) & Đa Chain (`NetworkSelector`)
+- **Nội dung yêu cầu:** Phân tích và khắc phục hiện tượng nút Đa ngôn ngữ (`LanguageSelector`) và nút Đa chain (`NetworkSelector`) ở Header bị lệch layout UI, khác biệt về viền, màu nền và hiệu ứng đổ bóng (box-shadow).
+- **Phân tích nguyên nhân gốc rễ:**
+  1. **Khác biệt về Class CSS & Design Surface:**
+     - Nút Đa ngôn ngữ (`LanguageSelector` compact) sử dụng: `bg-slate-100/80 dark:bg-slate-900/80`, có viền `border border-slate-200/50 dark:border-slate-800/50`, có hiệu ứng đổ bóng `shadow-xs`, và bo góc `rounded-xl`.
+     - Nút Đa chain (`NetworkSelector`) sử dụng `app-button variant="cancel"`: Áp dụng class `.btn-cancel` (`bg-slate-100 dark:bg-slate-800/80`) nên **hoàn toàn không có border viền**, **không có box-shadow**, và tông màu nền tối bị lệch (`dark:bg-slate-800/80` so với `dark:bg-slate-900/80`).
+     - Tương tự, nút Hamburger mobile trên Header cũng dùng `app-button variant="cancel"`.
+- **Giải pháp triệt để:**
+  1. Chuẩn hóa nút trigger của `NetworkSelectorComponent` và nút Hamburger mobile trong `HeaderComponent` sang cùng bộ Design System Surface với `LanguageSelectorComponent`:
+     - Viền: `border border-slate-200/50 dark:border-slate-800/50`
+     - Nền: `bg-slate-100/80 dark:bg-slate-900/80 hover:bg-slate-200/80 dark:hover:bg-slate-800/80`
+     - Đổ bóng: `shadow-xs`
+     - Kích thước & bo góc: `min-w-9 w-9 h-9 sm:min-w-10 sm:w-10 sm:h-10 rounded-xl`
+     - Hiệu ứng active: `active:scale-95`
+  2. Dọn dẹp các unused imports `ButtonComponent` trong `HeaderComponent` và `NetworkSelectorComponent`.
+- **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Vượt qua 100% bộ unit tests (6/6 tests passed, không có cảnh báo nào).
+
+### Yêu cầu: Loại Bỏ Toàn Bộ Transition & Duration Trong Component Stepper (`StepperComponent`)
+- **Nội dung yêu cầu:** Xem lại component Stepper (Quy trình nhiều bước) và loại bỏ hoàn toàn các thuộc tính / class transition và duration để chuyển đổi trạng thái dứt khoát, không bị trễ hay lag chuyển động.
+- **Phân tích nguyên nhân & Vị trí:**
+  1. Trong template `stepper.component.html`, các phần tử thanh tiến trình (progress line bar), vòng tròn chỉ số bước (step circle/indicator), và nhãn tiêu đề (step label) đang mang các class Tailwind: `transition-colors duration-300`, `transition-all duration-300`, `transition-colors duration-200` ở tất cả 4 chế độ hiển thị (`auto` mobile, `auto` desktop, `horizontal`, `vertical`).
+- **Giải pháp:**
+  1. Loại bỏ triệt để toàn bộ các class `transition-*` và `duration-*` trong `stepper.component.html`.
+  2. Giữ nguyên toàn bộ logic tương tác, cấu trúc layout responsive, màu sắc theo state (`active`, `completed`, `pending`, `error`), và icon.
+- **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Vượt qua 100% bộ unit tests (6/6 tests passed). Đóng gói Production (`npm run build`) hoàn thành thành công 100%.
+
 ### Yêu cầu: Khắc Phục Triệt Để Lỗi Submenu Bị Tách Rời Khi Cuộn Trang (Scroll Sync & Real-time Live Bounding Rect)
 - **Nội dung yêu cầu:** Sửa lỗi Dropdown Submenu bị tách rời xa hàng trăm pixel khỏi Menu chính (Menu chính nằm ở trên đỉnh trong khi Submenu nằm ở tít dưới đáy màn hình) khi người dùng cuộn trang web.
 - **Phân tích nguyên nhân gốc rễ:**
