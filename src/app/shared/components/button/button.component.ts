@@ -1,9 +1,10 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { IconComponent } from '../icon/icon.component';
 
 @Component({
   selector: 'button[app-button], a[app-button]',
-  imports: [CommonModule],
+  imports: [CommonModule, IconComponent],
   templateUrl: './button.component.html',
   host: {
     '[class]': 'hostClasses',
@@ -20,7 +21,9 @@ export class ButtonComponent {
     | 'danger-light'
     | 'cancel'
     | 'ghost'
-    | 'info' = 'primary';
+    | 'info'
+    | 'reload'
+    | 'outline' = 'primary';
   @Input() size: 'sm' | 'md' | 'lg' = 'md';
   @Input() loading = false;
   @Input() disabled = false;

@@ -673,8 +673,14 @@
       <path d="M 10 50 A 40 40 0 0 1 90 50" [attr.class]="valueClass" [attr.stroke-width]="strokeWidth" fill="transparent" stroke-linecap="round" [attr.stroke-dasharray]="dashArray" [attr.stroke-dashoffset]="dashOffset" />
     }
 
-    @case ('filter') {
-      <path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z" />
+    @case ('spinner') {
+      <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none" opacity="0.25" />
+      <path fill="currentColor" stroke="none" opacity="0.75" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+    }
+
+    @case ('loader') {
+      <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none" opacity="0.25" />
+      <path fill="currentColor" stroke="none" opacity="0.75" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
     }
 
     @default {

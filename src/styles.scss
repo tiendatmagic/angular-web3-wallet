@@ -1,4 +1,3 @@
-@use 'sass:map';
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700;800;900&display=swap');
 @import 'tailwindcss' source('.');
 
@@ -47,42 +46,37 @@
 
 @layer base {
   html {
-    background-color: #f8fafc;
+    @apply bg-slate-50;
   }
 
   html.dark {
-    background-color: #030712;
+    @apply bg-slate-950;
     --dynamic-secondary: #c084fc;
   }
 
   body {
     font-family: var(--font-sans);
-    background-color: #f8fafc;
-    color: #0f172a;
-    min-height: 100vh;
-    margin: 0;
+    @apply bg-slate-50 text-slate-900 min-h-screen m-0;
   }
 
   html.dark body,
   body.dark {
-    background-color: #030712;
-    color: #f8fafc;
+    @apply bg-slate-950 text-slate-50;
   }
 
   button,
   [role='button'] {
-    cursor: pointer;
-    background-color: transparent;
+    @apply cursor-pointer bg-transparent;
   }
 
   button:disabled,
   [role='button'][aria-disabled='true'] {
-    cursor: not-allowed;
+    @apply cursor-not-allowed;
   }
 }
 
 .transition-all-300 {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  @apply transition-all duration-300 ease-out;
 }
 
 html.theme-transition-disabled,
@@ -221,22 +215,20 @@ html.theme-transition-disabled *:not(.theme-switcher-pill):not(.tab-group-pill):
 
 /* Global & Custom Scrollbars */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  @apply w-1.5 h-1.5;
 }
 ::-webkit-scrollbar-track {
-  background: transparent;
+  @apply bg-transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 3px;
+  @apply bg-slate-300 rounded-xs;
 }
 .dark ::-webkit-scrollbar-thumb,
 body.dark ::-webkit-scrollbar-thumb {
-  background: #334155;
+  @apply bg-slate-700;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  @apply bg-slate-400;
 }
 
 @utility custom-scrollbar {
@@ -244,18 +236,16 @@ body.dark ::-webkit-scrollbar-thumb {
   scrollbar-color: rgba(156, 163, 175, 0.35) transparent;
 
   &::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    @apply w-1.5 h-1.5;
   }
   &::-webkit-scrollbar-track {
-    background: transparent;
+    @apply bg-transparent;
   }
   &::-webkit-scrollbar-thumb {
-    background: rgba(156, 163, 175, 0.4);
-    border-radius: 9999px;
+    @apply bg-slate-400/40 rounded-full;
   }
   &::-webkit-scrollbar-thumb:hover {
-    background: rgba(156, 163, 175, 0.6);
+    @apply bg-slate-400/60;
   }
 }
 
@@ -264,7 +254,7 @@ body.dark ::-webkit-scrollbar-thumb {
   scrollbar-width: none;
 
   &::-webkit-scrollbar {
-    display: none;
+    @apply hidden;
   }
 }
 
@@ -358,106 +348,62 @@ body.dark ::-webkit-scrollbar-thumb {
 }
 
 /* ==========================================================================
-   Button Utilities (DRY Optimized with Mixin)
+   Button Utilities & System (Đồng bộ chuẩn 100% ads6868)
    ========================================================================== */
-@mixin btn-base {
-  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-all duration-150 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5;
+.btn {
+  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl whitespace-nowrap transition-all duration-200 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5;
 }
 
-@utility btn {
-  @include btn-base;
+.btn-primary {
+  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-all duration-200 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-gradient-to-r from-primary to-secondary hover:opacity-90 text-white shadow-md shadow-primary/15 hover:shadow-primary/25;
 }
 
-@utility btn-primary {
-  @include btn-base;
-  @apply bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] hover:opacity-90 text-white shadow-md shadow-[var(--color-primary)]/15 hover:shadow-[var(--color-primary)]/25;
+.btn-secondary {
+  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-all duration-200 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-primary/[0.08] border border-primary/[0.20] text-primary hover:bg-primary/[0.15] hover:border-primary/[0.30] dark:bg-secondary/[0.12] dark:border-secondary/[0.30] dark:text-secondary dark:hover:bg-secondary/[0.20] dark:hover:border-secondary/[0.45];
 }
 
-@utility btn-secondary {
-  @include btn-base;
-  @apply shadow-xs;
-  background-color: color-mix(in srgb, var(--color-primary) 8%, transparent);
-  border: 1px solid color-mix(in srgb, var(--color-primary) 25%, transparent);
-  color: var(--color-primary);
-
-  &:hover {
-    background-color: color-mix(in srgb, var(--color-primary) 15%, transparent);
-    border: 1px solid color-mix(in srgb, var(--color-primary) 40%, transparent);
-  }
-
-  .dark &,
-  body.dark & {
-    background-color: color-mix(in srgb, var(--color-secondary) 12%, transparent);
-    border: 1px solid color-mix(in srgb, var(--color-secondary) 35%, transparent);
-    color: var(--color-secondary);
-
-    &:hover {
-      background-color: color-mix(in srgb, var(--color-secondary) 20%, transparent);
-      border: 1px solid color-mix(in srgb, var(--color-secondary) 55%, transparent);
-    }
-  }
+.btn-danger {
+  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-all duration-200 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-rose-500 hover:bg-rose-600 text-white shadow-md shadow-rose-500/15 hover:shadow-rose-500/25;
 }
 
-@utility btn-danger {
-  @include btn-base;
-  @apply bg-rose-500 hover:bg-rose-600 text-white shadow-md shadow-rose-500/15 hover:shadow-rose-500/25;
+.btn-danger-light {
+  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-all duration-200 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-rose-500/[0.08] text-rose-500 hover:bg-rose-500/[0.15] dark:bg-rose-400/[0.15] dark:text-rose-400 dark:hover:bg-rose-400/[0.25];
 }
 
-@utility btn-danger-light {
-  @include btn-base;
-  @apply shadow-xs;
-  background-color: rgba(244, 63, 94, 0.08);
-  border: 1px solid rgba(244, 63, 94, 0.25);
-  color: rgb(225, 29, 72);
-
-  &:hover {
-    background-color: rgba(244, 63, 94, 0.15);
-    border: 1px solid rgba(244, 63, 94, 0.4);
-  }
-
-  .dark &,
-  body.dark & {
-    background-color: rgba(251, 113, 133, 0.12);
-    border: 1px solid rgba(251, 113, 133, 0.35);
-    color: rgb(251, 113, 133);
-
-    &:hover {
-      background-color: rgba(251, 113, 133, 0.22);
-      border: 1px solid rgba(251, 113, 133, 0.55);
-    }
-  }
+.btn-cancel {
+  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-all duration-200 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800/80 dark:hover:bg-slate-700/80 text-slate-700 dark:text-slate-300;
 }
 
-@utility btn-ghost {
-  @include btn-base;
-  @apply bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white border border-transparent;
+.btn-ghost {
+  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-all duration-200 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800/80 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white border border-transparent;
 }
 
-@utility btn-cancel {
-  @include btn-base;
-  @apply bg-slate-100 hover:bg-slate-200/90 dark:bg-slate-800/80 dark:hover:bg-slate-700/90 text-slate-700 dark:text-slate-200 border border-slate-200/60 dark:border-slate-800/60 shadow-xs;
+.btn-success {
+  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-all duration-200 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white shadow-md shadow-emerald-500/15 hover:shadow-emerald-500/25;
 }
 
-@utility btn-success {
-  @include btn-base;
-  @apply bg-emerald-500 hover:bg-emerald-600 text-white shadow-md shadow-emerald-500/15 hover:shadow-emerald-500/25;
+.btn-info {
+  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-all duration-200 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-600/15 hover:shadow-blue-600/25;
 }
 
-@utility btn-info {
-  @include btn-base;
-  @apply bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-600/15 hover:shadow-blue-600/25;
+.btn-reload,
+.btn-outline {
+  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-all duration-200 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-white dark:bg-slate-950 border border-slate-200/80 dark:border-slate-800/80 text-slate-700 dark:text-slate-300 hover:bg-slate-50 hover:text-[var(--color-primary)] hover:border-slate-300 dark:hover:bg-slate-900 dark:hover:text-white dark:hover:border-slate-700 shadow-2xs;
 }
 
-@utility btn-sm {
+.btn-sm {
   @apply px-3 py-1.5 text-xs rounded-lg gap-1;
 }
-@utility btn-md {
+
+.btn-md {
   @apply px-4 py-2.5 text-sm rounded-xl gap-1.5;
 }
-@utility btn-lg {
+
+.btn-lg {
   @apply px-6 py-3.5 text-base rounded-[12px] gap-2 font-extrabold;
 }
-@utility btn-full {
+
+.btn-full {
   @apply w-full justify-center;
 }
 
@@ -465,20 +411,21 @@ body.dark ::-webkit-scrollbar-thumb {
    Form Controls (DRY Optimized with Mixin)
    ========================================================================== */
 @mixin form-control-base {
-  @apply w-full text-sm font-semibold rounded-xl bg-slate-100 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 text-slate-800 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]/20;
+  @apply w-full text-sm font-semibold rounded-xl bg-slate-100 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 text-slate-800 dark:text-white placeholder-slate-400 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20;
 }
 
 @utility form-input {
-  padding-left: 1rem !important;
-  padding-right: 1rem !important;
   @include form-control-base;
-  @apply h-[42px];
+  @apply h-[42px] px-4;
+}
+
+@utility form-input-password {
+  @apply pr-11;
 }
 
 @utility form-textarea {
-  padding: 0.75rem 1rem !important;
   @include form-control-base;
-  @apply transition-all duration-200 resize-none;
+  @apply py-3 px-4 transition-all duration-200 resize-none;
 }
 
 @utility form-field {
@@ -490,10 +437,8 @@ body.dark ::-webkit-scrollbar-thumb {
 }
 
 @utility search-input {
-  padding-left: 2.25rem !important;
-  padding-right: 1rem !important;
   @include form-control-base;
-  @apply h-[42px] transition-all duration-200;
+  @apply h-[42px] pl-9 pr-4 transition-all duration-200;
 }
 
 /* Tabs & Cards */
@@ -503,7 +448,7 @@ body.dark ::-webkit-scrollbar-thumb {
   scrollbar-width: none;
 
   &::-webkit-scrollbar {
-    display: none;
+    @apply hidden;
   }
 }
 
@@ -520,7 +465,7 @@ body.dark ::-webkit-scrollbar-thumb {
 }
 
 @utility app-card-interactive {
-  @apply bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-lg shadow-slate-200/50 dark:shadow-slate-900/30 rounded-[15px] p-4 sm:p-6 transition-all duration-300 hover:shadow-lg hover:shadow-[var(--color-primary)]/10 hover:border-[var(--color-primary)]/30 hover:scale-[1.01] cursor-pointer;
+  @apply bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-lg shadow-slate-200/50 dark:shadow-slate-900/30 rounded-[15px] p-4 sm:p-6 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 hover:border-primary/30 hover:scale-[1.01] cursor-pointer;
 }
 
 /* Glass Surfaces */
@@ -543,12 +488,7 @@ body.dark ::-webkit-scrollbar-thumb {
 
 /* Ripple */
 @utility app-ripple-element {
-  position: absolute;
-  border-radius: 50%;
-  pointer-events: none;
-  background-color: currentColor;
-  opacity: 0.3;
-  transform: scale(0);
+  @apply absolute rounded-full pointer-events-none bg-current opacity-30 scale-0;
   animation:
     app-ripple-scale 500ms cubic-bezier(0.1, 0.8, 0.3, 1) forwards,
     app-ripple-fade 500ms linear forwards;
@@ -558,9 +498,7 @@ body.dark ::-webkit-scrollbar-thumb {
    Aura Glow & Gradient System (DRY Optimized)
    ========================================================================== */
 @utility aura-wrapper {
-  position: relative;
-  width: 100%;
-  height: 100%;
+  @apply relative w-full h-full;
   border-radius: var(--aura-radius, 15px);
 
   &.is-paused .aura-glow,
@@ -573,35 +511,35 @@ body.dark ::-webkit-scrollbar-thumb {
   background: conic-gradient(from var(--aura-angle), #{$stops});
 }
 
-@utility gradient-primary {
+.gradient-primary {
   @include aura-conic(var(--color-primary), transparent 50%, var(--color-primary));
 }
 
-@utility gradient-secondary {
+.gradient-secondary {
   @include aura-conic(var(--color-secondary), transparent 50%, var(--color-secondary));
 }
 
-@utility gradient-dual {
+.gradient-dual {
   @include aura-conic(var(--color-primary), var(--color-secondary), var(--color-primary));
 }
 
-@utility gradient-rainbow {
+.gradient-rainbow {
   @include aura-conic(#ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3, #ff0000);
 }
 
-@utility gradient-holo {
+.gradient-holo {
   @include aura-conic(#a5f3fc, #fbcfe8, #c084fc, #818cf8, #a5f3fc);
 }
 
-@utility gradient-gold {
+.gradient-gold {
   @include aura-conic(#facc15, #ca8a04, #fef08a, #ca8a04, #facc15);
 }
 
-@utility gradient-silver {
+.gradient-silver {
   @include aura-conic(#e2e8f0, #94a3b8, #f1f5f9, #94a3b8, #e2e8f0);
 }
 
-@utility gradient-glow {
+.gradient-glow {
   background: conic-gradient(
     from 0deg,
     var(--color-primary),
@@ -612,148 +550,77 @@ body.dark ::-webkit-scrollbar-thumb {
 }
 
 @utility aura-glow {
-  position: absolute;
+  @apply absolute -z-20 pointer-events-none transition-[filter,opacity] duration-300;
   inset: var(--glow-inset, -8px);
-  z-index: -2;
   border-radius: inherit;
   filter: blur(var(--glow-blur, 15px));
   opacity: var(--glow-opacity, 0.65);
-  pointer-events: none;
   animation: aura-spin var(--aura-speed, 4s) linear infinite;
-  transition: filter 0.3s, opacity 0.3s;
 }
 
 @utility aura-border {
-  position: absolute;
+  @apply absolute -z-10 pointer-events-none;
   inset: var(--border-inset, -1.5px);
-  z-index: -1;
   border-radius: calc(var(--aura-radius, 15px) + var(--border-offset, 1.5px));
-  pointer-events: none;
   animation: aura-spin var(--aura-speed, 4s) linear infinite;
 }
 
 @utility aura-content {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  height: 100%;
+  @apply relative z-10 w-full h-full overflow-hidden;
   border-radius: inherit;
-  overflow: hidden;
 }
 
 /* ==========================================================================
-   Code Block Syntax Tokens (DRY Nested)
+   Code Block Syntax Tokens (DRY Nested & Tailwind v4 @apply)
    ========================================================================== */
-.tok-keyword   { color: #7c3aed; .dark & { color: #c084fc; } font-weight: 600; }
-.tok-string    { color: #15803d; .dark & { color: #4ade80; } }
-.tok-comment   { color: #64748b; font-style: italic; }
-.tok-number    { color: #c2410c; .dark & { color: #fb923c; } }
-.tok-function  { color: #0284c7; .dark & { color: #38bdf8; } }
-.tok-decorator { color: #db2777; .dark & { color: #f472b6; } font-weight: 500; }
-.tok-tag       { color: #e11d48; .dark & { color: #f43f5e; } font-weight: 600; }
-.tok-attr      { color: #0891b2; .dark & { color: #22d3ee; } }
+.tok-keyword   { @apply text-violet-600 dark:text-violet-400 font-semibold; }
+.tok-string    { @apply text-green-700 dark:text-green-400; }
+.tok-comment   { @apply text-slate-500 italic; }
+.tok-number    { @apply text-orange-700 dark:text-orange-400; }
+.tok-function  { @apply text-sky-600 dark:text-sky-400; }
+.tok-decorator { @apply text-pink-600 dark:text-pink-400 font-medium; }
+.tok-tag       { @apply text-rose-600 dark:text-rose-500 font-semibold; }
+.tok-attr      { @apply text-cyan-600 dark:text-cyan-400; }
 
 /* ==========================================================================
-   Alert System (DRY Map & Loop Generation)
+   Alert System (Tailwind CSS v4 @apply)
    ========================================================================== */
-$alert-themes: (
-  'info': (
-    'soft-bg': #e0f2fe,
-    'soft-color': #082f49,
-    'soft-border': rgba(125, 211, 252, 0.7),
-    'accent-border': #0284c7,
-    'bordered-bg': rgba(224, 242, 254, 0.85),
-    'bordered-border': rgba(56, 189, 248, 0.6),
-    'dark-soft-bg': rgba(8, 47, 73, 0.85),
-    'dark-soft-color': #bae6fd,
-    'dark-soft-border': rgba(7, 89, 133, 0.7),
-    'dark-accent-border': #38bdf8,
-    'dark-bordered-bg': rgba(8, 47, 73, 0.5),
-    'dark-bordered-border': rgba(2, 132, 199, 0.6)
-  ),
-  'success': (
-    'soft-bg': #d1fae5,
-    'soft-color': #064e3b,
-    'soft-border': rgba(110, 231, 183, 0.7),
-    'accent-border': #059669,
-    'bordered-bg': rgba(209, 250, 229, 0.85),
-    'bordered-border': rgba(52, 211, 153, 0.6),
-    'dark-soft-bg': rgba(6, 78, 59, 0.85),
-    'dark-soft-color': #a7f3d0,
-    'dark-soft-border': rgba(6, 95, 70, 0.7),
-    'dark-accent-border': #34d399,
-    'dark-bordered-bg': rgba(6, 78, 59, 0.5),
-    'dark-bordered-border': rgba(5, 150, 105, 0.6)
-  ),
-  'warning': (
-    'soft-bg': #fef3c7,
-    'soft-color': #78350f,
-    'soft-border': rgba(252, 211, 77, 0.7),
-    'accent-border': #d97706,
-    'bordered-bg': rgba(254, 243, 199, 0.85),
-    'bordered-border': rgba(251, 191, 36, 0.6),
-    'dark-soft-bg': rgba(120, 53, 15, 0.85),
-    'dark-soft-color': #fde68a,
-    'dark-soft-border': rgba(146, 64, 14, 0.7),
-    'dark-accent-border': #fbbf24,
-    'dark-bordered-bg': rgba(120, 53, 15, 0.5),
-    'dark-bordered-border': rgba(217, 119, 6, 0.6)
-  ),
-  'error': (
-    'soft-bg': #fee2e2,
-    'soft-color': #7f1d1d,
-    'soft-border': rgba(252, 165, 165, 0.7),
-    'accent-border': #dc2626,
-    'bordered-bg': rgba(254, 226, 226, 0.85),
-    'bordered-border': rgba(248, 113, 113, 0.6),
-    'dark-soft-bg': rgba(127, 29, 29, 0.85),
-    'dark-soft-color': #fca5a5,
-    'dark-soft-border': rgba(153, 27, 27, 0.7),
-    'dark-accent-border': #f87171,
-    'dark-bordered-bg': rgba(127, 29, 29, 0.5),
-    'dark-bordered-border': rgba(220, 38, 38, 0.6)
-  )
-);
+.alert-info-soft {
+  @apply bg-sky-100 text-sky-950 border border-sky-300/70 dark:bg-sky-950/85 dark:text-sky-200 dark:border-sky-800/70;
+}
+.alert-info-accent {
+  @apply bg-sky-100 text-sky-950 border border-sky-300/70 border-l-4 border-l-sky-600 dark:bg-sky-950/85 dark:text-sky-200 dark:border-sky-800/70 dark:border-l-sky-400;
+}
+.alert-info-bordered {
+  @apply bg-sky-100/85 text-sky-950 border border-sky-400/60 dark:bg-sky-950/50 dark:text-sky-200 dark:border-sky-600/60;
+}
 
-@each $type, $c in $alert-themes {
-  @utility alert-#{$type}-soft {
-    background-color: map.get($c, 'soft-bg') !important;
-    color: map.get($c, 'soft-color') !important;
-    border: 1px solid map.get($c, 'soft-border') !important;
+.alert-success-soft {
+  @apply bg-emerald-100 text-emerald-950 border border-emerald-300/70 dark:bg-emerald-950/85 dark:text-emerald-200 dark:border-emerald-800/70;
+}
+.alert-success-accent {
+  @apply bg-emerald-100 text-emerald-950 border border-emerald-300/70 border-l-4 border-l-emerald-600 dark:bg-emerald-950/85 dark:text-emerald-200 dark:border-emerald-800/70 dark:border-l-emerald-400;
+}
+.alert-success-bordered {
+  @apply bg-emerald-100/85 text-emerald-950 border border-emerald-400/60 dark:bg-emerald-950/50 dark:text-emerald-200 dark:border-emerald-600/60;
+}
 
-    .dark &,
-    html.dark & {
-      background-color: map.get($c, 'dark-soft-bg') !important;
-      color: map.get($c, 'dark-soft-color') !important;
-      border-color: map.get($c, 'dark-soft-border') !important;
-    }
-  }
+.alert-warning-soft {
+  @apply bg-amber-100 text-amber-950 border border-amber-300/70 dark:bg-amber-950/85 dark:text-amber-200 dark:border-amber-800/70;
+}
+.alert-warning-accent {
+  @apply bg-amber-100 text-amber-950 border border-amber-300/70 border-l-4 border-l-amber-600 dark:bg-amber-950/85 dark:text-amber-200 dark:border-amber-800/70 dark:border-l-amber-400;
+}
+.alert-warning-bordered {
+  @apply bg-amber-100/85 text-amber-950 border border-amber-400/60 dark:bg-amber-950/50 dark:text-amber-200 dark:border-amber-600/60;
+}
 
-  @utility alert-#{$type}-accent {
-    background-color: map.get($c, 'soft-bg') !important;
-    color: map.get($c, 'soft-color') !important;
-    border: 1px solid map.get($c, 'soft-border') !important;
-    border-left: 4px solid map.get($c, 'accent-border') !important;
-
-    .dark &,
-    html.dark & {
-      background-color: map.get($c, 'dark-soft-bg') !important;
-      color: map.get($c, 'dark-soft-color') !important;
-      border-color: map.get($c, 'dark-soft-border') !important;
-      border-left: 4px solid map.get($c, 'dark-accent-border') !important;
-    }
-  }
-
-  @utility alert-#{$type}-bordered {
-    background-color: map.get($c, 'bordered-bg') !important;
-    color: map.get($c, 'soft-color') !important;
-    border: 1px solid map.get($c, 'bordered-border') !important;
-
-    .dark &,
-    html.dark & {
-      background-color: map.get($c, 'dark-bordered-bg') !important;
-      color: map.get($c, 'dark-soft-color') !important;
-      border-color: map.get($c, 'dark-bordered-border') !important;
-    }
-  }
+.alert-error-soft {
+  @apply bg-rose-100 text-rose-950 border border-rose-300/70 dark:bg-rose-950/85 dark:text-rose-200 dark:border-rose-800/70;
+}
+.alert-error-accent {
+  @apply bg-rose-100 text-rose-950 border border-rose-300/70 border-l-4 border-l-rose-600 dark:bg-rose-950/85 dark:text-rose-200 dark:border-rose-800/70 dark:border-l-rose-400;
+}
+.alert-error-bordered {
+  @apply bg-rose-100/85 text-rose-950 border border-rose-400/60 dark:bg-rose-950/50 dark:text-rose-200 dark:border-rose-600/60;
 }
