@@ -16,20 +16,19 @@
 - **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Vượt qua 100% bộ unit tests (6/6 tests passed).
 
 ### Yêu cầu: Khắc Phục Lỗi Nút Bấm / Nút Hủy Bỏ (`.btn-cancel` / `variant="cancel"`) Bị Mờ Nhạt, Hòa Tan Vào Nền
-- **Nội dung yêu cầu:** Xem lại các nút bấm (đặc biệt là nút "Hủy bỏ" trong modal, drawer, popup, form) bị nhạt nhòa, khó nhìn trên cả giao diện sáng (Light mode) và tối (Dark mode).
+- **Nội dung yêu cầu:** Xem lại các nút bấm (đặc biệt là nút "Hủy bỏ" trong modal, drawer, popup, form) bị nhạt nhòa, khó nhìn trên cả giao diện sáng (Light mode) và tối (Dark mode), cần tăng độ tương phản và màu nền đậm đà rõ nét hơn.
 - **Phân tích nguyên nhân gốc rễ:**
-  1. **Thiếu viền phân định (`border`):** Class `.btn-cancel` ban đầu chỉ có `bg-slate-100 dark:bg-slate-800/80` mà hoàn toàn **không có border**. Khi đặt trên nền trắng (`bg-white`), nền sáng của modal/drawer footer (`bg-slate-100/50`), màu nền nút gần như trùng hoàn toàn với màu nền cha, khiến ranh giới khối nút bấm bị biến mất, chỉ còn trơ trọi dòng chữ "Hủy bỏ".
-  2. **Thiếu hiệu ứng đổ bóng (`shadow`):** Không có đổ bóng khiến nút phẳng lì, không có chiều sâu phân tách lớp bề mặt.
-  3. **Độ tương phản chữ (`text contrast`):** Chữ trong Dark Mode (`dark:text-slate-300`) và Light Mode thiếu độ tương phản sắc sảo khi đặt trên nền không viền.
+  1. **Thiếu viền phân định & Nền quá sáng:** Class `.btn-cancel` ban đầu dùng `bg-slate-100` không có viền hoặc viền quá mỏng (`border-slate-200`). Khi đặt trên nền trắng (`bg-white`) hoặc nền modal/drawer footer (`bg-slate-100/50`), màu nền nút gần như trùng với nền cha.
+  2. **Thiếu hiệu ứng đổ bóng & Độ tương phản:** Chữ thiếu độ đậm đà khi đặt cạnh các nút Primary rực rỡ.
 - **Giải pháp triệt để:**
   1. **Nâng cấp Design System cho `.btn-cancel` (`src/styles.scss`):**
-     - Bổ sung viền rõ nét: `border border-slate-200/90 hover:border-slate-300 dark:border-slate-700/80 dark:hover:border-slate-600`.
-     - Nâng cấp màu nền & hover: `bg-slate-100/90 hover:bg-slate-200/90 dark:bg-slate-800/90 dark:hover:bg-slate-700`.
-     - Tăng cường độ sắc nét chữ: `text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white`.
+     - Nâng cấp viền rõ nét (giữ nguyên màu viền khi hover): `border border-slate-300/90 dark:border-slate-600/80`.
+     - Nâng cấp màu nền & hover đậm đà: `bg-slate-200/90 hover:bg-slate-300/90 dark:bg-slate-800 dark:hover:bg-slate-700`.
+     - Tăng cường độ sắc nét chữ: `text-slate-800 dark:text-slate-100 hover:text-slate-950 dark:hover:text-white font-bold`.
      - Bổ sung đổ bóng phân tách khối: `shadow-xs`.
   2. **Nâng cấp `.btn-danger-light`:** Bổ sung viền `border border-rose-500/20 hover:border-rose-500/30 dark:border-rose-400/30` và `shadow-xs`.
-  3. **Đồng bộ nút Cancel trong `CustomDateTimeRangeComponent`:** Áp dụng đầy đủ viền `border-slate-200/90 dark:border-slate-700/80`, nền `bg-slate-100/90 dark:bg-slate-800/90` và `shadow-xs`.
-- **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Vượt qua 100% unit tests (6/6 tests passed). Đóng gói Production (`npm run build`) hoàn thành thành công 100%.
+  3. **Đồng bộ nút Cancel trong `CustomDateTimeRangeComponent`:** Áp dụng đầy đủ viền `border-slate-300/90 dark:border-slate-600/80`, nền `bg-slate-200/90 dark:bg-slate-800`, chữ `text-slate-800 dark:text-slate-100` và `shadow-xs`.
+- **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Vượt qua 100% unit tests (6/6 tests passed).
 
 ### Yêu cầu: Chuẩn Hóa 100% Padding, Bo Góc, Icon & Kích Thước Giữa Dropdown Menu, Account Dropdown, Đa Chain & Đa Ngôn Ngữ
 - **Nội dung yêu cầu:** Rà soát và đồng bộ toàn bộ layout UI, padding container, padding item, bo góc (`rounded`), khoảng cách icon (`gap`) và kích thước font chữ giữa 4 thành phần dropdown: `DropdownMenuComponent`, `AccountDropdownComponent`, `NetworkSelectorComponent` (Đa chain) và `LanguageSelectorComponent` (Đa ngôn ngữ).

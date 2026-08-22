@@ -365,8 +365,9 @@
       >
         <span>Format: {{ file.type }}</span>
         <button
-          type="button"
-          class="px-3 py-1.5 rounded-lg bg-[var(--color-primary)] text-white font-medium hover:opacity-90 transition-opacity flex items-center gap-1.5"
+          app-button
+          variant="cancel"
+          size="sm"
           (click)="closePreview()"
         >
           {{ 'file_upload_ui.close_modal' | translate }}

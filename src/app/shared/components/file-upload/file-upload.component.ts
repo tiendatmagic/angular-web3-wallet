@@ -15,6 +15,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { IconComponent } from '@shared/components/icon/icon.component';
 import { TooltipDirective } from '@shared/components/tooltip/tooltip.directive';
 import { TranslatePipe } from '@shared/pipes/translate.pipe';
+import { ButtonComponent } from '@shared/components/button/button.component';
 import { TranslationService } from '@core/services/translation.service';
 
 export interface UploadFileItem {
@@ -32,7 +33,7 @@ export interface UploadFileItem {
 @Component({
   selector: 'app-file-upload',
   standalone: true,
-  imports: [CommonModule, IconComponent, TooltipDirective, TranslatePipe],
+  imports: [CommonModule, IconComponent, ButtonComponent, TooltipDirective, TranslatePipe],
   templateUrl: './file-upload.component.html',
   host: { 'class': 'block' },
   providers: [
