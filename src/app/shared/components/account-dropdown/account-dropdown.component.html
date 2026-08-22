@@ -79,16 +79,14 @@
           <button
             type="button"
             (click)="copyAddress($event)"
-            class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-colors text-left cursor-pointer group"
+            class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80 hover:text-slate-900 dark:hover:text-white transition-colors text-left cursor-pointer group"
           >
             <div class="flex items-center gap-3 truncate min-w-0">
               <app-icon
                 name="copy"
-                class="w-4.5 h-4.5 shrink-0 text-slate-400 dark:text-slate-400 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors"
+                class="w-4.5 h-4.5 shrink-0 text-slate-400 dark:text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-colors"
               />
-              <span
-                class="truncate group-hover:text-purple-600 dark:group-hover:text-purple-300 transition-colors"
-              >
+              <span class="truncate">
                 {{ 'header.copy_address' | translate }}
               </span>
             </div>
@@ -97,16 +95,14 @@
           <button
             type="button"
             (click)="openAccountModal($event)"
-            class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-colors text-left cursor-pointer group"
+            class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80 hover:text-slate-900 dark:hover:text-white transition-colors text-left cursor-pointer group"
           >
             <div class="flex items-center gap-3 truncate min-w-0">
               <app-icon
                 name="wallet"
-                class="w-4.5 h-4.5 shrink-0 text-slate-400 dark:text-slate-400 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors"
+                class="w-4.5 h-4.5 shrink-0 text-slate-400 dark:text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-colors"
               />
-              <span
-                class="truncate group-hover:text-purple-600 dark:group-hover:text-purple-300 transition-colors"
-              >
+              <span class="truncate">
                 {{ 'header.wallet_details' | translate }}
               </span>
             </div>
@@ -115,16 +111,14 @@
           <button
             type="button"
             (click)="viewOnExplorer($event)"
-            class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-colors text-left cursor-pointer group"
+            class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80 hover:text-slate-900 dark:hover:text-white transition-colors text-left cursor-pointer group"
           >
             <div class="flex items-center gap-3 truncate min-w-0">
               <app-icon
                 name="external-link"
-                class="w-4.5 h-4.5 shrink-0 text-slate-400 dark:text-slate-400 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors"
+                class="w-4.5 h-4.5 shrink-0 text-slate-400 dark:text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-colors"
               />
-              <span
-                class="truncate group-hover:text-purple-600 dark:group-hover:text-purple-300 transition-colors"
-              >
+              <span class="truncate">
                 {{ 'header.view_explorer' | translate }}
               </span>
             </div>

@@ -1,3 +1,18 @@
+### Yêu cầu: Đồng Bộ Hóa Màu Nền Hover Cho Toàn Bộ Dropdown Menu Theo Chuẩn Đa Ngôn Ngữ & Đa Chain (`hover:bg-slate-100 dark:hover:bg-slate-800/80`)
+- **Nội dung yêu cầu:** Sửa màu background hover của dropdown menu cho đồng nhất hoàn toàn với màu của dropdown Đa ngôn ngữ (`LanguageSelector`) và Đa chain (`NetworkSelector`), tức sử dụng màu xám trung tính `hover:bg-slate-100 dark:hover:bg-slate-800/80` (ngoại trừ các item hành động nguy hiểm/điểm nhấn như Đăng xuất, Xóa bộ nhớ đệm mang variant `danger`/`success`).
+- **Phân tích nguyên nhân chênh lệch màu:**
+  1. **Trạng thái Submenu đang mở (`activeSubmenuId`):** Trong `DropdownMenuComponent`, khi hover vào mục cha có submenu con (ví dụ: "Chia sẻ thông tin ví"), item được gán class `bg-primary/10 text-primary dark:text-secondary font-bold` (màu tím hồng accent) thay vì màu nền xám slate hover chuẩn, khiến nó lệch tông rõ rệt so với nền hover `hover:bg-slate-100 dark:hover:bg-slate-800/80` của các item khác và dropdown Đa ngôn ngữ/Đa chain.
+  2. **Các Trigger Button & Custom Select:** Một số vị trí trigger trong `DropdownMenuComponent` (`triggerVariant === 'outline' | 'default' | 'icon'`) sử dụng `hover:bg-slate-50 dark:hover:bg-slate-800`, `CustomSelect` sử dụng `dark:hover:bg-slate-800/50` và `AccountDropdown` có hiệu ứng text tím `group-hover:text-purple-600` làm mất tính nhất quán tổng thể.
+- **Giải pháp triệt để:**
+  1. **Chuẩn hóa `DropdownMenuComponent` (`dropdown-menu.component.html`):**
+     - Đổi class trạng thái mở submenu từ `bg-primary/10 text-primary dark:text-secondary font-bold` sang `bg-slate-100 dark:bg-slate-800/80 text-slate-900 dark:text-white`.
+     - Đồng bộ các nút trigger (`outline`, `default`, `icon`, `secondary`, `ghost`) sang chuẩn hover xám `hover:bg-slate-100 dark:hover:bg-slate-800/80`.
+     - Bảo toàn các action items dạng đặc biệt (`variant: 'danger'` có `hover:bg-rose-50 dark:hover:bg-rose-950/40`, `variant: 'success'` có `hover:bg-emerald-50 dark:hover:bg-emerald-950/40`).
+  2. **Chuẩn hóa `CustomSelectComponent` & `AccountDropdownComponent`:**
+     - Đưa toàn bộ dark hover về chuẩn `dark:hover:bg-slate-800/80`.
+     - Thay đổi text/icon hover trong `AccountDropdown` về tông xám trung tính `text-slate-900 dark:text-white` / `text-slate-600 dark:text-slate-300`.
+- **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Vượt qua 100% unit tests (6/6 tests passed). Đóng gói Production (`npm run build`) hoàn thành thành công 100%.
+
 ### Yêu cầu: Giữ Bo Góc Cũ `rounded-lg` & Chuẩn Hóa Chiều Rộng Cân Xứng 1:1 `min-w-[76px]` Cho Nút "Hủy Bỏ" / "Áp Dụng"
 - **Nội dung yêu cầu:** Giữ nguyên độ bo góc cũ `rounded-lg` (8px) cho các nút Action ("Hủy bỏ", "Áp dụng", "Xong") trong `CustomDateTimeRangeComponent` và `CustomDatePickerComponent`, đồng thời giữ chuẩn chiều rộng cân xứng 1:1 `min-w-[76px]`.
 - **Giải pháp:**
