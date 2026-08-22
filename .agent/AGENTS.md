@@ -1,3 +1,16 @@
+### Yêu cầu: Chuẩn Hóa 100% Padding, Bo Góc, Icon & Kích Thước Giữa Dropdown Menu, Account Dropdown, Đa Chain & Đa Ngôn Ngữ
+- **Nội dung yêu cầu:** Rà soát và đồng bộ toàn bộ layout UI, padding container, padding item, bo góc (`rounded`), khoảng cách icon (`gap`) và kích thước font chữ giữa 4 thành phần dropdown: `DropdownMenuComponent`, `AccountDropdownComponent`, `NetworkSelectorComponent` (Đa chain) và `LanguageSelectorComponent` (Đa ngôn ngữ).
+- **Phân tích các điểm lệch UI trước đó:**
+  1. **Padding Container Popover:** `DropdownMenu` dùng `p-1.5` trong khi `AccountDropdown`, `NetworkSelector`, `LanguageSelector` dùng `p-2`.
+  2. **Padding & Bo góc của Item button:** `DropdownMenu` dùng `px-3 py-2 text-xs sm:text-sm rounded-[10px] gap-2.5` làm cho các item bị ngắn và khít hơn so với chuẩn chung `px-3 py-2.5 text-sm font-semibold rounded-[11px] gap-3` của 3 dropdown còn lại.
+  3. **Kích thước Icon:** `DropdownMenu` dùng `w-4 h-4` trong khi `AccountDropdown` dùng `w-4.5 h-4.5`.
+  4. **Header Label:** `DropdownMenu` dùng `px-3 py-1.5 text-[11px]` trong khi Đa chain / Đa ngôn ngữ dùng `px-3 py-2 text-xs`.
+- **Giải pháp triệt để:**
+  1. **Đồng bộ Popover Container:** Đưa toàn bộ về `p-2 rounded-[15px] glass-popover border border-slate-200/80 dark:border-slate-800/80`.
+  2. **Đồng bộ Item Buttons:** Đưa toàn bộ các loại item (Submenu, Checkbox, Radio, Action, Danger, Success, Submenu children) về `px-3 py-2.5 text-sm font-semibold rounded-[11px] gap-3` với icon chuẩn `w-4.5 h-4.5`.
+  3. **Đồng bộ Section Header:** `px-3 py-2 text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 select-none`.
+- **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Vượt qua 100% unit tests (6/6 tests passed). Đóng gói Production (`npm run build`) hoàn thành thành công 100%.
+
 ### Yêu cầu: Đồng Bộ Hóa Màu Nền Hover Cho Toàn Bộ Dropdown Menu Theo Chuẩn Đa Ngôn Ngữ & Đa Chain (`hover:bg-slate-100 dark:hover:bg-slate-800/80`)
 - **Nội dung yêu cầu:** Sửa màu background hover của dropdown menu cho đồng nhất hoàn toàn với màu của dropdown Đa ngôn ngữ (`LanguageSelector`) và Đa chain (`NetworkSelector`), tức sử dụng màu xám trung tính `hover:bg-slate-100 dark:hover:bg-slate-800/80` (ngoại trừ các item hành động nguy hiểm/điểm nhấn như Đăng xuất, Xóa bộ nhớ đệm mang variant `danger`/`success`).
 - **Phân tích nguyên nhân chênh lệch màu:**
