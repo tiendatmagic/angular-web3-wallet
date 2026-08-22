@@ -1,17 +1,14 @@
-### Yêu cầu: Tái Cấu Trúc Toàn Diện File `src/styles.scss` Sang Utility Class Tailwind CSS v4 & `@apply`
-- **Nội dung yêu cầu:** Xem xét toàn bộ stylesheet tập trung `src/styles.scss`, chuyển đổi các khối CSS thuần/SCSS thủ công (như `@layer base`, Scrollbars, Form controls, Glass surfaces, CodeBlock tokens, Alert system, v.v.) sang hệ thống Utility Class và `@apply` của Tailwind CSS v4, tối ưu hóa triệt để và đồng bộ 100% với dự án mẫu `ads6868`.
-- **Chi tiết các hạng mục đã chuyển đổi sang Tailwind `@apply`:**
-  1. **Base Layer & Body:** Chuyển sang `@apply bg-slate-50 text-slate-900 min-h-screen m-0;`, Dark mode `@apply bg-slate-950 text-slate-50;`, button base `@apply cursor-pointer bg-transparent;`.
-  2. **Global & Custom Scrollbars:** Thay thế các kích thước và mã màu thủ công bằng utility classes Tailwind (`@apply w-1.5 h-1.5;`, `@apply bg-slate-300 rounded-xs;`, `@apply bg-slate-700;`, `@apply bg-slate-400/40 rounded-full;`, `@apply hidden;`).
-  3. **Button Utilities & System:** Đồng bộ 100% từ `ads6868` (`.btn`, `.btn-primary`, `.btn-secondary`, `.btn-danger`, `.btn-danger-light`, `.btn-cancel`, `.btn-ghost`, `.btn-success`, `.btn-info`, `.btn-reload`, `.btn-outline`, `.btn-sm`, `.btn-md`, `.btn-lg`, `.btn-full`).
-  3. **Cấu Trúc Tách Biệt Cho `ButtonComponent`:**
-     - [button.component.ts](file:///d:/git/angular-web3-wallet/src/app/shared/components/button/button.component.ts): Khai báo `templateUrl: './button.component.html'`, quản lý logic states, variants và kích cỡ.
-     - [button.component.html](file:///d:/git/angular-web3-wallet/src/app/shared/components/button/button.component.html): Template riêng biệt chứa SVG spinner và `<ng-content></ng-content>`.
-  4. **Form Controls:** Sử dụng `@mixin form-control-base` kết hợp `@apply w-full text-sm font-semibold rounded-xl bg-slate-100 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 text-slate-800 dark:text-white placeholder-slate-400 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20;`, `.form-input` (`@apply h-[42px] px-4;`), `.form-textarea` (`@apply py-3 px-4 transition-all duration-200 resize-none;`), `.form-field` (`@apply flex flex-col gap-2 w-full;`).
-  5. **Card, Tab & Glass Surfaces:** Chuyển đổi `.tab-group`, `.tab-item`, `.app-card`, `.app-card-interactive`, `.glass-popover`, `.glass-dialog`, `.glass-dialog-backdrop`, `.glass-header`, `.app-ripple-element` sang Tailwind utility `@apply`.
-  6. **Aura System & Glow:** Chuyển `.aura-wrapper`, `.aura-glow`, `.aura-border`, `.aura-content` sang Tailwind `@apply relative w-full h-full;`, `@apply absolute -z-20 pointer-events-none;`, v.v.
-  7. **CodeBlock Syntax Tokens:** Gọn gàng với `@apply text-violet-600 dark:text-violet-400 font-semibold;`, `@apply text-green-700 dark:text-green-400;`, `@apply text-slate-500 italic;`, v.v.
-  8. **Alert System:** Chuyển toàn bộ 12 biến thể sang Tailwind `@apply` (`@apply bg-sky-100 text-sky-950 border border-sky-300/70 dark:bg-sky-950/85 ...`).
+### Yêu cầu: Khắc Phục Triệt Để Lỗi Submenu Bị Tách Rời Khi Cuộn Trang (Scroll Sync & Real-time Live Bounding Rect)
+- **Nội dung yêu cầu:** Sửa lỗi Dropdown Submenu bị tách rời xa hàng trăm pixel khỏi Menu chính (Menu chính nằm ở trên đỉnh trong khi Submenu nằm ở tít dưới đáy màn hình) khi người dùng cuộn trang web.
+- **Phân tích nguyên nhân gốc rễ:**
+  1. **Lỗi lưu toạ độ tĩnh (`DOMRect`):** Khi hover mở Submenu, hệ thống lưu `this.lastSubmenuTriggerRect = getBoundingClientRect()`. Khi người dùng cuộn trang (`window:scroll`), Menu chính được cập nhật lại toạ độ theo nút trigger mới, nhưng Submenu lại vẫn đọc toạ độ từ `lastSubmenuTriggerRect` cũ (giá trị pixel cố định trước khi cuộn), khiến Submenu bị ghim chết ở vị trí cũ dưới đáy màn hình.
+- **Giải pháp triệt để:**
+  1. **Lưu tham chiếu trực tiếp phần tử cha (`activeSubmenuTriggerEl: HTMLElement`):**
+     - Thay vì lưu `DOMRect` tĩnh, hệ thống lưu trực tiếp `HTMLElement` của item cha (`event.currentTarget`).
+     - Hàm `updateSubmenuPosition()` luôn gọi `this.activeSubmenuTriggerEl.getBoundingClientRect()` theo thời gian thực (real-time live measurement).
+     - Khi cuộn trang (`window:scroll`) hoặc cập nhật view (`ngAfterViewChecked`, `popoverEl.scroll`), Submenu và Menu chính luôn bám sát nhau 1:1 theo từng pixel.
+  2. **Tự động đóng Submenu khi cha ra ngoài Viewport:** Nếu item cha bị cuộn biến mất khỏi màn hình (`triggerRect.bottom <= 0` hoặc `triggerRect.top >= innerHeight`), Submenu sẽ tự động đóng ngay lập tức để tránh hiển thị mồ côi.
+  3. **Vị trí Anchor chuẩn:** Submenu bám sát mép phải item cha `triggerRect.right + 4` (hoặc lật trái nếu chạm mép phải) và bám thẳng hàng đỉnh item cha (lật lên bám chân nếu tràn đáy màn hình).
 - **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Toàn bộ unit tests `npm test` vượt qua 100% (6/6 tests passed). Đóng gói Production (`npm run build`) hoàn thành thành công 100%.
 
 ### Yêu cầu: Khắc Phục Sự Cố Lỗi Playwright / Không Mở Được Trình Duyệt Chrome Khi Điều Hướng Localhost

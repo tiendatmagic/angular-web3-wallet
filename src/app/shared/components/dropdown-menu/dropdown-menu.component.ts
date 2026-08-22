@@ -49,7 +49,7 @@ export interface DropdownMenuHeader {
   imports: [CommonModule, IconComponent, TranslatePipe],
   templateUrl: './dropdown-menu.component.html',
   host: {
-    class: 'block',
+    class: 'inline-block',
     '(document:click)': 'onClickOutside($event)',
     '(document:keydown.escape)': 'onEscape()',
   },
@@ -90,21 +90,18 @@ export class DropdownMenuComponent implements AfterViewChecked {
 
   public readonly isOpen = signal<boolean>(false);
   public readonly activeSubmenuId = signal<string | null>(null);
-  public readonly submenuPosition = signal({ left: 0, top: 0 });
 
   public popoverStyle: Record<string, string> = {};
   public submenuStyle: Record<string, string> = {};
 
-  private lastSubmenuTriggerRect: DOMRect | null = null;
-  private lastSubmenuItem: DropdownMenuItem | null = null;
+  private activeSubmenuTriggerEl: HTMLElement | null = null;
 
   private readonly syncOpenState = effect(() => {
     const activeId = this.dropdownService.activeDropdownId();
     if (activeId !== this.instanceId && this.isOpen()) {
       this.isOpen.set(false);
       this.activeSubmenuId.set(null);
-      this.lastSubmenuTriggerRect = null;
-      this.lastSubmenuItem = null;
+      this.activeSubmenuTriggerEl = null;
       this.openChange.emit(false);
     }
   });
@@ -122,8 +119,7 @@ export class DropdownMenuComponent implements AfterViewChecked {
     } else {
       this.dropdownService.close(this.instanceId);
       this.activeSubmenuId.set(null);
-      this.lastSubmenuTriggerRect = null;
-      this.lastSubmenuItem = null;
+      this.activeSubmenuTriggerEl = null;
     }
     this.openChange.emit(newState);
   }
@@ -141,8 +137,7 @@ export class DropdownMenuComponent implements AfterViewChecked {
     this.isOpen.set(false);
     this.dropdownService.close(this.instanceId);
     this.activeSubmenuId.set(null);
-    this.lastSubmenuTriggerRect = null;
-    this.lastSubmenuItem = null;
+    this.activeSubmenuTriggerEl = null;
     this.openChange.emit(false);
   }
 
@@ -164,6 +159,13 @@ export class DropdownMenuComponent implements AfterViewChecked {
     }
   }
 
+  public onItemHover(item: DropdownMenuItem): void {
+    if (item.type !== 'sub' && this.activeSubmenuId()) {
+      this.activeSubmenuId.set(null);
+      this.activeSubmenuTriggerEl = null;
+    }
+  }
+
   public onItemClick(item: DropdownMenuItem, event: MouseEvent): void {
     event.stopPropagation();
     if (item.disabled) return;
@@ -172,8 +174,7 @@ export class DropdownMenuComponent implements AfterViewChecked {
       const current = this.activeSubmenuId();
       if (current === (item.id || item.label)) {
         this.activeSubmenuId.set(null);
-        this.lastSubmenuTriggerRect = null;
-        this.lastSubmenuItem = null;
+        this.activeSubmenuTriggerEl = null;
       } else {
         this.openSubmenu(item, event);
       }
@@ -211,8 +212,7 @@ export class DropdownMenuComponent implements AfterViewChecked {
     const itemId = item.id || item.label || '';
     if (this.activeSubmenuId() === itemId) {
       this.activeSubmenuId.set(null);
-      this.lastSubmenuTriggerRect = null;
-      this.lastSubmenuItem = null;
+      this.activeSubmenuTriggerEl = null;
     } else {
       this.openSubmenu(item, event);
     }
@@ -221,10 +221,19 @@ export class DropdownMenuComponent implements AfterViewChecked {
   public openSubmenu(item: DropdownMenuItem, event: MouseEvent): void {
     if (item.disabled || !item.children?.length) return;
 
-    this.lastSubmenuTriggerRect = (event.currentTarget as HTMLElement).getBoundingClientRect();
-    this.lastSubmenuItem = item;
+    this.activeSubmenuTriggerEl = event.currentTarget as HTMLElement;
     this.activeSubmenuId.set(item.id || item.label || '');
     this.updateSubmenuPosition();
+  }
+
+  public onSubmenuMouseEnter(): void {
+    // Keep submenu open when hovering over submenu itself
+  }
+
+  public onPopoverScroll(): void {
+    if (this.activeSubmenuId()) {
+      this.updateSubmenuPosition();
+    }
   }
 
   public activeSubmenu(): DropdownMenuItem | null {
@@ -349,33 +358,58 @@ export class DropdownMenuComponent implements AfterViewChecked {
   }
 
   public updateSubmenuPosition(): void {
-    if (!this.lastSubmenuTriggerRect || !this.lastSubmenuItem) return;
+    if (!this.activeSubmenuTriggerEl || !this.activeSubmenuId()) return;
 
-    const triggerRect = this.lastSubmenuTriggerRect;
+    if (!document.body.contains(this.activeSubmenuTriggerEl)) {
+      this.activeSubmenuId.set(null);
+      this.activeSubmenuTriggerEl = null;
+      return;
+    }
+
+    // Always measure LIVE bounding rect in real time
+    const triggerRect = this.activeSubmenuTriggerEl.getBoundingClientRect();
+
+    // If trigger item is scrolled out of viewport, close submenu
+    if (triggerRect.bottom <= 0 || triggerRect.top >= window.innerHeight || triggerRect.width === 0) {
+      this.activeSubmenuId.set(null);
+      this.activeSubmenuTriggerEl = null;
+      return;
+    }
+
     let subWidth = this.submenuEl?.nativeElement?.offsetWidth || 0;
     if (!subWidth) {
       subWidth = this.parseWidthClass(this.width);
     }
     subWidth = Math.max(subWidth, 200);
 
+    const currentSub = this.activeSubmenu();
     let subHeight = this.submenuEl?.nativeElement?.offsetHeight || 0;
     if (!subHeight) {
-      subHeight = (this.lastSubmenuItem.children?.length ?? 2) * 42 + 20;
+      subHeight = (currentSub?.children?.length ?? 2) * 40 + 16;
     }
 
-    // Try right side first
-    let subLeft = triggerRect.right + 6;
+    // Horizontal placement: Right side first, flip to left if edge collision
+    let subLeft = triggerRect.right + 4;
     if (subLeft + subWidth > window.innerWidth - 8) {
-      // Flip to left side of item
-      subLeft = triggerRect.left - subWidth - 6;
+      // Flip to left side of menu item
+      subLeft = triggerRect.left - subWidth - 4;
     }
     if (subLeft < 8) subLeft = 8;
     if (subLeft + subWidth > window.innerWidth - 8) {
       subLeft = Math.max(8, window.innerWidth - 8 - subWidth);
     }
 
-    let subTop = triggerRect.top;
+    // Vertical placement:
+    // Default: Align top with trigger item (-4px to align with container padding)
+    let subTop = triggerRect.top - 4;
+
+    // If overflow viewport bottom: Anchor bottom of submenu to bottom of trigger item
     if (subTop + subHeight > window.innerHeight - 8) {
+      subTop = triggerRect.bottom - subHeight + 4;
+    }
+
+    // Safety edge clamping top/bottom
+    if (subTop < 8) {
       subTop = Math.max(8, window.innerHeight - 8 - subHeight);
     }
     if (subTop < 8) subTop = 8;
@@ -411,4 +445,3 @@ export class DropdownMenuComponent implements AfterViewChecked {
     }
   }
 }
-
