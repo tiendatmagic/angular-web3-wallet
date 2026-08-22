@@ -1,3 +1,11 @@
+### Yêu cầu: Giữ Bo Góc Cũ `rounded-lg` & Chuẩn Hóa Chiều Rộng Cân Xứng 1:1 `min-w-[76px]` Cho Nút "Hủy Bỏ" / "Áp Dụng"
+- **Nội dung yêu cầu:** Giữ nguyên độ bo góc cũ `rounded-lg` (8px) cho các nút Action ("Hủy bỏ", "Áp dụng", "Xong") trong `CustomDateTimeRangeComponent` và `CustomDatePickerComponent`, đồng thời giữ chuẩn chiều rộng cân xứng 1:1 `min-w-[76px]`.
+- **Giải pháp:**
+  1. Giữ nguyên độ bo góc `rounded-lg` theo đúng giao diện ban đầu.
+  2. Bổ sung `min-w-[76px]` và căn giữa `flex items-center justify-center text-center` cho cả hai nút "Hủy bỏ" và "Áp dụng", giúp 2 nút có kích thước ngang bằng chằn chặn 1:1, bấm đầm tay và gọn gàng.
+  3. Áp dụng tương tự cho nút "Xong" trong `CustomDatePickerComponent`.
+- **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Vượt qua 100% unit tests (6/6 tests passed).
+
 ### Yêu cầu: Đồng Bộ Hóa Layout UI, Viền Border & Box-Shadow Giữa Nút Đa Ngôn Ngữ (`LanguageSelector`) & Đa Chain (`NetworkSelector`)
 - **Nội dung yêu cầu:** Phân tích và khắc phục hiện tượng nút Đa ngôn ngữ (`LanguageSelector`) và nút Đa chain (`NetworkSelector`) ở Header bị lệch layout UI, khác biệt về viền, màu nền và hiệu ứng đổ bóng (box-shadow).
 - **Phân tích nguyên nhân gốc rễ:**
