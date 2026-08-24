@@ -560,7 +560,7 @@ body.dark ::-webkit-scrollbar-thumb {
 
 /* Glass Surfaces */
 @utility glass-popover {
-  @apply bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-lg shadow-slate-900/10 dark:shadow-slate-950/50;
+  @apply bg-white/90 dark:bg-slate-900/80 backdrop-blur-xl shadow-lg shadow-slate-900/10 dark:shadow-slate-950/50;
 }
 
 @utility glass-dialog {

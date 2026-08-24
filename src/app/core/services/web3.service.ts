@@ -59,7 +59,6 @@ export class Web3Service {
 
   constructor() {
     if (!this.isEnabled) {
-      console.info('[Web3] Web3 is disabled');
       return;
     }
     this.initAppKit();
@@ -186,13 +185,13 @@ export class Web3Service {
       const eventName = event.data?.event;
       const errorMsg = event.data?.properties?.message || event.data?.error || '';
       const isConnectionError = eventName === 'CONNECT_ERROR' || errorMsg.toString().toLowerCase().includes('declined') || errorMsg.toString().toLowerCase().includes('active');
-      
+
       if (isConnectionError) {
         console.warn('[Web3] Connection or session stall detected in AppKit, releasing...');
         try {
           await this.modal.disconnect();
           await this.clearWalletConnectStorage();
-        } catch (e) {}
+        } catch (e) { }
       }
     });
   }
@@ -289,7 +288,7 @@ export class Web3Service {
       if (!this.isConnected()) {
         try {
           await this.modal.disconnect();
-        } catch (e) {}
+        } catch (e) { }
       }
       await this.modal.open();
     } catch (error: any) {
@@ -298,7 +297,7 @@ export class Web3Service {
         try {
           await this.modal.disconnect();
           await this.modal.open();
-        } catch (e) {}
+        } catch (e) { }
       }
     }
   }
@@ -357,7 +356,7 @@ export class Web3Service {
         }
       }
       keysToRemove.forEach(k => localStorage.removeItem(k));
-    } catch (e) {}
+    } catch (e) { }
   }
 
   private getAppKitNetworkByChainId(chainId: string | number): any {
