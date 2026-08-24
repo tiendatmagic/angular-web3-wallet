@@ -5,7 +5,9 @@
   2. **Header & Nút Account Dropdown:** Trên mobile nhỏ (< 380px), cụm nút Header (Hamburger, Logo, Language Selector, Network Selector và Account Dropdown hiển thị cả địa chỉ và số dư `0.1979 ETH`) có tổng bề rộng > 370px, làm tràn khỏi mép phải màn hình điện thoại.
   3. **Global Layout & Containers:** `html`, `body` và layout wrapper trong `app.html` thiếu `overflow-x: hidden` và `max-width: 100%`, khiến khi có bất kỳ phần tử con nào vượt kích thước viewport thì toàn bộ trang web lập tức sinh ra thanh scroll ngang ở đáy.
   4. **Popovers (Date Picker & Date Time Range):** Chiều rộng popover cố định 320px chưa giới hạn theo `window.innerWidth - 16` và `calc(100vw - 16px)`.
-  5. **Voice Chat Widget:** Chiều rộng mở rộng 360px cố định bằng pixel chưa dùng `min(360px, 100%)`.
+  5. **Widget Voice Chat (`VoiceChatComponent`):**
+     - Tiêu đề "Trò Chuyện Thoại" và trạng thái "7 người tham gia" dùng 2 phần tử absolute cố định `top-0` và `top-[42px]` gây rớt dòng đè chữ lên nhau trên mobile.
+     - Lưới Avatar tính toạ độ pixel cố định 4 cột (`width = 324px`) làm avatar cột thứ 4 (Robert) bị tràn và cắt cụt khỏi khung hình khi chiều rộng card hẹp (< 340px).
 - **Giải pháp triệt để:**
   1. **Nâng cấp Responsive cho Input OTP (`InputOtpComponent`):**
      - Thiết lập kích thước responsive đa tầng:
@@ -21,7 +23,13 @@
      - Bổ sung `overflow-x: hidden; max-width: 100vw;` cho `html` và `body` trong `src/styles.scss`.
      - Bổ sung `overflow-x-hidden max-w-full` cho container router wrapper trong `app.html`.
   4. **Đồng bộ Date Picker & Date Time Range Popovers:** Giới hạn `popoverWidth = Math.min(320, window.innerWidth - 16)` và `maxWidth: 'calc(100vw - 16px)'`.
-  5. **Đồng bộ Voice Chat:** Đổi `width` sang `min(360px, 100%)`.
+  5. **Tối ưu toàn diện & Animation FLIP Mượt Mà Cho Voice Chat (`VoiceChatComponent`):**
+     - Tái cấu trúc Header thành Flexbox liền mạch (`h2` + trạng thái người tham gia + nút close), loại bỏ hoàn toàn việc chồng đè văn bản.
+     - Tự động chuyển đổi Avatar Grid linh hoạt: Trên màn hình nhỏ (< 340px) chuyển thành layout 3 cột x 3 hàng (avatar 48px, height 470px), trên màn hình lớn chuyển thành 4 cột (avatar 56px, height 440px), đảm bảo 100% 7 avatar hiển thị trọn vẹn và căn giữa đẹp mắt.
+     - Tách biệt 2 Layer giao diện Collapsed (Capsule UI) và Expanded (Card UI):
+       - Khi đóng (Collapse / bấm X): Header, Footer Action và tên avatar ẩn `opacity-0` tức thì trong 75-100ms không delay; các avatar thu về vị trí capsule đồng bộ với `delay: 0` giúp card co lại mượt mà, không bị lag hay hiện tượng đè chữ lên capsule.
+       - Khi mở (Expand): Giao diện Capsule ẩn ngay lập tức trong 100ms, Header và Footer fade-in nhẹ nhàng sau 100-150ms khi khung card đã bung rộng.
+     - Đồng bộ kích thước co dãn theo `currentWidth()` và `window:resize`.
 - **Xác thực:**
   - Chạy `npx tsc --noEmit` đạt 0 lỗi type.
   - Vượt qua 100% bộ unit tests (6/6 tests passed).

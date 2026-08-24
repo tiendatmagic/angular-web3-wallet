@@ -1,4 +1,4 @@
-import { Component, Input, signal } from '@angular/core';
+import { Component, Input, signal, computed, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '../icon/icon.component';
 import { TranslatePipe } from '../../pipes/translate.pipe';
@@ -17,7 +17,7 @@ export interface VoiceParticipant {
   templateUrl: './voice-chat.component.html',
   host: { 'class': 'block w-full flex justify-center' },
 })
-export class VoiceChatComponent {
+export class VoiceChatComponent implements OnInit {
   @Input() participants: VoiceParticipant[] = [
     {
       id: '1',
@@ -60,14 +60,33 @@ export class VoiceChatComponent {
 
   public readonly isExpanded = signal<boolean>(false);
   public readonly isJoined = signal<boolean>(false);
+  public readonly currentWidth = signal<number>(360);
 
   public readonly COLLAPSED_WIDTH = 268;
   public readonly EXPANDED_WIDTH = 360;
-  public readonly EXPANDED_HEIGHT = 440;
 
   public readonly AVATAR_SIZE_COLLAPSED = 44;
   public readonly AVATAR_SIZE_EXPANDED = 56;
   public readonly AVATAR_OVERLAP = -12;
+
+  public readonly isNarrow = computed(() => this.currentWidth() < 340);
+  public readonly expandedHeight = computed(() => this.isNarrow() ? 470 : 440);
+
+  ngOnInit(): void {
+    this.updateWidth();
+  }
+
+  @HostListener('window:resize')
+  public onResize(): void {
+    this.updateWidth();
+  }
+
+  private updateWidth(): void {
+    if (typeof window !== 'undefined') {
+      const available = Math.min(360, window.innerWidth - 32);
+      this.currentWidth.set(available > 280 ? available : 280);
+    }
+  }
 
   public toggleExpand(event?: MouseEvent): void {
     if (event) {
@@ -88,32 +107,57 @@ export class VoiceChatComponent {
     if (!expanded) {
       const startX = 60;
       const limit = 3;
-      const isVisible = total > limit ? index < limit : index < total;
+      const isVisible = index < limit;
       return {
-        x: startX + index * (this.AVATAR_SIZE_COLLAPSED + this.AVATAR_OVERLAP),
+        x: isVisible ? startX + index * (this.AVATAR_SIZE_COLLAPSED + this.AVATAR_OVERLAP) : startX + 2 * (this.AVATAR_SIZE_COLLAPSED + this.AVATAR_OVERLAP),
         y: 8,
         size: this.AVATAR_SIZE_COLLAPSED,
         opacity: isVisible ? 1 : 0,
-        zIndex: 4 - index,
-        delay: (6 - index) * 10
+        zIndex: 4 - Math.min(index, 3),
+        delay: 0
       };
     }
 
-    const gridStartX = 28;
-    const gridStartY = 84;
+    const width = this.currentWidth();
+    const isNarrow = this.isNarrow();
+
+    if (isNarrow) {
+      const avatarSize = 48;
+      const cols = 3;
+      const col = index % cols;
+      const row = Math.floor(index / cols);
+      const availableWidth = width - 24;
+      const colWidth = availableWidth / cols;
+      const gridStartX = 12 + (colWidth - avatarSize) / 2;
+      const gridStartY = 78;
+      const rowHeight = 82;
+
+      return {
+        x: Math.round(gridStartX + col * colWidth),
+        y: Math.round(gridStartY + row * rowHeight),
+        size: avatarSize,
+        opacity: 1,
+        zIndex: 1,
+        delay: index * 15
+      };
+    }
+
+    const avatarSize = this.AVATAR_SIZE_EXPANDED;
     const colWidth = 80;
     const rowHeight = 95;
-
-    const col = index < 4 ? index : index - 4;
-    const row = index < 4 ? 0 : 1;
+    const cols = 4;
+    const col = index < cols ? index : index - cols;
+    const row = index < cols ? 0 : 1;
+    const gridStartX = (width - cols * colWidth) / 2 + (colWidth - avatarSize) / 2;
+    const gridStartY = 84;
 
     return {
-      x: gridStartX + col * colWidth,
-      y: gridStartY + row * rowHeight,
-      size: this.AVATAR_SIZE_EXPANDED,
+      x: Math.round(gridStartX + col * colWidth),
+      y: Math.round(gridStartY + row * rowHeight),
+      size: avatarSize,
       opacity: 1,
       zIndex: 1,
-      delay: index * 12
+      delay: index * 15
     };
   }
 
