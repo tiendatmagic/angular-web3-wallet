@@ -269,7 +269,7 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
 
     const rect = triggerEl.getBoundingClientRect();
     const popoverHeight = this.showTime ? 510 : 440;
-    const popoverWidth = 320;
+    const popoverWidth = Math.min(320, window.innerWidth - 16);
     const gap = 6;
 
     const spaceBelow = window.innerHeight - rect.bottom - gap;
@@ -312,6 +312,7 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
       top: `${top}px`,
       left: `${left}px`,
       width: `${popoverWidth}px`,
+      maxWidth: 'calc(100vw - 16px)',
       zIndex: '9999',
     };
   }

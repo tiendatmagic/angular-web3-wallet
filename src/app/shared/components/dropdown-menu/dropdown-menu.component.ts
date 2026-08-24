@@ -226,9 +226,7 @@ export class DropdownMenuComponent implements AfterViewChecked {
     this.updateSubmenuPosition();
   }
 
-  public onSubmenuMouseEnter(): void {
-    // Keep submenu open when hovering over submenu itself
-  }
+  public onSubmenuMouseEnter(): void {}
 
   public onPopoverScroll(): void {
     if (this.activeSubmenuId()) {
@@ -279,7 +277,6 @@ export class DropdownMenuComponent implements AfterViewChecked {
     const spaceBelow = window.innerHeight - triggerRect.bottom - gap;
     const spaceAbove = triggerRect.top - gap;
 
-    // Vertical placement (Top vs Bottom auto flip)
     let placeBottom = true;
     if (this.placement.startsWith('top')) {
       if (spaceAbove >= popoverHeight || spaceAbove >= spaceBelow) {
@@ -312,12 +309,10 @@ export class DropdownMenuComponent implements AfterViewChecked {
       }
     }
 
-    // Horizontal placement (Left vs Right vs Center with collision protection)
     let left = triggerRect.left;
 
     if (this.placement.endsWith('right')) {
       left = triggerRect.right - popoverWidth;
-      // Auto flip / shift if spilling off left edge of viewport (<= 8px)
       if (left < 8) {
         left = Math.max(8, triggerRect.left);
       }
@@ -331,9 +326,7 @@ export class DropdownMenuComponent implements AfterViewChecked {
         left = Math.max(8, window.innerWidth - 8 - popoverWidth);
       }
     } else {
-      // 'bottom-left' or 'top-left'
       left = triggerRect.left;
-      // Auto flip / shift if spilling off right edge of viewport
       if (left + popoverWidth > window.innerWidth - 8) {
         left = Math.max(8, triggerRect.right - popoverWidth);
       }
@@ -366,10 +359,8 @@ export class DropdownMenuComponent implements AfterViewChecked {
       return;
     }
 
-    // Always measure LIVE bounding rect in real time
     const triggerRect = this.activeSubmenuTriggerEl.getBoundingClientRect();
 
-    // If trigger item is scrolled out of viewport, close submenu
     if (triggerRect.bottom <= 0 || triggerRect.top >= window.innerHeight || triggerRect.width === 0) {
       this.activeSubmenuId.set(null);
       this.activeSubmenuTriggerEl = null;
@@ -388,10 +379,8 @@ export class DropdownMenuComponent implements AfterViewChecked {
       subHeight = (currentSub?.children?.length ?? 2) * 40 + 16;
     }
 
-    // Horizontal placement: Right side first, flip to left if edge collision
     let subLeft = triggerRect.right + 4;
     if (subLeft + subWidth > window.innerWidth - 8) {
-      // Flip to left side of menu item
       subLeft = triggerRect.left - subWidth - 4;
     }
     if (subLeft < 8) subLeft = 8;
@@ -399,16 +388,12 @@ export class DropdownMenuComponent implements AfterViewChecked {
       subLeft = Math.max(8, window.innerWidth - 8 - subWidth);
     }
 
-    // Vertical placement:
-    // Default: Align top with trigger item (-4px to align with container padding)
     let subTop = triggerRect.top - 4;
 
-    // If overflow viewport bottom: Anchor bottom of submenu to bottom of trigger item
     if (subTop + subHeight > window.innerHeight - 8) {
       subTop = triggerRect.bottom - subHeight + 4;
     }
 
-    // Safety edge clamping top/bottom
     if (subTop < 8) {
       subTop = Math.max(8, window.innerHeight - 8 - subHeight);
     }

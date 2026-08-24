@@ -9,11 +9,12 @@ import {
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '@shared/components/icon/icon.component';
 import { TranslatePipe } from '@shared/pipes/translate.pipe';
+import { RippleDirective } from '@shared/components/ripple/ripple.directive';
 
 @Component({
   selector: 'app-pagination',
   standalone: true,
-  imports: [CommonModule, IconComponent, TranslatePipe],
+  imports: [CommonModule, IconComponent, TranslatePipe, RippleDirective],
   templateUrl: './pagination.component.html',
   host: { 'class': 'block w-full' },
 })

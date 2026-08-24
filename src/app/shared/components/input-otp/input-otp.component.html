@@ -18,11 +18,11 @@
   />
 
   <div
-    class="flex items-center shrink-0"
+    class="flex items-center shrink-0 max-w-full"
     [ngClass]="{
       'gap-1 sm:gap-1.5': size === 'sm',
-      'gap-1 sm:gap-2': size === 'md',
-      'gap-1.5 sm:gap-2.5': size === 'lg'
+      'gap-1 xs:gap-1.5 sm:gap-2': size === 'md',
+      'gap-1.5 xs:gap-2 sm:gap-2.5': size === 'lg'
     }"
   >
     @for (slotIndex of slotsSignal(); track slotIndex) {
@@ -30,9 +30,9 @@
         (click)="onSlotClick(slotIndex)"
         class="relative flex items-center justify-center font-mono transition-all duration-200 cursor-pointer shadow-xs border border-solid shrink-0 aspect-square"
         [ngClass]="{
-          'w-8 h-8 text-xs sm:w-9 sm:h-9 sm:text-sm rounded-[8px] sm:rounded-[10px]': size === 'sm',
-          'w-10 h-10 text-sm sm:w-12 sm:h-12 sm:text-base rounded-[10px] sm:rounded-[12px]': size === 'md',
-          'w-12 h-12 text-base sm:w-14 sm:h-14 sm:text-xl rounded-[12px] sm:rounded-[14px]': size === 'lg',
+          'w-7.5 h-7.5 text-xs xs:w-8 xs:h-8 sm:w-9 sm:h-9 sm:text-sm rounded-[7px] xs:rounded-[8px] sm:rounded-[10px]': size === 'sm',
+          'w-8.5 h-8.5 text-xs xs:w-9.5 xs:h-9.5 sm:w-11 sm:h-11 md:w-12 md:h-12 sm:text-base rounded-[9px] xs:rounded-[10px] sm:rounded-[12px]': size === 'md',
+          'w-9.5 h-9.5 text-sm xs:w-11 xs:h-11 sm:w-13 sm:h-13 md:w-14 md:h-14 sm:text-xl rounded-[10px] xs:rounded-[12px] sm:rounded-[14px]': size === 'lg',
           'bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 border-slate-200 dark:border-slate-700 hover:border-[var(--color-primary)] hover:bg-[var(--color-primary)]/5':
             !isSlotFocused(slotIndex) && !invalid && !disabled,
           'border-[var(--color-primary)] ring-4 ring-[var(--color-primary)]/20 bg-[var(--color-primary)]/10 text-slate-900 dark:text-white z-10 scale-[1.02] shadow-sm shadow-[var(--color-primary)]/10':
@@ -57,9 +57,9 @@
           <span
             class="otp-caret-blink inline-block bg-[var(--color-primary)] rounded-full"
             [ngClass]="{
-              'h-4 w-0.5': size === 'sm',
-              'h-5 w-0.5': size === 'md',
-              'h-6 w-0.5': size === 'lg'
+              'h-3.5 w-0.5 sm:h-4': size === 'sm',
+              'h-4 w-0.5 sm:h-5': size === 'md',
+              'h-5 w-0.5 sm:h-6': size === 'lg'
             }"
           ></span>
         }
@@ -69,12 +69,12 @@
         <div
           class="flex items-center justify-center text-slate-400 dark:text-slate-500 font-semibold select-none transition-colors"
           [ngClass]="{
-            'px-0.5 text-sm': size === 'sm',
-            'px-1 text-base': size === 'md',
-            'px-1.5 text-lg': size === 'lg'
+            'px-0.5 text-xs': size === 'sm',
+            'px-0.5 sm:px-1 text-sm sm:text-base': size === 'md',
+            'px-1 sm:px-1.5 text-base sm:text-lg': size === 'lg'
           }"
         >
-          <app-icon name="minus" class="w-3.5 h-3.5" strokeWidth="2.5" />
+          <app-icon name="minus" class="w-3 h-3 sm:w-3.5 sm:h-3.5" strokeWidth="2.5" />
         </div>
       }
     }

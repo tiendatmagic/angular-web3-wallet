@@ -1,3 +1,66 @@
+### Yêu cầu: Khắc Phục Triệt Để Lỗi Không Responsive & Xuất Hiện Scroll Ngang Trên Mobile
+- **Nội dung yêu cầu:** Rà soát và xử lý toàn diện các vị trí chưa responsive trên mobile/màn hình nhỏ gây tràn chiều ngang và xuất hiện thanh cuộn ngang (horizontal scroll), đặc biệt là component Input OTP (`InputOtpComponent`), Header, Account Dropdown, Date Picker và Voice Chat.
+- **Phân tích nguyên nhân gốc rễ:**
+  1. **Component Input OTP (`InputOtpComponent`):** Kích thước các ô slot OTP bị gán cố định `w-10 h-10` / `sm:w-12 sm:h-12` (size `md`) hoặc `w-12 h-12` / `sm:w-14 sm:h-14` (size `lg`). Khi độ dài mã OTP/voucher dài (6 đến 7 ký tự kèm dấu gạch nối separator `-`), tổng chiều rộng slot và gap (282px) vượt quá không gian khả dụng của Card trên mobile nhỏ (256px trên màn hình 320px-360px), làm phình to Card và đẩy layout toàn trang gây scroll ngang.
+  2. **Header & Nút Account Dropdown:** Trên mobile nhỏ (< 380px), cụm nút Header (Hamburger, Logo, Language Selector, Network Selector và Account Dropdown hiển thị cả địa chỉ và số dư `0.1979 ETH`) có tổng bề rộng > 370px, làm tràn khỏi mép phải màn hình điện thoại.
+  3. **Global Layout & Containers:** `html`, `body` và layout wrapper trong `app.html` thiếu `overflow-x: hidden` và `max-width: 100%`, khiến khi có bất kỳ phần tử con nào vượt kích thước viewport thì toàn bộ trang web lập tức sinh ra thanh scroll ngang ở đáy.
+  4. **Popovers (Date Picker & Date Time Range):** Chiều rộng popover cố định 320px chưa giới hạn theo `window.innerWidth - 16` và `calc(100vw - 16px)`.
+  5. **Voice Chat Widget:** Chiều rộng mở rộng 360px cố định bằng pixel chưa dùng `min(360px, 100%)`.
+- **Giải pháp triệt để:**
+  1. **Nâng cấp Responsive cho Input OTP (`InputOtpComponent`):**
+     - Thiết lập kích thước responsive đa tầng:
+       - `size="sm"`: `w-7.5 h-7.5 text-xs xs:w-8 xs:h-8 sm:w-9 sm:h-9 sm:text-sm rounded-[7px] xs:rounded-[8px] sm:rounded-[10px]`
+       - `size="md"`: `w-8.5 h-8.5 text-xs xs:w-9.5 xs:h-9.5 sm:w-11 sm:h-11 md:w-12 md:h-12 sm:text-base rounded-[9px] xs:rounded-[10px] sm:rounded-[12px]`
+       - `size="lg"`: `w-9.5 h-9.5 text-sm xs:w-11 xs:h-11 sm:w-13 sm:h-13 md:w-14 md:h-14 sm:text-xl rounded-[10px] xs:rounded-[12px] sm:rounded-[14px]`
+     - Khoảng cách `gap` và `separator` linh hoạt `gap-1 xs:gap-1.5 sm:gap-2`.
+     - Host class: `host: { 'class': 'block max-w-full' }` và container `max-w-full overflow-x-auto no-scrollbar`.
+  2. **Tối ưu Header & Account Dropdown:**
+     - Nút Account Dropdown: Trên màn hình nhỏ < 380px ẩn số dư (`hidden min-[380px]:inline-block`), chỉ hiển thị địa chỉ ví rút gọn `0xAB4a...4444` và nút tròn trạng thái xanh lá, thu gọn kích thước từ 170px xuống ~100px.
+     - Header padding & gap: Điều chỉnh `px-2 sm:px-6` và `gap-1 sm:gap-2.5`.
+  3. **Khóa tràn ngang toàn cục (`styles.scss` & `app.html`):**
+     - Bổ sung `overflow-x: hidden; max-width: 100vw;` cho `html` và `body` trong `src/styles.scss`.
+     - Bổ sung `overflow-x-hidden max-w-full` cho container router wrapper trong `app.html`.
+  4. **Đồng bộ Date Picker & Date Time Range Popovers:** Giới hạn `popoverWidth = Math.min(320, window.innerWidth - 16)` và `maxWidth: 'calc(100vw - 16px)'`.
+  5. **Đồng bộ Voice Chat:** Đổi `width` sang `min(360px, 100%)`.
+- **Xác thực:**
+  - Chạy `npx tsc --noEmit` đạt 0 lỗi type.
+  - Vượt qua 100% bộ unit tests (6/6 tests passed).
+  - Đóng gói Production (`npm run build`) hoàn tất thành công 100%.
+
+### Yêu cầu: Rà Soát Toàn Bộ Mã Nguồn, Xóa Toàn Bộ Comment Tiếng Việt & Comment Code Không Cần Thiết
+- **Nội dung yêu cầu:** Xem lại toàn bộ source code của dự án, loại bỏ tất cả comment tiếng Việt, các đoạn comment code thừa và comment không cần thiết, đồng thời chuẩn hóa thông điệp logging/console sang tiếng Anh chuẩn theo nguyên tắc Clean Code.
+- **Quá trình & Các bước đã thực hiện:**
+  1. **Quét toàn diện mã nguồn:** Chạy script phân tích AST và regex quét toàn bộ các file `.ts`, `.html`, `.scss`, `.css`, `.json` trong thư mục `src/` và thư mục gốc để bóc tách 100% comment khối (`/* */`), comment dòng (`//`), comment HTML (`<!-- -->`) và các dòng code bị vô hiệu hóa.
+  2. **Dọn dẹp comment tiếng Việt & comment thừa:**
+     - `src/styles.scss`: Chuẩn hóa comment khối sang tiếng Anh thuần túy `/* Button Utilities & System */`.
+     - `src/app/shared/components/dropdown-menu/dropdown-menu.component.ts`: Xóa bỏ toàn bộ các comment giải thích vụn vặt về layout/positioning không cần thiết trong logic tính toán viewport collision.
+     - `src/app/shared/components/input-otp/input-otp.component.ts`: Loại bỏ comment thừa trong khối `catch`.
+     - `src/app/shared/components/progress/progress.component.ts`: Loại bỏ comment thừa trong computed `semiCircleCircumference`.
+     - `src/app/shared/components/icon/icon.component.ts`: Loại bỏ JSDoc thừa không cần thiết.
+  3. **Chuẩn hóa Console Logging sang tiếng Anh (`Web3Service`):**
+     - Chuyển toàn bộ 16 thông điệp `console.info`, `console.warn`, `console.error` mang tiếng Việt trong `src/app/core/services/web3.service.ts` sang tiếng Anh chuẩn để tuân thủ quy tắc Clean Code.
+- **Xác thực:**
+  - Chạy `npx tsc --noEmit` đạt 0 lỗi type.
+  - Vượt qua 100% bộ unit tests (6/6 tests passed).
+  - Đóng gói Production (`npm run build`) hoàn tất thành công 100%.
+
+### Yêu cầu: Responsive Pagination (Giữ Nguyên Kích Thước & Tự Động Rớt Xuống Dòng Khi Màn Hình Nhỏ)
+- **Nội dung yêu cầu:** Cải tiến giao diện của component phân trang (`PaginationComponent`), đảm bảo hỗ trợ responsive linh hoạt trên mobile/màn hình hẹp: các nút bấm phân trang giữ nguyên kích thước chuẩn `w-8.5 h-8.5` (không bị ép co rúm méo mó), tự động rớt xuống dòng tiếp theo (`flex-wrap`) thay vì bị tràn ngang và cắt cụt khỏi khung nhìn.
+- **Phân tích nguyên nhân gốc rễ:**
+  1. Container bao bọc các nút phân trang (`.flex.items-center.gap-1.5`) không có class `flex-wrap`, khiến toàn bộ chuỗi nút (`<`, `1`, `...`, `4`, `5`, `6`, `...`, `>`) bị dàn trên 1 hàng ngang duy nhất. Khi chiều rộng màn hình hoặc card hẹp (nhỏ hơn 360px), các nút phía sau bị tràn viền và che khuất.
+  2. Các phần tử nút bấm `<button>` và dấu `...` thiếu thuộc tính `shrink-0` và `min-w-[34px]`, dễ bị flexbox tự động co nhỏ khi thiếu không gian.
+  3. Thiếu căn chỉnh cân đối responsive giữa nhãn thông tin bản ghi và cụm nút.
+- **Giải pháp triệt để:**
+  1. **Nâng cấp Layout & Container (`pagination.component.html`):**
+     - Container chính: `px-4 sm:px-5 py-3.5 sm:py-4 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-3 sm:gap-4 flex-wrap`.
+     - Nhãn bản ghi: `text-xs font-semibold text-slate-400 text-center sm:text-left select-none`.
+     - Cụm nút bấm phân trang: `flex items-center justify-center gap-1.5 flex-wrap max-w-full`.
+  2. **Bảo toàn kích thước & Trải nghiệm tương tác:**
+     - Toàn bộ nút `<button>` và thẻ `<span>...</span>` đều được gán `w-8.5 h-8.5 min-w-[34px] shrink-0 rounded-xl`.
+     - Tích hợp `RippleDirective` (`appRipple`) cho hiệu ứng sóng nước mượt mà khi nhấp chuột/chạm tay trên di động.
+     - Chuẩn hóa màu viền Design System `border border-slate-200/60 dark:border-slate-800/60`.
+- **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Vượt qua 100% bộ unit tests (6/6 tests passed). Đóng gói Production (`npm run build`) hoàn thành thành công 100%.
+
 ### Yêu cầu: Khắc Phục Triệt Để Lỗi Mất Hiệu Ứng Sóng Nước Ripple (`RippleDirective`) & Button Ripple
 - **Nội dung yêu cầu:** Sửa lỗi hiệu ứng sóng nước (Ripple) và Button Ripple bị mất hiệu ứng, khi người dùng nhấp hoặc chạm vào vùng tương tác / nút bấm không nhìn thấy sóng lan tỏa.
 - **Phân tích nguyên nhân gốc rễ:**

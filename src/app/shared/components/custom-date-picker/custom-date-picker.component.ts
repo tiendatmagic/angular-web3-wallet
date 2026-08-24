@@ -204,7 +204,7 @@ export class CustomDatePickerComponent implements ControlValueAccessor, AfterVie
     const rect = triggerEl.getBoundingClientRect();
     const baseHeight = this.showPresets ? 380 : 340;
     const popoverHeight = this.enableTime ? baseHeight + 52 : baseHeight;
-    const popoverWidth = 320;
+    const popoverWidth = Math.min(320, window.innerWidth - 16);
     const gap = 6;
 
     const spaceBelow = window.innerHeight - rect.bottom - gap;
@@ -247,6 +247,7 @@ export class CustomDatePickerComponent implements ControlValueAccessor, AfterVie
       top: `${top}px`,
       left: `${left}px`,
       width: `${popoverWidth}px`,
+      maxWidth: 'calc(100vw - 16px)',
       zIndex: '9999',
     };
   }

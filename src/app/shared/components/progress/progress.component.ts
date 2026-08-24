@@ -75,7 +75,6 @@ export class ProgressComponent {
   });
 
   readonly semiCircleCircumference = computed(() => {
-    // The semicircle path in app-icon uses a fixed 40px radius.
     return Math.PI * 40;
   });
 

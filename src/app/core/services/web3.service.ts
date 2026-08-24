@@ -59,7 +59,7 @@ export class Web3Service {
 
   constructor() {
     if (!this.isEnabled) {
-      console.info('[Web3] Web3 đã bị tắt');
+      console.info('[Web3] Web3 is disabled');
       return;
     }
     this.initAppKit();
@@ -98,7 +98,7 @@ export class Web3Service {
         try {
           this.modal.setThemeMode(isDark ? 'dark' : 'light');
         } catch (e) {
-          console.warn('[Web3] Lỗi đồng bộ theme sang AppKit:', e);
+          console.warn('[Web3] Failed to sync theme mode to AppKit:', e);
         }
       }
     });
@@ -188,7 +188,7 @@ export class Web3Service {
       const isConnectionError = eventName === 'CONNECT_ERROR' || errorMsg.toString().toLowerCase().includes('declined') || errorMsg.toString().toLowerCase().includes('active');
       
       if (isConnectionError) {
-        console.warn('[Web3] Phát hiện lỗi kết nối hoặc treo session từ AppKit, tự động giải phóng...');
+        console.warn('[Web3] Connection or session stall detected in AppKit, releasing...');
         try {
           await this.modal.disconnect();
           await this.clearWalletConnectStorage();
@@ -270,7 +270,7 @@ export class Web3Service {
         this.checkAndUpdateNetworkState(id, false);
       }
     } catch (error) {
-      console.error('Lỗi khi cập nhật số dư/mạng:', error);
+      console.error('[Web3] Error updating balance or network:', error);
     }
   }
 
@@ -282,7 +282,7 @@ export class Web3Service {
         try {
           await this.modal.switchNetwork(defaultChain as any);
         } catch (e) {
-          console.warn('[Web3] Ép mạng mặc định trước khi mở modal thất bại:', e);
+          console.warn('[Web3] Failed to force default network before opening modal:', e);
         }
       }
 
@@ -293,7 +293,7 @@ export class Web3Service {
       }
       await this.modal.open();
     } catch (error: any) {
-      console.error('Lỗi kết nối ví:', error);
+      console.error('[Web3] Wallet connection error:', error);
       if (error?.message?.includes('declined') || error?.message?.includes('active')) {
         try {
           await this.modal.disconnect();
@@ -308,7 +308,7 @@ export class Web3Service {
     try {
       await this.modal.open({ view: 'Networks' });
     } catch (error) {
-      console.error('Lỗi mở popup chuyển mạng:', error);
+      console.error('[Web3] Error opening network modal:', error);
     }
   }
 
@@ -317,7 +317,7 @@ export class Web3Service {
     try {
       await this.modal.open({ view: 'Account' });
     } catch (error) {
-      console.error('Lỗi mở popup chi tiết ví:', error);
+      console.error('[Web3] Error opening account modal:', error);
     }
   }
 
@@ -326,7 +326,7 @@ export class Web3Service {
     try {
       await this.modal.disconnect();
     } catch (error) {
-      console.error('Lỗi ngắt kết nối ví:', error);
+      console.error('[Web3] Wallet disconnect error:', error);
     }
   }
 
@@ -343,7 +343,7 @@ export class Web3Service {
         }
       }
     } catch (e) {
-      console.warn('[Web3] Lỗi khi dọn dẹp IndexedDB:', e);
+      console.warn('[Web3] Error cleaning up IndexedDB:', e);
     }
 
     try {
@@ -380,7 +380,7 @@ export class Web3Service {
 
     const chainInfo = this.POPULAR_CHAINS.find(c => c.chainId === idStr);
     if (!chainInfo) {
-      console.warn(`[Web3] Không tìm thấy thông tin mạng trong POPULAR_CHAINS cho chainId: ${chainId}`);
+      console.warn(`[Web3] Network info not found in POPULAR_CHAINS for chainId: ${chainId}`);
       return false;
     }
 
@@ -406,7 +406,7 @@ export class Web3Service {
       });
       return true;
     } catch (e) {
-      console.warn('[Web3] Thêm mạng vào ví thất bại:', e);
+      console.warn('[Web3] Failed to add network to wallet:', e);
       return false;
     }
   }
@@ -427,7 +427,7 @@ export class Web3Service {
           try {
             await this.modal.switchNetwork(network as any);
           } catch (switchErr: any) {
-            console.warn(`[Web3] AppKit switchNetwork thất bại cho chain ${chainId}, thử addNetworkToWallet:`, switchErr);
+            console.warn(`[Web3] AppKit switchNetwork failed for chain ${chainId}, trying addNetworkToWallet:`, switchErr);
             const added = await this.addNetworkToWallet(chainId);
             if (added) {
               await this.modal.switchNetwork(network as any);
@@ -436,10 +436,10 @@ export class Web3Service {
             }
           }
         } else {
-          console.warn(`[Web3] Mạng với chainId ${chainId} không được hỗ trợ để chuyển.`);
+          console.warn(`[Web3] ChainId ${chainId} is not supported for switching.`);
         }
       } catch (error) {
-        console.error(`Lỗi chuyển mạng ${chainId}:`, error);
+        console.error(`[Web3] Error switching to chain ${chainId}:`, error);
       }
     } else {
       const popular = POPULAR_CHAINS.find(c => Number(c.chainId) === chainId);
@@ -502,7 +502,7 @@ export class Web3Service {
         }
       }
     } catch (err) {
-      console.warn('[Web3] Không thể lấy fee data để tính gas overrides:', err);
+      console.warn('[Web3] Unable to fetch fee data for gas overrides:', err);
     }
     return overrides;
   }

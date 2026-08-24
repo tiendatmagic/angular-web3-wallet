@@ -25,7 +25,7 @@ export type OtpInputSize = 'sm' | 'md' | 'lg';
   standalone: true,
   imports: [CommonModule, IconComponent],
   templateUrl: './input-otp.component.html',
-  host: { 'class': 'block' },
+  host: { 'class': 'block max-w-full' },
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
@@ -236,9 +236,7 @@ export class InputOtpComponent implements ControlValueAccessor, AfterViewInit {
         const idx = this.focusedIndexSignal();
         try {
           this.hiddenInputRef.nativeElement.setSelectionRange(idx, idx);
-        } catch {
-          // Skip if input type doesn't support selectionRange
-        }
+        } catch {}
       }
     }, 0);
   }
