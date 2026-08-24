@@ -44,10 +44,10 @@ import { CopyToClipboardComponent } from '@shared/components/copy-to-clipboard/c
 import { TranslatePipe } from '@shared/pipes/translate.pipe';
 import { TranslationService } from '@core/services/translation.service';
 import { parseEther } from 'ethers';
+import { DEMO_TRANSACTIONS } from './mock-transactions.data';
 
 @Component({
   selector: 'app-home',
-  
   imports: [
     CommonModule,
     FormsModule,
@@ -130,6 +130,7 @@ export class HomeComponent {
   public demoDatePickerValue = signal('2026-07-10');
   public limitDatePicker = signal(false);
   public demoDatePickerMinDate = signal('2026-07-20');
+
   public demoDatePickerShowPresets = signal(true);
   public demoAccordionMultiple = signal(false);
 
@@ -171,7 +172,7 @@ export class HomeComponent {
   public demoRippleColor = signal('');
   public demoRippleDuration = signal(700);
   public demoRippleOpacity = signal(0.4);
-  public demoRippleCustomColor = signal('#ffffff');
+  public demoRippleCustomColor = signal('');
   public demoAuraVariant = signal<'primary' | 'secondary' | 'dual' | 'rainbow' | 'holo' | 'gold' | 'silver' | 'glow'>('dual');
   public demoAuraSize = signal<'xs' | 'sm' | 'md' | 'lg' | 'xl'>('md');
   public demoAuraGlow = signal(true);
@@ -179,7 +180,7 @@ export class HomeComponent {
   public demoAuraSpeed = signal('4s');
   public demoAuraRadius = signal('15px');
 
-    public readonly demoChainOptions = [
+  public readonly demoChainOptions = [
     { value: '1',     label: 'Ethereum Mainnet' },
     { value: '42161', label: 'Arbitrum One' },
     { value: '56',    label: 'BNB Smart Chain' },
@@ -355,20 +356,7 @@ export class HomeComponent {
     ];
   });
 
-  public readonly demoTransactions = [
-    { id: '1', txHash: '0x3a4b9c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b', method: 'Transfer', block: 18459201, time: '2026-07-18 22:45', from: '0x71C7656EC7ab88b098defB751B7401B5f6d8976F', to: '0x3c494A5011111222223333344444555556666677', value: '1.45 ETH', status: 'success' },
-    { id: '2', txHash: '0x9f8e7d6c5b4a3f2e1d0c9b8a7f6e5d4c3b2a1f0e', method: 'Swap ETH For USDT', block: 18459215, time: '2026-07-18 22:38', from: '0x3c494A5011111222223333344444555556666677', to: '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D', value: '0.85 ETH', status: 'success' },
-    { id: '3', txHash: '0x1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b', method: 'Approve USDT', block: 18459242, time: '2026-07-18 22:20', from: '0x71C7656EC7ab88b098defB751B7401B5f6d8976F', to: '0xdAC17F958D2ee523a2206206994597C13D831ec7', value: '0.00 ETH', status: 'success' },
-    { id: '4', txHash: '0x5c6d7e8f9a0b1a2b3c4d5e6f7a8b9c0d1e2f3a4b', method: 'Add Liquidity', block: 18459290, time: '2026-07-18 22:15', from: '0x3c494A5011111222223333344444555556666677', to: '0xC0AEe478e230586714457e5b573aD33a0E8B0E8c', value: '5.00 ETH', status: 'pending' },
-    { id: '5', txHash: '0x7e8f9a0b1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d', method: 'Stake', block: 18459310, time: '2026-07-18 22:02', from: '0x71C7656EC7ab88b098defB751B7401B5f6d8976F', to: '0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84', value: '10.0 ETH', status: 'success' },
-    { id: '6', txHash: '0xb3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1a2', method: 'Unstake', block: 18459350, time: '2026-07-18 21:55', from: '0x71C7656EC7ab88b098defB751B7401B5f6d8976F', to: '0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84', value: '4.20 ETH', status: 'failed' },
-    { id: '7', txHash: '0x4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1a2b3c', method: 'Transfer', block: 18459392, time: '2026-07-18 21:30', from: '0x2222222222222222222222222222222222222222', to: '0x71C7656EC7ab88b098defB751B7401B5f6d8976F', value: '0.05 ETH', status: 'success' },
-    { id: '8', txHash: '0x8f9a0b1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e', method: 'Mint NFT', block: 18459410, time: '2026-07-18 21:12', from: '0x71C7656EC7ab88b098defB751B7401B5f6d8976F', to: '0x0483b0dfc6c78062b9e999a82ffb7959276814ee', value: '0.12 ETH', status: 'success' },
-    { id: '9', txHash: '0x2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1a', method: 'Transfer', block: 18459455, time: '2026-07-18 20:50', from: '0x71C7656EC7ab88b098defB751B7401B5f6d8976F', to: '0x5555555555555555555555555555555555555555', value: '0.50 ETH', status: 'pending' },
-    { id: '10', txHash: '0x6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1a2b3c4d5e', method: 'Swap USDT For LINK', block: 18459520, time: '2026-07-18 20:30', from: '0x71C7656EC7ab88b098defB751B7401B5f6d8976F', to: '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D', value: '250 USDT', status: 'success' },
-    { id: '11', txHash: '0x0b1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a', method: 'Borrow DAI', block: 18459601, time: '2026-07-18 19:40', from: '0x71C7656EC7ab88b098defB751B7401B5f6d8976F', to: '0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9', value: '1000 DAI', status: 'success' },
-    { id: '12', txHash: '0x8b9c0d1e2f3a4b5c6d7e8f9a0b1a2b3c4d5e6f7a', method: 'Flash Loan', block: 18459670, time: '2026-07-18 19:15', from: '0x71C7656EC7ab88b098defB751B7401B5f6d8976F', to: '0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9', value: '50000 USDC', status: 'failed' }
-  ];
+  public readonly demoTransactions = DEMO_TRANSACTIONS;
 
   public demoTableSearchQuery = signal('');
   public demoTableStatusFilter = signal<'all' | 'success' | 'pending' | 'failed'>('all');
@@ -379,7 +367,6 @@ export class HomeComponent {
 
   public demoTableSortKey = signal<string>('time');
   public demoTableSortDirection = signal<'asc' | 'desc' | ''>('desc');
-
   public readonly filteredTransactions = computed(() => {
     if (this.demoTableEmpty()) return [];
 

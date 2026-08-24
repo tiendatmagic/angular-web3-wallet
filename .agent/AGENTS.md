@@ -1,3 +1,24 @@
+### Yêu cầu: Khắc Phục Triệt Để Lỗi Mất Hiệu Ứng Sóng Nước Ripple (`RippleDirective`) & Button Ripple
+- **Nội dung yêu cầu:** Sửa lỗi hiệu ứng sóng nước (Ripple) và Button Ripple bị mất hiệu ứng, khi người dùng nhấp hoặc chạm vào vùng tương tác / nút bấm không nhìn thấy sóng lan tỏa.
+- **Phân tích nguyên nhân gốc rễ:**
+  1. **Xung đột thuộc tính CSS & Tailwind v4 Transform (`scale: 0` vs `transform: scale(1)`):** Trong `src/styles.scss`, class `@utility app-ripple-element` sử dụng `@apply scale-0`. Trong Tailwind v4, `scale-0` gán CSS property hiện đại `scale: 0;`. Khi animation `@keyframes app-ripple-scale { to { transform: scale(1); } }` chạy, thuộc tính `transform` thay đổi nhưng thuộc tính `scale: 0;` độc lập vẫn giữ nguyên bằng 0, khiến kích thước ripple bị nhân 0 và không bao giờ phóng to được.
+  2. **Vấn đề emit CSS của `@utility` trong Tailwind v4:** Phần tử `<span class="app-ripple-element">` được sinh ra động từ TypeScript (`renderer.createElement` + `renderer.addClass`), không có trong template HTML tĩnh, dễ bị bỏ qua trong quá trình biên dịch JIT utility.
+  3. **Màu Ripple mặc định (`#ffffff`) gây tàng hình trên giao diện Light Mode:** Directive `RippleDirective` gán `@Input('appRippleColor') color = '#ffffff'`, và `home.component.ts` khởi tạo `demoRippleCustomColor = signal('#ffffff')`. Trên nền sáng (Light mode như demo box `bg-slate-100/50` hay nút xám/cancel/outline), sóng trắng mờ đè trên nền trắng/xám sáng là hoàn toàn vô hình với mắt người.
+  4. **Animation Fade & Duration chưa đồng bộ:** Cần sử dụng CSS Variables `--ripple-opacity` và `--ripple-duration` để truyền thời gian và độ trong suốt từ TypeScript vào animation CSS mượt mà.
+- **Giải pháp triệt để:**
+  1. **Chuẩn hóa Animation & CSS Class (`src/styles.scss`):**
+     - Chuyển thành CSS class thuần `.app-ripple-element` với `transform: scale(0); transform-origin: center center; will-change: transform, opacity; z-index: 10;`.
+     - Cập nhật keyframes `app-ripple-scale` từ `0% { transform: scale(0); }` đến `100% { transform: scale(1); }`.
+     - Cập nhật keyframes `app-ripple-fade` từ `0% { opacity: var(--ripple-opacity, 0.35); }` đến `100% { opacity: 0; }`.
+     - Điều khiển thời lượng qua `--ripple-duration` và timing `cubic-bezier(0.1, 0.8, 0.3, 1)`.
+  2. **Nâng cấp `RippleDirective` (`ripple.directive.ts`):**
+     - Đổi màu mặc định `@Input('appRippleColor') color = ''`. Khi không truyền màu, ripple tự động kế thừa `currentColor` (màu chữ hiện tại của button/thẻ cha: nút Primary chữ trắng sóng trắng, nút xám/cancel chữ slate sóng slate trong suốt tinh tế).
+     - Thiết lập các CSS variables `--ripple-opacity` và `--ripple-duration` trực tiếp trên phần tử ripple.
+  3. **Đồng bộ Showcase Demo (`home.component.ts` & `home.component.html`):**
+     - Khởi tạo `demoRippleCustomColor = signal('')` để preset "Mặc định" được active ngay từ đầu và hiển thị sóng tự nhiên.
+     - Cập nhật binding `[class.ring-*]` đồng bộ với trạng thái rỗng của `demoRippleCustomColor()`.
+- **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Vượt qua 100% bộ unit tests (6/6 tests passed). Đóng gói Production (`npm run build`) hoàn thành thành công 100%.
+
 ### Yêu cầu: Thống Nhất Chung Hệ Thống Close Button (`.btn-close` / `.btn-close-sm`) & Cancel Button Trong Toàn Bộ Ứng Dụng
 - **Nội dung yêu cầu:** Chuẩn hóa và thống nhất toàn diện một hệ thống utility chung cho tất cả các nút đóng dấu X (`.btn-close` / `.btn-close-sm`) và nút Hủy bỏ (`.btn-cancel`), tránh việc mỗi component tự viết style phân mảnh.
 - **Giải pháp triệt để:**
@@ -3698,5 +3719,17 @@
   1. **Sửa `@variant dark` trong `styles.scss`:** Đổi từ `@variant dark (&:where(.dark, .dark *));` sang `@variant dark (&:is(.dark, .dark *));`. Pseudoclass `:is()` giữ nguyên độ ưu tiên của `.dark` (`(0, 2, 0)`), giúp các class `dark:...` luôn đánh bại hoàn toàn `bg-white` (`(0, 1, 0)`) khi chế độ Dark Mode được bật.
   2. **Chuẩn hóa Nền Pill Dark Mode (`tab-group.component.html` & `styles.scss`):** Đổi màu nền pill ở Dark Mode của `app-tab-group` từ `dark:bg-slate-900` thành `dark:bg-slate-800` để khớp 100% với `theme-switcher-pill`, tạo chiều sâu phân tầng đẹp mắt trên nền container `dark:bg-slate-900/80`.
 - **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Runs `npm run build` thành công 100%.
+
+### Yêu cầu: Bổ sung 50 đối tượng giao dịch Web3 mẫu cho `demoTransactions` ở `HomeComponent`
+- **Nội dung yêu cầu:** Cung cấp danh sách 50 giao dịch Web3 mẫu đa dạng cho biến `demoTransactions` trong `home.component.ts` để phục vụ bảng lịch sử giao dịch và phân trang (pagination) mượt mà.
+- **Giải pháp:**
+  1. **Tạo file dữ liệu mẫu [mock-transactions.data.ts](file:///d:/git/angular-web3-wallet/src/app/features/home/mock-transactions.data.ts):**
+     - Định nghĩa `DemoTransactionItem` interface và mảng 50 transactions `DEMO_TRANSACTIONS`.
+     - Bao gồm đa dạng các phương thức Web3: `Transfer`, `Swap (ETH/USDT, USDT/LINK, USDC/ETH, WBTC/ETH, DAI/USDC, ETH/UNI, AAVE/ETH, MATIC/ETH, ARB/OP)`, `Approve (USDT, DAI, USDC, WETH)`, `Add/Remove Liquidity`, `Stake/Unstake/Restake`, `Mint/Transfer/Burn/List NFT`, `Borrow/Repay DAI`, `Supply/Withdraw USDC`, `Flash Loan`, `Bridge Tokens`, `Deploy Contract`, `Multisig Sign`, `Execute/Cancel Order`, `Wrap/Unwrap ETH`.
+     - Đa dạng trạng thái (`success`, `pending`, `failed`), khối (`block`), mốc thời gian (`time`), địa chỉ (`from`, `to`) và giá trị (`value`).
+  2. **Tích hợp vào [home.component.ts](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.ts):**
+     - Import `DEMO_TRANSACTIONS` và gán `public readonly demoTransactions = DEMO_TRANSACTIONS;`.
+     - Giữ code component gọn gàng, tách biệt dữ liệu mẫu, đảm bảo tính tái sử dụng và kiểm thử phân trang 10 trang (5 items/page).
+- **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Vượt qua 100% bộ unit tests (6/6 tests passed). Đóng gói Production (`npm run build`) hoàn thành 100%.
 
 

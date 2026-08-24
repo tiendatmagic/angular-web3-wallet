@@ -966,8 +966,8 @@
                 variant="cancel"
                 size="sm"
                 [class.ring-2]="demoRippleColor() === '' && !demoRippleCustomColor()"
-                [class.ring-slate-400]="demoRippleColor() === ''"
-                [class.dark:ring-slate-600]="demoRippleColor() === ''"
+                [class.ring-slate-400]="demoRippleColor() === '' && !demoRippleCustomColor()"
+                [class.dark:ring-slate-600]="demoRippleColor() === '' && !demoRippleCustomColor()"
                 (click)="demoRippleColor.set(''); demoRippleCustomColor.set('')"
                 class="!py-1.5 text-xs font-bold"
               >
@@ -980,7 +980,9 @@
                 [class.ring-2]="
                   demoRippleColor() === 'rgba(255, 0, 221, 0.2)' && !demoRippleCustomColor()
                 "
-                [class.ring-primary]="demoRippleColor() === 'rgba(255, 0, 221, 0.2)'"
+                [class.ring-primary]="
+                  demoRippleColor() === 'rgba(255, 0, 221, 0.2)' && !demoRippleCustomColor()
+                "
                 (click)="
                   demoRippleColor.set('rgba(255, 0, 221, 0.2)'); demoRippleCustomColor.set('')
                 "
@@ -995,7 +997,9 @@
                 [class.ring-2]="
                   demoRippleColor() === 'rgba(128, 0, 255, 0.2)' && !demoRippleCustomColor()
                 "
-                [class.ring-secondary]="demoRippleColor() === 'rgba(128, 0, 255, 0.2)'"
+                [class.ring-secondary]="
+                  demoRippleColor() === 'rgba(128, 0, 255, 0.2)' && !demoRippleCustomColor()
+                "
                 (click)="
                   demoRippleColor.set('rgba(128, 0, 255, 0.2)'); demoRippleCustomColor.set('')
                 "
@@ -1010,7 +1014,9 @@
                 [class.ring-2]="
                   demoRippleColor() === 'rgba(239, 68, 68, 0.2)' && !demoRippleCustomColor()
                 "
-                [class.ring-red-500]="demoRippleColor() === 'rgba(239, 68, 68, 0.2)'"
+                [class.ring-red-500]="
+                  demoRippleColor() === 'rgba(239, 68, 68, 0.2)' && !demoRippleCustomColor()
+                "
                 (click)="
                   demoRippleColor.set('rgba(239, 68, 68, 0.2)'); demoRippleCustomColor.set('')
                 "

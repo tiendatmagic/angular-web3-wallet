@@ -5,7 +5,7 @@ import { Directive, Input, ElementRef, HostListener, Renderer2, NgZone } from '@
   standalone: true
 })
 export class RippleDirective {
-  @Input('appRippleColor') color: string = '#ffffff';
+  @Input('appRippleColor') color: string = '';
   @Input('appRippleCentered') centered: boolean = false;
   @Input('appRippleDisabled') disabled: boolean = false;
   @Input('appRippleUnbounded') unbounded: boolean = false;
@@ -19,7 +19,7 @@ export class RippleDirective {
     private el: ElementRef<HTMLElement>,
     private renderer: Renderer2,
     private ngZone: NgZone
-  ) {}
+  ) { }
 
   @HostListener('mousedown', ['$event'])
   onMouseDown(event: MouseEvent): void {
@@ -53,7 +53,7 @@ export class RippleDirective {
 
     const rect = container.getBoundingClientRect();
     const isCentered = this.centered;
-    
+
     let x = 0;
     let y = 0;
     let size = 0;
@@ -84,28 +84,29 @@ export class RippleDirective {
     this.renderer.setStyle(ripple, 'height', `${size}px`);
     this.renderer.setStyle(ripple, 'left', `${x - size / 2}px`);
     this.renderer.setStyle(ripple, 'top', `${y - size / 2}px`);
-    
+
     if (this.color) {
       this.renderer.setStyle(ripple, 'background-color', this.color);
     }
 
-    let finalOpacity = 0.3;
-    if (this.color) {
-      finalOpacity = 1.0;
-    }
-    if (this.opacity !== null) {
+    let finalOpacity = 0.35;
+    if (this.opacity !== null && this.opacity !== undefined) {
       finalOpacity = this.opacity;
+    } else if (!this.color) {
+      finalOpacity = 0.25;
     }
-    this.renderer.setStyle(ripple, 'opacity', finalOpacity.toString());
 
-    this.renderer.setStyle(ripple, 'animation-duration', `${this.duration}ms`);
+    this.renderer.setStyle(ripple, '--ripple-opacity', finalOpacity.toString());
+    this.renderer.setStyle(ripple, 'opacity', finalOpacity.toString());
+    this.renderer.setStyle(ripple, '--ripple-duration', `${this.duration}ms`);
+    this.renderer.setStyle(ripple, 'animation-duration', `${this.duration}ms, ${this.duration}ms`);
 
     this.renderer.appendChild(container, ripple);
 
     this.ngZone.runOutsideAngular(() => {
       setTimeout(() => {
         ripple.remove();
-      }, this.duration);
+      }, this.duration + 100);
     });
   }
 }
