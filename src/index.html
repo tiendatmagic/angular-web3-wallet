@@ -6,6 +6,11 @@
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+  <!-- Google Fonts Preconnect & Stylesheet -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700;800;900&display=swap">
+
   
     <script>
     (function () {
@@ -28,6 +33,25 @@
       --splash-bg: #030712;
       --splash-text: #f8fafc;
     }
+    /* Defensive basic constraints */
+    app-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.25rem;
+      height: 1.25rem;
+      flex-shrink: 0;
+    }
+    app-logo {
+      display: block;
+      width: 2rem;
+      height: 2rem;
+      flex-shrink: 0;
+    }
+    svg, img {
+      max-width: 100%;
+    }
+
     .app-splash-screen {
       position: fixed;
       top: 0;
