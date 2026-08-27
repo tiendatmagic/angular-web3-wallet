@@ -1,3 +1,25 @@
+### Yêu cầu: Khắc Phục Lỗi Toạ Độ & Chiều Hiển Thị Của DropdownMenuComponent (Card 19)
+- **Nội dung yêu cầu:** Kiểm tra và sửa lỗi DropdownMenu (`app-dropdown-menu`) khi mở lên trên bị bay lên đỉnh màn hình (`y = 8px`) đè lên các card phía trên (ảnh 1), hoặc bị văng lệch góc trên bên phải (ảnh 2) do lỗi toạ độ và chiều hiển thị tương tự.
+- **Phân tích kỹ thuật & Nguyên nhân:**
+  1. **Lỗi tính toán toạ độ tĩnh:**
+     - Trước đó `updateMenuPosition()` và `updateSubmenuPosition()` sử dụng `top = triggerRect.top - gap - popoverHeight` với `popoverHeight` ước lượng tĩnh.
+     - Khi `top < 8`, code ép `top = 8px`, khiến Menu bị kéo văng lên đỉnh màn hình (`y = 8px`), tạo khoảng hở lớn với trigger button và đè lên nội dung bên trên.
+     - Khi mở xuống dưới, code ép `top = window.innerHeight - 8 - popoverHeight`, làm Menu bị đẩy ngược lên đè lên trigger button.
+  2. **Giải pháp kiến trúc toàn diện:**
+     - **Mở lên trên (`top`):** Sử dụng `top: triggerRect.top - gap` kết hợp `transform: translateY(-100%)`. Đáy Menu luôn tiếp giáp chính xác với đỉnh trigger button (cách đúng `gap = 6px`), loại bỏ triệt để việc Menu bay lên đỉnh màn hình `y = 8px`.
+     - **Mở xuống dưới (`bottom`):** Đỉnh Menu luôn gắn cố định vào đáy trigger button `top: triggerRect.bottom + gap`, không tự ý dịch vị trí.
+     - Đồng bộ cơ chế định vị cho Submenu lồng nhau (`updateSubmenuPosition()`).
+     - Tích hợp `maxHeight` và `overflow-y-auto` thích ứng với không gian thực tế của Viewport.
+  3. **Bổ sung Unit Test:**
+     - Tạo mới 7 unit tests cho `DropdownMenuComponent` (`dropdown-menu.component.spec.ts`).
+- **Các vị trí đã xử lý:**
+  1. `src/app/shared/components/dropdown-menu/dropdown-menu.component.ts`
+  2. `src/app/shared/components/dropdown-menu/dropdown-menu.component.spec.ts`
+- **Xác thực:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npm test`: 19 files / 95 tests passed (100%).
+  - `npm run build`: Build production hoàn tất thành công 100%.
+
 ### Yêu cầu: Khắc Phục Lỗi Toạ Độ & Chiều Hiển Thị Của DateTimePicker và DateTimeRange
 - **Nội dung yêu cầu:** Sửa lỗi hiển thị và chiều mở (placement) của `CustomDatePicker` và `CustomDateTimeRange` khi mở lên trên bị lệch/bay lên đỉnh màn hình đè lên các thẻ bên trên (ảnh 1), khi mở xuống dưới bị đè ô input hoặc tràn đáy (ảnh 2), và đồng bộ hóa giao diện phần dưới.
 - **Phân tích kỹ thuật & Nguyên nhân:**

@@ -269,44 +269,24 @@ export class DropdownMenuComponent implements AfterViewChecked {
     }
     popoverWidth = Math.max(popoverWidth, 220);
 
-    let popoverHeight = this.popoverEl?.nativeElement?.offsetHeight || 0;
-    if (!popoverHeight) {
-      const itemCount = this.items.length || 4;
-      popoverHeight = (this.header ? 64 : 0) + itemCount * 42 + 20;
-    }
+    const itemCount = this.items.length || 4;
+    const estimatedHeight = (this.header ? 72 : 0) + itemCount * 38 + 24;
 
-    const spaceBelow = window.innerHeight - triggerRect.bottom - gap;
-    const spaceAbove = triggerRect.top - gap;
+    const spaceBelow = window.innerHeight - triggerRect.bottom - gap - 12;
+    const spaceAbove = triggerRect.top - gap - 12;
 
     let placeBottom = true;
     if (this.placement.startsWith('top')) {
-      if (spaceAbove >= popoverHeight || spaceAbove >= spaceBelow) {
-        placeBottom = false;
-      } else {
-        placeBottom = true;
-      }
-    } else {
-      if (spaceBelow >= popoverHeight || spaceBelow >= spaceAbove) {
+      if (spaceAbove < estimatedHeight && spaceBelow > spaceAbove) {
         placeBottom = true;
       } else {
         placeBottom = false;
       }
-    }
-
-    let top = 0;
-    if (placeBottom) {
-      top = triggerRect.bottom + gap;
-      if (top + popoverHeight > window.innerHeight - 8) {
-        top = Math.max(8, window.innerHeight - 8 - popoverHeight);
-      }
-      if (top < 8) top = 8;
     } else {
-      top = triggerRect.top - gap - popoverHeight;
-      if (top < 8) {
-        top = 8;
-      }
-      if (top + popoverHeight > window.innerHeight - 8) {
-        top = Math.max(8, window.innerHeight - 8 - popoverHeight);
+      if (spaceBelow < estimatedHeight && spaceAbove > spaceBelow) {
+        placeBottom = false;
+      } else {
+        placeBottom = true;
       }
     }
 
@@ -314,42 +294,44 @@ export class DropdownMenuComponent implements AfterViewChecked {
 
     if (this.placement.endsWith('right')) {
       left = triggerRect.right - popoverWidth;
-      if (left < 8) {
-        left = Math.max(8, triggerRect.left);
-      }
-      if (left + popoverWidth > window.innerWidth - 8) {
-        left = Math.max(8, window.innerWidth - 8 - popoverWidth);
-      }
     } else if (this.placement.endsWith('center')) {
       left = triggerRect.left + (triggerRect.width - popoverWidth) / 2;
-      if (left < 8) left = 8;
-      if (left + popoverWidth > window.innerWidth - 8) {
-        left = Math.max(8, window.innerWidth - 8 - popoverWidth);
-      }
     } else {
       left = triggerRect.left;
-      if (left + popoverWidth > window.innerWidth - 8) {
-        left = Math.max(8, triggerRect.right - popoverWidth);
-      }
-      if (left < 8) left = 8;
-      if (left + popoverWidth > window.innerWidth - 8) {
-        left = Math.max(8, window.innerWidth - 8 - popoverWidth);
-      }
     }
 
-    const availableHeight = placeBottom
-      ? Math.max(120, window.innerHeight - top - 8)
-      : Math.max(120, triggerRect.top - gap - 8);
-    const maxHeight = Math.min(availableHeight, 480);
+    if (left + popoverWidth > window.innerWidth - 8) {
+      left = Math.max(8, window.innerWidth - 8 - popoverWidth);
+    }
+    if (left < 8) left = 8;
+
     const offset = getContainingBlockOffset(trigger);
 
-    this.popoverStyle = {
-      position: 'fixed',
-      top: `${top - offset.top}px`,
-      left: `${left - offset.left}px`,
-      maxHeight: `${maxHeight}px`,
-      zIndex: '9999',
-    };
+    if (placeBottom) {
+      this.popoverStyle = {
+        position: 'fixed',
+        top: `${triggerRect.bottom + gap - offset.top}px`,
+        left: `${left - offset.left}px`,
+        width: `${popoverWidth}px`,
+        maxWidth: 'calc(100vw - 16px)',
+        maxHeight: `${Math.max(160, spaceBelow)}px`,
+        transform: 'none',
+        overflowY: 'auto',
+        zIndex: '9999',
+      };
+    } else {
+      this.popoverStyle = {
+        position: 'fixed',
+        top: `${triggerRect.top - gap - offset.top}px`,
+        left: `${left - offset.left}px`,
+        width: `${popoverWidth}px`,
+        maxWidth: 'calc(100vw - 16px)',
+        maxHeight: `${Math.max(160, spaceAbove)}px`,
+        transform: 'translateY(-100%)',
+        overflowY: 'auto',
+        zIndex: '9999',
+      };
+    }
   }
 
   public updateSubmenuPosition(): void {
@@ -377,10 +359,8 @@ export class DropdownMenuComponent implements AfterViewChecked {
     subWidth = Math.max(subWidth, 200);
 
     const currentSub = this.activeSubmenu();
-    let subHeight = this.submenuEl?.nativeElement?.offsetHeight || 0;
-    if (!subHeight) {
-      subHeight = (currentSub?.children?.length ?? 2) * 40 + 16;
-    }
+    const subItemCount = currentSub?.children?.length ?? 2;
+    const subEstimatedHeight = subItemCount * 38 + 16;
 
     let subLeft = triggerRect.right + 4;
     if (subLeft + subWidth > window.innerWidth - 8) {
@@ -391,24 +371,29 @@ export class DropdownMenuComponent implements AfterViewChecked {
       subLeft = Math.max(8, window.innerWidth - 8 - subWidth);
     }
 
-    let subTop = triggerRect.top - 4;
+    const spaceBelow = window.innerHeight - triggerRect.top - 12;
+    const spaceAbove = triggerRect.bottom - 12;
+    const placeBottom = spaceBelow >= subEstimatedHeight || spaceBelow >= spaceAbove;
 
-    if (subTop + subHeight > window.innerHeight - 8) {
-      subTop = triggerRect.bottom - subHeight + 4;
+    let subTop = triggerRect.top;
+    let transform = 'none';
+    let maxHeight = Math.max(120, spaceBelow);
+
+    if (!placeBottom) {
+      subTop = triggerRect.bottom;
+      transform = 'translateY(-100%)';
+      maxHeight = Math.max(120, spaceAbove);
     }
-
-    if (subTop < 8) {
-      subTop = Math.max(8, window.innerHeight - 8 - subHeight);
-    }
-    if (subTop < 8) subTop = 8;
-
-    const maxHeight = Math.min(window.innerHeight - 16, 420);
 
     this.submenuStyle = {
       position: 'fixed',
       left: `${subLeft - offset.left}px`,
       top: `${subTop - offset.top}px`,
+      width: `${subWidth}px`,
+      maxWidth: 'calc(100vw - 16px)',
       maxHeight: `${maxHeight}px`,
+      transform: transform,
+      overflowY: 'auto',
       zIndex: '10000',
     };
   }
