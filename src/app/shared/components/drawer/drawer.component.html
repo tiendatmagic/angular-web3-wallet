@@ -1,11 +1,6 @@
 @if (isRendered) {
   <div
-    class="drawer-backdrop fixed inset-0 z-50 flex"
-    [ngClass]="{
-      'justify-end': position === 'right',
-      'justify-start': position === 'left',
-      'items-end justify-center': position === 'bottom',
-    }"
+    [class]="'drawer-backdrop fixed inset-0 z-[60] flex ' + positionContainerClass"
   >
     <div
       aria-hidden="true"
@@ -15,22 +10,10 @@
     ></div>
 
     <div
-      class="relative z-10 glass-dialog border-slate-200/50 dark:border-slate-800/50 flex flex-col overflow-hidden"
-      [ngClass]="{
-        'h-full border-l': position === 'right',
-        'h-full border-r': position === 'left',
-        'w-full max-w-2xl border-t rounded-t-[15px] max-h-[85vh]': position === 'bottom',
-        'animate-drawer-right': position === 'right' && !isClosing,
-        'animate-drawer-left': position === 'left' && !isClosing,
-        'animate-drawer-bottom': position === 'bottom' && !isClosing,
-        'animate-drawer-right-out': position === 'right' && isClosing,
-        'animate-drawer-left-out': position === 'left' && isClosing,
-        'animate-drawer-bottom-out': position === 'bottom' && isClosing,
-        'w-full sm:w-80': (position === 'right' || position === 'left') && size === 'sm',
-        'w-full sm:w-[450px]': (position === 'right' || position === 'left') && size === 'md',
-        'w-full sm:w-[600px]': (position === 'right' || position === 'left') && size === 'lg',
-        'w-full': (position === 'right' || position === 'left') && size === 'full',
-      }"
+      [class]="
+        'relative z-10 glass-dialog border-slate-200/50 dark:border-slate-800/50 flex flex-col overflow-hidden ' +
+        panelPositionClass
+      "
       (click)="$event.stopPropagation()"
     >
       <div aria-hidden="true" class="glass-dialog-backdrop"></div>

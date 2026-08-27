@@ -341,10 +341,36 @@ Hỗ trợ 4 cấp độ thông điệp: `info`, `success`, `warning`, `error` v
 
 ### 6.11. Quy Tắc Angular Custom Component Host Display
 
-- **Bắt buộc**: Mọi Angular custom component (ví dụ: `app-custom-switch`, `app-custom-select`, `app-custom-date-picker`, `app-custom-checkbox`, `app-custom-radio`, `app-progress`, v.v.) phải thiết lập:
+- **Bắt buộc**: Mọi Angular custom component (ví dụ: `app-custom-switch`, `app-custom-select`, `app-custom-date-picker`, `app-custom-checkbox`, `app-custom-radio`, `app-progress`, `app-drawer`, v.v.) phải thiết lập:
   ```css
   :host {
     display: block;
   }
   ```
   Nhằm loại bỏ hành vi mặc định `display: inline` của trình duyệt khiến phần tử bỏ qua margin/padding dọc trong flex/grid layout.
+
+### 6.12. Hệ Thống Phân Tầng Z-Index & Bảng Trượt Slide-Over (`DrawerComponent`)
+
+Nhằm đảm bảo 100% các thành phần cố định (Fixed/Sticky), menu trượt, hộp thoại (Modal/Dialog), và thông báo nổi (Toast) hiển thị đúng lớp, không bị giam cầm Stacking Context và không bị Sidebar/Header che lấp:
+
+1. **Bảng Quy Chuẩn Z-Index Toàn Hệ Thống**:
+   - **Cấp độ 1 (Base/Page Content)**: `z-0` đến `z-10` (Thẻ card, văn bản, nút bấm, avatar stack với `isolate` và `hover:z-10`).
+   - **Cấp độ 2 (Sticky Header)**: `sticky top-0 z-40` (Header luôn nổi trên nội dung cuộn trang).
+   - **Cấp độ 3 (Desktop Sidebar)**: `fixed inset-y-0 left-0 z-50` (Sidebar cố định lề trái trên Desktop).
+   - **Cấp độ 4 (Drawer & Slide-over Panels)**: `fixed inset-0 z-[60]` (Drawer trượt ra từ lề phải, lề trái hoặc đáy màn hình, luôn phủ đè lên trên cả Sidebar và Header).
+   - **Cấp độ 5 (Modal / Dialog / Image Lightbox)**: `fixed inset-0 z-[70]` (Hộp thoại xác nhận, modal form mở ở giữa màn hình, có thể nổi trên Drawer).
+   - **Cấp độ 6 (Mobile Sidebar Menu)**: `fixed inset-0 z-[80]` (Menu điều hướng trên màn hình cảm ứng/di động).
+   - **Cấp độ 7 (Toast Notifications)**: `fixed z-[9999]` (Thông báo hệ thống góc màn hình, luôn hiển thị ở tầng cao nhất).
+
+2. **Quy Tắc Tuyệt Đối Về Thẻ Bọc Router Outlet (`app.html`)**:
+   - **Cấm đặt `relative z-0` hoặc `transform`** trên thẻ cha bọc `<router-outlet>`.
+   - Bất kỳ `z-index` cố định nào đặt trên container router-outlet sẽ tạo ra một Local Stacking Context cô lập, khiến toàn bộ các component con (như `<app-drawer>`, `<app-modal>` đặt trong template trang) bị khóa ở mức $z=0$ và bị chìm bên dưới Sidebar (`z-50`) và Header (`z-40`).
+
+3. **Quy Chuẩn Bảng Trượt (`DrawerComponent`)**:
+   - **Backdrop Container**: `class="drawer-backdrop fixed inset-0 z-[60] flex"` kết hợp với class căn lề `justify-end` (Right), `justify-start` (Left), hoặc `items-end justify-center` (Bottom).
+   - **Backdrop Overlay**: `class="absolute inset-0 bg-black/40"` hỗ trợ đóng khi click ra ngoài và hoạt ảnh `animate-drawer-backdrop` / `animate-drawer-backdrop-out`.
+   - **Slide Animations**:
+     - Right: `animate-drawer-right` (trượt vào từ phải qua) / `animate-drawer-right-out`.
+     - Left: `animate-drawer-left` (trượt vào từ trái qua) / `animate-drawer-left-out`.
+     - Bottom: `animate-drawer-bottom` (trượt lên từ đáy) / `animate-drawer-bottom-out` (bo góc đỉnh `rounded-t-[15px] max-h-[85vh]`).
+

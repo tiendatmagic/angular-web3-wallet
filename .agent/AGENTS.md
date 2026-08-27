@@ -1,3 +1,24 @@
+### Yêu cầu: Khắc Phục Lỗi Drawer Bị Khuất Sau Sidebar & Chuẩn Hóa Phân Tầng Z-Index / Stacking Context
+- **Nội dung yêu cầu:** Sửa lỗi khi mở Drawer (bảng trượt) thì không thấy Drawer hoặc Drawer bị che lấp / nằm chìm phía sau Sidebar và Header.
+- **Phân tích kỹ thuật & Nguyên nhân:**
+  1. **Lỗi Giam Cầm Stacking Context (`relative z-0` trong `app.html`):** Thẻ bọc `<div class="... relative z-0">` chứa `<router-outlet>` đã vô tình tạo ra một Stacking Context con mới cố định ở mức $z=0$ so với root stacking context. Toàn bộ các component fixed overlay con được render bên trong routed page (như `<app-drawer>`, các modal / dialogs) đều bị cô lập ở mức $z=0$. Do `<app-sidebar>` có $z=50$ và `<app-header>` có $z=40$ ở root context, Sidebar và Header luôn đè lên trên Drawer và backdrop của nó. Khi mở Drawer lề trái (`position="left"`), toàn bộ thân Drawer nằm hoàn toàn phía dưới Desktop Sidebar (`w-72`).
+  2. **Thứ bậc Z-Index chưa đồng bộ:** Cần phân tầng z-index minh bạch: Base Content ($z=0..10$) $\rightarrow$ Header ($z=40$) $\rightarrow$ Desktop Sidebar ($z=50$) $\rightarrow$ Drawer ($z=[60]$) $\rightarrow$ Modal/Dialog ($z=[70]$) $\rightarrow$ Mobile Menu ($z=[80]$) $\rightarrow$ Toast ($z=[9999]$).
+- **Các bước & Vị trí đã thực hiện:**
+  1. **Giải Phóng Router Outlet Stacking Context (`src/app/app.html`):**
+     - Loại bỏ class `relative z-0` khỏi thẻ bọc `<div class="min-h-screen transition-[padding] duration-300 ease-in-out overflow-x-hidden max-w-full">`, cho phép các fixed overlay trong trang tự do render ở tầng viewport root.
+  2. **Nâng Cấp & Chuẩn Hóa `DrawerComponent` (`drawer.component.html` & `drawer.component.ts`):**
+     - Nâng cấp z-index của container Drawer lên `z-[60]` (`drawer-backdrop fixed inset-0 z-[60] flex`).
+     - Bổ sung getters `positionContainerClass` và `panelPositionClass` trong TypeScript giúp quản lý class căn lề, kích thước và animation mượt mà, loại bỏ triệt để lỗi đánh giá `ngClass` nhiều class lồng nhau.
+  3. **Chuẩn Hóa Z-Index Cho Các Hộp Thoại Modal & Lightbox:**
+     - Nâng cấp `modal.component.html`, `modal-wrapper.component.html`, `confirm-modal.component.html`, `delete-confirm-modal.component.html`, `file-upload.component.html` lên `z-[70]`.
+  4. **Tạo Mới Bộ Unit Test Cho Drawer (`drawer.component.spec.ts`):**
+     - Tạo 6 test cases bao phủ toàn diện: render backdrop, z-index `z-[60]`, vị trí Left/Right/Bottom, các kích thước sm/md/lg/full, click nút đóng, backdrop overlay và animation closing timer.
+  5. **Cập Nhật Toàn Diện Tài Liệu Thiết Kế (`.agent/design.md` & `design.md`):**
+     - Bổ sung Mục 6.12 về Hệ Thống Phân Tầng Z-Index Toàn Cục và Quy Chuẩn `DrawerComponent`.
+- **Xác thực:**
+  - `npm test`: 14 files / 65 tests passed (100%).
+  - `npm run build`: Build production hoàn tất thành công 100%.
+
 ### Yêu cầu: Nâng Cấp & Sửa Lỗi Cụm Điều Khiển Theme Switcher (`ThemeSwitcherComponent`)
 - **Nội dung yêu cầu:** Sửa lại phần khung điều khiển chuyển đổi theme (khung màu đỏ), khắc phục tình trạng mất active pill background và tinh chỉnh kích thước icon SVG nhỏ gọn, cân đối (`w-3 h-3`) theo chuẩn thiết kế.
 - **Phân tích kỹ thuật & Nguyên nhân:**
