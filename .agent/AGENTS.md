@@ -1,3 +1,34 @@
+### Yêu cầu: Rà Soát & Bổ Sung Toàn Diện Hệ Thống Đa Ngôn Ngữ (i18n EN / VI)
+- **Nội dung yêu cầu:** Kiểm tra kỹ lưỡng toàn bộ hệ thống đa ngôn ngữ EN / VI, phát hiện và khắc phục các vị trí bị lộ raw key translation (ví dụ `showcase.switch_network`, `SHOWCASE.BALANCE`, `SHOWCASE.NETWORK`), kiểm tra độ đồng bộ giữa các file từ điển `vi.ts`, `en.ts`, `i18n.types.ts` và các component trong dự án.
+- **Phân tích kỹ thuật & Nguyên nhân:**
+  1. **Thiếu Khai Báo Key Trong Từ Điển i18n (`src/app/core/i18n/`):**
+     - Tại `home.component.html`, các thẻ binding `{{ 'showcase.balance' | translate }}`, `{{ 'showcase.network' | translate }}`, và `{{ 'showcase.switch_network' | translate }}` được gọi nhưng trong nhóm `showcase` của `i18n.types.ts`, `vi.ts`, và `en.ts` chưa được định nghĩa.
+     - Hàm `translate(key)` trong `TranslationService` khi không tìm thấy giá trị chuỗi tương ứng trong từ điển sẽ fallback trả về chính raw key `key`, dẫn đến việc trên giao diện xuất hiện chuỗi chữ thô `showcase.switch_network`, `showcase.balance`, `showcase.network`.
+  2. **Rà Soát Toàn Diện 585 Translation Keys:**
+     - Sử dụng script tự động quét đối chiếu toàn bộ các template `.html`, các lời gọi `translationService.translate()` / `translationService.t()` trong TypeScript với từ điển `vi.ts` và `en.ts`.
+     - Phát hiện thêm text chuỗi cứng `Format: {{ file.type }}` trong `file-upload.component.html` chưa được bọc i18n.
+- **Các bước & Vị trí đã thực hiện:**
+  1. **Cập Nhật Định Nghĩa Kiểu Dữ Liệu (`src/app/core/i18n/i18n.types.ts`):**
+     - Bổ sung `balance: string;`, `network: string;`, `switch_network: string;` vào interface `showcase`.
+     - Bổ sung `file_format: string;` vào interface `file_upload_ui`.
+  2. **Đồng Bộ Từ Điển Tiếng Việt (`src/app/core/i18n/vi.ts`):**
+     - `showcase.balance`: `'Số Dư Khả Dụng'`
+     - `showcase.network`: `'Mạng Lưới'`
+     - `showcase.switch_network`: `'Chuyển Đổi Mạng Nhanh'`
+     - `file_upload_ui.file_format`: `'Định dạng: {format}'`
+  3. **Đồng Bộ Từ Điển Tiếng Anh (`src/app/core/i18n/en.ts`):**
+     - `showcase.balance`: `'Available Balance'`
+     - `showcase.network`: `'Current Network'`
+     - `showcase.switch_network`: `'Quick Switch Network'`
+     - `file_upload_ui.file_format`: `'Format: {format}'`
+  4. **Cập Nhật Template (`src/app/shared/components/file-upload/file-upload.component.html`):**
+     - Thay thế text cứng `Format: {{ file.type }}` bằng `{{ 'file_upload_ui.file_format' | translate: { format: file.type } }}`.
+- **Xác thực:**
+  - Quét kiểm tra đối chiếu 585 key: 0 missing in VI, 0 missing in EN, 0 mismatch key.
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npm test`: 14 files / 65 tests passed (100%).
+  - `npm run build`: Build production hoàn tất thành công 100%.
+
 ### Yêu cầu: Loại Bỏ Hiệu Ứng Active Scale Trong Theme Switcher Component (`ThemeSwitcherComponent`)
 - **Nội dung yêu cầu:** Bỏ class `active:scale` (active scale animation) của component theme switch.
 - **Phân tích kỹ thuật & Tinh chỉnh:**
