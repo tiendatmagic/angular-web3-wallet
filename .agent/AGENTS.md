@@ -1,5 +1,5 @@
-### Yêu cầu: Khắc Phục Triệt Để Hiện Tượng Rung Giật (Hover Flicker / Boundary Jitter Loop) Trên Component Avatar (`AvatarComponent`) & Avatar Group Stack
-- **Nội dung yêu cầu:** Rà soát và sửa lỗi khi rê chuột (hover) vào Avatar đơn và Avatar Group Stack (+N counter) bị rung giật bần bật, nhấp nháy chuyển động liên tục; đảm bảo hiệu ứng hover nảy bồng bềnh siêu mượt mà.
+### Yêu cầu: Khắc Phục Triệt Để Hiện Tượng Rung Giật Hover & Lỗi Avatar Nổi Đè Lên Sticky Header Khi Cuộn Trang
+- **Nội dung yêu cầu:** Sửa lỗi hover avatar bị giật giật bần bật và khắc phục triệt để tình trạng khi cuộn trang hoặc hover, component avatar (đặc biệt là nút `+3` counter) bị nổi đè lên trên thanh Sticky Header (`Connect Wallet`, selector ngôn ngữ, viền header).
 - **Phân tích kỹ thuật & Nguyên nhân gốc rễ:**
   1. **Hiện tượng Boundary Hover Chatter (Vòng lặp mất/nhận hover vô tận):**
      - Khi một phần tử vừa đóng vai trò là target nhận hover, vừa tự di chuyển `hover:-translate-y-1.5` (-6px) hoặc `hover:-translate-y-2` (-8px) nhấc lên theo trục Y:
@@ -10,21 +10,28 @@
      - Vòng lặp này diễn ra liên tục theo tần số làm tươi màn hình (60-120fps), tạo ra hiện tượng avatar **rung bần bật / giật giật dữ dội** ("tấu hài").
   2. **Quán tính vọt lố quá mức của hàm Spring Cubic-Bezier `cubic-bezier(0.34, 1.56, 0.64, 1)`:**
      - Tham số `1.56` (> 1.0) tạo ra độ nảy vọt lố (overshoot) tới 56%, khiến avatar bị đẩy vọt lên tới `-12.5px`, khuếch đại khoảng cách tuột chuột ở mép dưới.
-  3. **Xung đột Z-index trong Avatar Group Xếp Chồng (`-space-x-3`):**
-     - Các item xếp đè nhau khi hover tranh chấp `hover:z-30` và `scale-110`, gây giật nháy khi chuột ở vùng tiếp giáp.
+  3. **Xung Đột Stacking Context Giữa Header & Avatar Khi Cuộn Trang:**
+     - `header.component.html` trước đó dùng `sticky top-0 z-50 md:z-30`. Trên desktop (`md` trở lên), Header chỉ có `z-30`.
+     - `avatar.component.html` gán `hover:z-30` cho stack items và `z-10 hover:z-30` cho stack counter `+N`.
+     - Vùng nội dung `<router-outlet>` trong `app.html` nằm sau `<app-header>` trong cây DOM. Khi 2 phần tử cùng nằm trong root stacking context có `z-index: 30` bằng nhau, phần tử nằm sau trong HTML sẽ đè lên phần tử nằm trước.
+     - Kết quả: Khi người dùng cuộn trang, avatar stack / nút `+3` bay đè lên trên Header, che khuất nút Connect Wallet và viền header.
 - **Các bước & Vị trí đã thực hiện:**
   1. **Ứng Dụng Kiến Trúc Tách Biệt: Trigger Wrapper Tĩnh & Motion Canvas Bồng Bềnh (`avatar.component.html`):**
-     - **Thẻ ngoài (Trigger Wrapper)**: Cố định 100% trong luồng layout (`group/avatar`, `group/stack-item`, `group/stack-counter`), không di chuyển `translate-y` hay `scale`, mở rộng vùng hit-test an toàn `p-1.5 -m-1.5` và `hover:z-30`. Nhờ thẻ cha đứng yên tuyệt đối, con trỏ chuột không bao giờ bị tuột ra ngoài Hitbox dù avatar bên trong có bay lên hay phóng to.
+     - **Thẻ ngoài (Trigger Wrapper)**: Cố định 100% trong luồng layout (`group/avatar`, `group/stack-item`, `group/stack-counter`), không di chuyển `translate-y` hay `scale`, mở rộng vùng hit-test an toàn `p-1.5 -m-1.5` và `hover:z-10`. Nhờ thẻ cha đứng yên tuyệt đối, con trỏ chuột không bao giờ bị tuột ra ngoài Hitbox dù avatar bên trong có bay lên hay phóng to.
      - **Thẻ con (Motion Canvas)**: Thực hiện toàn bộ hoạt ảnh đồ họa `transform-gpu transition-[transform,scale,box-shadow] duration-500 ease-[cubic-bezier(0.34,1.25,0.64,1)]` với `group-hover/avatar:-translate-y-1.5 group-hover/avatar:scale-110`, bóng đổ `group-hover/avatar:shadow-xl group-hover/avatar:shadow-purple-500/25` và đồng bộ status dot `group-hover/avatar:scale-110`.
      - Triệt tiêu 100% hiện tượng đứt kết nối hover, biến chuyển động thành 100% trơn tru, liền mạch, bồng bềnh và mượt mà tối đa.
-  2. **Tinh Chỉnh Đường Cong Easing Spring Physics Êm Dịu:**
+  2. **Giải Quyết Triệt Để Lỗi Đè Header & Cô Lập Stacking Context 3 Lớp:**
+     - **Lớp 1 (`header.component.html`)**: Nâng cấp Header lên `sticky top-0 z-40` đồng bộ toàn màn hình (cao hơn mọi nội dung trang web nhưng dưới Sidebar `z-50`).
+     - **Lớp 2 (`app.html`)**: Thêm `relative z-0` vào thẻ bọc `<div class="min-h-screen ... relative z-0">` chứa `<router-outlet>`, cô lập toàn bộ router content ở cấp $z=0$, ngăn chặn 100% mọi component con vượt cấp đè lên Header.
+     - **Lớp 3 (`avatar.component.html`)**: Thêm `isolate` vào container Avatar Stack (`class="... isolate"`), hạ `hover:z-30` $\rightarrow$ `hover:z-10` và counter `z-10 hover:z-30` $\rightarrow$ `hover:z-10`.
+  3. **Tinh Chỉnh Đường Cong Easing Spring Physics Êm Dịu:**
      - Chuyển `cubic-bezier(0.34, 1.56, 0.64, 1)` sang `cubic-bezier(0.34, 1.25, 0.64, 1)` (nảy đàn hồi 25% vừa vặn, bồng bềnh và mượt mà cao cấp).
-  3. **Đồng Bộ Layout Showcase & Form Labels (`home.component.html`):**
+  4. **Đồng Bộ Layout Showcase & Form Labels (`home.component.html`):**
      - Chuẩn hóa các label trong card Avatar sang `class="form-label"`.
      - Tinh chỉnh `gap-3 sm:gap-4` cho dãy Single Avatar đảm bảo hiển thị thẳng hàng cân đối trên desktop và co giãn mượt mà.
-  4. **Cập Nhật Toàn Diện Bộ Unit Test (`avatar.component.spec.ts`):**
-     - Cập nhật test cases kiểm tra chính xác motion elements `group-hover/avatar:scale-110`, `group-hover/avatar:-translate-y-1.5`, và counter motion `group-hover/stack-counter:-translate-y-2` (38/38 tests passed).
-  5. **Đồng Bộ Tài Liệu Thiết Kế (`.agent/design.md`):**
+  5. **Cập Nhật Toàn Diện Bộ Unit Test (`avatar.component.spec.ts`):**
+     - Cập nhật test cases kiểm tra chính xác motion elements `group-hover/avatar:scale-110`, `group-hover/avatar:-translate-y-1.5`, và counter selector `.group/stack-counter` (38/38 tests passed).
+  6. **Đồng Bộ Tài Liệu Thiết Kế (`.agent/design.md`):**
      - Bổ sung mục quy chuẩn Kiến trúc Trigger Container Tĩnh + Motion Canvas vào Mục 5.2.
 - **Xác thực:**
   - `npx tsc --noEmit`: 0 lỗi type.
