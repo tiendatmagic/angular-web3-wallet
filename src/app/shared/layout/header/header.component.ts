@@ -10,6 +10,7 @@ import { LogoComponent } from '@shared/components/logo/logo.component';
 import { LanguageSelectorComponent } from '@shared/components/language-selector/language-selector.component';
 import { NetworkSelectorComponent } from '@shared/components/network-selector/network-selector.component';
 import { AccountDropdownComponent } from '@shared/components/account-dropdown/account-dropdown.component';
+import { BadgeComponent } from '@shared/components/badge/badge.component';
 import { TranslatePipe } from '@shared/pipes/translate.pipe';
 
 @Component({
@@ -18,6 +19,7 @@ import { TranslatePipe } from '@shared/pipes/translate.pipe';
   imports: [
     CommonModule,
     IconComponent,
+    BadgeComponent,
     RouterModule,
     FormsModule,
     LogoComponent,

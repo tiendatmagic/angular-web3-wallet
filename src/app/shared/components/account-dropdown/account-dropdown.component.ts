@@ -5,6 +5,7 @@ import { TranslationService } from '@core/services/translation.service';
 import { DropdownService } from '@core/services/dropdown.service';
 import { IconComponent } from '@shared/components/icon/icon.component';
 import { ButtonComponent } from '@shared/components/button/button.component';
+import { BadgeComponent } from '@shared/components/badge/badge.component';
 import { ShortAddressPipe } from '@shared/pipes/short-address.pipe';
 import { TranslatePipe } from '@shared/pipes/translate.pipe';
 import { POPULAR_CHAINS } from '@core/utils/blockchain.utils';
@@ -12,7 +13,7 @@ import { POPULAR_CHAINS } from '@core/utils/blockchain.utils';
 @Component({
   selector: 'app-account-dropdown',
   standalone: true,
-  imports: [CommonModule, IconComponent, ButtonComponent, ShortAddressPipe, TranslatePipe],
+  imports: [CommonModule, IconComponent, ButtonComponent, BadgeComponent, ShortAddressPipe, TranslatePipe],
   templateUrl: './account-dropdown.component.html',
   host: {
     'class': 'block',

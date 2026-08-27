@@ -14,7 +14,7 @@
       class="fixed top-[3.75rem] left-3 right-3 sm:absolute sm:top-full sm:right-0 sm:left-auto sm:mt-2 sm:w-64 dropdown-menu-popover glass-popover border border-slate-200/80 dark:border-slate-800/80 rounded-[15px] p-2 text-slate-800 dark:text-slate-100 focus:outline-none z-[200] select-none"
     >
       <div
-        class="px-3 py-2 text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 select-none"
+        class="form-label px-3 py-2"
       >
         {{ 'header.popular_networks' | translate }}
       </div>
@@ -30,7 +30,7 @@
             (click)="switchNetwork(+chain.chainId, $event)"
             class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-colors text-left cursor-pointer select-none"
             [ngClass]="{
-              'bg-purple-50 dark:bg-purple-950/40 text-purple-600 dark:text-purple-300 font-bold':
+              'bg-primary/10 dark:bg-primary/20 text-primary font-bold':
                 isSelected,
               'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80':
                 !isSelected,
@@ -50,7 +50,7 @@
               @if (isSelected) {
                 <app-icon
                   name="check"
-                  class="w-4 h-4 text-purple-600 dark:text-purple-400 stroke-[3]"
+                  class="w-4 h-4 text-primary stroke-[3]"
                 />
               } @else {
                 <span

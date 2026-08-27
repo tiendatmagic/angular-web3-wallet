@@ -1,3 +1,26 @@
+### Yêu cầu: Rà Soát Toàn Bộ Source Code & Chuẩn Hóa Kế Thừa UI Component & Dynamic Tokens
+- **Nội dung yêu cầu:** Rà soát toàn bộ source code, tìm kiếm và tối ưu hóa các vị trí có thể hạn chế việc UI không khớp / chưa đồng bộ bằng cách kế thừa các UI component và design tokens hiện có.
+- **Phân tích kỹ thuật & Các điểm đã tối ưu:**
+  1. **Kế Thừa UI Component Dùng Chung:**
+     - `TableComponent` (`table.component.html` & `ts`): Thay thế khối HTML empty state thủ công bằng `<app-empty-state size="sm">`.
+     - `HeaderComponent` (`header.component.html` & `ts`): Thay thế khối Network badge thủ công bằng `<app-badge [variant]="stateService.isWrongChain() ? 'danger' : 'primary'" rounded="full" size="md">`.
+     - `AccountDropdownComponent` (`account-dropdown.component.html` & `ts`): Thay thế thẻ span status PRO bằng `<app-badge variant="primary" size="sm">`.
+     - `TxSpeedSelectorComponent` (`tx-speed-selector.component.html` & `ts`): Thay thế span multiplier bằng `<app-badge variant="primary" size="sm">`.
+     - `FileUploadComponent` (`file-upload.component.html` & `ts`): Kế thừa `<button app-button variant="secondary" size="sm">` cho nút chọn tệp; kế thừa `<app-badge>` cho 4 trạng thái tệp (Waiting, Uploading, Completed, Error); kế thừa `<app-progress>` cho thanh tiến trình; kế thừa `<app-alert type="error">` cho thông báo lỗi `globalError`; kế thừa `.btn-close-sm` cho nút xóa tệp.
+     - `DeleteConfirmModalComponent` (`delete-confirm-modal.component.html` & `ts`): Thay thế khối cảnh báo warning thủ công bằng `<app-alert type="warning" [dismissible]="false">`.
+     - `HomeComponent` (`home.component.html`): Thay thế khung lỗi `txError` & `signError` bằng `<app-alert type="error">`; thay thế các nút sao chép địa chỉ ví và signature bằng `<app-copy-to-clipboard size="sm">`; thay thế network span bằng `<app-badge variant="success" rounded="full" size="md">`.
+  2. **Chuẩn Hóa Typography & Action Button Utilities:**
+     - Chuẩn hóa các header trong `network-selector` và `language-selector` bằng `.form-label`.
+     - Kế thừa `.btn-cancel .btn-sm min-w-[76px]` và `.btn-primary .btn-sm min-w-[76px]` trong `custom-date-picker` và `custom-date-time-range`.
+  3. **Chuẩn Hóa Bo Góc (Giới Hạn 15px theo design.md):**
+     - Sửa toàn bộ các thẻ card trong `about.component.html` và `contact.component.html` từ `rounded-2xl` sang `rounded-[15px]`.
+  4. **Đồng Bộ Hoàn Toàn Dynamic Brand Theming (Loại Bỏ Màu Tím Cứng):**
+     - Thay thế các class tím tĩnh (`purple-500`, `purple-600`, `purple-50`, `violet-*`) trong `stepper`, `breadcrumb`, `network-selector`, `language-selector`, `custom-select`, `copy-to-clipboard`, `stat-card`, `code-block`, `empty-state`, `divider`, `voice-chat` sang Dynamic Tokens (`var(--color-primary)`, `var(--color-secondary)`, `bg-primary/10`, `text-primary`, `border-primary/20`, `shadow-primary/20`).
+- **Xác thực:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npm test`: 14 files / 65 tests passed (100%).
+  - `npm run build`: Build production hoàn tất thành công 100%.
+
 ### Yêu cầu: Rà Soát & Bổ Sung Toàn Diện Hệ Thống Đa Ngôn Ngữ (i18n EN / VI)
 - **Nội dung yêu cầu:** Kiểm tra kỹ lưỡng toàn bộ hệ thống đa ngôn ngữ EN / VI, phát hiện và khắc phục các vị trí bị lộ raw key translation (ví dụ `showcase.switch_network`, `SHOWCASE.BALANCE`, `SHOWCASE.NETWORK`), kiểm tra độ đồng bộ giữa các file từ điển `vi.ts`, `en.ts`, `i18n.types.ts` và các component trong dự án.
 - **Phân tích kỹ thuật & Nguyên nhân:**

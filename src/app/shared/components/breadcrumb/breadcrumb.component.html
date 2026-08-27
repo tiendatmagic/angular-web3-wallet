@@ -2,7 +2,7 @@
   @if (showHome) {
     <a
       routerLink="/"
-      class="inline-flex items-center gap-1.5 hover:text-purple-600 dark:hover:text-purple-400 transition-colors shrink-0"
+      class="inline-flex items-center gap-1.5 hover:text-primary transition-colors shrink-0"
     >
       <app-icon name="home" class="w-4 h-4"></app-icon>
       <span>{{ 'nav.home' | translate }}</span>
@@ -17,7 +17,7 @@
     @if (!isLast && item.url) {
       <a
         [routerLink]="item.url"
-        class="inline-flex items-center gap-1.5 hover:text-purple-600 dark:hover:text-purple-400 transition-colors shrink-0"
+        class="inline-flex items-center gap-1.5 hover:text-primary transition-colors shrink-0"
       >
         @if (item.icon) {
           <app-icon [name]="item.icon" class="w-4 h-4"></app-icon>
@@ -28,7 +28,7 @@
       <span
         class="inline-flex items-center gap-1.5 shrink-0"
         [ngClass]="{
-          'text-purple-600 dark:text-purple-400 font-extrabold': isLast,
+          'text-primary font-extrabold': isLast,
           'text-slate-600 dark:text-slate-300': !isLast
         }"
       >

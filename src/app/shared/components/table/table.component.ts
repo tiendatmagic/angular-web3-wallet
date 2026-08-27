@@ -13,6 +13,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '@shared/components/icon/icon.component';
 import { SkeletonLoaderComponent } from '@shared/components/skeleton-loader/skeleton-loader.component';
+import { EmptyStateComponent } from '@shared/components/empty-state/empty-state.component';
 import { TranslatePipe } from '@shared/pipes/translate.pipe';
 
 export interface TableColumn {
@@ -37,7 +38,7 @@ export class TableCellDirective {
 @Component({
   selector: 'app-table',
   standalone: true,
-  imports: [CommonModule, IconComponent, SkeletonLoaderComponent, TranslatePipe],
+  imports: [CommonModule, IconComponent, SkeletonLoaderComponent, EmptyStateComponent, TranslatePipe],
   templateUrl: './table.component.html',
   host: { 'class': 'block w-full' },
 })

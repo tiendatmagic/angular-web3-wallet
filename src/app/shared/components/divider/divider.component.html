@@ -5,7 +5,7 @@
       [ngClass]="{
         'border-t border-slate-200/80 dark:border-slate-800/80': variant === 'solid',
         'border-t border-dashed border-slate-300 dark:border-slate-800': variant === 'dashed',
-        'h-[1px] bg-gradient-to-r from-transparent via-purple-500/40 to-indigo-500/40': variant === 'gradient',
+        'h-[1px] bg-gradient-to-r from-transparent via-primary/40 to-secondary/40': variant === 'gradient',
         'shrink-0 w-8': label && labelAlign === 'left'
       }"
     ></div>
@@ -21,7 +21,7 @@
       [ngClass]="{
         'border-t border-slate-200/80 dark:border-slate-800/80': variant === 'solid',
         'border-t border-dashed border-slate-300 dark:border-slate-800': variant === 'dashed',
-        'h-[1px] bg-gradient-to-r from-indigo-500/40 via-purple-500/40 to-transparent': variant === 'gradient',
+        'h-[1px] bg-gradient-to-r from-secondary/40 via-primary/40 to-transparent': variant === 'gradient',
         'shrink-0 w-8': label && labelAlign === 'right'
       }"
     ></div>
@@ -34,7 +34,7 @@
     [ngClass]="{
       'border-r border-slate-200/80 dark:border-slate-800/80': variant === 'solid',
       'border-r border-dashed border-slate-300 dark:border-slate-800': variant === 'dashed',
-      'w-[1px] bg-gradient-to-b from-transparent via-purple-500/40 to-transparent': variant === 'gradient'
+      'w-[1px] bg-gradient-to-b from-transparent via-primary/40 to-transparent': variant === 'gradient'
     }"
   ></div>
 }

@@ -53,8 +53,11 @@
 
         <button
           type="button"
-          class="px-3 py-1.5 sm:px-4 sm:py-2 rounded-[10px] border border-[var(--color-primary)]/40 text-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white font-semibold text-xs transition-[transform,scale,background-color,color,box-shadow] duration-200 shrink-0 shadow-sm flex items-center justify-center gap-1.5 self-start sm:self-auto"
+          app-button
+          variant="secondary"
+          size="sm"
           [disabled]="disabled"
+          class="self-start sm:self-auto shrink-0"
         >
           <span>{{ displayButtonText() }}</span>
         </button>
@@ -140,12 +143,9 @@
   }
 
   @if (globalError()) {
-    <div
-      class="flex items-center gap-2 p-3 rounded-[12px] bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 text-xs animate-fadeIn"
-    >
-      <app-icon name="warning-solid" class="w-4 h-4 shrink-0"></app-icon>
-      <span class="font-medium">{{ globalError() }}</span>
-    </div>
+    <app-alert type="error" [dismissible]="false">
+      {{ globalError() }}
+    </app-alert>
   }
 
   @if (showFileList && files().length > 0) {
@@ -165,7 +165,7 @@
         @if (files().length > 1) {
           <button
             type="button"
-            class="text-xs text-red-500 hover:text-red-600 dark:hover:text-red-400 font-medium transition-colors flex items-center gap-1"
+            class="text-xs text-red-500 hover:text-red-600 dark:hover:text-red-400 font-medium transition-colors flex items-center gap-1 cursor-pointer"
             (click)="clearAll($event)"
             [disabled]="disabled"
           >
@@ -215,35 +215,27 @@
                 <div class="shrink-0">
                   @switch (file.status) {
                     @case ('pending') {
-                      <span
-                        class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400"
-                      >
+                      <app-badge variant="neutral" size="sm">
                         {{ 'file_upload_ui.waiting' | translate }}
-                      </span>
+                      </app-badge>
                     }
                     @case ('uploading') {
-                      <span
-                        class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-medium bg-blue-50 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400"
-                      >
+                      <app-badge variant="info" size="sm" class="gap-1">
                         <app-icon name="spinner" class="w-3 h-3 animate-spin"></app-icon>
                         {{ file.progress }}%
-                      </span>
+                      </app-badge>
                     }
                     @case ('completed') {
-                      <span
-                        class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-medium bg-emerald-50 text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400"
-                      >
+                      <app-badge variant="success" size="sm" class="gap-1">
                         <app-icon name="check-circle" class="w-3 h-3"></app-icon>
                         {{ 'file_upload_ui.completed' | translate }}
-                      </span>
+                      </app-badge>
                     }
                     @case ('error') {
-                      <span
-                        class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-medium bg-red-50 text-red-600 dark:bg-red-950/50 dark:text-red-400"
-                      >
+                      <app-badge variant="danger" size="sm" class="gap-1">
                         <app-icon name="warning" class="w-3 h-3"></app-icon>
                         {{ 'file_upload_ui.error' | translate }}
-                      </span>
+                      </app-badge>
                     }
                   }
                 </div>
@@ -265,14 +257,7 @@
               </div>
 
               @if (file.status === 'uploading') {
-                <div
-                  class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden mt-1"
-                >
-                  <div
-                    class="bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] h-full transition-[width] duration-200 rounded-full"
-                    [style.width.%]="file.progress"
-                  ></div>
-                </div>
+                <app-progress [value]="file.progress" size="xs" variant="primary" class="mt-1" />
               }
             </div>
 
@@ -280,7 +265,7 @@
               @if (file.previewUrl) {
                 <button
                   type="button"
-                  class="w-8 h-8 flex items-center justify-center rounded-[8px] text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors shrink-0"
+                  class="w-8 h-8 flex items-center justify-center rounded-[8px] text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors shrink-0 cursor-pointer"
                   [appTooltip]="'file_upload_ui.preview' | translate"
                   (click)="openPreview(file, $event)"
                 >
@@ -291,7 +276,7 @@
               @if (file.status === 'error') {
                 <button
                   type="button"
-                  class="w-8 h-8 flex items-center justify-center rounded-[8px] text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-950/40 transition-colors shrink-0"
+                  class="w-8 h-8 flex items-center justify-center rounded-[8px] text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-950/40 transition-colors shrink-0 cursor-pointer"
                   [appTooltip]="'file_upload_ui.retry' | translate"
                   (click)="retryUpload(file)"
                   [disabled]="disabled"
@@ -302,7 +287,7 @@
 
               <button
                 type="button"
-                class="w-8 h-8 flex items-center justify-center rounded-[8px] text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/40 transition-[transform,scale,background-color,color] duration-150 active:scale-95 cursor-pointer shrink-0"
+                class="btn-close-sm hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/40"
                 [appTooltip]="'file_upload_ui.remove' | translate"
                 (click)="removeFile(file, $event)"
                 [disabled]="disabled"

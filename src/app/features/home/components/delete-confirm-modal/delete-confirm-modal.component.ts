@@ -18,6 +18,7 @@ import { BadgeComponent } from '@shared/components/badge/badge.component';
 import { CustomInputComponent } from '@shared/components/custom-input/custom-input.component';
 import { CustomSelectComponent } from '@shared/components/custom-select/custom-select.component';
 import { CustomCheckboxComponent } from '@shared/components/custom-checkbox/custom-checkbox.component';
+import { AlertComponent } from '@shared/components/alert/alert.component';
 import { TranslatePipe } from '@shared/pipes/translate.pipe';
 import { TranslationService } from '@core/services/translation.service';
 import { MODAL_DATA, ModalRef } from '@core/services/modal-ref';
@@ -37,6 +38,7 @@ import {
     IconComponent,
     ButtonComponent,
     BadgeComponent,
+    AlertComponent,
     CustomInputComponent,
     CustomSelectComponent,
     CustomCheckboxComponent,

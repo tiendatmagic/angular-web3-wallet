@@ -39,24 +39,25 @@
 
     <div class="hidden md:block">
       @if (stateService.isWeb3Enabled && stateService.isConnected()) {
-        <div
-          [class.bg-primary/10]="!stateService.isWrongChain()"
-          [class.text-primary]="!stateService.isWrongChain()"
-          [class.bg-red-500\/10]="stateService.isWrongChain()"
-          [class.text-red-500]="stateService.isWrongChain()"
-          class="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-black select-none border border-primary/30 dark:border-primary/20 shadow-xs"
+        <app-badge
+          [variant]="stateService.isWrongChain() ? 'danger' : 'primary'"
+          rounded="full"
+          size="md"
+          class="gap-1.5 py-1.5 px-3"
         >
           <span
-            [class.bg-primary]="!stateService.isWrongChain()"
-            [class.bg-red-500]="stateService.isWrongChain()"
-            class="w-1.5 h-1.5 rounded-full inline-block"
+            [class.bg-[var(--color-primary)]]="!stateService.isWrongChain()"
+            [class.bg-rose-500]="stateService.isWrongChain()"
+            class="w-1.5 h-1.5 rounded-full inline-block shrink-0"
           ></span>
-          {{
-            stateService.isWrongChain()
-              ? ('header.wrong_network' | translate)
-              : stateService.networkName()
-          }}
-        </div>
+          <span>
+            {{
+              stateService.isWrongChain()
+                ? ('header.wrong_network' | translate)
+                : stateService.networkName()
+            }}
+          </span>
+        </app-badge>
       }
     </div>
 

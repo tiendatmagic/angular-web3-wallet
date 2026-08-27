@@ -2,13 +2,9 @@
   <div class="flex items-center justify-between mb-2 h-5 select-none">
     <span class="form-label !mb-0">{{ 'tx_speed.label' | translate }}</span>
     @if (stateService.txSpeed() === 'fast') {
-      <span class="text-[10px] font-black text-primary bg-primary/10 px-2 py-0.5 rounded-md select-none"
-        >1.5x</span
-      >
+      <app-badge variant="primary" size="sm" rounded="md">1.5x</app-badge>
     } @else if (stateService.txSpeed() === 'custom') {
-      <span class="text-[10px] font-black text-primary bg-primary/10 px-2 py-0.5 rounded-md select-none"
-        >{{ stateService.gasMultiplier() }}x</span
-      >
+      <app-badge variant="primary" size="sm" rounded="md">{{ stateService.gasMultiplier() }}x</app-badge>
     }
   </div>
 

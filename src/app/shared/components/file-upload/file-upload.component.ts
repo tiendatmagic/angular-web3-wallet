@@ -14,8 +14,11 @@ import { CommonModule } from '@angular/common';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { IconComponent } from '@shared/components/icon/icon.component';
 import { TooltipDirective } from '@shared/components/tooltip/tooltip.directive';
-import { TranslatePipe } from '@shared/pipes/translate.pipe';
 import { ButtonComponent } from '@shared/components/button/button.component';
+import { BadgeComponent } from '@shared/components/badge/badge.component';
+import { ProgressComponent } from '@shared/components/progress/progress.component';
+import { AlertComponent } from '@shared/components/alert/alert.component';
+import { TranslatePipe } from '@shared/pipes/translate.pipe';
 import { TranslationService } from '@core/services/translation.service';
 
 export interface UploadFileItem {
@@ -33,7 +36,16 @@ export interface UploadFileItem {
 @Component({
   selector: 'app-file-upload',
   standalone: true,
-  imports: [CommonModule, IconComponent, ButtonComponent, TooltipDirective, TranslatePipe],
+  imports: [
+    CommonModule,
+    IconComponent,
+    ButtonComponent,
+    BadgeComponent,
+    ProgressComponent,
+    AlertComponent,
+    TooltipDirective,
+    TranslatePipe,
+  ],
   templateUrl: './file-upload.component.html',
   host: { 'class': 'block' },
   providers: [

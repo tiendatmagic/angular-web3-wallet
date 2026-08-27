@@ -1,15 +1,16 @@
-﻿import { Component, inject, computed } from '@angular/core';
+import { Component, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { StateService } from '@core/services/state.service';
 import { TranslationService } from '@core/services/translation.service';
 import { TabGroupComponent, TabOption } from '@shared/components/tab-group/tab-group.component';
+import { BadgeComponent } from '@shared/components/badge/badge.component';
 import { TranslatePipe } from '@shared/pipes/translate.pipe';
 
 @Component({
   selector: 'app-tx-speed-selector',
   standalone: true,
-  imports: [CommonModule, FormsModule, TabGroupComponent, TranslatePipe],
+  imports: [CommonModule, FormsModule, TabGroupComponent, BadgeComponent, TranslatePipe],
   templateUrl: './tx-speed-selector.component.html',
   host: { 'class': 'block' },
 })

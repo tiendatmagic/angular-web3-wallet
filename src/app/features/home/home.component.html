@@ -51,13 +51,11 @@
                 >
                   {{ stateService.address() }}
                 </span>
-                <button
-                  (click)="copyAddress($event)"
-                  class="w-7 h-7 flex items-center justify-center rounded-lg transition-[transform,background-color,color] duration-150 cursor-pointer flex-shrink-0 outline-none focus:outline-none text-slate-400 hover:text-primary hover:bg-primary/10 focus:text-slate-400 focus:bg-transparent"
-                  [title]="'showcase.copy_address' | translate"
-                >
-                  <app-icon name="copy" class="w-4 h-4" />
-                </button>
+                <app-copy-to-clipboard
+                  [textToCopy]="stateService.address() || ''"
+                  size="sm"
+                  class="shrink-0"
+                />
               </div>
             </div>
 
@@ -80,11 +78,9 @@
                 >
                   {{ 'showcase.network' | translate }}
                 </span>
-                <span
-                  class="text-xs font-extrabold px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 inline-block"
-                >
+                <app-badge variant="success" rounded="full" size="md">
                   {{ stateService.networkName() }}
-                </span>
+                </app-badge>
               </div>
             </div>
           </div>
@@ -212,14 +208,11 @@
             }
 
             @if (txError()) {
-              <div
-                class="bg-red-500/10 border border-red-500/25 rounded-xl p-4 text-xs font-bold text-red-500 flex items-start gap-2"
-              >
-                <app-icon name="warning" class="w-4 h-4 mt-0.5 flex-shrink-0" />
+              <app-alert type="error" [dismissible]="false">
                 <span class="break-words min-w-0"
                   >{{ 'home.error_prefix' | translate }}: {{ txError() }}</span
                 >
-              </div>
+              </app-alert>
             }
           </div>
         </div>
@@ -279,26 +272,21 @@
                   >
                     {{ signature() }}
                   </span>
-                  <button
-                    (click)="copySignature()"
-                    class="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-500 hover:text-primary flex-shrink-0 cursor-pointer transition-[background-color,color] duration-150 mt-0.5"
-                    [title]="'showcase.copy_signature' | translate"
-                  >
-                    <app-icon name="copy" class="w-4 h-4" />
-                  </button>
+                  <app-copy-to-clipboard
+                    [textToCopy]="signature() || ''"
+                    size="sm"
+                    class="shrink-0 mt-0.5"
+                  />
                 </div>
               </div>
             }
 
             @if (signError()) {
-              <div
-                class="bg-red-500/10 border border-red-500/25 rounded-xl p-4 text-xs font-bold text-red-500 flex items-start gap-2"
-              >
-                <app-icon name="warning" class="w-4 h-4 mt-0.5 flex-shrink-0" />
+              <app-alert type="error" [dismissible]="false">
                 <span class="break-words min-w-0"
                   >{{ 'home.error_prefix' | translate }}: {{ signError() }}</span
                 >
-              </div>
+              </app-alert>
             }
           </div>
         </div>
