@@ -399,16 +399,13 @@ body.dark ::-webkit-scrollbar-thumb {
 @utility animate-modal-in {
   animation: var(--animate-modal-in);
   transform-origin: center center;
-  will-change: transform, opacity;
 }
 @utility animate-modal-backdrop-in {
   animation: var(--animate-modal-backdrop-in);
-  will-change: opacity;
 }
 @utility modal-zoom-in {
   animation: var(--animate-modal-in);
   transform-origin: center center;
-  will-change: transform, opacity;
 }
 @utility animate-scale-up {
   animation: var(--animate-scale-up);
@@ -595,19 +592,24 @@ body.dark ::-webkit-scrollbar-thumb {
 
 @utility glass-popover {
   @apply bg-white/90 dark:bg-slate-900/80 backdrop-blur-xl shadow-lg shadow-slate-900/10 dark:shadow-slate-950/50;
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
 }
 
 @utility glass-dialog {
-  @apply bg-transparent shadow-lg shadow-slate-900/15 dark:shadow-slate-950/60;
-  isolation: isolate;
+  @apply bg-white/95 dark:bg-slate-900/90 backdrop-blur-xl shadow-xl shadow-slate-900/15 dark:shadow-slate-950/60;
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
 }
 
 @utility glass-dialog-backdrop {
-  @apply absolute inset-0 -z-10 rounded-[inherit] pointer-events-none bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl;
+  @apply hidden;
 }
 
 @utility glass-header {
   @apply bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl;
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
 }
 
 .app-ripple-element {

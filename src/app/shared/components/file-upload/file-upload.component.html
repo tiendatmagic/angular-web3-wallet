@@ -303,16 +303,13 @@
 </div>
 
 @if (previewModalFile(); as file) {
-  <div
-    class="fixed inset-0 z-[70] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-modal-backdrop-in"
-    (click)="closePreview()"
-  >
+  <div class="fixed inset-0 z-[70] flex items-center justify-center p-4">
+    <div (click)="closePreview()" class="fixed inset-0 bg-black/40 animate-modal-backdrop-in"></div>
+
     <div
-      class="relative max-w-3xl w-full glass-dialog animate-modal-in border border-slate-200 dark:border-slate-800 rounded-[15px] p-4 overflow-hidden"
+      class="relative max-w-3xl w-full glass-dialog animate-modal-in border border-slate-200/50 dark:border-slate-800/50 rounded-[15px] p-4 overflow-hidden"
       (click)="$event.stopPropagation()"
     >
-      <div aria-hidden="true" class="glass-dialog-backdrop"></div>
-
       <div
         class="flex items-center justify-between pb-3 mb-3 border-b border-slate-200 dark:border-slate-800"
       >

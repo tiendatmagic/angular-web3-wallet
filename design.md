@@ -209,32 +209,32 @@ Các bề mặt nổi sử dụng các utility toàn cục trong `src/styles.scs
 ```scss
 @utility glass-popover {
   @apply bg-white/90 dark:bg-slate-900/80 backdrop-blur-xl shadow-lg shadow-slate-900/10 dark:shadow-slate-950/50;
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
 }
 
 @utility glass-dialog {
-  @apply bg-transparent shadow-lg shadow-slate-900/15 dark:shadow-slate-950/60;
-  isolation: isolate;
-}
-
-@utility glass-dialog-backdrop {
-  @apply absolute inset-0 -z-10 rounded-[inherit] pointer-events-none bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl;
+  @apply bg-white/95 dark:bg-slate-900/90 backdrop-blur-xl shadow-xl shadow-slate-900/15 dark:shadow-slate-950/60;
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
 }
 
 @utility glass-header {
   @apply bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl;
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
 }
 ```
 
 - `glass-popover`: Custom Select, Date Picker, DateTime Range, menu chọn giờ/phút, Dropdown Menu, nested submenu, Language Selector, Network Selector và Account Dropdown.
-- `glass-dialog`: Modal, Modal Wrapper, Confirm Modal, Drawer, mobile sidebar và modal xem trước File Upload.
+- `glass-dialog`: Modal, Modal Wrapper, Confirm Modal, Drawer, mobile sidebar và modal xem trước File Upload. Trực tiếp áp dụng `bg-white/95 dark:bg-slate-900/90 backdrop-blur-xl` (độ trong suốt: Light mode 95%, Dark mode 90%) tạo hiệu ứng kính mờ (Frosted Glass) đồng bộ, không dùng layer con `-z-10` tránh lỗi Stacking Context âm trên Chromium.
 - `glass-header`: sticky header; không dùng shadow cho header.
 
 #### 6.1.2. Quy tắc Backdrop Root và Popover lồng nhau
 
-- Không đặt popover cần blur bên trong phần tử cha có `backdrop-filter`, `filter`, opacity animation hoặc transform animation.
-- Glass background của sticky header phải là layer `absolute inset-0` độc lập. Nội dung header và dropdown nằm ở sibling layer `relative` để dropdown blur trực tiếp nội dung trang.
-- `glass-dialog` phải có layer con `glass-dialog-backdrop` đứng trước nội dung. Không dùng pseudo-element với `dark:*` và không đặt `backdrop-filter` trực tiếp lên dialog cha.
-- Nested submenu của `app-dropdown-menu` phải render ngang hàng với menu cha, không nằm bên trong surface có `backdrop-filter`.
+- Không đặt popover cần blur bên trong phần tử cha có `filter`, opacity animation hoặc transform animation vĩnh viễn.
+- Glass background của sticky header là layer `absolute inset-0` độc lập. Nội dung header và dropdown nằm ở sibling layer `relative` để dropdown blur trực tiếp nội dung trang.
+- Nested submenu của `app-dropdown-menu` render ngang hàng với menu cha, không nằm bên trong surface có `backdrop-filter`.
 
 #### 6.1.3. Drawer và Mobile Sidebar Motion
 
