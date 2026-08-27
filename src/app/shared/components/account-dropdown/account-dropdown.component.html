@@ -39,7 +39,7 @@
 
     @if (isOpen()) {
       <div
-        class="fixed top-[3.75rem] left-3 right-3 sm:absolute sm:top-full sm:right-0 sm:left-auto sm:mt-2 sm:w-72 dropdown-menu-popover glass-popover border border-slate-200/80 dark:border-slate-800/80 rounded-[15px] p-2 text-slate-800 dark:text-slate-100 focus:outline-none z-[200]"
+        class="fixed top-[3.75rem] left-3 right-3 sm:absolute sm:top-full sm:right-0 sm:left-auto sm:mt-2 sm:w-72 dropdown-menu-popover glass-popover border border-slate-200/80 dark:border-slate-800/80 rounded-[15px] p-2 text-slate-800 dark:text-slate-100 focus:outline-none z-[200] select-none"
       >
         <div
           class="px-3.5 py-3 mb-1.5 bg-slate-100/80 dark:bg-slate-800/40 rounded-[12px] border border-slate-100 dark:border-slate-800/50 select-none"
@@ -49,25 +49,25 @@
               <img
                 [src]="avatarUrl"
                 alt="Avatar"
-                class="w-10 h-10 rounded-full object-cover ring-2 ring-purple-500/20 shrink-0"
+                class="w-10 h-10 rounded-full object-cover ring-2 ring-purple-500/20 shrink-0 select-none"
               />
             }
             <div class="flex-1 min-w-0">
               <div class="flex items-center gap-1.5">
                 <span
-                  class="text-sm font-bold text-slate-900 dark:text-slate-100 font-mono truncate"
+                  class="text-sm font-bold text-slate-900 dark:text-slate-100 font-mono truncate select-none"
                 >
                   {{ stateService.address() | appShortAddress }}
                 </span>
                 @if (statusBadge) {
                   <span
-                    class="px-2 py-0.5 text-[10px] font-extrabold rounded-md bg-purple-100 dark:bg-purple-950/80 text-purple-600 dark:text-purple-300 border border-purple-200 dark:border-purple-800/50 shrink-0"
+                    class="px-2 py-0.5 text-[10px] font-extrabold rounded-md bg-purple-100 dark:bg-purple-950/80 text-purple-600 dark:text-purple-300 border border-purple-200 dark:border-purple-800/50 shrink-0 select-none"
                   >
                     {{ statusBadge }}
                   </span>
                 }
               </div>
-              <p class="text-xs text-slate-500 dark:text-slate-400 font-mono truncate mt-0.5">
+              <p class="text-xs text-slate-500 dark:text-slate-400 font-mono truncate mt-0.5 select-none">
                 {{ stateService.balance() }} {{ stateService.chainSymbol() }} •
                 {{ stateService.networkName() }}
               </p>
@@ -75,11 +75,11 @@
           </div>
         </div>
 
-        <div class="space-y-0.5">
+        <div class="space-y-0.5 select-none">
           <button
             type="button"
             (click)="copyAddress($event)"
-            class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80 hover:text-slate-900 dark:hover:text-white transition-colors text-left cursor-pointer group"
+            class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80 hover:text-slate-900 dark:hover:text-white transition-colors text-left cursor-pointer group select-none"
           >
             <div class="flex items-center gap-3 truncate min-w-0">
               <app-icon
@@ -95,7 +95,7 @@
           <button
             type="button"
             (click)="openAccountModal($event)"
-            class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80 hover:text-slate-900 dark:hover:text-white transition-colors text-left cursor-pointer group"
+            class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80 hover:text-slate-900 dark:hover:text-white transition-colors text-left cursor-pointer group select-none"
           >
             <div class="flex items-center gap-3 truncate min-w-0">
               <app-icon
@@ -111,7 +111,7 @@
           <button
             type="button"
             (click)="viewOnExplorer($event)"
-            class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80 hover:text-slate-900 dark:hover:text-white transition-colors text-left cursor-pointer group"
+            class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80 hover:text-slate-900 dark:hover:text-white transition-colors text-left cursor-pointer group select-none"
           >
             <div class="flex items-center gap-3 truncate min-w-0">
               <app-icon
@@ -129,7 +129,7 @@
           <button
             type="button"
             (click)="disconnectWallet($event)"
-            class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors text-left cursor-pointer group"
+            class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors text-left cursor-pointer group select-none"
           >
             <div class="flex items-center gap-3 truncate min-w-0">
               <app-icon name="logout" class="w-4.5 h-4.5 shrink-0 text-rose-500" />

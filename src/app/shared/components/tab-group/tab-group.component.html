@@ -1,7 +1,7 @@
 <div
   #containerEl
   [class]="
-    'relative tab-group flex items-center p-1 w-full overflow-x-auto no-scrollbar flex-nowrap shrink-0 ' +
+    'relative tab-group flex items-center p-1 w-full overflow-x-auto no-scrollbar flex-nowrap shrink-0 select-none ' +
     containerClass
   "
 >
@@ -29,7 +29,7 @@
       [class.text-slate-500]="activeValue !== opt.value"
       [class.flex-1]="flex"
       [class]="
-        'tab-item relative z-10 transition-[color,background-color,box-shadow,transform,scale] duration-200 cursor-pointer flex items-center justify-center gap-1.5 ' +
+        'tab-item relative z-10 transition-[color,background-color,box-shadow,transform,scale] duration-200 cursor-pointer flex items-center justify-center gap-1.5 select-none ' +
         buttonClass
       "
     >
@@ -48,7 +48,7 @@
         ></app-icon>
       }
 
-      <span [class]="labelClass">{{ opt.label }}</span>
+      <span [class]="'select-none ' + labelClass">{{ opt.label }}</span>
 
       @if (opt.badge !== undefined && opt.badge !== null && opt.badge !== '') {
         <span
@@ -57,7 +57,7 @@
               ? 'text-[10px] font-black px-1.5 py-0.2 rounded-lg bg-[var(--color-primary)]/10 text-[var(--color-primary)] dark:bg-[var(--color-secondary)]/15 dark:text-[var(--color-secondary)]'
               : 'text-[10px] font-black px-1.5 py-0.2 rounded-lg bg-slate-200/50 dark:bg-slate-800 text-slate-400 dark:text-slate-500'
           "
-          class="transition-colors duration-300"
+          class="transition-colors duration-300 select-none"
         >
           {{ opt.badge }}
         </span>

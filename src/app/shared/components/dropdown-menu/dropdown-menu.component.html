@@ -1,7 +1,7 @@
-<div class="relative inline-block text-left" [ngClass]="{ 'w-full': triggerVariant === 'default' }">
+<div class="relative inline-block text-left select-none" [ngClass]="{ 'w-full': triggerVariant === 'default' }">
   <div #triggerWrapper class="inline-block" [ngClass]="{ 'w-full': triggerVariant === 'default' }">
     @if (customTrigger) {
-      <div (click)="toggleOpen($event)" class="cursor-pointer inline-block">
+      <div (click)="toggleOpen($event)" class="cursor-pointer inline-block select-none">
         <ng-content select="[dropdown-trigger]"></ng-content>
       </div>
     } @else {
@@ -71,14 +71,14 @@
     <div
       #popoverEl
       (scroll)="onPopoverScroll()"
-      class="fixed z-[9999] {{ width }} min-w-[220px] dropdown-menu-popover glass-popover border border-slate-200/80 dark:border-slate-800/80 rounded-[15px] p-2 text-slate-800 dark:text-slate-100 focus:outline-none overflow-y-auto"
+      class="fixed z-[9999] {{ width }} min-w-[220px] dropdown-menu-popover glass-popover border border-slate-200/80 dark:border-slate-800/80 rounded-[15px] p-2 text-slate-800 dark:text-slate-100 focus:outline-none overflow-y-auto select-none"
       [ngStyle]="popoverStyle"
     >
       <ng-content select="[dropdown-content]"></ng-content>
 
       @if (header) {
         <div
-          class="px-3.5 py-3 mb-1.5 bg-slate-100/80 dark:bg-slate-800/40 rounded-[12px] border border-slate-100 dark:border-slate-800/50"
+          class="px-3.5 py-3 mb-1.5 bg-slate-100/80 dark:bg-slate-800/40 rounded-[12px] border border-slate-100 dark:border-slate-800/50 select-none"
         >
           <div class="flex items-center gap-3">
             @if (header.avatar) {
@@ -132,7 +132,7 @@
                 [disabled]="item.disabled"
                 (click)="toggleSubmenu(item, $event)"
                 (mouseenter)="openSubmenu(item, $event)"
-                class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-[background-color,color] duration-150 text-left cursor-pointer"
+                class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-[background-color,color] duration-150 text-left cursor-pointer select-none"
                 [ngClass]="{
                   'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80':
                     !item.disabled && activeSubmenuId() !== (item.id || item.label),
@@ -164,7 +164,7 @@
               [disabled]="item.disabled"
               (click)="onItemClick(item, $event)"
               (mouseenter)="onItemHover(item)"
-              class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-[background-color,color] duration-150 text-left cursor-pointer"
+              class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-[background-color,color] duration-150 text-left cursor-pointer select-none"
               [ngClass]="{
                 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80':
                   !item.disabled,
@@ -187,7 +187,7 @@
               </div>
               @if (item.shortcut) {
                 <span
-                  class="px-1.5 py-0.5 text-[10px] font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200/60 dark:border-slate-700/60"
+                  class="px-1.5 py-0.5 text-[10px] font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200/60 dark:border-slate-700/60 select-none"
                 >
                   {{ item.shortcut }}
                 </span>
@@ -199,7 +199,7 @@
               [disabled]="item.disabled"
               (click)="onItemClick(item, $event)"
               (mouseenter)="onItemHover(item)"
-              class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-[background-color,color] duration-150 text-left cursor-pointer"
+              class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-[background-color,color] duration-150 text-left cursor-pointer select-none"
               [ngClass]="{
                 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80':
                   !item.disabled,
@@ -228,7 +228,7 @@
               [disabled]="item.disabled"
               (click)="onItemClick(item, $event)"
               (mouseenter)="onItemHover(item)"
-              class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-[background-color,color] duration-150 text-left cursor-pointer"
+              class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-[background-color,color] duration-150 text-left cursor-pointer select-none"
               [ngClass]="{
                 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80':
                   !item.disabled && item.variant !== 'danger' && item.variant !== 'success',
@@ -264,7 +264,7 @@
               <div class="flex items-center gap-1.5 shrink-0 ml-2">
                 @if (item.badge) {
                   <span
-                    class="px-2 py-0.5 text-[10px] font-extrabold rounded-md {{
+                    class="px-2 py-0.5 text-[10px] font-extrabold rounded-md select-none {{
                       item.badgeColor ||
                         'bg-primary/10 text-primary dark:text-secondary border border-primary/20'
                     }}"
@@ -274,7 +274,7 @@
                 }
                 @if (item.shortcut) {
                   <span
-                    class="px-1.5 py-0.5 text-[10px] font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200/60 dark:border-slate-700/60"
+                    class="px-1.5 py-0.5 text-[10px] font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200/60 dark:border-slate-700/60 select-none"
                   >
                     {{ item.shortcut }}
                   </span>
@@ -292,7 +292,7 @@
         (mouseenter)="onSubmenuMouseEnter()"
         class="fixed z-[10000] {{
           width
-        }} min-w-[200px] dropdown-menu-popover glass-popover border border-slate-200/80 dark:border-slate-800/80 rounded-[15px] p-2 space-y-0.5 text-slate-800 dark:text-slate-100 overflow-y-auto"
+        }} min-w-[200px] dropdown-menu-popover glass-popover border border-slate-200/80 dark:border-slate-800/80 rounded-[15px] p-2 space-y-0.5 text-slate-800 dark:text-slate-100 overflow-y-auto select-none"
         [ngStyle]="submenuStyle"
       >
         @for (subItem of submenu.children; track subItem.id || subItem.label || $index) {
@@ -300,7 +300,7 @@
             type="button"
             [disabled]="subItem.disabled"
             (click)="onItemClick(subItem, $event)"
-            class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-[background-color,color] duration-150 text-left cursor-pointer"
+            class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-[background-color,color] duration-150 text-left cursor-pointer select-none"
             [ngClass]="{
               'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80':
                 !subItem.disabled && subItem.variant !== 'danger',
@@ -320,7 +320,7 @@
             </div>
             @if (subItem.shortcut) {
               <span
-                class="px-1.5 py-0.5 text-[10px] font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200/60 dark:border-slate-700/60"
+                class="px-1.5 py-0.5 text-[10px] font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200/60 dark:border-slate-700/60 select-none"
               >
                 {{ subItem.shortcut }}
               </span>

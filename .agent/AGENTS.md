@@ -1,3 +1,59 @@
+### Yêu cầu: Tối Ưu Hóa Responsive Cho Màn Hình Siêu Nhỏ (320px & Dưới 260px) Ở Component Voice Chat
+- **Nội dung yêu cầu:** Tối ưu hóa triệt để component Voice Chat (`VoiceChatComponent`) trên các màn hình siêu nhỏ (320px viewport, container khả dụng từ 200px - 250px) để không bị cắt xén bất kỳ avatar hay nhãn tên nào (như Albert, Ben ở cột thứ 3).
+- **Phân tích nguyên nhân gốc rễ kỹ thuật:**
+  1. **Bị ép clamp bề rộng tối thiểu 240px:** Logic đo kích thước trước đó gán `Math.max(240, available)`. Trên viewport 320px với padding lồng nhau (`app-card`, demo wrapper), bề rộng khả dụng thực tế chỉ khoảng 210px - 230px. Khi gán cố định 240px, các cột avatar và card bị vượt ra ngoài và tràn viền `overflow-hidden`.
+  2. **Kích thước avatar 46px quá lớn trên container < 250px:** Khi container dưới 250px, 3 cột với avatar 46px + gap chiếm > 220px khiến cột thứ 3 (Albert và Ben) chạm sát viền phải hoặc bị cắt một nửa.
+- **Giải pháp triệt để:**
+  1. **Hệ thống Responsive 3 Tầng Kích Thước (3-Tier Responsive System):**
+     - **Tầng Ultra-Compact (`width < 260px` - Màn hình 320px):**
+       - Lưới 3 cột: avatar `38px`, chiều cao hàng `64px`, `gridStartY = 62px`.
+       - Chiều cao mở rộng `expandedHeight = 365px`.
+       - Cả 7 avatar (Jessica, Linda, Albert, Robert, Jenny, Ben, Emily) cùng nhãn tên đều nằm trọn vẹn 100% bên trong card với khoảng đệm an toàn 2 bên.
+     - **Tầng Compact (`260px <= width < 330px` - Màn hình 360px - 390px):**
+       - Lưới 3 cột: avatar `44px`, chiều cao hàng `74px`, `expandedHeight = 405px`.
+     - **Tầng Chuẩn (`width >= 330px` - Màn hình lớn):**
+       - Lưới 4 cột: avatar `52px`, chiều cao hàng `84px`, `expandedHeight = 355px`.
+  2. **Tối ưu Capsule thu gọn & Padding Wrapper:**
+     - Capsule thu gọn: Tự động điều chỉnh kích thước avatar (30px/34px/40px) và khoảng cách linh hoạt theo bề rộng container.
+     - Demo wrapper container: Điều chỉnh padding `p-2.5 sm:p-4` giúp tăng không gian bề ngang cho mobile nhỏ.
+- **Xác thực:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npm test`: 6/6 tests passed (100%).
+  - `npm run build`: Build production hoàn tất thành công.
+
+### Yêu cầu: Khắc Phục Lỗi Mất Hiệu Ứng Transition Khi Active Scale (`active:scale-[0.98]`, `active:scale-95`)
+- **Nội dung yêu cầu:** Tìm hiểu nguyên nhân vì sao các nút bấm bị mất hiệu ứng transition khi active class `scale` (ví dụ `active:scale-[0.98]`, `active:scale-95`, `hover:scale-105`) và xử lý triệt để.
+- **Phân tích nguyên nhân gốc rễ kỹ thuật:**
+  1. **Kiến trúc CSS Transforms Level 2 & Tailwind CSS v4:** Trong Tailwind CSS v4 và trình duyệt hiện đại, các utility `scale-*` (`scale-95`, `scale-[0.98]`, `scale-105`) biên dịch thành thuộc tính CSS độc lập `scale: 0.98;` hoặc `scale: var(--tw-scale-x) var(--tw-scale-y);` chứ KHÔNG phải `transform: scale(0.98);`.
+  2. **Xung đột trong thuộc tính Transition:** Khi khai báo `transition-[transform,...]`, trình duyệt chỉ theo dõi thuộc tính `transform` mà bỏ qua thuộc tính `scale`. Do đó, khi `active:scale-[0.98]` kích hoạt, giá trị `scale` thay đổi tức thì (0ms duration, không có nội suy chuyển động), làm mất hoàn toàn hiệu ứng mượt mà (smooth click feel).
+  3. **Giải pháp chuẩn hóa:** Bổ sung thuộc tính `scale` song song với `transform` trong danh sách thuộc tính transition: `transition-[transform,scale,background-color,background-image,color,box-shadow,opacity] duration-200` (cho button) và `transition-[transform,scale,background-color,color] duration-150` (cho close/icon buttons).
+- **Các bước & Vị trí đã thực hiện:**
+  1. **Hệ Thống Button Utility (`src/styles.scss`):**
+     - Bổ sung `scale` vào `.btn`, `.btn-primary`, `.btn-secondary`, `.btn-danger`, `.btn-danger-light`, `.btn-cancel`, `.btn-ghost`, `.btn-success`, `.btn-info`, `.btn-reload`, `.btn-outline` ➡️ `transition-[transform,scale,background-color,background-image,color,box-shadow,opacity] duration-200`.
+     - Bổ sung `scale` vào `.btn-close`, `.btn-close-sm` ➡️ `transition-[transform,scale,background-color,color] duration-150`.
+     - Bổ sung `scale` vào `@utility tab-item` ➡️ `transition-[color,background-color,box-shadow,transform,scale] duration-200`.
+  2. **Toàn Bộ Các Component:**
+     - `SidebarComponent`: Nút thu phóng và nút đổi theme ➡️ `transition-[transform,scale,background-color,color,box-shadow] duration-200`.
+     - `HeaderComponent`: Nút Hamburger mobile menu ➡️ `transition-[transform,scale,background-color,color,box-shadow] duration-200`.
+     - `NetworkSelectorComponent`: Nút chọn mạng ➡️ `transition-[transform,scale,background-color,color,box-shadow] duration-200`.
+     - `LanguageSelectorComponent`: Nút chọn ngôn ngữ (Compact & Full) ➡️ `transition-[transform,scale,background-color,color,box-shadow] duration-200`.
+     - `PaginationComponent`: Nút Prev, Next và số trang (`active:scale-[0.98]`) ➡️ `transition-[transform,scale,background-color,color,opacity] duration-200`.
+     - `FileUploadComponent`: Nút chọn file và nút xóa file ➡️ `transition-[transform,scale,background-color,color,box-shadow] duration-200` / `duration-150`.
+     - `VoiceChatComponent`: Nút Join/Leave ➡️ `transition-[transform,scale,background-color,background-image,color,box-shadow] duration-200`.
+     - `DropdownMenuComponent`: Nút trigger ➡️ `transition-[transform,scale,background-color,color,box-shadow] duration-200`.
+     - `CustomSelectComponent`: Nút trigger dropdown ➡️ `transition-[transform,scale,background-color,color,box-shadow] duration-200`.
+     - `CustomSearchInputComponent`: Nút clear search ➡️ `transition-[transform,scale,background-color,color] duration-150`.
+     - `CustomDatePickerComponent` & `CustomDateTimeRangeComponent`: Nút presets, prev/next tháng, ngày, apply/done ➡️ `transition-[transform,scale,background-color,color,box-shadow] duration-150`.
+     - `CodeBlockComponent`: Nút wrap, copy và nút collapse/expand.
+     - `CopyToClipboardComponent`: Nút copy.
+     - `AlertComponent`: Nút close alert.
+     - `StatCardComponent`: Card hover scale.
+     - `HomeComponent`: Nút đổi mạng nhanh.
+- **Xác thực:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npm test`: 6/6 tests passed (100%).
+  - `npm run build`: Build production hoàn tất thành công.
+
 ### Yêu cầu: Loại Bỏ Triệt Để `border-color` Khỏi Toàn Bộ Thuộc Tính Transition
 - **Nội dung yêu cầu:** Loại bỏ hoàn toàn `border-color` ra khỏi tất cả các khai báo transition trong toàn bộ ứng dụng (`src/styles.scss` và tất cả các component).
 - **Phân tích kỹ thuật:**

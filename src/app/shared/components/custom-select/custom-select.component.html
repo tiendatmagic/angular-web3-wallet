@@ -1,4 +1,4 @@
-<div class="{{ containerClass }}" [class.opacity-60]="disabled">
+<div class="{{ containerClass }} select-none" [class.opacity-60]="disabled">
   <button
     type="button"
     #triggerBtn
@@ -6,12 +6,12 @@
     [disabled]="disabled"
     class="{{
       triggerClass
-    }} flex items-center justify-between px-4 text-left transition-[transform,scale,background-color,color,box-shadow] duration-200 relative"
+    }} flex items-center justify-between px-4 text-left select-none transition-[transform,scale,background-color,color,box-shadow] duration-200 relative"
     [class.border-[var(--color-primary)]]="isOpen()"
     [class.cursor-not-allowed]="disabled"
   >
     <span
-      class="font-semibold truncate"
+      class="font-semibold truncate select-none"
       [class.text-slate-400]="!selectedLabel"
     >
       {{ selectedLabel || effectivePlaceholder }}
@@ -27,7 +27,7 @@
   @if (isOpen()) {
     <div
       [ngStyle]="dropdownStyle"
-      class="dropdown-menu-popover glass-popover border border-slate-200/80 dark:border-slate-800/80 flex flex-col rounded-[15px] overflow-hidden"
+      class="dropdown-menu-popover glass-popover border border-slate-200/80 dark:border-slate-800/80 flex flex-col rounded-[15px] overflow-hidden select-none"
     >
       @if (showSearch) {
         <div
@@ -46,7 +46,7 @@
 
       <div class="overflow-y-auto flex-1 py-1 custom-scrollbar">
         @if (filteredOptions().length === 0) {
-          <div class="px-4 py-3 text-center text-xs text-slate-400 italic">
+          <div class="px-4 py-3 text-center text-xs text-slate-400 italic select-none">
             {{ 'table_ui.empty_title' | translate }}
           </div>
         }
@@ -54,7 +54,7 @@
           <button
             type="button"
             (click)="selectOption(opt)"
-            class="w-full flex items-center px-4 py-2.5 hover:bg-slate-100 dark:hover:bg-slate-800/80 text-xs font-semibold text-slate-700 dark:text-slate-300 text-left transition-colors"
+            class="w-full flex items-center px-4 py-2.5 hover:bg-slate-100 dark:hover:bg-slate-800/80 text-xs font-semibold text-slate-700 dark:text-slate-300 text-left transition-colors select-none cursor-pointer"
             [class.bg-purple-50\/60]="!multiple && isSelected(opt)"
             [class.dark:bg-purple-950\/30]="!multiple && isSelected(opt)"
             [class.text-[var(--color-primary)]]="!multiple && isSelected(opt)"
@@ -76,7 +76,7 @@
               </div>
             }
 
-            <span class="truncate flex-1">{{ getOptionLabel(opt) }}</span>
+            <span class="truncate flex-1 select-none">{{ getOptionLabel(opt) }}</span>
 
             @if (!multiple && isSelected(opt)) {
               <app-icon

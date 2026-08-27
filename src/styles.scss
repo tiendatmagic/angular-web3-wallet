@@ -69,7 +69,7 @@
 
   button,
   [role='button'] {
-    @apply cursor-pointer bg-transparent;
+    @apply cursor-pointer bg-transparent select-none;
   }
 
   button:disabled,
@@ -396,12 +396,15 @@ body.dark ::-webkit-scrollbar-thumb {
 
 @utility dropdown-menu-popover {
   animation: var(--animate-popover-in);
+  user-select: none;
 }
 @utility date-picker-popover {
   animation: var(--animate-popover-in);
+  user-select: none;
 }
 @utility date-time-range-popover {
   animation: var(--animate-popover-in);
+  user-select: none;
 }
 
 /* Progress Bar Utilities */
@@ -432,52 +435,52 @@ body.dark ::-webkit-scrollbar-thumb {
    Button Utilities & System
    ========================================================================== */
 .btn {
-  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl whitespace-nowrap transition-[transform,scale,background-color,background-image,color,box-shadow,opacity] duration-200 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5;
+  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl whitespace-nowrap transition-[transform,scale,background-color,background-image,color,box-shadow,opacity] duration-200 cursor-pointer select-none active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5;
 }
 
 .btn-primary {
-  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-[transform,scale,background-color,background-image,color,box-shadow,opacity] duration-200 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-gradient-to-r from-primary to-secondary hover:opacity-90 text-white shadow-md shadow-primary/15 hover:shadow-primary/25;
+  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-[transform,scale,background-color,background-image,color,box-shadow,opacity] duration-200 cursor-pointer select-none active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-gradient-to-r from-primary to-secondary hover:opacity-90 text-white shadow-md shadow-primary/15 hover:shadow-primary/25;
 }
 
 .btn-secondary {
-  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-[transform,scale,background-color,background-image,color,box-shadow,opacity] duration-200 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-primary/[0.08] border border-primary/[0.20] text-primary hover:bg-primary/[0.15] hover:border-primary/[0.30] dark:bg-secondary/[0.12] dark:border-secondary/[0.30] dark:text-secondary dark:hover:bg-secondary/[0.20] dark:hover:border-secondary/[0.45];
+  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-[transform,scale,background-color,background-image,color,box-shadow,opacity] duration-200 cursor-pointer select-none active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-primary/[0.08] border border-primary/[0.20] text-primary hover:bg-primary/[0.15] hover:border-primary/[0.30] dark:bg-secondary/[0.12] dark:border-secondary/[0.30] dark:text-secondary dark:hover:bg-secondary/[0.20] dark:hover:border-secondary/[0.45];
 }
 
 .btn-danger {
-  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-[transform,scale,background-color,background-image,color,box-shadow,opacity] duration-200 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-rose-500 hover:bg-rose-600 text-white shadow-md shadow-rose-500/15 hover:shadow-rose-500/25;
+  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-[transform,scale,background-color,background-image,color,box-shadow,opacity] duration-200 cursor-pointer select-none active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-rose-500 hover:bg-rose-600 text-white shadow-md shadow-rose-500/15 hover:shadow-rose-500/25;
 }
 
 .btn-danger-light {
-  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-[transform,scale,background-color,background-image,color,box-shadow,opacity] duration-200 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-rose-500/[0.08] border border-rose-500/20 text-rose-600 hover:bg-rose-500/[0.15] dark:bg-rose-400/[0.15] dark:border-rose-400/30 dark:text-rose-300 dark:hover:bg-rose-400/[0.25] shadow-xs;
+  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-[transform,scale,background-color,background-image,color,box-shadow,opacity] duration-200 cursor-pointer select-none active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-rose-500/[0.08] border border-rose-500/20 text-rose-600 hover:bg-rose-500/[0.15] dark:bg-rose-400/[0.15] dark:border-rose-400/30 dark:text-rose-300 dark:hover:bg-rose-400/[0.25] shadow-xs;
 }
 
 .btn-cancel {
-  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-[transform,scale,background-color,background-image,color,box-shadow,opacity] duration-200 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-slate-200/90 hover:bg-slate-300/90 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200/50 dark:border-slate-800/50 text-slate-800 dark:text-slate-100 hover:text-slate-950 dark:hover:text-white shadow-xs;
+  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-[transform,scale,background-color,background-image,color,box-shadow,opacity] duration-200 cursor-pointer select-none active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-slate-200/90 hover:bg-slate-300/90 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200/50 dark:border-slate-800/50 text-slate-800 dark:text-slate-100 hover:text-slate-950 dark:hover:text-white shadow-xs;
 }
 
 .btn-ghost {
-  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-[transform,scale,background-color,background-image,color,box-shadow,opacity] duration-200 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800/80 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white border border-transparent;
+  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-[transform,scale,background-color,background-image,color,box-shadow,opacity] duration-200 cursor-pointer select-none active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800/80 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white border border-transparent;
 }
 
 .btn-success {
-  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-[transform,scale,background-color,background-image,color,box-shadow,opacity] duration-200 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white shadow-md shadow-emerald-500/15 hover:shadow-emerald-500/25;
+  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-[transform,scale,background-color,background-image,color,box-shadow,opacity] duration-200 cursor-pointer select-none active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white shadow-md shadow-emerald-500/15 hover:shadow-emerald-500/25;
 }
 
 .btn-info {
-  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-[transform,scale,background-color,background-image,color,box-shadow,opacity] duration-200 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-600/15 hover:shadow-blue-600/25;
+  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-[transform,scale,background-color,background-image,color,box-shadow,opacity] duration-200 cursor-pointer select-none active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-600/15 hover:shadow-blue-600/25;
 }
 
 .btn-reload,
 .btn-outline {
-  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-[transform,scale,background-color,background-image,color,box-shadow,opacity] duration-200 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-white dark:bg-slate-950 border border-slate-200/50 dark:border-slate-800/50 text-slate-700 dark:text-slate-300 hover:bg-slate-50 hover:text-[var(--color-primary)] dark:hover:bg-slate-900 dark:hover:text-white shadow-2xs;
+  @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl transition-[transform,scale,background-color,background-image,color,box-shadow,opacity] duration-200 cursor-pointer select-none active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5 bg-white dark:bg-slate-950 border border-slate-200/50 dark:border-slate-800/50 text-slate-700 dark:text-slate-300 hover:bg-slate-50 hover:text-[var(--color-primary)] dark:hover:bg-slate-900 dark:hover:text-white shadow-2xs;
 }
 
 .btn-close {
-  @apply w-8 h-8 flex items-center justify-center shrink-0 rounded-xl text-slate-400 hover:text-slate-800 dark:hover:text-white hover:bg-slate-200/90 dark:hover:bg-slate-800/90 active:scale-95 transition-[transform,scale,background-color,color] duration-150 cursor-pointer;
+  @apply w-8 h-8 flex items-center justify-center shrink-0 rounded-xl text-slate-400 hover:text-slate-800 dark:hover:text-white hover:bg-slate-200/90 dark:hover:bg-slate-800/90 active:scale-95 transition-[transform,scale,background-color,color] duration-150 cursor-pointer select-none;
 }
 
 .btn-close-sm {
-  @apply w-7 h-7 flex items-center justify-center shrink-0 rounded-lg text-slate-400 hover:text-slate-800 dark:hover:text-white hover:bg-slate-200/90 dark:hover:bg-slate-800/90 active:scale-95 transition-[transform,scale,background-color,color] duration-150 cursor-pointer;
+  @apply w-7 h-7 flex items-center justify-center shrink-0 rounded-lg text-slate-400 hover:text-slate-800 dark:hover:text-white hover:bg-slate-200/90 dark:hover:bg-slate-800/90 active:scale-95 transition-[transform,scale,background-color,color] duration-150 cursor-pointer select-none;
 }
 
 .btn-sm {
@@ -532,7 +535,7 @@ body.dark ::-webkit-scrollbar-thumb {
 
 /* Tabs & Cards */
 @utility tab-group {
-  @apply h-[42px] flex items-center gap-1 bg-slate-100 dark:bg-slate-900/80 p-1 rounded-xl border border-slate-200/40 dark:border-slate-800/40 overflow-x-auto flex-nowrap shrink-0 max-w-full;
+  @apply h-[42px] flex items-center gap-1 bg-slate-100 dark:bg-slate-900/80 p-1 rounded-xl border border-slate-200/40 dark:border-slate-800/40 overflow-x-auto flex-nowrap shrink-0 max-w-full select-none;
   -ms-overflow-style: none;
   scrollbar-width: none;
 
@@ -542,7 +545,7 @@ body.dark ::-webkit-scrollbar-thumb {
 }
 
 @utility tab-item {
-  @apply h-8 px-4 rounded-lg text-xs font-semibold transition-[color,background-color,box-shadow,transform,scale] duration-200 cursor-pointer inline-flex items-center justify-center gap-1.5 text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 whitespace-nowrap shrink-0;
+  @apply h-8 px-4 rounded-lg text-xs font-semibold transition-[color,background-color,box-shadow,transform,scale] duration-200 cursor-pointer inline-flex items-center justify-center gap-1.5 text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 whitespace-nowrap shrink-0 select-none;
 
   &.active {
     @apply bg-white dark:bg-slate-800 text-[var(--color-primary)] dark:text-[var(--color-secondary)] shadow-sm font-bold;
