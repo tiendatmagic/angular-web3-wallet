@@ -1,4 +1,4 @@
-﻿import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '../icon/icon.component';
 import { TranslatePipe } from '../../pipes/translate.pipe';
@@ -13,6 +13,7 @@ import { TranslatePipe } from '../../pipes/translate.pipe';
 export class AlertComponent {
   @Input() type: 'info' | 'success' | 'warning' | 'error' = 'info';
   @Input() variant: 'soft' | 'bordered' | 'accent' = 'soft';
+  @Input() size: 'sm' | 'md' = 'md';
   @Input() title?: string;
   @Input() message: string = '';
   @Input() dismissible: boolean = true;
