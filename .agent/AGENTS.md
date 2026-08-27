@@ -1,3 +1,20 @@
+### Yêu cầu: Rà Soát Toàn Bộ Source Code & Cập Nhật Toàn Diện Tài Liệu Chuẩn Thiết Kế `design.md`
+- **Nội dung yêu cầu:** Dựa trên các thay đổi, sửa lỗi và cải tiến gần đây trong dự án, rà soát lại toàn bộ mã nguồn và đồng bộ, nâng cấp tài liệu `.agent/design.md` theo chuẩn thiết kế mới nhất.
+- **Phân tích kỹ thuật & Các điểm đã cập nhật trong `design.md`:**
+  1. **Quy tắc Vàng về CSS Transition & Hiệu Năng 60-120fps:** Xóa bỏ hoàn toàn ví dụ cũ `transition-all`. Cấm tuyệt đối `transition-all` và cấm transition cho `border` (border-color, border-width) và `padding`. Khai báo whitelist thuộc tính tối ưu phần cứng (`transform`, `scale`, `opacity`, `background-color`, `box-shadow`, `stroke-dashoffset`, v.v.).
+  2. **Hệ thống Form Label & Form Field Chuẩn Hóa:** Bổ sung `@utility form-label` và cập nhật đặc tả selector của `@utility form-field` (hỗ trợ direct label, header-wrapped label và class `.form-label`), quy chuẩn dùng `.form-label` cho modal và custom controls.
+  3. **Quy Chuẩn Hoạt Ảnh Avatar & Avatar Group:** Bổ sung chuẩn Spring Physics 500ms (`duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]`), `transform-gpu`, phóng to `scale-110`, đồng bộ status dot và glow shadow tím mờ.
+  4. **Quy Chuẩn Căn Chỉnh Dọc Checkbox & Radio:** Đồng bộ `items-center` trên `<label class="group flex items-center gap-3 cursor-pointer select-none">`, cấm dùng `items-start` với `pt-0.5`.
+  5. **Quy Chuẩn Multi-Language Selector:** Bổ sung biến thể `compact` (Header) và `full` (Sidebar với `w-full block`, trigger `w-full flex justify-between` kèm `truncate`, popover `min-w-[220px]` và tiêu đề `whitespace-nowrap`).
+  6. **Quy Chuẩn SVG Gauge trong `ProgressComponent`:** Sử dụng native `<svg viewBox="0 0 100 100">` / `<svg viewBox="0 0 100 58">` trực tiếp thay vì `app-icon` (tránh giới hạn 20px x 20px), chỉ hiển thị header đỉnh cho `type="bar"`, transition chỉ áp dụng cho `stroke-dashoffset`.
+  7. **Container Queries & Responsive Code Block:** Bổ sung `@container`, tab bar cuộn ngang mượt mà, action button responsive icon-only (`hidden @[440px]:inline`) và hệ thống syntax highlight tokens.
+  8. **Hệ Thống Token Toàn Cục Mới:** Cập nhật danh mục nút bấm đầy đủ (`.btn-primary`, `.btn-secondary`, `.btn-danger`, `.btn-cancel`, `.btn-ghost`, `.btn-success`, `.btn-info`, `.btn-outline`, `.btn-close`), hệ thống Alert tokens, Aura Glow & Conic Gradients, và quy tắc `:host { display: block; }`.
+  9. **Quy tắc Ngăn Chọn Chữ (`select-none`):** Áp dụng bắt buộc trên toàn bộ UI controls tương tác.
+- **Xác thực:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npm test`: 38/38 tests passed (100%).
+  - `npm run build`: Build production hoàn tất thành công 100%.
+
 ### Yêu cầu: Chuẩn Hóa & Đồng Bộ Toàn Diện Hệ Thống Form Label (Khắc Phục Lỗi Mất Định Dạng Nhãn Trong Modal Xác Nhận Xóa & Toàn Bộ Các Form)
 - **Nội dung yêu cầu:** Rà soát và sửa lỗi nhãn form chưa đồng bộ trên toàn bộ hệ thống giao diện, khắc phục tình trạng nhãn xác nhận từ khóa ("GÕ TỪ KHÓA 'CYBER-SAMURAI' ĐỂ XÁC NHẬN") trong Delete Confirm Modal và các form khác bị to, đậm màu và mất định dạng so với các nhãn chuẩn.
 - **Phân tích kỹ thuật & Nguyên nhân:**
