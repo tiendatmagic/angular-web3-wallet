@@ -1,3 +1,14 @@
+### Yêu cầu: Loại Bỏ Hiệu Ứng Active Scale Trong Theme Switcher Component (`ThemeSwitcherComponent`)
+- **Nội dung yêu cầu:** Bỏ class `active:scale` (active scale animation) của component theme switch.
+- **Phân tích kỹ thuật & Tinh chỉnh:**
+  1. Loại bỏ class `active:scale-95` khỏi 3 nút button đổi chế độ theme (Light, Auto, Dark) trong `theme-switcher.component.html`.
+  2. Tối ưu transition từ `transition-[color,transform]` sang `transition-colors duration-200` giúp loại bỏ tính toán biến đổi transform không cần thiết khi click, giữ cảm giác bấm ổn định và liền mạch.
+- **Các bước & Vị trí đã thực hiện:**
+  - Cập nhật file `src/app/shared/components/theme-switcher/theme-switcher.component.html`.
+- **Xác thực:**
+  - `npm test`: 14 files / 65 tests passed (100%).
+  - `npm run build`: Build production hoàn tất thành công 100%.
+
 ### Yêu cầu: Khắc Phục Lỗi Drawer Bị Khuất Sau Sidebar & Chuẩn Hóa Phân Tầng Z-Index / Stacking Context
 - **Nội dung yêu cầu:** Sửa lỗi khi mở Drawer (bảng trượt) thì không thấy Drawer hoặc Drawer bị che lấp / nằm chìm phía sau Sidebar và Header.
 - **Phân tích kỹ thuật & Nguyên nhân:**
