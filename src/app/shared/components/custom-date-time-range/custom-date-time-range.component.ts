@@ -22,6 +22,7 @@ import { IconComponent } from '../icon/icon.component';
 import { TranslatePipe } from '@shared/pipes/translate.pipe';
 import { TranslationService } from '@core/services/translation.service';
 import { DropdownService } from '@core/services/dropdown.service';
+import { getContainingBlockOffset } from '@core/utils/dom.utils';
 
 export interface DateTimeRangeValue {
   startDate: string;
@@ -268,6 +269,7 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
     if (!triggerEl) return;
 
     const rect = triggerEl.getBoundingClientRect();
+    const offset = getContainingBlockOffset(triggerEl);
     const popoverHeight = this.showTime ? 510 : 440;
     const popoverWidth = Math.min(320, window.innerWidth - 16);
     const gap = 6;
@@ -309,8 +311,8 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
 
     this.popoverStyle = {
       position: 'fixed',
-      top: `${top}px`,
-      left: `${left}px`,
+      top: `${top - offset.top}px`,
+      left: `${left - offset.left}px`,
       width: `${popoverWidth}px`,
       maxWidth: 'calc(100vw - 16px)',
       zIndex: '9999',

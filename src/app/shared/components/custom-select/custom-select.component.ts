@@ -21,6 +21,7 @@ import { IconComponent } from '../icon/icon.component';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { TranslationService } from '../../../core/services/translation.service';
 import { DropdownService } from '../../../core/services/dropdown.service';
+import { getContainingBlockOffset } from '../../../core/utils/dom.utils';
 
 export interface SelectOption {
   [key: string]: any;
@@ -134,6 +135,7 @@ export class CustomSelectComponent implements ControlValueAccessor, AfterViewChe
     if (!triggerEl) return;
 
     const rect = triggerEl.getBoundingClientRect();
+    const offset = getContainingBlockOffset(triggerEl);
     const dropdownMaxHeight = 280;
     const gap = 6;
 
@@ -167,8 +169,8 @@ export class CustomSelectComponent implements ControlValueAccessor, AfterViewChe
     if (placeFinal === 'bottom') {
       this.dropdownStyle = {
         position: 'fixed',
-        top: `${rect.bottom + gap}px`,
-        left: `${left}px`,
+        top: `${rect.bottom + gap - offset.top}px`,
+        left: `${left - offset.left}px`,
         width: `${selectWidth}px`,
         maxHeight: `${Math.min(dropdownMaxHeight, Math.max(80, spaceBelow))}px`,
         zIndex: '9999',
@@ -176,8 +178,8 @@ export class CustomSelectComponent implements ControlValueAccessor, AfterViewChe
     } else {
       this.dropdownStyle = {
         position: 'fixed',
-        top: `${rect.top - gap}px`,
-        left: `${left}px`,
+        top: `${rect.top - gap - offset.top}px`,
+        left: `${left - offset.left}px`,
         width: `${selectWidth}px`,
         maxHeight: `${Math.min(dropdownMaxHeight, Math.max(80, spaceAbove))}px`,
         transform: 'translateY(-100%)',

@@ -1,3 +1,27 @@
+### Yêu cầu: Khắc Phục Lỗi Dropdown / Popover Bị Lệch Tọa Độ Khi Hiển Thị Trên Modal (DatePicker, DateTimeRange, CustomSelect, DropdownMenu)
+- **Nội dung yêu cầu:** Xem lại nguyên nhân một số component bị lỗi vị trí/lệch toạ độ khi hiển thị trên Modal (ví dụ: Custom Date Picker, Custom Date Time Range, Custom Select, Dropdown Menu) và khắc phục triệt để.
+- **Phân tích kỹ thuật & Nguyên nhân:**
+  1. **Lỗi Containing Block theo chuẩn W3C CSS Transforms Specification:**
+     - Các component `CustomDatePickerComponent`, `CustomDateTimeRangeComponent`, `CustomSelectComponent`, `DropdownMenuComponent` sử dụng `position: fixed` kết hợp `triggerEl.getBoundingClientRect()` (toạ độ tuyệt đối so với Viewport).
+     - Khi đặt bên trong Modal (hoặc bất kỳ thẻ cha nào có `animate-modal-in`, `transform`, `will-change: transform`, `filter`, `backdrop-filter`, `contain`), theo chuẩn W3C, thẻ cha đó trở thành một **Containing Block** mới.
+     - Mọi element con có `position: fixed` bên trong Containing Block sẽ bị trình duyệt định vị tương đối theo chính góc trên bên trái của thẻ cha đó thay vì Viewport.
+     - Kết quả: Khi áp dụng toạ độ Viewport (`left = 450px, top = 300px`) vào phần tử con bên trong Modal (`modal.left = 300px, modal.top = 100px`), toạ độ thực tế trên màn hình bị cộng dồn thành `750px, 400px`, khiến toàn bộ dropdown menu và lịch bị văng lệch sang góc phải màn hình.
+  2. **Giải pháp kiến trúc toàn diện:**
+     - Tạo utility `getContainingBlockOffset(el)` trong `src/app/core/utils/dom.utils.ts` tự động duyệt cây DOM lên tới root để kiểm tra xem trigger element có nằm trong một Containing Block hay không.
+     - Nếu có Containing Block, tự động trừ đi toạ độ `(left, top)` của Containing Block đó (`left - offset.left`, `top - offset.top`), giúp phần tử `position: fixed` luôn hiển thị chính xác 100% thẳng hàng ngay dưới trigger input ở bất kỳ ngữ cảnh nào (trang chủ, Modal, Drawer, Tab, Card).
+     - Tinh chỉnh `@keyframes modalZoomIn` trong `src/styles.scss` (`to { opacity: 1; transform: none; }`) để giải phóng `transform` sau khi hoàn tất animation 200ms.
+- **Các bước & Vị trí đã thực hiện:**
+  1. Tạo mới file tiện ích `src/app/core/utils/dom.utils.ts` và bộ unit test `src/app/core/utils/dom.utils.spec.ts` (5 test cases).
+  2. Cập nhật `CustomDatePickerComponent` (`custom-date-picker.component.ts`): Bù trừ toạ độ Containing Block trong `updatePopoverPosition()`.
+  3. Cập nhật `CustomDateTimeRangeComponent` (`custom-date-time-range.component.ts`): Bù trừ toạ độ Containing Block trong `updatePopoverPosition()`.
+  4. Cập nhật `CustomSelectComponent` (`custom-select.component.ts`): Bù trừ toạ độ Containing Block trong `updateDropdownPosition()`.
+  5. Cập nhật `DropdownMenuComponent` (`dropdown-menu.component.ts`): Bù trừ toạ độ Containing Block trong `updateMenuPosition()` và `updateSubmenuPosition()`.
+  6. Tối ưu `@keyframes modalZoomIn` trong `src/styles.scss`.
+- **Xác thực:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npm test`: 15 files / 70 tests passed (100%).
+  - `npm run build`: Build production hoàn tất thành công 100%.
+
 ### Yêu cầu: Rà Soát Toàn Bộ Source Code & Chuẩn Hóa Kế Thừa UI Component & Dynamic Tokens
 - **Nội dung yêu cầu:** Rà soát toàn bộ source code, tìm kiếm và tối ưu hóa các vị trí có thể hạn chế việc UI không khớp / chưa đồng bộ bằng cách kế thừa các UI component và design tokens hiện có.
 - **Phân tích kỹ thuật & Các điểm đã tối ưu:**

@@ -16,6 +16,7 @@ import { CommonModule } from '@angular/common';
 import { IconComponent } from '../icon/icon.component';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { DropdownService } from '@core/services/dropdown.service';
+import { getContainingBlockOffset } from '@core/utils/dom.utils';
 
 export interface DropdownMenuItem {
   id?: string;
@@ -340,11 +341,12 @@ export class DropdownMenuComponent implements AfterViewChecked {
       ? Math.max(120, window.innerHeight - top - 8)
       : Math.max(120, triggerRect.top - gap - 8);
     const maxHeight = Math.min(availableHeight, 480);
+    const offset = getContainingBlockOffset(trigger);
 
     this.popoverStyle = {
       position: 'fixed',
-      top: `${top}px`,
-      left: `${left}px`,
+      top: `${top - offset.top}px`,
+      left: `${left - offset.left}px`,
       maxHeight: `${maxHeight}px`,
       zIndex: '9999',
     };
@@ -360,6 +362,7 @@ export class DropdownMenuComponent implements AfterViewChecked {
     }
 
     const triggerRect = this.activeSubmenuTriggerEl.getBoundingClientRect();
+    const offset = getContainingBlockOffset(this.activeSubmenuTriggerEl);
 
     if (triggerRect.bottom <= 0 || triggerRect.top >= window.innerHeight || triggerRect.width === 0) {
       this.activeSubmenuId.set(null);
@@ -403,8 +406,8 @@ export class DropdownMenuComponent implements AfterViewChecked {
 
     this.submenuStyle = {
       position: 'fixed',
-      left: `${subLeft}px`,
-      top: `${subTop}px`,
+      left: `${subLeft - offset.left}px`,
+      top: `${subTop - offset.top}px`,
       maxHeight: `${maxHeight}px`,
       zIndex: '10000',
     };

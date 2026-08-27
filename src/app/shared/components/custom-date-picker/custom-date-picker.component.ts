@@ -22,6 +22,7 @@ import { IconComponent } from '../icon/icon.component';
 import { TranslationService } from '@core/services/translation.service';
 import { DropdownService } from '@core/services/dropdown.service';
 import { TranslatePipe } from '@shared/pipes/translate.pipe';
+import { getContainingBlockOffset } from '@core/utils/dom.utils';
 
 @Component({
   selector: 'app-custom-date-picker',
@@ -202,6 +203,7 @@ export class CustomDatePickerComponent implements ControlValueAccessor, AfterVie
     if (!triggerEl) return;
 
     const rect = triggerEl.getBoundingClientRect();
+    const offset = getContainingBlockOffset(triggerEl);
     const baseHeight = this.showPresets ? 380 : 340;
     const popoverHeight = this.enableTime ? baseHeight + 52 : baseHeight;
     const popoverWidth = Math.min(320, window.innerWidth - 16);
@@ -244,8 +246,8 @@ export class CustomDatePickerComponent implements ControlValueAccessor, AfterVie
 
     this.popoverStyle = {
       position: 'fixed',
-      top: `${top}px`,
-      left: `${left}px`,
+      top: `${top - offset.top}px`,
+      left: `${left - offset.left}px`,
       width: `${popoverWidth}px`,
       maxWidth: 'calc(100vw - 16px)',
       zIndex: '9999',

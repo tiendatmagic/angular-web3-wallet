@@ -232,7 +232,7 @@ html.theme-transition-disabled *:not(.theme-switcher-pill):not(.tab-group-pill):
   }
   to {
     opacity: 1;
-    transform: scale(1);
+    transform: none;
   }
 }
 
