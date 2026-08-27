@@ -1,3 +1,45 @@
+### Yêu cầu: Rà Soát & Tối Ưu Hóa Toàn Diện Transition Classes (Loại Bỏ `transition-all`, Tuyệt Đối Không Dùng Transition Cho `border` & `padding`)
+- **Nội dung yêu cầu:** Rà soát lại toàn bộ codebase để tối ưu hóa, loại bỏ hoàn toàn các class `transition-all`, chuyển sang khai báo danh sách thuộc tính cụ thể (`transform`, `scale`, `background-color`, `color`, `box-shadow`, `opacity`, `width`, `height`, `stroke-dashoffset`, `grid-template-rows`, ...). Tuyệt đối không sử dụng transition với `border` (border-color, border-width) hay `padding`.
+- **Phân tích kỹ thuật & Hiệu năng trình duyệt:**
+  1. **Tác hại của `transition-all`:** `transition-all` buộc trình duyệt theo dõi tất cả các thuộc tính CSS có thể animate trên mỗi frame layout/paint/composite. Điều này gây tốn CPU/GPU, kích hoạt layout shifts và repaint liên tục khi DOM thay đổi hoặc hover nhanh.
+  2. **Tác hại của `transition: border` & `transition: padding`:** Chuyển đổi màu viền (`border-color`) hoặc đệm lề (`padding`) làm phát sinh chi phí reflow & rasterization đắt đỏ trên trình duyệt. Khi loại bỏ transition cho border và padding, phản hồi visual tức thì, kết hợp cùng các thuộc tính tối ưu phần cứng (`transform`, `scale`, `opacity`, `background-color`, `color`, `box-shadow`) cho hiệu năng 60-120fps mượt mà.
+- **Các bước & Vị trí đã thực hiện:**
+  1. **Hệ Thống Stylesheet Toàn Cục (`src/styles.scss`):**
+     - `.transition-all-300`: Chuyển sang `@apply transition-[transform,scale,background-color,color,box-shadow,opacity] duration-300 ease-out;`.
+     - `@utility form-textarea`: Chuyển `@apply py-3 px-4 transition-all duration-200` ➡️ `@apply py-3 px-4 transition-[background-color,color,box-shadow] duration-200`.
+     - `@utility search-input`: Chuyển `@apply h-[42px] pl-9 pr-4 transition-all duration-200` ➡️ `@apply h-[42px] pl-9 pr-4 transition-[background-color,color,box-shadow] duration-200`.
+     - `@utility app-card-interactive`: Chuyển `transition-all duration-300` ➡️ `transition-[transform,scale,background-color,color,box-shadow] duration-300`.
+  2. **Layout Header & Sidebar (`src/app/shared/layout/`):**
+     - `sidebar.component.html`: Loại bỏ hoàn toàn `transition-[padding,gap] duration-300 ease-in-out` khỏi container logo.
+     - `header.component.html`: Loại bỏ hoàn toàn `transition-[padding] duration-300 ease-in-out` khỏi thẻ `<header>`.
+  3. **Các Component Được Tối Ưu Hóa Chuẩn Xác Theo Ngữ Cảnh:**
+     - `TooltipDirective`: Chuyển `'transition-all'` ➡️ `'transition-[opacity,transform]'`.
+     - `ToastComponent`: Chuyển `transition-all duration-300` ➡️ `transition-[transform,scale,opacity,box-shadow,background-color] duration-300`.
+     - `TableComponent`: Chuyển sort icon `transition-all` ➡️ `transition-[transform,color] duration-200`.
+     - `ProgressComponent`: Chuyển thanh fill dạng bar `transition-all` ➡️ `transition-[width] duration-500 ease-out`, thanh segmented ➡️ `transition-[background-color,opacity] duration-300`.
+     - `LogoComponent`: Chuyển blur background `transition-all` ➡️ `transition-[filter,opacity] duration-300`, logo icon ➡️ `transition-[color,transform] duration-300`.
+     - `EmptyStateComponent`: Chuyển `transition-all duration-300` ➡️ `transition-[background-color,box-shadow] duration-300`.
+     - `InputOtpComponent`: Chuyển OTP slot `transition-all duration-200` ➡️ `transition-[transform,scale,background-color,color,box-shadow] duration-200`.
+     - `VoiceChatComponent`: Chuyển main container ➡️ `transition-[width,height,border-radius,box-shadow,background-color] duration-300`, capsule & header & footer ➡️ `transition-[opacity,transform] duration-200`, avatar morphing grid ➡️ `transition-[left,top,width,height,opacity] duration-300`, avatar img ➡️ `transition-[width,height,box-shadow] duration-300`, name label ➡️ `transition-[opacity,top] duration-200`.
+     - `DropdownMenuComponent`: Loại bỏ `ring-color` khỏi trigger avatar, giữ `transition-[box-shadow] duration-200`.
+     - `FileUploadComponent`: Chuyển horizontal & dropzone boxes ➡️ `transition-[transform,scale,background-color,box-shadow] duration-200`, avatar box ➡️ `transition-[background-color,box-shadow] duration-200`, camera circle ➡️ `transition-[transform,scale,color,background-color] duration-200`, file item card ➡️ `transition-[background-color,color,box-shadow] duration-200`, progress upload bar ➡️ `transition-[width] duration-200`.
+     - `CustomRadioComponent`: Chuyển radio container `transition-all duration-200` ➡️ `transition-[background-color,box-shadow,transform,scale] duration-200`.
+     - `CustomSliderComponent`: Chuyển track fill `transition-all duration-75` ➡️ `transition-[width] duration-75`, thumb handle ➡️ `transition-[left,transform,scale,box-shadow,background-color] duration-75`.
+     - `CustomSelectComponent`: Chuyển multi-select checkbox ➡️ `transition-[background-color,transform,scale] duration-150`.
+     - `CustomDateTimeRangeComponent`: Chuyển các nút dropdown giờ/phút ➡️ `transition-[transform,scale,background-color,color,box-shadow] duration-150`.
+     - `CustomCheckboxComponent`: Chuyển checkbox box ➡️ `transition-[background-color,box-shadow,transform,scale] duration-200`, checkmark icon ➡️ `transition-[transform,scale,opacity] duration-150 ease-out`.
+     - `CodeBlockComponent`: Chuyển footer wrapper ➡️ `transition-[background-color,color,box-shadow] duration-200`.
+     - `AccordionItemComponent`: Chuyển item container ➡️ `transition-[background-color,box-shadow] duration-300`, chevron icon ➡️ `transition-[transform,color] duration-300`, grid rows collapse ➡️ `transition-[grid-template-rows,opacity] duration-300`.
+     - `BadgeComponent`: Chuyển interactive badge ➡️ `transition-[transform,scale,background-color,color,box-shadow,opacity]` + `duration-200`.
+     - `AvatarComponent`: Chuyển avatar group hover ➡️ `transition-[transform,box-shadow] duration-200`.
+     - `AlertComponent`: Chuyển alert box ➡️ `transition-[transform,opacity,box-shadow] duration-300`.
+     - `StatCardComponent`: Sửa `transition-[transform,scale,shadow]` ➡️ `transition-[transform,scale,box-shadow] duration-200`.
+     - `HomeComponent`: Chuyển link txHash ➡️ `transition-[color,opacity] duration-150`.
+- **Xác thực:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npm test`: 17/17 tests passed (100%).
+  - `npm run build`: Build production hoàn tất thành công 100%.
+
 ### Yêu cầu: Khắc Phục Lỗi UI Hiển Thị Cho SVG Gauge (Circular Ring & Semi-Circle Gauge) Trong `ProgressComponent`
 - **Nội dung yêu cầu:** Sửa lỗi giao diện hiển thị bị đè chữ, thu nhỏ bất thường và vỡ bố cục tại mục "6. Circular Ring & Semi-Circle Gauge" (`app-progress[type='circle']` & `app-progress[type='semicircle']`).
 - **Phân tích nguyên nhân gốc rễ kỹ thuật:**

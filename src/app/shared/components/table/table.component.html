@@ -43,7 +43,7 @@
                 <span>{{ col.label }}</span>
                 @if (col.sortable) {
                   <span
-                    class="inline-flex items-center text-slate-400 dark:text-slate-500 w-3.5 h-3.5 transition-all"
+                    class="inline-flex items-center text-slate-400 dark:text-slate-500 w-3.5 h-3.5 transition-[transform,color] duration-200"
                   >
                     @if (sortKeySignal() === col.key) {
                       @if (sortDirectionSignal() === 'asc') {

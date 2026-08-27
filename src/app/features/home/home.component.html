@@ -1491,7 +1491,7 @@
               <a
                 [href]="'https://arbiscan.io/tx/' + value"
                 target="_blank"
-                class="text-[var(--color-primary)] hover:underline hover:opacity-90 font-bold transition-all duration-150 cursor-pointer"
+                class="text-[var(--color-primary)] hover:underline hover:opacity-90 font-bold transition-[color,opacity] duration-150 cursor-pointer"
               >
                 {{ value.substring(0, 6) }}...{{ value.substring(value.length - 4) }}
               </a>
@@ -2514,13 +2514,13 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
           <div class="p-4 rounded-xl bg-slate-100/60 dark:bg-slate-950/40 border border-slate-200/50 dark:border-slate-800/50 flex flex-col justify-between space-y-4">
             <div class="space-y-1.5">
               <div class="flex items-center gap-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-rose-500 shrink-0"></span>
                 <h5 class="text-sm font-black text-slate-800 dark:text-slate-100">
-                  {{ 'cards.modal_demo.open_delete_btn' | translate }}
+                  {{ 'cards.modal_demo.card_delete_title' | translate }}
                 </h5>
               </div>
               <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-semibold">
@@ -2532,19 +2532,19 @@
               variant="danger"
               size="md"
               (click)="openDeleteConfirmModal()"
-              class="w-full shadow-md shadow-rose-500/10"
+              class="w-full !px-3 shadow-md shadow-rose-500/10 min-w-0"
             >
-              <app-icon name="trash" class="w-4 h-4" strokeWidth="2" />
-              <span>{{ 'cards.modal_demo.open_delete_btn' | translate }}</span>
+              <app-icon name="trash" class="w-4 h-4 shrink-0" strokeWidth="2" />
+              <span class="truncate">{{ 'cards.modal_demo.open_delete_btn' | translate }}</span>
             </button>
           </div>
 
           <div class="p-4 rounded-xl bg-slate-100/60 dark:bg-slate-950/40 border border-slate-200/50 dark:border-slate-800/50 flex flex-col justify-between space-y-4">
             <div class="space-y-1.5">
               <div class="flex items-center gap-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-primary shrink-0"></span>
                 <h5 class="text-sm font-black text-slate-800 dark:text-slate-100">
-                  {{ 'cards.modal_demo.open_form_btn' | translate }}
+                  {{ 'cards.modal_demo.card_form_title' | translate }}
                 </h5>
               </div>
               <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-semibold">
@@ -2556,19 +2556,19 @@
               variant="primary"
               size="md"
               (click)="openDemoModal()"
-              class="w-full shadow-md"
+              class="w-full !px-3 shadow-md min-w-0"
             >
-              <app-icon name="bolt-solid" class="w-4 h-4" />
-              <span>{{ 'cards.modal_demo.open_form_btn' | translate }}</span>
+              <app-icon name="bolt-solid" class="w-4 h-4 shrink-0" />
+              <span class="truncate">{{ 'cards.modal_demo.open_form_btn' | translate }}</span>
             </button>
           </div>
 
-          <div class="p-4 rounded-xl bg-slate-100/60 dark:bg-slate-950/40 border border-slate-200/50 dark:border-slate-800/50 flex flex-col justify-between space-y-4">
+          <div class="p-4 rounded-xl bg-slate-100/60 dark:bg-slate-950/40 border border-slate-200/50 dark:border-slate-800/50 flex flex-col justify-between space-y-4 sm:col-span-2 xl:col-span-1">
             <div class="space-y-1.5">
               <div class="flex items-center gap-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-amber-500 shrink-0"></span>
                 <h5 class="text-sm font-black text-slate-800 dark:text-slate-100">
-                  {{ 'cards.modal_demo.open_quick_confirm_btn' | translate }}
+                  {{ 'cards.modal_demo.card_confirm_title' | translate }}
                 </h5>
               </div>
               <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-semibold">
@@ -2580,10 +2580,10 @@
               variant="cancel"
               size="md"
               (click)="openQuickConfirmModal()"
-              class="w-full"
+              class="w-full !px-3 min-w-0"
             >
-              <app-icon name="warning" class="w-4 h-4 text-amber-500" strokeWidth="2.2" />
-              <span>{{ 'cards.modal_demo.open_quick_confirm_btn' | translate }}</span>
+              <app-icon name="warning" class="w-4 h-4 text-amber-500 shrink-0" strokeWidth="2.2" />
+              <span class="truncate">{{ 'cards.modal_demo.open_quick_confirm_btn' | translate }}</span>
             </button>
           </div>
         </div>

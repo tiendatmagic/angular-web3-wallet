@@ -11,7 +11,7 @@
 
   @if (effectiveVariant() === 'horizontal') {
     <div
-      class="relative group cursor-pointer transition-all duration-200 select-none rounded-[15px] p-4 border border-dashed"
+      class="relative group cursor-pointer transition-[transform,scale,background-color,box-shadow] duration-200 select-none rounded-[15px] p-4 border border-dashed"
       [ngClass]="{
         'border-slate-300 dark:border-slate-800 bg-slate-100/70 dark:bg-slate-900/60 hover:border-[var(--color-primary)] hover:bg-slate-100/60 dark:hover:bg-slate-900/90 shadow-sm':
           !isDragging() && !disabled,
@@ -79,7 +79,7 @@
 
   @if (effectiveVariant() === 'dropzone') {
     <div
-      class="relative group cursor-pointer transition-all duration-200 select-none rounded-[15px] p-6 text-center border border-dashed"
+      class="relative group cursor-pointer transition-[transform,scale,background-color,box-shadow] duration-200 select-none rounded-[15px] p-6 text-center border border-dashed"
       [ngClass]="{
         'border-slate-300 dark:border-slate-800 bg-slate-100/70 dark:bg-slate-900/60 hover:border-[var(--color-primary)] hover:bg-slate-100/60 dark:hover:bg-slate-900/90':
           !isDragging() && !disabled,
@@ -108,7 +108,7 @@
 
   @if (effectiveVariant() === 'avatar') {
     <div
-      class="relative group cursor-pointer transition-all duration-200 select-none rounded-[15px] p-4 flex flex-col items-center justify-center text-center border border-dashed border-slate-300 dark:border-slate-800 bg-slate-100/50 dark:bg-slate-900/50 hover:border-[var(--color-primary)]"
+      class="relative group cursor-pointer transition-[background-color,box-shadow] duration-200 select-none rounded-[15px] p-4 flex flex-col items-center justify-center text-center border border-dashed border-slate-300 dark:border-slate-800 bg-slate-100/50 dark:bg-slate-900/50 hover:border-[var(--color-primary)]"
       (click)="triggerFileInput()"
     >
       @if (files().length > 0 && files()[0].previewUrl) {
@@ -129,7 +129,7 @@
         </div>
       } @else {
         <div
-          class="w-16 h-16 rounded-full bg-slate-200/80 dark:bg-slate-800/80 flex items-center justify-center text-slate-400 dark:text-slate-500 mb-2 group-hover:scale-105 group-hover:text-[var(--color-primary)] transition-all"
+          class="w-16 h-16 rounded-full bg-slate-200/80 dark:bg-slate-800/80 flex items-center justify-center text-slate-400 dark:text-slate-500 mb-2 group-hover:scale-105 group-hover:text-[var(--color-primary)] transition-[transform,scale,color,background-color] duration-200"
         >
           <app-icon name="camera" class="w-7 h-7"></app-icon>
         </div>
@@ -178,7 +178,7 @@
       <div class="space-y-2">
         @for (file of files(); track file.id) {
           <div
-            class="relative flex items-center gap-3 p-2.5 rounded-[12px] border border-slate-200/80 dark:border-slate-800/80 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm shadow-sm hover:shadow transition-all group/item"
+            class="relative flex items-center gap-3 p-2.5 rounded-[12px] border border-slate-200/80 dark:border-slate-800/80 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm shadow-sm hover:shadow transition-[background-color,color,box-shadow] duration-200 group/item"
             [ngClass]="{
               'border-red-500/40 bg-red-50/20 dark:bg-red-950/10': file.status === 'error',
               'border-emerald-500/30 bg-emerald-50/20 dark:bg-emerald-950/10':
@@ -269,7 +269,7 @@
                   class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden mt-1"
                 >
                   <div
-                    class="bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] h-full transition-all duration-200 rounded-full"
+                    class="bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] h-full transition-[width] duration-200 rounded-full"
                     [style.width.%]="file.progress"
                   ></div>
                 </div>

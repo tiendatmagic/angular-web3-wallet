@@ -82,7 +82,7 @@ export class TooltipDirective implements OnDestroy {
       'select-none',
       'backdrop-blur-sm',
       'opacity-0',
-      'transition-all',
+      'transition-[opacity,transform]',
       'duration-150',
       'ease-out',
       'flex',

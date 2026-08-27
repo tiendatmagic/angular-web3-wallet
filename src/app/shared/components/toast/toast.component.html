@@ -4,7 +4,7 @@
   @for (toast of toastService.toasts(); track toast.id) {
     @if (toast.type === 'success') {
       <div
-        class="toast-animate pointer-events-auto relative flex items-center gap-3 bg-white/98 dark:bg-slate-950/98 text-slate-800 dark:text-slate-100 px-4 py-3 rounded-2xl shadow-lg border border-slate-100/80 dark:border-slate-900/80 backdrop-blur-md overflow-hidden w-full group transition-all duration-300 min-h-[52px]"
+        class="toast-animate pointer-events-auto relative flex items-center gap-3 bg-white/98 dark:bg-slate-950/98 text-slate-800 dark:text-slate-100 px-4 py-3 rounded-2xl shadow-lg border border-slate-100/80 dark:border-slate-900/80 backdrop-blur-md overflow-hidden w-full group transition-[transform,scale,opacity,box-shadow,background-color] duration-300 min-h-[52px]"
       >
         <div
           class="flex-shrink-0 w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-md shadow-emerald-500/20"
@@ -41,7 +41,7 @@
 
     @if (toast.type === 'error') {
       <div
-        class="toast-animate pointer-events-auto relative flex items-center gap-3 bg-white/98 dark:bg-slate-950/98 text-slate-800 dark:text-slate-100 px-4 py-3 rounded-2xl shadow-lg border border-slate-100/80 dark:border-slate-900/80 backdrop-blur-md overflow-hidden w-full group transition-all duration-300 min-h-[52px]"
+        class="toast-animate pointer-events-auto relative flex items-center gap-3 bg-white/98 dark:bg-slate-950/98 text-slate-800 dark:text-slate-100 px-4 py-3 rounded-2xl shadow-lg border border-slate-100/80 dark:border-slate-900/80 backdrop-blur-md overflow-hidden w-full group transition-[transform,scale,opacity,box-shadow,background-color] duration-300 min-h-[52px]"
       >
         <div
           class="flex-shrink-0 w-6 h-6 rounded-full bg-rose-500 text-white flex items-center justify-center shadow-md shadow-rose-500/20"
@@ -78,7 +78,7 @@
 
     @if (toast.type === 'warning') {
       <div
-        class="toast-animate pointer-events-auto relative flex items-center gap-3 bg-white/98 dark:bg-slate-950/98 text-slate-800 dark:text-slate-100 px-4 py-3 rounded-2xl shadow-lg border border-slate-100/80 dark:border-slate-900/80 backdrop-blur-md overflow-hidden w-full group transition-all duration-300 min-h-[52px]"
+        class="toast-animate pointer-events-auto relative flex items-center gap-3 bg-white/98 dark:bg-slate-950/98 text-slate-800 dark:text-slate-100 px-4 py-3 rounded-2xl shadow-lg border border-slate-100/80 dark:border-slate-900/80 backdrop-blur-md overflow-hidden w-full group transition-[transform,scale,opacity,box-shadow,background-color] duration-300 min-h-[52px]"
       >
         <div
           class="flex-shrink-0 w-6 h-6 rounded-full bg-amber-500 text-white flex items-center justify-center shadow-md shadow-amber-500/20"

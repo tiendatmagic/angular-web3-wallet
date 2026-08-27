@@ -11,7 +11,8 @@ import { CommonModule } from '@angular/common';
     '[class.cursor-pointer]': 'interactive',
     '[class.hover:opacity-85]': 'interactive',
     '[class.active:scale-95]': 'interactive',
-    '[class.transition-all]': 'interactive',
+    '[class.transition-[transform,scale,background-color,color,box-shadow,opacity]]': 'interactive',
+    '[class.duration-200]': 'interactive',
   },
 })
 export class BadgeComponent {

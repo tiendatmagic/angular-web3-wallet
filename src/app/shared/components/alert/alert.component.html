@@ -1,6 +1,6 @@
 @if (!isDismissed) {
   <div
-    class="relative flex items-start gap-3 p-4 rounded-[15px] transition-all duration-300 backdrop-blur-sm"
+    class="relative flex items-start gap-3 p-4 rounded-[15px] transition-[transform,opacity,box-shadow] duration-300 backdrop-blur-sm"
     [ngClass]="{
       'alert-info-soft': type === 'info' && variant === 'soft',
       'alert-info-accent': type === 'info' && variant === 'accent',

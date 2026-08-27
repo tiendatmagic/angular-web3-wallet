@@ -1,6 +1,6 @@
 <div class="relative w-full px-2.5 py-4 flex items-center select-none" [class.opacity-50]="disabled">
     <div class="relative w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-visible">
-        <div class="absolute h-full left-0 top-0 rounded-full transition-all duration-75"
+        <div class="absolute h-full left-0 top-0 rounded-full transition-[width] duration-75"
          [style.width.%]="percentage()"
          [class]="filledTrackClass">
     </div>
@@ -25,7 +25,7 @@
          (change)="onChangeEvent($event)"
          class="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed z-10" />
 
-    <span class="absolute w-5 h-5 rounded-full shadow-md border-2 border-white dark:border-slate-900 pointer-events-none transition-all duration-75 -translate-x-1/2 top-1/2 -translate-y-1/2"
+    <span class="absolute w-5 h-5 rounded-full shadow-md border-2 border-white dark:border-slate-900 pointer-events-none transition-[left,transform,scale,box-shadow,background-color] duration-75 -translate-x-1/2 top-1/2 -translate-y-1/2"
         [style.left.%]="percentage()"
         [class]="thumbClass">
   </span>

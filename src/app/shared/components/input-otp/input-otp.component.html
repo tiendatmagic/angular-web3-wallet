@@ -28,7 +28,7 @@
     @for (slotIndex of slotsSignal(); track slotIndex) {
       <div
         (click)="onSlotClick(slotIndex)"
-        class="relative flex items-center justify-center font-mono transition-all duration-200 cursor-pointer shadow-xs border border-solid shrink-0 aspect-square"
+        class="relative flex items-center justify-center font-mono transition-[transform,scale,background-color,color,box-shadow] duration-200 cursor-pointer shadow-xs border border-solid shrink-0 aspect-square"
         [ngClass]="{
           'w-7.5 h-7.5 text-xs xs:w-8 xs:h-8 sm:w-9 sm:h-9 sm:text-sm rounded-[7px] xs:rounded-[8px] sm:rounded-[10px]': size === 'sm',
           'w-8.5 h-8.5 text-xs xs:w-9.5 xs:h-9.5 sm:w-11 sm:h-11 md:w-12 md:h-12 sm:text-base rounded-[9px] xs:rounded-[10px] sm:rounded-[12px]': size === 'md',

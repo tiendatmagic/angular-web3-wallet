@@ -62,7 +62,7 @@
           >
             @if (multiple) {
               <div
-                class="h-4 w-4 rounded-[4px] border-2 flex items-center justify-center transition-all duration-150 shrink-0 mr-3"
+                class="h-4 w-4 rounded-[4px] border-2 flex items-center justify-center transition-[background-color,transform,scale] duration-150 shrink-0 mr-3"
                 [class.border-[var(--color-primary)]]="isSelected(opt)"
                 [class.bg-[var(--color-primary)]]="isSelected(opt)"
                 [class.border-slate-300]="!isSelected(opt)"

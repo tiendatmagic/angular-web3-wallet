@@ -235,6 +235,9 @@ export interface TranslationDictionary {
       title: string;
       subtitle: string;
       open_btn: string;
+      card_delete_title: string;
+      card_form_title: string;
+      card_confirm_title: string;
       open_delete_btn: string;
       open_form_btn: string;
       open_quick_confirm_btn: string;

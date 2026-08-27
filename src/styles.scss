@@ -79,7 +79,7 @@
 }
 
 .transition-all-300 {
-  @apply transition-all duration-300 ease-out;
+  @apply transition-[transform,scale,background-color,color,box-shadow,opacity] duration-300 ease-out;
 }
 
 html.theme-transition-disabled,
@@ -517,7 +517,7 @@ body.dark ::-webkit-scrollbar-thumb {
 
 @utility form-textarea {
   @include form-control-base;
-  @apply py-3 px-4 transition-all duration-200 resize-none;
+  @apply py-3 px-4 transition-[background-color,color,box-shadow] duration-200 resize-none;
 }
 
 @utility form-field {
@@ -530,7 +530,7 @@ body.dark ::-webkit-scrollbar-thumb {
 
 @utility search-input {
   @include form-control-base;
-  @apply h-[42px] pl-9 pr-4 transition-all duration-200;
+  @apply h-[42px] pl-9 pr-4 transition-[background-color,color,box-shadow] duration-200;
 }
 
 /* Tabs & Cards */
@@ -557,7 +557,7 @@ body.dark ::-webkit-scrollbar-thumb {
 }
 
 @utility app-card-interactive {
-  @apply bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-lg shadow-slate-200/50 dark:shadow-slate-900/30 rounded-[15px] p-4 sm:p-6 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 hover:border-primary/30 hover:scale-[1.01] cursor-pointer;
+  @apply bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-lg shadow-slate-200/50 dark:shadow-slate-900/30 rounded-[15px] p-4 sm:p-6 transition-[transform,scale,background-color,color,box-shadow] duration-300 hover:shadow-lg hover:shadow-primary/10 hover:border-primary/30 hover:scale-[1.01] cursor-pointer;
 }
 
 /* Glass Surfaces */

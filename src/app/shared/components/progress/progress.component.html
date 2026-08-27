@@ -19,7 +19,7 @@
         @if (segments.length > 0) {
           @for (seg of segments; track $index) {
             <div
-              class="h-full transition-all duration-500 ease-out border-r border-white/20 last:border-0"
+              class="h-full transition-[width] duration-500 ease-out border-r border-white/20 last:border-0"
               [style.width.%]="getSegmentPercentage(seg.value)"
               [ngClass]="seg.color || getVariantClasses()"
               [title]="(seg.label ? seg.label + ': ' : '') + seg.value"
@@ -30,7 +30,7 @@
           <div class="flex w-full h-full gap-1 p-0.5">
             @for (step of stepArray; track step) {
               <div
-                class="flex-1 h-full rounded-[10px] transition-all duration-300"
+                class="flex-1 h-full rounded-[10px] transition-[background-color,opacity] duration-300"
                 [ngClass]="step < (percentage() / 100) * steps ? getVariantClasses() : 'bg-slate-200/70 dark:bg-slate-700/50'"
               ></div>
             }
@@ -45,7 +45,7 @@
           }
           @else {
             <div
-              class="progress-fill h-full transition-all duration-500 ease-out rounded-[15px] flex items-center justify-end pr-2 text-[10px] font-bold text-white leading-none"
+              class="progress-fill h-full transition-[width] duration-500 ease-out rounded-[15px] flex items-center justify-end pr-2 text-[10px] font-bold text-white leading-none"
               [style.width.%]="percentage()"
               [ngClass]="[
                 getVariantClasses(),
