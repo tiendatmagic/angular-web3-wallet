@@ -70,7 +70,7 @@ describe('CodeBlockComponent', () => {
     expect(component.isCollapsed()).toBe(true);
   });
 
-  it('should trigger copied state when copyCode is called', () => {
+  it('should trigger copied state when copyCode is called', async () => {
     component.code = 'const x = 10;';
     fixture.detectChanges();
 
@@ -82,6 +82,7 @@ describe('CodeBlockComponent', () => {
     });
 
     component.copyCode();
+    await Promise.resolve();
     expect(component.copied()).toBe(true);
     expect(mockWriteText).toHaveBeenCalledWith('const x = 10;');
   });

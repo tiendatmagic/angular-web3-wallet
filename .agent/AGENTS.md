@@ -1,3 +1,25 @@
+### Yêu cầu: Tối Ưu Hóa Responsive Cho Tab Bar & Header Trong Code Block Component (`CodeBlockComponent`)
+- **Nội dung yêu cầu:** Tối ưu hóa responsive cho phần Tab trong `CodeBlockComponent` khi hiển thị trên màn hình nhỏ hoặc trong các layout chia cột (grid 2 cột) trên Desktop/Tablet để tab không bị che khuất hoặc bị đẩy mất chữ.
+- **Phân tích kỹ thuật & Nguyên nhân:**
+  1. **Thiếu `min-w-0 flex-1` trên Tab Container:** Vùng chứa tab trước đó nằm trong header flexbox với `justify-between` mà không có `min-w-0 flex-1`, khiến kích thước tab bị ép lại và không cuộn ngang được khi chiều rộng hẹp.
+  2. **Nút Action (Wrap & Copy) chiếm nhiều diện tích:** Hai nút Wrap và Copy hiển thị cả icon + text cố định chiếm ~160px chiều rộng. Khi Code Block nằm trong cột hẹp (khoảng 350px - 450px), diện tích còn lại cho Tab chỉ còn ~190px - 240px, dẫn đến tab thứ 2 (`wallet.component.html`) bị đẩy ra ngoài vùng nhìn thấy.
+  3. **Container Query `@container` & Cuộn Mượt mà:** Khi chuyển container sang `@container`, nút Wrap và Copy tự động thu gọn thành Icon-only gọn gàng (kèm Tooltip chi tiết) khi chiều rộng Code Block `< 440px`, tiết kiệm ngay gần 100px cho thanh Tab. Đồng thời, danh sách Tab hỗ trợ cuộn ngang linh hoạt (`overflow-x-auto no-scrollbar scroll-smooth`) kết hợp `truncate` tên file an toàn (`max-w-[105px] @[420px]:max-w-[160px] @[540px]:max-w-none`).
+- **Các bước & Vị trí đã thực hiện:**
+  1. **Template `code-block.component.html`:**
+     - Thêm `@container` vào container cha `.code-block-container`.
+     - Cập nhật tab container với `min-w-0 flex-1 overflow-x-auto no-scrollbar py-0.5 scroll-smooth`.
+     - Thêm `truncate` responsive linh hoạt cho tên file trong từng tab (`file.name`) và chế độ file đơn (`currentFileName`).
+     - Tối ưu nút `Wrap` và `Copy`: sử dụng `hidden @[440px]:inline` để tự động chuyển đổi giữa dạng đầy đủ (icon + text) và icon-only trên layout hẹp mà vẫn giữ nguyên Tooltip.
+     - Thêm `active:scale-95` và `transition-[transform,scale,background-color,color,box-shadow] duration-150` chuẩn hiệu năng.
+  2. **Controller `code-block.component.ts`:**
+     - Nâng cấp `selectTab(index: number, event?: Event)` tự động gọi `scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' })` khi người dùng click chọn tab.
+  3. **Unit Test `code-block.component.spec.ts`:**
+     - Bổ sung bộ Unit Test toàn diện (4 test cases) kiểm tra single code file, multi-file tab switching, wrap/collapse toggle và copy to clipboard.
+- **Xác thực:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npm test`: 13/13 tests passed (100%).
+  - `npm run build`: Build production hoàn tất thành công 100%.
+
 ### Yêu cầu: Xây Dựng Component Demo Modal Mới Chuẩn Mẫu (Modal Xác Nhận Xóa - Delete Confirmation Modal)
 - **Nội dung yêu cầu:** Tạo component modal demo mới (tiêu biểu là Modal Xác Nhận Xóa - `DeleteConfirmModalComponent`) hoàn chỉnh, chuẩn mực để sau này các modal khác và các dự án khác có thể dựa vào đó làm theo chuẩn thống nhất.
 - **Phân tích kỹ thuật & Kiến trúc Giải pháp:**
