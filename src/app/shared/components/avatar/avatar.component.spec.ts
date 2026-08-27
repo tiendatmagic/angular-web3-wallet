@@ -64,7 +64,7 @@ describe('AvatarComponent', () => {
     expect(component.visibleAvatars.length).toBe(4);
     expect(component.extraCount).toBe(2);
 
-    const counterBadge = fixture.nativeElement.querySelector('.z-10');
+    const counterBadge = fixture.nativeElement.querySelector('.group\\/stack-counter');
     expect(counterBadge).toBeTruthy();
     expect(counterBadge.textContent.trim()).toBe('+2');
     expect(counterBadge.classList.contains('cursor-pointer')).toBe(true);
@@ -90,7 +90,7 @@ describe('AvatarComponent', () => {
     expect(component.visibleAvatars.length).toBe(2);
     expect(component.extraCount).toBe(0);
 
-    const counterBadge = fixture.nativeElement.querySelector('.z-10');
+    const counterBadge = fixture.nativeElement.querySelector('.group\\/stack-counter');
     expect(counterBadge).toBeNull();
   });
 

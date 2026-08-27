@@ -48,10 +48,10 @@
 }
 
 @if (avatars && avatars.length > 0) {
-  <div class="inline-flex items-center -space-x-3 py-2 px-1">
+  <div class="inline-flex items-center -space-x-3 py-2 px-1 isolate">
     @for (item of visibleAvatars; track $index) {
       <div
-        class="relative inline-flex items-center justify-center shrink-0 select-none cursor-pointer group/stack-item hover:z-30"
+        class="relative inline-flex items-center justify-center shrink-0 select-none cursor-pointer group/stack-item hover:z-10"
         [title]="item.name || ('showcase.avatar_alt' | translate)"
       >
         <div
@@ -104,7 +104,7 @@
 
     @if (extraCount > 0) {
       <div
-        class="relative inline-flex items-center justify-center shrink-0 select-none cursor-pointer z-10 hover:z-30 group/stack-counter"
+        class="relative inline-flex items-center justify-center shrink-0 select-none cursor-pointer hover:z-10 group/stack-counter"
         [title]="'+' + extraCount"
       >
         <div
