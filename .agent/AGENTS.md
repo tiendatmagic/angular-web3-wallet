@@ -1,3 +1,26 @@
+### Yêu cầu: Chuẩn Hóa & Responsive Typography / Font Size Chữ Cho Component Cảnh Báo (Alert & Modals)
+- **Nội dung yêu cầu:** Xem xét và cấu hình responsive font size chữ cho component cảnh báo (`app-alert`) trong modal (như DeleteConfirmModal và các modal/thẻ khác) để không bị to thô quá mức, cân đối với tỷ lệ màn hình và các thành phần xung quanh.
+- **Phân tích kỹ thuật & Chuẩn hóa:**
+  1. **Nguyên nhân font chữ bị to thô trong Alert:**
+     - Trước đó `AlertComponent` (`alert.component.html`) chưa áp dụng typography responsive cho thẻ wrapper `ng-content`, khiến các nội dung text (như `warningMessage`) kế thừa font size mặc định 16px (`text-base`) từ root body.
+     - Trong khi đó các phần tử khác trong modal chỉ có kích thước `text-xs` (12px) hoặc `text-sm` (14px), tạo ra độ chênh lệch thị giác lớn khiến khung cảnh báo chiếm nhiều diện tích.
+  2. **Giải pháp kiến trúc:**
+     - Bổ sung `@Input() size: 'sm' | 'md' = 'md'` vào `AlertComponent`.
+     - Chuẩn hóa container text của `AlertComponent` về `text-xs sm:text-sm font-medium leading-relaxed` (với `size="md"`) và `text-xs` (với `size="sm"`).
+     - Điều chỉnh padding responsive: `p-2.5 sm:p-3` (với `size="sm"`) và `p-3 sm:p-3.5` (với `size="md"`), icon `w-4.5 h-4.5 sm:w-5 sm:h-5`.
+     - Đồng bộ `ConfirmModalComponent` description về responsive `text-xs sm:text-sm`.
+  3. **Bổ sung Unit Test:**
+     - Tạo mới 6 unit tests cho `AlertComponent` (`alert.component.spec.ts`) kiểm tra default inputs, message rendering, sizes ('sm' / 'md'), default icons theo type, close event emit.
+- **Các vị trí đã xử lý:**
+  1. `src/app/shared/components/alert/alert.component.ts`
+  2. `src/app/shared/components/alert/alert.component.html`
+  3. `src/app/shared/components/alert/alert.component.spec.ts`
+  4. `src/app/shared/components/confirm-modal/confirm-modal.component.html`
+- **Xác thực:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npm test`: 20 files / 102 tests passed (100%).
+  - `npm run build`: Build production hoàn tất thành công 100%.
+
 ### Yêu cầu: Loại Bỏ Dropdown Ngôn Ngữ Khỏi Mobile Sidebar Drawer
 - **Nội dung yêu cầu:** Xóa bỏ bộ chọn ngôn ngữ `app-language-selector` ở phần chân menu Sidebar mobile (vì trên Header đã có sẵn nút chọn ngôn ngữ).
 - **Các vị trí đã xử lý:**
