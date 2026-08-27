@@ -11,6 +11,7 @@ import {
   ChangeDetectorRef,
   HostListener,
   AfterViewChecked,
+  OnDestroy,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '../icon/icon.component';
@@ -55,7 +56,7 @@ export interface DropdownMenuHeader {
     '(document:keydown.escape)': 'onEscape()',
   },
 })
-export class DropdownMenuComponent implements AfterViewChecked {
+export class DropdownMenuComponent implements AfterViewChecked, OnDestroy {
   private readonly elementRef = inject(ElementRef);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly dropdownService = inject(DropdownService);
@@ -96,6 +97,7 @@ export class DropdownMenuComponent implements AfterViewChecked {
   public submenuStyle: Record<string, string> = {};
 
   private activeSubmenuTriggerEl: HTMLElement | null = null;
+  private scrollUnlisten: (() => void) | null = null;
 
   private readonly syncOpenState = effect(() => {
     const activeId = this.dropdownService.activeDropdownId();
@@ -103,6 +105,7 @@ export class DropdownMenuComponent implements AfterViewChecked {
       this.isOpen.set(false);
       this.activeSubmenuId.set(null);
       this.activeSubmenuTriggerEl = null;
+      this.unbindScrollListener();
       this.openChange.emit(false);
     }
   });
@@ -117,10 +120,12 @@ export class DropdownMenuComponent implements AfterViewChecked {
     if (newState) {
       this.dropdownService.open(this.instanceId);
       this.updateMenuPosition();
+      this.bindScrollListener();
     } else {
       this.dropdownService.close(this.instanceId);
       this.activeSubmenuId.set(null);
       this.activeSubmenuTriggerEl = null;
+      this.unbindScrollListener();
     }
     this.openChange.emit(newState);
   }
@@ -130,6 +135,7 @@ export class DropdownMenuComponent implements AfterViewChecked {
     this.isOpen.set(true);
     this.dropdownService.open(this.instanceId);
     this.updateMenuPosition();
+    this.bindScrollListener();
     this.openChange.emit(true);
   }
 
@@ -139,6 +145,7 @@ export class DropdownMenuComponent implements AfterViewChecked {
     this.dropdownService.close(this.instanceId);
     this.activeSubmenuId.set(null);
     this.activeSubmenuTriggerEl = null;
+    this.unbindScrollListener();
     this.openChange.emit(false);
   }
 
@@ -261,6 +268,7 @@ export class DropdownMenuComponent implements AfterViewChecked {
     if (!trigger) return;
 
     const triggerRect = trigger.getBoundingClientRect();
+    const offset = getContainingBlockOffset(trigger);
     const gap = 6;
 
     let popoverWidth = this.popoverEl?.nativeElement?.offsetWidth || 0;
@@ -304,8 +312,6 @@ export class DropdownMenuComponent implements AfterViewChecked {
       left = Math.max(8, window.innerWidth - 8 - popoverWidth);
     }
     if (left < 8) left = 8;
-
-    const offset = getContainingBlockOffset(trigger);
 
     if (placeBottom) {
       this.popoverStyle = {
@@ -417,5 +423,32 @@ export class DropdownMenuComponent implements AfterViewChecked {
         this.updateSubmenuPosition();
       }
     }
+  }
+
+  private bindScrollListener(): void {
+    this.unbindScrollListener();
+    const handler = () => {
+      if (this.isOpen()) {
+        this.updateMenuPosition();
+        if (this.activeSubmenuId()) {
+          this.updateSubmenuPosition();
+        }
+        this.cdr.markForCheck();
+      }
+    };
+    // Lắng nghe scroll trên toàn bộ cây DOM (capture phase) để bắt được cả scroll của Modal lẫn Window
+    document.addEventListener('scroll', handler, true);
+    this.scrollUnlisten = () => document.removeEventListener('scroll', handler, true);
+  }
+
+  private unbindScrollListener(): void {
+    if (this.scrollUnlisten) {
+      this.scrollUnlisten();
+      this.scrollUnlisten = null;
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.unbindScrollListener();
   }
 }
