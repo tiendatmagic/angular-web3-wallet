@@ -78,6 +78,14 @@
   [role='button'][aria-disabled='true'] {
     @apply cursor-not-allowed;
   }
+
+  app-icon {
+    @apply inline-flex items-center justify-center shrink-0 w-5 h-5;
+  }
+
+  app-logo {
+    @apply block w-8 h-8 shrink-0;
+  }
 }
 
 .transition-all-300 {

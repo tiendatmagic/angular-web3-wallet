@@ -16,12 +16,14 @@ export class ThemeService {
     if (typeof window === 'undefined') return;
     
     const savedTheme = localStorage.getItem('theme_mode') as 'light' | 'dark' | 'auto' | null;
-    this.mediaQueryList = window.matchMedia('(prefers-color-scheme: dark)');
-    this.mediaQueryList.addEventListener('change', this.handleSystemThemeChange);
+    if (typeof window.matchMedia === 'function') {
+      this.mediaQueryList = window.matchMedia('(prefers-color-scheme: dark)');
+      this.mediaQueryList.addEventListener?.('change', this.handleSystemThemeChange);
+    }
 
     const mode = savedTheme || 'auto';
     this.themeMode.set(mode);
-    const isDark = mode === 'dark' || (mode === 'auto' && this.mediaQueryList.matches);
+    const isDark = mode === 'dark' || (mode === 'auto' && (this.mediaQueryList?.matches ?? false));
     
     this.applyDarkClass(isDark, true);
   }

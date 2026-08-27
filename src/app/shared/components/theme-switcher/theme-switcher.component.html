@@ -14,52 +14,63 @@
     </span>
   </div>
   <div
-    #containerEl
-    class="relative flex items-center bg-slate-100 dark:bg-slate-900 p-0.5 rounded-full border border-slate-200/40 dark:border-slate-800/40 select-none"
+    class="relative flex items-center bg-slate-100 dark:bg-slate-900 p-0.5 rounded-full border border-slate-200/50 dark:border-slate-800/50 select-none"
   >
     <div
-      class="theme-switcher-pill absolute top-0.5 bottom-0.5 bg-white dark:bg-slate-800 rounded-full shadow-xs transition-[width,left] duration-300 ease-out z-0 select-none"
-      [class.opacity-0]="!sliderStyle().ready"
-      [class.opacity-100]="sliderStyle().ready"
-      [style.width]="sliderStyle().width"
-      [style.left]="sliderStyle().left"
+      class="theme-switcher-pill absolute inset-y-0.5 left-0.5 w-[calc((100%-4px)/3)] bg-white dark:bg-slate-800 rounded-full shadow-xs dark:shadow-slate-950/40 border border-slate-200/40 dark:border-slate-700/50 transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] transform-gpu z-0 select-none pointer-events-none"
+      [style.transform]="pillTransform()"
     ></div>
 
     <button
-      #themeBtn
       type="button"
       (click)="setTheme('light')"
       [title]="'theme.light' | translate"
       [class.text-primary]="stateService.themeMode() === 'light'"
       [class.dark:text-[var(--color-secondary)]]="stateService.themeMode() === 'light'"
+      [class.font-bold]="stateService.themeMode() === 'light'"
       [class.text-slate-400]="stateService.themeMode() !== 'light'"
-      class="relative z-10 w-7 h-7 rounded-full hover:text-slate-700 dark:hover:text-slate-200 transition-colors duration-300 cursor-pointer flex items-center justify-center shrink-0 select-none"
+      [class.dark:text-slate-500]="stateService.themeMode() !== 'light'"
+      class="relative z-10 w-7 h-7 rounded-full hover:text-slate-700 dark:hover:text-slate-200 transition-[color,transform] duration-200 active:scale-95 cursor-pointer flex items-center justify-center shrink-0 select-none"
     >
-      <app-icon name="sun" class="w-3.5 h-3.5 flex items-center justify-center" />
+      <app-icon
+        name="sun"
+        class="w-[14px] h-[14px] flex items-center justify-center"
+        [strokeWidth]="stateService.themeMode() === 'light' ? '2.2' : '1.75'"
+      />
     </button>
     <button
-      #themeBtn
       type="button"
       (click)="setTheme('auto')"
       [title]="'theme.auto' | translate"
       [class.text-primary]="stateService.themeMode() === 'auto'"
       [class.dark:text-[var(--color-secondary)]]="stateService.themeMode() === 'auto'"
+      [class.font-bold]="stateService.themeMode() === 'auto'"
       [class.text-slate-400]="stateService.themeMode() !== 'auto'"
-      class="relative z-10 w-7 h-7 rounded-full hover:text-slate-700 dark:hover:text-slate-200 transition-colors duration-300 cursor-pointer flex items-center justify-center shrink-0 select-none"
+      [class.dark:text-slate-500]="stateService.themeMode() !== 'auto'"
+      class="relative z-10 w-7 h-7 rounded-full hover:text-slate-700 dark:hover:text-slate-200 transition-[color,transform] duration-200 active:scale-95 cursor-pointer flex items-center justify-center shrink-0 select-none"
     >
-      <app-icon name="auto" class="w-3.5 h-3.5 flex items-center justify-center" />
+      <app-icon
+        name="auto"
+        class="w-[14px] h-[14px] flex items-center justify-center"
+        [strokeWidth]="stateService.themeMode() === 'auto' ? '2.2' : '1.75'"
+      />
     </button>
     <button
-      #themeBtn
       type="button"
       (click)="setTheme('dark')"
       [title]="'theme.dark' | translate"
       [class.text-primary]="stateService.themeMode() === 'dark'"
       [class.dark:text-[var(--color-secondary)]]="stateService.themeMode() === 'dark'"
+      [class.font-bold]="stateService.themeMode() === 'dark'"
       [class.text-slate-400]="stateService.themeMode() !== 'dark'"
-      class="relative z-10 w-7 h-7 rounded-full hover:text-slate-700 dark:hover:text-slate-200 transition-colors duration-300 cursor-pointer flex items-center justify-center shrink-0 select-none"
+      [class.dark:text-slate-500]="stateService.themeMode() !== 'dark'"
+      class="relative z-10 w-7 h-7 rounded-full hover:text-slate-700 dark:hover:text-slate-200 transition-[color,transform] duration-200 active:scale-95 cursor-pointer flex items-center justify-center shrink-0 select-none"
     >
-      <app-icon name="moon" class="w-3.5 h-3.5 flex items-center justify-center" />
+      <app-icon
+        name="moon"
+        class="w-[14px] h-[14px] flex items-center justify-center"
+        [strokeWidth]="stateService.themeMode() === 'dark' ? '2.2' : '1.75'"
+      />
     </button>
   </div>
 </div>
