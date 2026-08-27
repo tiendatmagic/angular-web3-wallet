@@ -1,3 +1,20 @@
+### Yêu cầu: Chuẩn Hóa Hiển Thị Địa Chỉ Ví Khớp Chuẩn Component Sao Chép Vào Bộ Nhớ Tạm
+- **Nội dung yêu cầu:** Sửa khung hiển thị địa chỉ ví (Account Address) trên thẻ thông tin ví chính của trang chủ (`home.component.html`) cho giống với chuẩn "Component Sao Chép Vào Bộ Nhớ Tạm" (Copy To Clipboard showcase card).
+- **Phân tích kỹ thuật & Tinh chỉnh:**
+  1. **Khắc phục lỗi định dạng form input:** Trước đó phần hiển thị địa chỉ ví sử dụng cấu trúc `<div class="form-field"><label>...</label><div class="form-input ...">`, khiến hộp địa chỉ bị gò bó vào kiểu dáng form input và làm lặp lại 2 lần tiêu đề "ĐỊA CHỈ TÀI KHOẢN".
+  2. **Kế thừa & Đồng bộ chuẩn UI Component Showcase:**
+     - Đổi tiêu đề thẻ ví thành `wallet.dashboard_title` ('Bảng Điều Khiển Ví Web3' / 'Web3 Wallet Dashboard') để phân tách rõ ràng với nhãn trường.
+     - Sử dụng container tiêu chuẩn `p-3.5 rounded-[15px] bg-slate-100/60 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40`.
+     - Cấu hình `<app-copy-to-clipboard>` kèm nhãn `[label]="'cards.copy_to_clipboard.copy_btn' | translate"` ('Sao chép ví') và kích cỡ `size="sm"` đồng bộ 100% với showcase.
+  3. **Bổ sung Unit Test:** Viết mới bộ unit test toàn diện cho `CopyToClipboardComponent` (`copy-to-clipboard.component.spec.ts`) với 5 test cases kiểm tra render label, copy clipboard, toast notification và custom message.
+- **Các vị trí đã xử lý:**
+  1. `src/app/features/home/home.component.html`: Cập nhật cấu trúc hiển thị địa chỉ ví và nút copy.
+  2. `src/app/shared/components/copy-to-clipboard/copy-to-clipboard.component.spec.ts`: Tạo mới 5 unit tests.
+- **Xác thực:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npm test`: 16 files / 75 tests passed (100%).
+  - `npm run build`: Build production hoàn tất thành công 100%.
+
 ### Yêu cầu: Khắc Phục Lỗi Modal Bị Trong Suốt Mất Hiệu Ứng Kính Mờ (Glassmorphism Blur) & Chuẩn Hóa Bề Mặt Modal
 - **Nội dung yêu cầu:** Sửa lỗi một số Modal bị mất hiệu ứng blur, bị trong suốt nhìn xuyên thấu thẳng vào nội dung trang web bên dưới mà không có kính mờ (frosted glass). Lưu ý tuyệt đối không thêm background blur ở wrapper toàn màn hình của modal.
 - **Phân tích kỹ thuật & Nguyên nhân:**
@@ -6,7 +23,7 @@
      - Khi Modal Dialog có hiệu ứng `animate-modal-in` (`modalZoomIn`), trình duyệt Chromium kích hoạt cơ chế render layer riêng. Thẻ con có `z-index: -10` bên trong `isolation: isolate` bị trình duyệt hiểu là nằm dưới ranh giới composited layer, khiến cả `background-color` và `backdrop-filter` của thẻ con bị vô hiệu hóa / discard hoàn toàn.
      - Vì thẻ cha `glass-dialog` có `bg-transparent`, toàn bộ thân modal bị biến thành trong suốt 100% (transparent), chữ của Modal đè trực tiếp lên text của trang web phía sau mà không hề có nền hay hiệu ứng blur.
   2. **Giải pháp kiến trúc chuẩn Glassmorphism:**
-     - Khai báo trực tiếp thuộc tính kính mờ lên `.glass-dialog` trong `src/styles.scss`: `@apply bg-white/95 dark:bg-slate-900/90 backdrop-blur-xl shadow-xl shadow-slate-900/15 dark:shadow-slate-950/60; -webkit-backdrop-filter: blur(24px); backdrop-filter: blur(24px);` (độ mờ đục chuẩn: Light mode 95%, Dark mode 90%).
+     - Khai báo trực tiếp thuộc tính kính mờ lên `.glass-dialog` trong `src/styles.scss`: `@apply bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl shadow-xl shadow-slate-900/15 dark:shadow-slate-950/60; -webkit-backdrop-filter: blur(24px); backdrop-filter: blur(24px);` (độ mờ đục chuẩn: Light mode 95%, Dark mode 95% cho cả Sidebar Menu, Drawer, Modal, Toast).
      - Loại bỏ `will-change: transform, opacity;` tĩnh khỏi `@utility animate-modal-in` để giải phóng composited layer sau khi kết thúc animation 200ms, giúp `backdrop-filter` blend với background trang web sắc nét 100%.
      - Chuẩn hóa Backdrop Wrapper của Modal về `bg-black/40 animate-modal-backdrop-in` thống nhất toàn hệ thống, loại bỏ dị biệt `backdrop-blur-sm` ở preview modal của `file-upload.component.html`.
      - Dọn dẹp thẻ con dư thừa `glass-dialog-backdrop` khỏi toàn bộ các template (`modal`, `modal-wrapper`, `confirm-modal`, `delete-confirm-modal`, `file-upload`, `drawer`, `sidebar`).
@@ -19,7 +36,8 @@
   6. `src/app/shared/components/file-upload/file-upload.component.html`: Chuẩn hóa backdrop overlay `bg-black/40` và loại bỏ `glass-dialog-backdrop`.
   7. `src/app/shared/components/drawer/drawer.component.html`: Loại bỏ thẻ con `glass-dialog-backdrop`.
   8. `src/app/shared/layout/sidebar/sidebar.component.html`: Loại bỏ thẻ con `glass-dialog-backdrop` ở mobile sidebar.
-  9. `.agent/design.md` & `design.md`: Cập nhật đặc tả Mục 6.1 về chuẩn `glass-dialog`.
+  9. `src/app/shared/components/toast/toast.component.html`: Chuẩn hóa opacity Toast về `bg-white/95 dark:bg-slate-900/95` kết hợp `backdrop-blur-xl` và bo góc chuẩn `rounded-[15px]`.
+  10. `.agent/design.md` & `design.md`: Cập nhật đặc tả Mục 6.1 về chuẩn `glass-dialog`.
 - **Xác thực:**
   - `npx tsc --noEmit`: 0 lỗi type.
   - `npm test`: 15 files / 70 tests passed (100%).

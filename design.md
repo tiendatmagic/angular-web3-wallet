@@ -214,7 +214,7 @@ Các bề mặt nổi sử dụng các utility toàn cục trong `src/styles.scs
 }
 
 @utility glass-dialog {
-  @apply bg-white/95 dark:bg-slate-900/90 backdrop-blur-xl shadow-xl shadow-slate-900/15 dark:shadow-slate-950/60;
+  @apply bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl shadow-xl shadow-slate-900/15 dark:shadow-slate-950/60;
   -webkit-backdrop-filter: blur(24px);
   backdrop-filter: blur(24px);
 }
@@ -227,7 +227,7 @@ Các bề mặt nổi sử dụng các utility toàn cục trong `src/styles.scs
 ```
 
 - `glass-popover`: Custom Select, Date Picker, DateTime Range, menu chọn giờ/phút, Dropdown Menu, nested submenu, Language Selector, Network Selector và Account Dropdown.
-- `glass-dialog`: Modal, Modal Wrapper, Confirm Modal, Drawer, mobile sidebar và modal xem trước File Upload. Trực tiếp áp dụng `bg-white/95 dark:bg-slate-900/90 backdrop-blur-xl` (độ trong suốt: Light mode 95%, Dark mode 90%) tạo hiệu ứng kính mờ (Frosted Glass) đồng bộ, không dùng layer con `-z-10` tránh lỗi Stacking Context âm trên Chromium.
+- `glass-dialog`: Modal, Modal Wrapper, Confirm Modal, Drawer, mobile sidebar và modal xem trước File Upload. Trực tiếp áp dụng `bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl` (độ trong suốt chuẩn: Light mode 95%, Dark mode 95%) tạo hiệu ứng kính mờ (Frosted Glass) đồng bộ, không dùng layer con `-z-10` tránh lỗi Stacking Context âm trên Chromium.
 - `glass-header`: sticky header; không dùng shadow cho header.
 
 #### 6.1.2. Quy tắc Backdrop Root và Popover lồng nhau

@@ -597,7 +597,7 @@ body.dark ::-webkit-scrollbar-thumb {
 }
 
 @utility glass-dialog {
-  @apply bg-white/95 dark:bg-slate-900/90 backdrop-blur-xl shadow-xl shadow-slate-900/15 dark:shadow-slate-950/60;
+  @apply bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl shadow-xl shadow-slate-900/15 dark:shadow-slate-950/60;
   -webkit-backdrop-filter: blur(24px);
   backdrop-filter: blur(24px);
 }

@@ -28,7 +28,7 @@
           <h3
             class="form-label mb-4"
           >
-            {{ 'wallet.account_address' | translate }}
+            {{ 'wallet.dashboard_title' | translate }}
           </h3>
 
           <div class="space-y-4">
@@ -43,18 +43,20 @@
               </span>
             </div>
 
-            <div class="form-field">
-              <label>{{ 'wallet.account_address' | translate }}</label>
-              <div class="form-input flex items-center justify-between !pl-4 !pr-1.5 py-0">
+            <div>
+              <span class="form-label mb-1.5">{{ 'wallet.account_address' | translate }}</span>
+              <div
+                class="flex items-center justify-between p-3.5 rounded-[15px] bg-slate-100/60 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40"
+              >
                 <span
-                  class="font-mono text-xs font-bold text-slate-600 dark:text-slate-300 min-w-0 flex-1 truncate"
+                  class="text-xs font-mono text-slate-600 dark:text-slate-300 truncate pr-2"
                 >
                   {{ stateService.address() }}
                 </span>
                 <app-copy-to-clipboard
                   [textToCopy]="stateService.address() || ''"
+                  [label]="'cards.copy_to_clipboard.copy_btn' | translate"
                   size="sm"
-                  class="shrink-0"
                 />
               </div>
             </div>
