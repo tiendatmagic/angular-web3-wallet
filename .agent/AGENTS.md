@@ -1,3 +1,31 @@
+### Yêu cầu: Khắc Phục Lỗi Toạ Độ & Chiều Hiển Thị Của DateTimePicker và DateTimeRange
+- **Nội dung yêu cầu:** Sửa lỗi hiển thị và chiều mở (placement) của `CustomDatePicker` và `CustomDateTimeRange` khi mở lên trên bị lệch/bay lên đỉnh màn hình đè lên các thẻ bên trên (ảnh 1), khi mở xuống dưới bị đè ô input hoặc tràn đáy (ảnh 2), và đồng bộ hóa giao diện phần dưới.
+- **Phân tích kỹ thuật & Nguyên nhân:**
+  1. **Lỗi tính toán toạ độ tĩnh (Hardcoded Popover Height):**
+     - Cả hai component tính `top = rect.top - gap - popoverHeight` với `popoverHeight` gán cứng (440px / 510px). Khi chiều cao thực tế của popover nhỏ hơn con số này, popover bị đẩy lên cao tạo khoảng hở lớn với trigger input.
+     - Khi `top < 8`, code ép `top = 8px`, khiến popover nhảy tót lên đỉnh màn hình và đè lên Slider Gas / Thẻ tab phía trên (Ảnh 1).
+     - Khi mở xuống dưới, code ép `top = window.innerHeight - 8 - popoverHeight`, làm popover bị đẩy ngược lên đè vào chính ô input của nó và đáy popover dính sát đáy màn hình (Ảnh 2).
+  2. **Giải pháp kiến trúc toàn diện:**
+     - **Mở lên trên (`top`):** Sử dụng `top: rect.top - gap` kết hợp `transform: translateY(-100%)`. Đáy Popover luôn tiếp giáp chính xác với đỉnh ô input (cách đúng `gap = 6px`), loại bỏ triệt để việc popover bay lên nóc màn hình.
+     - **Mở xuống dưới (`bottom`):** Đỉnh Popover luôn gắn cố định vào đáy ô input `top: rect.bottom + gap`, không tự ý dịch vị trí.
+     - Bổ sung `maxHeight` và `overflow-y-auto` thích ứng linh hoạt với không gian thực tế của Viewport.
+     - Hỗ trợ `@Input() placement: 'auto' | 'top' | 'bottom' = 'auto'` và `@Input() clearable: boolean = true`.
+     - Đồng bộ cụm chọn thời gian (Time Picker) của `CustomDateTimeRange` sang dạng select controls gọn gàng, sạch sẽ, không bị tràn hay lỗi overflow khi cuộn.
+  3. **Bổ sung Unit Test:**
+     - Tạo mới 6 unit tests cho `CustomDatePickerComponent` (`custom-date-picker.component.spec.ts`).
+     - Tạo mới 7 unit tests cho `CustomDateTimeRangeComponent` (`custom-date-time-range.component.spec.ts`).
+- **Các vị trí đã xử lý:**
+  1. `src/app/shared/components/custom-date-picker/custom-date-picker.component.ts`
+  2. `src/app/shared/components/custom-date-picker/custom-date-picker.component.html`
+  3. `src/app/shared/components/custom-date-picker/custom-date-picker.component.spec.ts`
+  4. `src/app/shared/components/custom-date-time-range/custom-date-time-range.component.ts`
+  5. `src/app/shared/components/custom-date-time-range/custom-date-time-range.component.html`
+  6. `src/app/shared/components/custom-date-time-range/custom-date-time-range.component.spec.ts`
+- **Xác thực:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npm test`: 18 files / 88 tests passed (100%).
+  - `npm run build`: Build production hoàn tất thành công 100%.
+
 ### Yêu cầu: Chuẩn Hóa Hiển Thị Địa Chỉ Ví Khớp Chuẩn Component Sao Chép Vào Bộ Nhớ Tạm
 - **Nội dung yêu cầu:** Sửa khung hiển thị địa chỉ ví (Account Address) trên thẻ thông tin ví chính của trang chủ (`home.component.html`) cho giống với chuẩn "Component Sao Chép Vào Bộ Nhớ Tạm" (Copy To Clipboard showcase card).
 - **Phân tích kỹ thuật & Tinh chỉnh:**

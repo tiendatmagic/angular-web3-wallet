@@ -12,7 +12,19 @@
     <span [class.text-slate-400]="!value()" class="truncate select-none">
       {{ value() ? displayValue() : placeholder || lang.translate('date.select') }}
     </span>
-    <app-icon name="calendar" class="w-4 h-4 text-slate-400 dark:text-slate-500 shrink-0 ml-2" />
+    <div class="flex items-center gap-2 shrink-0 ml-2 select-none">
+      @if (value() && !disabled && clearable) {
+        <button
+          type="button"
+          (click)="clear($event)"
+          class="w-5 h-5 flex items-center justify-center shrink-0 hover:bg-slate-200/90 dark:hover:bg-slate-800/90 rounded text-slate-400 hover:text-slate-800 dark:hover:text-white active:scale-95 transition-[transform,scale,background-color,color] duration-150 cursor-pointer select-none"
+          [title]="'common.clear_date_range' | translate"
+        >
+          <app-icon name="close" class="w-3.5 h-3.5 shrink-0" />
+        </button>
+      }
+      <app-icon name="calendar" class="w-4 h-4 text-slate-400 dark:text-slate-500 shrink-0" />
+    </div>
   </div>
 
   @if (isOpen()) {

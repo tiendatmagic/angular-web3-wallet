@@ -71,6 +71,8 @@ export class CustomDatePickerComponent implements ControlValueAccessor, AfterVie
   @Input() maxDate: string = '';
   @Input() showPresets: boolean = true;
   @Input() enableTime: boolean = false;
+  @Input() placement: 'auto' | 'top' | 'bottom' = 'auto';
+  @Input() clearable: boolean = true;
 
   @Output() valueChange = new EventEmitter<string>();
 
@@ -78,6 +80,7 @@ export class CustomDatePickerComponent implements ControlValueAccessor, AfterVie
 
   public readonly value = signal<string>('');
   public readonly isOpen = signal<boolean>(false);
+  public resolvedPlacement: 'top' | 'bottom' = 'bottom';
 
   private readonly syncOpenState = effect(() => {
     const activeId = this.dropdownService.activeDropdownId();
@@ -196,6 +199,18 @@ export class CustomDatePickerComponent implements ControlValueAccessor, AfterVie
     }
   }
 
+  public clear(event: Event): void {
+    event.stopPropagation();
+    if (this.disabled) return;
+    this.value.set('');
+    this.valueChange.emit('');
+    this.onChange('');
+    this.onTouched();
+    this.selectedPresetDays.set(null);
+    this.isOpen.set(false);
+    this.dropdownService.close(this.instanceId);
+  }
+
   public readonly selectedPresetDays = signal<number | null>(null);
 
   private updatePopoverPosition(): void {
@@ -204,54 +219,67 @@ export class CustomDatePickerComponent implements ControlValueAccessor, AfterVie
 
     const rect = triggerEl.getBoundingClientRect();
     const offset = getContainingBlockOffset(triggerEl);
-    const baseHeight = this.showPresets ? 380 : 340;
-    const popoverHeight = this.enableTime ? baseHeight + 52 : baseHeight;
+    const estimatedHeight = this.enableTime
+      ? this.showPresets
+        ? 420
+        : 380
+      : this.showPresets
+        ? 370
+        : 330;
     const popoverWidth = Math.min(320, window.innerWidth - 16);
     const gap = 6;
 
-    const spaceBelow = window.innerHeight - rect.bottom - gap;
-    const spaceAbove = rect.top - gap;
+    const spaceBelow = window.innerHeight - rect.bottom - gap - 12;
+    const spaceAbove = rect.top - gap - 12;
 
-    let placeBottom = true;
-    if (spaceBelow >= popoverHeight) {
-      placeBottom = true;
-    } else if (spaceAbove >= popoverHeight) {
-      placeBottom = false;
+    let placeFinal: 'top' | 'bottom';
+    if (this.placement === 'top') {
+      placeFinal = 'top';
+    } else if (this.placement === 'bottom') {
+      placeFinal = 'bottom';
     } else {
-      placeBottom = spaceBelow >= spaceAbove;
+      if (spaceBelow >= estimatedHeight) {
+        placeFinal = 'bottom';
+      } else if (spaceAbove >= estimatedHeight) {
+        placeFinal = 'top';
+      } else {
+        placeFinal = spaceBelow >= spaceAbove ? 'bottom' : 'top';
+      }
     }
+
+    this.resolvedPlacement = placeFinal;
 
     let left = rect.left;
     if (left + popoverWidth > window.innerWidth - 8) {
-      left = rect.right - popoverWidth;
+      left = Math.max(8, window.innerWidth - 8 - popoverWidth);
     }
     if (left < 8) left = 8;
 
-    let top = 0;
-    if (placeBottom) {
-      top = rect.bottom + gap;
-      if (top + popoverHeight > window.innerHeight - 8) {
-        top = window.innerHeight - 8 - popoverHeight;
-      }
-      if (top < 8) top = 8;
+    if (placeFinal === 'bottom') {
+      this.popoverStyle = {
+        position: 'fixed',
+        top: `${rect.bottom + gap - offset.top}px`,
+        left: `${left - offset.left}px`,
+        width: `${popoverWidth}px`,
+        maxWidth: 'calc(100vw - 16px)',
+        maxHeight: `${Math.max(220, spaceBelow)}px`,
+        transform: 'none',
+        overflowY: 'auto',
+        zIndex: '9999',
+      };
     } else {
-      top = rect.top - gap - popoverHeight;
-      if (top < 8) {
-        top = 8;
-      }
-      if (top + popoverHeight > window.innerHeight - 8) {
-        top = window.innerHeight - 8 - popoverHeight;
-      }
+      this.popoverStyle = {
+        position: 'fixed',
+        top: `${rect.top - gap - offset.top}px`,
+        left: `${left - offset.left}px`,
+        width: `${popoverWidth}px`,
+        maxWidth: 'calc(100vw - 16px)',
+        maxHeight: `${Math.max(220, spaceAbove)}px`,
+        transform: 'translateY(-100%)',
+        overflowY: 'auto',
+        zIndex: '9999',
+      };
     }
-
-    this.popoverStyle = {
-      position: 'fixed',
-      top: `${top - offset.top}px`,
-      left: `${left - offset.left}px`,
-      width: `${popoverWidth}px`,
-      maxWidth: 'calc(100vw - 16px)',
-      zIndex: '9999',
-    };
   }
 
   ngAfterViewChecked(): void {

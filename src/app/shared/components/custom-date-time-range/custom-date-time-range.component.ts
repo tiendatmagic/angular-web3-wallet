@@ -76,12 +76,15 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
   @Input() showPresets: boolean = true;
   @Input() minDate: string = '';
   @Input() maxDate: string = '';
+  @Input() placement: 'auto' | 'top' | 'bottom' = 'auto';
+  @Input() clearable: boolean = true;
 
   @Output() valueChange = new EventEmitter<DateTimeRangeValue>();
 
   @ViewChild('triggerDiv', { static: false }) triggerDiv!: ElementRef<HTMLDivElement>;
   public readonly value = signal<DateTimeRangeValue>({ startDate: '', endDate: '' });
   public readonly isOpen = signal<boolean>(false);
+  public resolvedPlacement: 'top' | 'bottom' = 'bottom';
 
   private readonly syncOpenState = effect(() => {
     const activeId = this.dropdownService.activeDropdownId();
@@ -270,53 +273,67 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
 
     const rect = triggerEl.getBoundingClientRect();
     const offset = getContainingBlockOffset(triggerEl);
-    const popoverHeight = this.showTime ? 510 : 440;
+    const estimatedHeight = this.showTime
+      ? this.showPresets
+        ? 460
+        : 420
+      : this.showPresets
+        ? 390
+        : 350;
     const popoverWidth = Math.min(320, window.innerWidth - 16);
     const gap = 6;
 
-    const spaceBelow = window.innerHeight - rect.bottom - gap;
-    const spaceAbove = rect.top - gap;
+    const spaceBelow = window.innerHeight - rect.bottom - gap - 12;
+    const spaceAbove = rect.top - gap - 12;
 
-    let placeBottom = true;
-    if (spaceBelow >= popoverHeight) {
-      placeBottom = true;
-    } else if (spaceAbove >= popoverHeight) {
-      placeBottom = false;
+    let placeFinal: 'top' | 'bottom';
+    if (this.placement === 'top') {
+      placeFinal = 'top';
+    } else if (this.placement === 'bottom') {
+      placeFinal = 'bottom';
     } else {
-      placeBottom = spaceBelow >= spaceAbove;
+      if (spaceBelow >= estimatedHeight) {
+        placeFinal = 'bottom';
+      } else if (spaceAbove >= estimatedHeight) {
+        placeFinal = 'top';
+      } else {
+        placeFinal = spaceBelow >= spaceAbove ? 'bottom' : 'top';
+      }
     }
+
+    this.resolvedPlacement = placeFinal;
 
     let left = rect.left;
     if (left + popoverWidth > window.innerWidth - 8) {
-      left = rect.right - popoverWidth;
+      left = Math.max(8, window.innerWidth - 8 - popoverWidth);
     }
     if (left < 8) left = 8;
 
-    let top = 0;
-    if (placeBottom) {
-      top = rect.bottom + gap;
-      if (top + popoverHeight > window.innerHeight - 8) {
-        top = window.innerHeight - 8 - popoverHeight;
-      }
-      if (top < 8) top = 8;
+    if (placeFinal === 'bottom') {
+      this.popoverStyle = {
+        position: 'fixed',
+        top: `${rect.bottom + gap - offset.top}px`,
+        left: `${left - offset.left}px`,
+        width: `${popoverWidth}px`,
+        maxWidth: 'calc(100vw - 16px)',
+        maxHeight: `${Math.max(220, spaceBelow)}px`,
+        transform: 'none',
+        overflowY: 'auto',
+        zIndex: '9999',
+      };
     } else {
-      top = rect.top - gap - popoverHeight;
-      if (top < 8) {
-        top = 8;
-      }
-      if (top + popoverHeight > window.innerHeight - 8) {
-        top = window.innerHeight - 8 - popoverHeight;
-      }
+      this.popoverStyle = {
+        position: 'fixed',
+        top: `${rect.top - gap - offset.top}px`,
+        left: `${left - offset.left}px`,
+        width: `${popoverWidth}px`,
+        maxWidth: 'calc(100vw - 16px)',
+        maxHeight: `${Math.max(220, spaceAbove)}px`,
+        transform: 'translateY(-100%)',
+        overflowY: 'auto',
+        zIndex: '9999',
+      };
     }
-
-    this.popoverStyle = {
-      position: 'fixed',
-      top: `${top - offset.top}px`,
-      left: `${left - offset.left}px`,
-      width: `${popoverWidth}px`,
-      maxWidth: 'calc(100vw - 16px)',
-      zIndex: '9999',
-    };
   }
 
   ngAfterViewChecked(): void {
@@ -392,22 +409,6 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
     }
   }
 
-  public toggleDropdown(type: 'startHour' | 'startMinute' | 'endHour' | 'endMinute', event: Event): void {
-    event.stopPropagation();
-
-    const showSH = this.showStartHourDropdown();
-    const showSM = this.showStartMinuteDropdown();
-    const showEH = this.showEndHourDropdown();
-    const showEM = this.showEndMinuteDropdown();
-
-    this.closeAllTimeDropdowns();
-
-    if (type === 'startHour') this.showStartHourDropdown.set(!showSH);
-    if (type === 'startMinute') this.showStartMinuteDropdown.set(!showSM);
-    if (type === 'endHour') this.showEndHourDropdown.set(!showEH);
-    if (type === 'endMinute') this.showEndMinuteDropdown.set(!showEM);
-  }
-
   public closeAllTimeDropdowns(): void {
     this.showStartHourDropdown.set(false);
     this.showStartMinuteDropdown.set(false);
@@ -415,8 +416,8 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
     this.showEndMinuteDropdown.set(false);
   }
 
-  public selectTimeValue(type: 'startHour' | 'startMinute' | 'endHour' | 'endMinute', val: string, event: Event): void {
-    event.stopPropagation();
+  public selectTimeValue(type: 'startHour' | 'startMinute' | 'endHour' | 'endMinute', val: string, event?: Event): void {
+    if (event) event.stopPropagation();
     if (!this.tempStartDate()) {
       this.tempStartDate.set(this.formatDate(new Date()));
     }
