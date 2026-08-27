@@ -1,4 +1,5 @@
 import { Component, inject, signal, computed } from '@angular/core';
+import { DropdownMenuComponent, DropdownMenuItem, DropdownMenuHeader } from '@shared/components/dropdown-menu/dropdown-menu.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ModalRef } from '@core/services/modal-ref';
@@ -43,6 +44,7 @@ import { TranslatePipe } from '@shared/pipes/translate.pipe';
     TabGroupComponent,
     CustomSliderComponent,
     CustomDateTimeRangeComponent,
+    DropdownMenuComponent,
     TranslatePipe
   ],
   templateUrl: './demo-modal.component.html',
@@ -61,6 +63,8 @@ export class DemoModalComponent {
   public modalRadioValue = signal('arbitrum');
   public modalCheckboxValue = signal(false);
   public modalSliderValue = signal(3);
+
+  public modalDropdownLastAction = signal('');
 
   public modalTabValue = signal('bsc');
   public readonly modalTabOptions: TabOption[] = [
@@ -92,6 +96,51 @@ export class DemoModalComponent {
       { value: 'bsc', label: 'BNB Chain', description: this.translationService.t('cards.controls.radio_bsc_desc') }
     ];
   });
+
+  public readonly modalDropdownHeader: DropdownMenuHeader = {
+    title: 'Nguyễn Tiến Đạt',
+    subtitle: '0x71C...39A2 • tiendat.eth',
+    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80',
+    statusBadge: 'PRO'
+  };
+
+  public readonly modalDropdownProfileItems = computed<DropdownMenuItem[]>(() => {
+    this.translationService.currentLang();
+    return [
+      { type: 'header', label: this.translationService.t('cards.dropdown.header_dapp') },
+      { id: 'profile', label: this.translationService.t('cards.dropdown.profile'), icon: 'user' },
+      { id: 'wallet', label: this.translationService.t('cards.dropdown.connected_wallet'), icon: 'wallet', badge: this.translationService.t('showcase.active'), badgeColor: 'bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/50' },
+      { id: 'settings', label: this.translationService.t('cards.dropdown.system_settings'), icon: 'settings' },
+      { type: 'separator' },
+      { id: 'logout', label: this.translationService.t('cards.dropdown.logout'), icon: 'logout', variant: 'danger' }
+    ];
+  });
+
+  public readonly modalDropdownActionItems = computed<DropdownMenuItem[]>(() => {
+    this.translationService.currentLang();
+    return [
+      { id: 'new-tx', label: this.translationService.t('cards.dropdown.new_tx'), icon: 'plus', iconColor: 'text-purple-500' },
+      { id: 'copy-addr', label: this.translationService.t('cards.dropdown.copy_address'), icon: 'copy' },
+      {
+        id: 'share-wallet',
+        label: this.translationService.t('cards.dropdown.share_wallet'),
+        icon: 'share',
+        type: 'sub',
+        children: [
+          { id: 'share-email', label: this.translationService.t('cards.dropdown.share_email'), icon: 'mail' },
+          { id: 'share-qr', label: this.translationService.t('cards.dropdown.share_qr'), icon: 'qr-code' },
+          { id: 'share-link', label: this.translationService.t('cards.dropdown.share_link'), icon: 'external-link' }
+        ]
+      },
+      { type: 'separator' },
+      { id: 'delete-cache', label: this.translationService.t('cards.dropdown.clear_cache'), icon: 'trash', variant: 'danger' }
+    ];
+  });
+
+  public onDropdownSelect(item: DropdownMenuItem): void {
+    const template = this.translationService.t('cards.dropdown.action_triggered');
+    this.modalDropdownLastAction.set(template.replace('{label}', item.label || ''));
+  }
 
   public cancel(): void {
     this.modalRef.close();

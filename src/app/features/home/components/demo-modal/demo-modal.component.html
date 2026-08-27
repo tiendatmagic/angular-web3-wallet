@@ -182,6 +182,95 @@
     </app-accordion>
   </div>
 
+  <div class="border-t border-slate-100 dark:border-slate-800/40 pt-4.5 space-y-4">
+    <div class="flex items-center justify-between">
+      <h5 class="form-label !mb-0">
+        {{ 'cards.dropdown.card_title' | translate }}
+      </h5>
+      <app-badge variant="ultra" [pulse]="true">{{ 'showcase.new_badge' | translate }}</app-badge>
+    </div>
+
+    <div
+      class="space-y-3 p-3.5 rounded-xl bg-slate-100/50 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40"
+    >
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <span class="text-xs font-bold text-slate-800 dark:text-slate-200">{{
+          'cards.dropdown.demo1_title' | translate
+        }}</span>
+        <app-badge variant="success" rounded="full" size="sm">{{
+          'showcase.profile_menu' | translate
+        }}</app-badge>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-3 pt-1">
+        <app-dropdown-menu
+          [header]="modalDropdownHeader"
+          [items]="modalDropdownProfileItems()"
+          triggerText="Nguyễn Tiến Đạt"
+          triggerVariant="outline"
+          triggerSize="sm"
+          width="w-64"
+          placement="bottom-left"
+          (itemClick)="onDropdownSelect($event)"
+        ></app-dropdown-menu>
+
+        <app-dropdown-menu
+          [header]="modalDropdownHeader"
+          [items]="modalDropdownProfileItems()"
+          triggerVariant="avatar"
+          avatarUrl="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80"
+          width="w-64"
+          placement="bottom-left"
+          (itemClick)="onDropdownSelect($event)"
+        ></app-dropdown-menu>
+      </div>
+    </div>
+
+    <div
+      class="space-y-3 p-3.5 rounded-xl bg-slate-100/50 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40"
+    >
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <span class="text-xs font-bold text-slate-800 dark:text-slate-200">{{
+          'cards.dropdown.demo3_title' | translate
+        }}</span>
+        <app-badge variant="warning" rounded="full" size="sm">{{
+          'showcase.nested_submenu' | translate
+        }}</app-badge>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-3 pt-1">
+        <app-dropdown-menu
+          [items]="modalDropdownActionItems()"
+          [triggerText]="'cards.dropdown.web3_actions' | translate"
+          leadingIcon="bolt"
+          triggerVariant="primary"
+          triggerSize="sm"
+          width="w-60"
+          placement="bottom-left"
+          (itemClick)="onDropdownSelect($event)"
+        ></app-dropdown-menu>
+
+        <app-dropdown-menu
+          [items]="modalDropdownActionItems()"
+          triggerIcon="dots-vertical"
+          triggerVariant="icon"
+          triggerSize="sm"
+          width="w-56"
+          placement="bottom-right"
+          (itemClick)="onDropdownSelect($event)"
+        ></app-dropdown-menu>
+      </div>
+    </div>
+
+    @if (modalDropdownLastAction()) {
+      <div
+        class="text-xs font-mono text-primary bg-primary/5 border border-primary/10 rounded-lg px-3 py-2 animate-in fade-in duration-200"
+      >
+        ⚡ {{ modalDropdownLastAction() }}
+      </div>
+    }
+  </div>
+
   <div
     class="bg-slate-100 dark:bg-slate-950/40 rounded-xl p-4 space-y-1.5 border border-slate-200/30 dark:border-slate-800/30"
   >
@@ -208,6 +297,9 @@
     </div>
     <div class="text-xs font-mono text-slate-500 dark:text-slate-400">
       checkbox = {{ modalCheckboxValue() }}
+    </div>
+    <div class="text-xs font-mono text-slate-500 dark:text-slate-400">
+      dropdown = "{{ modalDropdownLastAction() || ('cards.dropdown.no_action_yet' | translate) }}"
     </div>
   </div>
 
