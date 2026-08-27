@@ -20,6 +20,7 @@
           type="button"
           (click)="onClose()"
           class="btn-close"
+          [attr.aria-label]="'common.close' | translate"
         >
           <app-icon
             name="close"
@@ -28,6 +29,19 @@
           />
         </button>
       </div>
+    } @else {
+      <button
+        type="button"
+        (click)="onClose()"
+        class="btn-close absolute top-4 right-4 z-20"
+        [attr.aria-label]="'common.close' | translate"
+      >
+        <app-icon
+          name="close"
+          class="h-4.5 w-4.5 flex items-center justify-center"
+          strokeWidth="2.5"
+        />
+      </button>
     }
 
     <div class="flex-1 overflow-y-auto px-6 pt-4 no-scrollbar min-h-0 text-left">

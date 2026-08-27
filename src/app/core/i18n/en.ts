@@ -234,7 +234,12 @@ export const EN_TRANSLATIONS: TranslationDictionary = {
       last_result_title: 'Latest Modal Interaction Result',
       no_action_yet: 'No modal action performed yet',
       how_to_use_title: 'Modal Integration Standard Pattern (Gold Standard Template)',
-      how_to_use_desc: 'Easily invoke ModalService to open asynchronous modals and receive clean results without touching parent templates.'
+      how_to_use_desc: 'Easily invoke ModalService to open asynchronous modals and receive clean results without touching parent templates.',
+      modal_type: 'Modal Type',
+      status_label: 'Status',
+      payload_label: 'Returned Payload',
+      status_confirmed: 'Confirmed',
+      status_cancelled: 'Cancelled'
     },
     date_picker: {
       title: 'Date & Range Pickers',
@@ -753,6 +758,7 @@ export const EN_TRANSLATIONS: TranslationDictionary = {
     join_mic_off: "You'll join with mic off",
     clear_search: 'Clear search',
     confirm_action: 'Confirm Action',
+    confirm_modal_desc: 'Are you sure you want to proceed with this action? This will update your data.',
     file_max_count: 'You can upload up to {count} files.',
     file_type_unsupported: 'The file format for "{file}" is not supported.',
     file_too_large: 'The file "{file}" exceeds the {size}MB limit.',
@@ -811,6 +817,7 @@ export const EN_TRANSLATIONS: TranslationDictionary = {
     save: 'Save',
     cancel: 'Cancel',
     confirm: 'Confirm',
+    confirmed: 'Action confirmed successfully!',
     all: 'All',
     clear_date_range: 'Clear date range',
     apply: 'Apply'

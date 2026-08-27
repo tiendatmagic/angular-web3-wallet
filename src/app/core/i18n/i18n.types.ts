@@ -242,6 +242,11 @@ export interface TranslationDictionary {
       no_action_yet: string;
       how_to_use_title: string;
       how_to_use_desc: string;
+      modal_type: string;
+      status_label: string;
+      payload_label: string;
+      status_confirmed: string;
+      status_cancelled: string;
     };
     date_picker: {
       title: string;
@@ -760,6 +765,7 @@ export interface TranslationDictionary {
     join_mic_off: string;
     clear_search: string;
     confirm_action: string;
+    confirm_modal_desc: string;
     file_max_count: string;
     file_type_unsupported: string;
     file_too_large: string;
@@ -818,6 +824,7 @@ export interface TranslationDictionary {
     save: string;
     cancel: string;
     confirm: string;
+    confirmed: string;
     all: string;
     clear_date_range: string;
     apply: string;

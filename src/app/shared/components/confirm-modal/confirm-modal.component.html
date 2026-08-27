@@ -8,6 +8,18 @@
       >
         <div aria-hidden="true" class="glass-dialog-backdrop"></div>
 
+        <button
+          type="button"
+          (click)="onCancel()"
+          class="btn-close absolute top-4 right-4 z-20"
+        >
+          <app-icon
+            name="close"
+            class="h-4.5 w-4.5 flex items-center justify-center"
+            strokeWidth="2.5"
+          />
+        </button>
+
         <ng-container *ngTemplateOutlet="confirmContent"></ng-container>
       </div>
     </div>

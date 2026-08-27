@@ -234,7 +234,12 @@ export const VI_TRANSLATIONS: TranslationDictionary = {
       last_result_title: 'Kết quả tương tác Modal gần nhất',
       no_action_yet: 'Chưa có thao tác nào từ modal',
       how_to_use_title: 'Mẫu chuẩn code tích hợp Modal (Gold Standard Template)',
-      how_to_use_desc: 'Chỉ cần gọi ModalService để mở modal bất đồng bộ và nhận kết quả sạch sẽ mà không cần can thiệp template HTML cha.'
+      how_to_use_desc: 'Chỉ cần gọi ModalService để mở modal bất đồng bộ và nhận kết quả sạch sẽ mà không cần can thiệp template HTML cha.',
+      modal_type: 'Loại Modal',
+      status_label: 'Trạng thái',
+      payload_label: 'Dữ liệu trả về (Payload)',
+      status_confirmed: 'Đã xác nhận',
+      status_cancelled: 'Đã hủy bỏ'
     },
     date_picker: {
       title: 'Bộ Chọn Ngày & Khoảng Thời Gian',
@@ -753,6 +758,7 @@ export const VI_TRANSLATIONS: TranslationDictionary = {
     join_mic_off: 'Bạn sẽ tham gia với micro tắt',
     clear_search: 'Xóa nội dung tìm kiếm',
     confirm_action: 'Xác Nhận Hành Động',
+    confirm_modal_desc: 'Bạn có chắc chắn muốn thực hiện thao tác này không? Thao tác này sẽ cập nhật dữ liệu của bạn.',
     file_max_count: 'Bạn chỉ có thể tải lên tối đa {count} tệp.',
     file_type_unsupported: 'Định dạng tệp "{file}" không được hỗ trợ.',
     file_too_large: 'Tệp "{file}" vượt quá giới hạn {size}MB.',
@@ -811,6 +817,7 @@ export const VI_TRANSLATIONS: TranslationDictionary = {
     save: 'Lưu',
     cancel: 'Hủy',
     confirm: 'Xác nhận',
+    confirmed: 'Đã xác nhận thành công!',
     all: 'Tất cả',
     clear_date_range: 'Xóa khoảng thời gian',
     apply: 'Áp dụng'

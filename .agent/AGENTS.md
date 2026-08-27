@@ -28,8 +28,11 @@
   2. **Nâng Cấp `ModalService` (`src/app/core/services/modal.service.ts`):**
      - Bổ sung helper method `deleteConfirm(data: DeleteConfirmModalData): ModalRef<DeleteConfirmModalResult>`.
   3. **Đa Ngôn Ngữ i18n (`src/app/core/i18n/`):**
-     - Cập nhật `i18n.types.ts`, `vi.ts`, `en.ts` với đầy đủ từ điển `delete_modal` và nâng cấp `cards.modal_demo`.
-  4. **Nâng Cấp Showcase Card Trên Dashboard (`src/app/features/home/`):**
+     - Cập nhật `i18n.types.ts`, `vi.ts`, `en.ts` với đầy đủ từ điển `delete_modal`, nâng cấp `cards.modal_demo` (thêm `modal_type`, `status_label`, `payload_label`, `status_confirmed`, `status_cancelled`), bổ sung `showcase.confirm_modal_desc` và `common.confirmed`.
+     - Rà soát 100% các nhãn text cứng còn sót lại trên giao diện modal và dashboard để đưa qua Pipe `| translate` và `TranslationService`.
+  4. **Nâng Cấp Showcase Card Trên Dashboard & Chuẩn Hóa Nút Đóng X (`ModalWrapperComponent` & `ConfirmModalComponent`):**
+     - `modal-wrapper.component.html`: Bổ sung nút đóng `X` (`btn-close absolute top-4 right-4 z-20`) khi `showHeader: false` để đảm bảo mọi modal động (Confirm Modal, Delete Modal, Custom Modal) đều luôn có nút `X` ở góc trên bên phải.
+     - `confirm-modal.component.html`: Bổ sung nút `X` cho cả chế độ static `!isDynamic`.
      - `home.component.ts`: Bổ sung các phương thức `openDeleteConfirmModal()`, `openQuickConfirmModal()`, quản lý `lastModalResult` và code snippet `modalStandardCodeSnippet`.
      - `home.component.html`: Xây dựng Thẻ Showcase Hệ thống Modal hoàn chỉnh gồm 3 nút mở modal (Modal Xóa, Modal Form, Quick Confirm), khối hiển thị kết quả tương tác realtime và code block mẫu chuẩn.
 - **Xác thực:**

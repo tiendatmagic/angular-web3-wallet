@@ -2605,18 +2605,18 @@
             @if (lastModalResult()) {
               <div class="space-y-2 text-xs font-mono bg-white/70 dark:bg-slate-900/70 p-3 rounded-lg border border-slate-200/50 dark:border-slate-800/50 text-slate-700 dark:text-slate-300">
                 <div class="flex justify-between">
-                  <span class="text-slate-400 font-bold">Modal Type:</span>
+                  <span class="text-slate-400 font-bold">{{ 'cards.modal_demo.modal_type' | translate }}:</span>
                   <span class="font-bold text-primary">{{ lastModalResult()?.type }}</span>
                 </div>
                 <div class="flex justify-between">
-                  <span class="text-slate-400 font-bold">Status:</span>
+                  <span class="text-slate-400 font-bold">{{ 'cards.modal_demo.status_label' | translate }}:</span>
                   <span [class]="lastModalResult()?.status === 'confirmed' ? 'text-emerald-500 font-bold' : 'text-slate-400 font-bold'">
-                    {{ lastModalResult()?.status }}
+                    {{ lastModalResult()?.status === 'confirmed' ? ('cards.modal_demo.status_confirmed' | translate) : ('cards.modal_demo.status_cancelled' | translate) }}
                   </span>
                 </div>
                 @if (lastModalResult()?.data) {
                   <div class="pt-2 border-t border-slate-200/40 dark:border-slate-800/40">
-                    <span class="text-slate-400 font-bold block mb-1">Payload:</span>
+                    <span class="text-slate-400 font-bold block mb-1">{{ 'cards.modal_demo.payload_label' | translate }}:</span>
                     <pre class="text-[11px] overflow-x-auto p-2 bg-slate-100 dark:bg-slate-950 rounded">{{ lastModalResult()?.data | json }}</pre>
                   </div>
                 }

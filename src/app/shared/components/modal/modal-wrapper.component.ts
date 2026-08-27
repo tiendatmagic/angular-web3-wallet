@@ -2,12 +2,13 @@ import { Component, Type, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ModalRef } from '@core/services/modal-ref';
 import { IconComponent } from '@shared/components/icon/icon.component';
+import { TranslatePipe } from '@shared/pipes/translate.pipe';
 
 @Component({
   selector: 'app-modal-wrapper',
-  
-  imports: [CommonModule, IconComponent],
-  templateUrl: './modal-wrapper.component.html'})
+  imports: [CommonModule, IconComponent, TranslatePipe],
+  templateUrl: './modal-wrapper.component.html'
+})
 export class ModalWrapperComponent {
   title = '';
   size: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' = 'md';
