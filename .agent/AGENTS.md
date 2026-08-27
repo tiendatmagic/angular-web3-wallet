@@ -1,3 +1,22 @@
+### Yêu Cầu: Rà Soát Toàn Diện Đa Ngôn Ngữ (i18n), Đối Chiếu Key EN / VI & Quét Toàn Bộ Source HTML / TS
+- **Nội dung yêu cầu:** Kiểm tra lại toàn bộ source code xem có còn chỗ nào chưa dịch đa ngôn ngữ không, các key EN / VI đã đầy đủ hay chưa, tra cứu toàn bộ file HTML và TS.
+- **Phân tích kỹ thuật & Kết quả rà soát:**
+  1. **Đối chiếu chéo từ điển `en.ts` và `vi.ts`:**
+     - Cả hai từ điển hiện có tổng cộng **730 flat keys** (sau khi bổ sung), khớp 100% về cấu trúc và định danh key.
+     - Không có bất kỳ translation key nào bị rỗng (empty string = 0).
+     - Ký tự tiếng Việt duy nhất trong `en.ts` là `"Tiếng Việt"` của key `language.vietnamese` (chuẩn hiển thị native name).
+  2. **Quét toàn bộ 55 file HTML & 76 file TS trong `src/app`:**
+     - Tìm thấy và khắc phục 1 key thiếu: `header.manage_account` được sử dụng trong `account-dropdown.component.html` đã được bổ sung đầy đủ vào `i18n.types.ts`, `en.ts` ("Manage Account") và `vi.ts` ("Quản lý tài khoản").
+     - 100% các chuỗi text, nhãn (`label`), tiêu đề (`title`), `placeholder`, `aria-label`, thông báo `toast` và `modal` trên toàn bộ ứng dụng đều đã được đa ngôn ngữ hóa thông qua `TranslatePipe` hoặc `TranslationService.t(...)`.
+- **Các vị trí đã xử lý:**
+  1. `src/app/core/i18n/i18n.types.ts`: Thêm `manage_account: string;` vào interface `TranslationDictionary.header`.
+  2. `src/app/core/i18n/en.ts`: Thêm `manage_account: 'Manage Account'` vào `header`.
+  3. `src/app/core/i18n/vi.ts`: Thêm `manage_account: 'Quản lý tài khoản'` vào `header`.
+- **Xác thực:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npm test`: 20 files / 102 tests passed (100%).
+  - `npm run build`: Build production hoàn tất thành công 100%.
+
 ### Yêu cầu: Chuẩn Hóa & Responsive Typography / Font Size Chữ Cho Component Cảnh Báo (Alert & Modals)
 - **Nội dung yêu cầu:** Xem xét và cấu hình responsive font size chữ cho component cảnh báo (`app-alert`) trong modal (như DeleteConfirmModal và các modal/thẻ khác) để không bị to thô quá mức, cân đối với tỷ lệ màn hình và các thành phần xung quanh.
 - **Phân tích kỹ thuật & Chuẩn hóa:**

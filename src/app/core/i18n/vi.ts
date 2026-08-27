@@ -20,6 +20,7 @@ export const VI_TRANSLATIONS: TranslationDictionary = {
     connected_wallet: 'Ví đang kết nối',
     copy_address: 'Sao chép địa chỉ ví',
     wallet_details: 'Chi tiết ví',
+    manage_account: 'Quản lý tài khoản',
     view_explorer: 'Xem trên Explorer',
     disconnect: 'Ngắt kết nối ví',
     copied_address_toast: 'Đã sao chép địa chỉ ví vào bộ nhớ tạm!'

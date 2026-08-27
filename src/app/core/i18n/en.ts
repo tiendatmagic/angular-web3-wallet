@@ -20,6 +20,7 @@ export const EN_TRANSLATIONS: TranslationDictionary = {
     connected_wallet: 'Connected Wallet',
     copy_address: 'Copy Wallet Address',
     wallet_details: 'Wallet Details',
+    manage_account: 'Manage Account',
     view_explorer: 'View on Explorer',
     disconnect: 'Disconnect Wallet',
     copied_address_toast: 'Wallet address copied to clipboard!'

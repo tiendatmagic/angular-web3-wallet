@@ -27,6 +27,7 @@ export interface TranslationDictionary {
     connected_wallet: string;
     copy_address: string;
     wallet_details: string;
+    manage_account: string;
     view_explorer: string;
     disconnect: string;
     copied_address_toast: string;
