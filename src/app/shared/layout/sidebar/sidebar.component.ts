@@ -21,7 +21,6 @@ import { IconComponent } from '@shared/components/icon/icon.component';
 import { LogoComponent } from '@shared/components/logo/logo.component';
 import { ThemeSwitcherComponent } from '@shared/components/theme-switcher/theme-switcher.component';
 import { TxSpeedSelectorComponent } from '@shared/components/tx-speed-selector/tx-speed-selector.component';
-import { LanguageSelectorComponent } from '@shared/components/language-selector/language-selector.component';
 import { TranslatePipe } from '@shared/pipes/translate.pipe';
 
 export interface NavItem {
@@ -41,7 +40,6 @@ export interface NavItem {
     LogoComponent,
     ThemeSwitcherComponent,
     TxSpeedSelectorComponent,
-    LanguageSelectorComponent,
     TranslatePipe,
   ],
   templateUrl: './sidebar.component.html',

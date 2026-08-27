@@ -1,5 +1,6 @@
 <div class="relative block select-none">
   <button
+    #triggerBtn
     type="button"
     (click)="toggleDropdown($event)"
     class="min-w-9 w-9 h-9 min-[360px]:min-w-10 min-[360px]:w-10 min-[360px]:h-10 rounded-xl bg-slate-100/80 dark:bg-slate-900/80 hover:bg-slate-200/80 dark:hover:bg-slate-800/80 border border-slate-200/50 dark:border-slate-800/50 text-slate-700 dark:text-slate-200 text-xs font-bold transition-[transform,scale,background-color,color,box-shadow] duration-200 flex items-center justify-center cursor-pointer shadow-xs active:scale-95 shrink-0 !p-0 select-none"
@@ -11,7 +12,8 @@
 
   @if (isOpen()) {
     <div
-      class="fixed top-[3.75rem] left-3 right-3 sm:absolute sm:top-full sm:right-0 sm:left-auto sm:mt-2 sm:w-64 dropdown-menu-popover glass-popover border border-slate-200/80 dark:border-slate-800/80 rounded-[15px] p-2 text-slate-800 dark:text-slate-100 focus:outline-none z-[200] select-none"
+      [ngStyle]="dropdownStyle"
+      class="dropdown-menu-popover glass-popover border border-slate-200/80 dark:border-slate-800/80 rounded-[15px] p-2 text-slate-800 dark:text-slate-100 focus:outline-none select-none"
     >
       <div
         class="form-label px-3 py-2"

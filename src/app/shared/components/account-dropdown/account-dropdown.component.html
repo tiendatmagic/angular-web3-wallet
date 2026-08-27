@@ -1,6 +1,7 @@
 <div class="relative block select-none">
   @if (stateService.isConnected()) {
     <button
+      #triggerBtn
       type="button"
       app-button
       variant="secondary"
@@ -39,7 +40,8 @@
 
     @if (isOpen()) {
       <div
-        class="fixed top-[3.75rem] left-3 right-3 sm:absolute sm:top-full sm:right-0 sm:left-auto sm:mt-2 sm:w-72 dropdown-menu-popover glass-popover border border-slate-200/80 dark:border-slate-800/80 rounded-[15px] p-2 text-slate-800 dark:text-slate-100 focus:outline-none z-[200] select-none"
+        [ngStyle]="dropdownStyle"
+        class="dropdown-menu-popover glass-popover border border-slate-200/80 dark:border-slate-800/80 rounded-[15px] p-2 text-slate-800 dark:text-slate-100 focus:outline-none select-none"
       >
         <div
           class="px-3.5 py-3 mb-1.5 bg-slate-100/80 dark:bg-slate-800/40 rounded-[12px] border border-slate-100 dark:border-slate-800/50 select-none"
@@ -101,7 +103,7 @@
                 class="w-4.5 h-4.5 shrink-0 text-slate-400 dark:text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-colors"
               />
               <span class="truncate">
-                {{ 'header.wallet_details' | translate }}
+                {{ 'header.manage_account' | translate }}
               </span>
             </div>
           </button>
@@ -122,7 +124,7 @@
             </div>
           </button>
 
-          <div class="my-1.5 h-px bg-slate-200/70 dark:bg-slate-800/70"></div>
+          <div class="my-1.5 h-px bg-slate-200/70 dark:bg-slate-800/70 select-none"></div>
 
           <button
             type="button"
@@ -130,8 +132,13 @@
             class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors text-left cursor-pointer group select-none"
           >
             <div class="flex items-center gap-3 truncate min-w-0">
-              <app-icon name="logout" class="w-4.5 h-4.5 shrink-0 text-rose-500" />
-              <span class="truncate">{{ 'header.disconnect' | translate }}</span>
+              <app-icon
+                name="logout"
+                class="w-4.5 h-4.5 shrink-0 text-rose-500 group-hover:text-rose-600 dark:group-hover:text-rose-400 transition-colors"
+              />
+              <span class="truncate">
+                {{ 'header.disconnect' | translate }}
+              </span>
             </div>
           </button>
         </div>
@@ -143,10 +150,12 @@
       app-button
       variant="primary"
       (click)="connectWallet()"
-      class="h-9 sm:h-10 text-xs sm:text-sm !px-2.5 sm:!px-6 shrink-0 flex items-center justify-center gap-1 sm:gap-1.5 font-black cursor-pointer"
+      class="h-9 min-[360px]:h-10 !px-3 sm:!px-4 font-bold shadow-md shadow-primary/20 shrink-0"
     >
-      <app-icon name="wallet" class="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" strokeWidth="2.5" />
-      <span>{{ 'header.connect_wallet' | translate }}</span>
+      <app-icon name="wallet" class="w-4 h-4 sm:w-4.5 sm:h-4.5 mr-1 sm:mr-1.5" />
+      <span class="text-xs sm:text-sm font-extrabold">{{
+        'header.connect_wallet' | translate
+      }}</span>
     </button>
   }
 </div>

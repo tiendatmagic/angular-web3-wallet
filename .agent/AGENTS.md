@@ -1,18 +1,35 @@
-### Yêu cầu: Khắc Phục Lỗi Dropdown Bị Biến Mất Khi Scroll & Chuẩn Hóa Chạy Theo Trigger (Card 19)
-- **Nội dung yêu cầu:** Sửa lỗi khi vừa cuộn chuột (scroll) thì Dropdown Menu bị biến mất/đóng ngay lập tức. Đảm bảo Dropdown Menu và Submenu luôn bám dính và chạy theo nút trigger khi cuộn trang hoặc cuộn bên trong Modal (tương tự như `CustomSelectComponent` và `CustomDatePickerComponent`).
-- **Phân tích kỹ thuật & Nguyên nhân:**
-  1. **Lỗi đóng dropdown khi scroll:** Trước đó hàm `bindScrollListener()` đăng ký listener `scroll` trên document ở capture phase và tự động gọi `this.close()` khi có sự kiện scroll, khiến dropdown bị tắt ngay khi lăn chuột.
-  2. **Giải pháp chuẩn hóa:**
-     - Thay vì đóng menu, `scrollListener` (ở capture phase) sẽ kích hoạt `updateMenuPosition()` và `updateSubmenuPosition()` kết hợp `cdr.markForCheck()`. Khi cuộn trong Modal hay cuộn trang, dropdown menu liên tục cập nhật toạ độ và chạy bám dính theo nút trigger 100%.
-     - Đồng bộ việc tính toán toạ độ với `getContainingBlockOffset(trigger)` để đảm bảo hoạt động chuẩn xác trong cả Modal lẫn Viewport thông thường.
+### Yêu cầu: Loại Bỏ Dropdown Ngôn Ngữ Khỏi Mobile Sidebar Drawer
+- **Nội dung yêu cầu:** Xóa bỏ bộ chọn ngôn ngữ `app-language-selector` ở phần chân menu Sidebar mobile (vì trên Header đã có sẵn nút chọn ngôn ngữ).
 - **Các vị trí đã xử lý:**
-  1. `src/app/shared/components/dropdown-menu/dropdown-menu.component.ts`
-  2. `src/app/features/home/components/demo-modal/demo-modal.component.html`
-  3. `src/app/features/home/components/demo-modal/demo-modal.component.ts`
+  1. `src/app/shared/layout/sidebar/sidebar.component.html`: Loại bỏ `<app-language-selector variant="full" direction="up" />` khỏi mobile footer container.
+  2. `src/app/shared/layout/sidebar/sidebar.component.ts`: Dọn dẹp import `LanguageSelectorComponent`.
 - **Xác thực:**
   - `npx tsc --noEmit`: 0 lỗi type.
   - `npm test`: 19 files / 96 tests passed (100%).
   - `npm run build`: Build production hoàn tất thành công 100%.
+
+### Yêu cầu: Chuẩn Hóa & Đồng Bộ Toàn Diện Cơ Chế Hiển Thị Của Tất Cả Component Dropdown / Popover
+- **Nội dung yêu cầu:** Rà soát và đồng bộ 100% cơ chế hiển thị của toàn bộ hệ thống Dropdown / Popover trong dự án (`LanguageSelector`, `NetworkSelector`, `AccountDropdown`, `DropdownMenu`, `CustomSelect`, `CustomDatePicker`, `CustomDateTimeRange`).
+- **Phân tích kỹ thuật & Chuẩn hóa:**
+  1. **Khắc phục lỗi định dạng absolute cũ:**
+     - Trước đó `LanguageSelector`, `NetworkSelector`, `AccountDropdown` sử dụng CSS định vị `position: absolute`, khiến popover khi mở ở chế độ full-width (`variant="full"`) bị đè bởi các layer bên dưới hoặc bị cắt ngắn option (như trường hợp thiếu option English).
+  2. **Giải pháp kiến trúc đồng bộ 100%:**
+     - Nâng cấp cả 7 component sang cơ chế tính toán toạ độ động qua `updateDropdownPosition()` / `updatePopoverPosition()` với `position: fixed` và `getContainingBlockOffset(trigger)`.
+     - Đăng ký capture scroll listener (`window.addEventListener('scroll', ..., true)`) trong `ngOnInit` để tất cả các dropdown đều tự động bám dính chạy theo trigger button khi cuộn trang hoặc cuộn bên trong Modal.
+     - Đồng bộ token giao diện `glass-popover`, bo góc `rounded-[15px]` và `z-index` chuẩn hóa.
+- **Các vị trí đã xử lý:**
+  1. `src/app/shared/components/language-selector/language-selector.component.ts` & `.html`
+  2. `src/app/shared/components/network-selector/network-selector.component.ts` & `.html`
+  3. `src/app/shared/components/account-dropdown/account-dropdown.component.ts` & `.html`
+  4. `src/app/shared/components/dropdown-menu/dropdown-menu.component.ts`
+  5. `src/app/shared/components/custom-select/custom-select.component.ts`
+  6. `src/app/shared/components/custom-date-picker/custom-date-picker.component.ts`
+  7. `src/app/shared/components/custom-date-time-range/custom-date-time-range.component.ts`
+- **Xác thực:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npm test`: 19 files / 96 tests passed (100%).
+  - `npm run build`: Build production hoàn tất thành công 100%.
+
 
 ### Yêu cầu: Khắc Phục Lỗi Toạ Độ & Chiều Hiển Thị Của DateTimePicker và DateTimeRange
 - **Nội dung yêu cầu:** Sửa lỗi hiển thị và chiều mở (placement) của `CustomDatePicker` và `CustomDateTimeRange` khi mở lên trên bị lệch/bay lên đỉnh màn hình đè lên các thẻ bên trên (ảnh 1), khi mở xuống dưới bị đè ô input hoặc tràn đáy (ảnh 2), và đồng bộ hóa giao diện phần dưới.
