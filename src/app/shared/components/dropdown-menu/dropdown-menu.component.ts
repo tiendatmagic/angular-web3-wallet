@@ -344,7 +344,8 @@ export class DropdownMenuComponent implements AfterViewChecked {
     }
 
     const triggerRect = this.activeSubmenuTriggerEl.getBoundingClientRect();
-    const offset = getContainingBlockOffset(this.activeSubmenuTriggerEl);
+    const mainTrigger = this.triggerWrapper?.nativeElement || this.elementRef.nativeElement;
+    const offset = getContainingBlockOffset(mainTrigger);
 
     if (triggerRect.bottom <= 0 || triggerRect.top >= window.innerHeight || triggerRect.width === 0) {
       this.activeSubmenuId.set(null);
@@ -375,12 +376,12 @@ export class DropdownMenuComponent implements AfterViewChecked {
     const spaceAbove = triggerRect.bottom - 12;
     const placeBottom = spaceBelow >= subEstimatedHeight || spaceBelow >= spaceAbove;
 
-    let subTop = triggerRect.top;
+    let subTop = triggerRect.top - 4;
     let transform = 'none';
     let maxHeight = Math.max(120, spaceBelow);
 
     if (!placeBottom) {
-      subTop = triggerRect.bottom;
+      subTop = triggerRect.bottom + 4;
       transform = 'translateY(-100%)';
       maxHeight = Math.max(120, spaceAbove);
     }
