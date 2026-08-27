@@ -75,8 +75,15 @@ export class CodeBlockComponent {
     });
   });
 
-  selectTab(index: number): void {
+  selectTab(index: number, event?: Event): void {
     this.activeIndex.set(index);
+    if (event?.currentTarget) {
+      (event.currentTarget as HTMLElement).scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'nearest'
+      });
+    }
   }
 
   toggleWrap(): void {
