@@ -1,5 +1,5 @@
 <div class="progress-wrapper w-full select-none">
-  @if (label || (showValue && valuePosition === 'top')) {
+  @if (type === 'bar' && (label || (showValue && valuePosition === 'top'))) {
     <div class="flex items-center justify-between gap-2 mb-1.5 text-xs">
       @if (label) {
         <span class="font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider text-[11px]">{{ label }}</span>
@@ -84,26 +84,51 @@
         [style.width.px]="getCircleSizePx()"
         [style.height.px]="getCircleSizePx()"
       >
-        <app-icon
-          name="progress-circle"
+        <svg
           viewBox="0 0 100 100"
           class="w-full h-full -rotate-90 transform"
-          [radius]="circleRadius()"
-          [strokeWidth]="strokeWidth"
-          [dashArray]="circleCircumference()"
-          [dashOffset]="circleDashoffset()"
-          trackClass="stroke-slate-200 dark:stroke-slate-800"
-          [valueClass]="getVariantStrokeColor() + ' transition-all duration-500 ease-out'"
-        />
+        >
+          <!-- Background Track -->
+          <circle
+            cx="50"
+            cy="50"
+            [attr.r]="circleRadius()"
+            class="stroke-slate-200 dark:stroke-slate-700"
+            [attr.stroke-width]="strokeWidth"
+            fill="none"
+          />
+          <!-- Value Arc -->
+          <circle
+            cx="50"
+            cy="50"
+            [attr.r]="circleRadius()"
+            [ngClass]="getVariantStrokeColor()"
+            [attr.stroke-width]="strokeWidth"
+            fill="none"
+            stroke-linecap="round"
+            [attr.stroke-dasharray]="circleCircumference()"
+            [attr.stroke-dashoffset]="circleDashoffset()"
+            class="transition-[stroke-dashoffset] duration-500 ease-out"
+          />
+        </svg>
 
-        <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-1">
+        <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-1 pointer-events-none">
           @if (showValue) {
-            <span class="font-mono font-extrabold text-sm sm:text-base leading-tight" [ngClass]="getVariantTextColor()">
+            <span
+              class="font-mono font-extrabold leading-tight select-none"
+              [ngClass]="[
+                getVariantTextColor(),
+                size === 'xs' ? 'text-xs' : size === 'sm' ? 'text-sm' : size === 'md' ? 'text-base' : size === 'lg' ? 'text-xl' : 'text-2xl'
+              ]"
+            >
               {{ formattedValue() }}
             </span>
           }
           @if (label) {
-            <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 mt-0.5 leading-none uppercase tracking-tight">
+            <span
+              class="font-bold text-slate-500 dark:text-slate-400 mt-0.5 leading-none uppercase tracking-tight select-none"
+              [ngClass]="size === 'xs' || size === 'sm' ? 'text-[9px]' : 'text-[10px]'"
+            >
               {{ label }}
             </span>
           }
@@ -119,25 +144,48 @@
         [style.width.px]="getCircleSizePx()"
         [style.height.px]="getCircleSizePx() * 0.58"
       >
-        <app-icon
-          name="progress-semicircle"
-          viewBox="0 0 100 55"
+        <svg
+          viewBox="0 0 100 58"
           class="w-full h-full"
-          [strokeWidth]="strokeWidth"
-          [dashArray]="semiCircleCircumference()"
-          [dashOffset]="semiCircleDashoffset()"
-          trackClass="stroke-slate-200 dark:stroke-slate-800"
-          [valueClass]="getVariantStrokeColor() + ' transition-all duration-500 ease-out'"
-        />
+        >
+          <!-- Background Track -->
+          <path
+            d="M 10 50 A 40 40 0 0 1 90 50"
+            class="stroke-slate-200 dark:stroke-slate-700"
+            [attr.stroke-width]="strokeWidth"
+            fill="none"
+            stroke-linecap="round"
+          />
+          <!-- Value Arc -->
+          <path
+            d="M 10 50 A 40 40 0 0 1 90 50"
+            [ngClass]="getVariantStrokeColor()"
+            [attr.stroke-width]="strokeWidth"
+            fill="none"
+            stroke-linecap="round"
+            [attr.stroke-dasharray]="semiCircleCircumference()"
+            [attr.stroke-dashoffset]="semiCircleDashoffset()"
+            class="transition-[stroke-dashoffset] duration-500 ease-out"
+          />
+        </svg>
 
-        <div class="absolute bottom-0 left-0 right-0 flex flex-col items-center justify-end text-center pb-1">
+        <div class="absolute bottom-0 inset-x-0 flex flex-col items-center justify-end text-center pb-1 pointer-events-none">
           @if (showValue) {
-            <span class="font-mono font-extrabold text-sm sm:text-base leading-none" [ngClass]="getVariantTextColor()">
+            <span
+              class="font-mono font-extrabold leading-none select-none"
+              [ngClass]="[
+                getVariantTextColor(),
+                size === 'xs' ? 'text-xs' : size === 'sm' ? 'text-sm' : size === 'md' ? 'text-base' : size === 'lg' ? 'text-xl' : 'text-2xl'
+              ]"
+            >
               {{ formattedValue() }}
             </span>
           }
           @if (label) {
-            <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 mt-0.5 leading-none uppercase">
+            <span
+              class="font-bold text-slate-500 dark:text-slate-400 mt-0.5 leading-none uppercase tracking-tight select-none"
+              [ngClass]="size === 'xs' || size === 'sm' ? 'text-[9px]' : 'text-[10px]'"
+            >
               {{ label }}
             </span>
           }

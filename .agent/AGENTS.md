@@ -1,3 +1,26 @@
+### Yêu cầu: Khắc Phục Lỗi UI Hiển Thị Cho SVG Gauge (Circular Ring & Semi-Circle Gauge) Trong `ProgressComponent`
+- **Nội dung yêu cầu:** Sửa lỗi giao diện hiển thị bị đè chữ, thu nhỏ bất thường và vỡ bố cục tại mục "6. Circular Ring & Semi-Circle Gauge" (`app-progress[type='circle']` & `app-progress[type='semicircle']`).
+- **Phân tích nguyên nhân gốc rễ kỹ thuật:**
+  1. **Ràng buộc kích thước toàn cục của `app-icon` trong `index.html`:** Trong thẻ `<style>` của `index.html`, tag `app-icon` bị gán kích thước cố định `width: 1.25rem; height: 1.25rem;` (20px x 20px). Do đó, khi `ProgressComponent` sử dụng `<app-icon>` để vẽ SVG gauge, toàn bộ hình vẽ SVG bị ép lại trong khung 20px, khiến vòng tròn SVG chỉ có đường kính ~20px và bị chữ `68%` và label đè kín.
+  2. **Hiển thị đúp Header/Label ngoài dự kiến:** Điều kiện hiển thị tiêu đề trên cùng `@if (label || (showValue && valuePosition === 'top'))` áp dụng chung mà không kiểm tra `type === 'bar'`, khiến các thanh đo dạng tròn và bán nguyệt bị in ra nhãn text ở trên đầu ("CIRCULAR RING", "SEMI-CIRCLE") và tiếp tục in nhãn một lần nữa ở giữa vòng tròn/chân vòm.
+  3. **ViewBox & Khung Bán Nguyệt Bị Tràn/Cắt Viền:** ViewBox của `progress-semicircle` trước đó đặt `0 0 100 55` trong khi bán kính bo và đường kính nét viền (`strokeWidth = 8`) đẩy điểm chạm của stroke ra `y = 6` đến `y = 54` và `x = 6` đến `x = 94`.
+- **Giải pháp & Các bước đã thực hiện:**
+  1. **Chuẩn Hóa SVG Trực Tiếp Trong `ProgressComponent` (`progress.component.html`):**
+     - Thay thế thẻ `<app-icon>` bằng trực tiếp các phần tử `<svg>` native với `viewBox="0 0 100 100"` (cho circle) và `viewBox="0 0 100 58"` (cho semicircle). Nhờ đó, SVG bung đúng 100% kích thước container cha (60px/76px/96px/124px/152px) mà không bị giới hạn 20px của `app-icon`.
+     - Đặt điều kiện tiêu đề trên cùng thành `@if (type === 'bar' && (label || (showValue && valuePosition === 'top')))` để dành riêng cho thanh tiến trình dạng bar.
+     - Căn chỉnh typography cho nhãn text và giá trị phần trăm bên trong vòng tròn và bán nguyệt: bổ sung `pointer-events-none select-none`, phân cấp cỡ chữ responsive theo kích cỡ component (`xs`, `sm`, `md`, `lg`, `xl`).
+     - Tối ưu transition chuyển động chỉ riêng cho thuộc tính `stroke-dashoffset` (`transition-[stroke-dashoffset] duration-500 ease-out`).
+  2. **Chuẩn Hóa Controller `ProgressComponent` (`progress.component.ts`):**
+     - Cập nhật tỷ lệ kích thước đường kính `getCircleSizePx()` (xs: 60px, sm: 76px, md: 96px, lg: 124px, xl: 152px) tạo không gian rộng rãi cho text bên trong.
+     - Loại bỏ import `IconComponent` không cần thiết.
+     - Đồng bộ các hàm `getVariantClasses()`, `getVariantStrokeColor()`, `getVariantTextColor()` sử dụng các class Tailwind v4 chuẩn (`bg-primary`, `stroke-primary`, `text-primary`, `bg-emerald-500`, v.v.).
+  3. **Bổ Sung Bộ Unit Test Toàn Diện (`progress.component.spec.ts`):**
+     - 4 test cases kiểm tra tính toán phần trăm, tính toán chu vi đường tròn/bán nguyệt, độ lệch dashoffset và đảm bảo không xuất hiện header đúp trên gauge.
+- **Xác thực:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npm test`: 17/17 tests passed (100%).
+  - `npm run build`: Build production hoàn tất thành công 100%.
+
 ### Yêu cầu: Tối Ưu Hóa Responsive Cho Tab Bar & Header Trong Code Block Component (`CodeBlockComponent`)
 - **Nội dung yêu cầu:** Tối ưu hóa responsive cho phần Tab trong `CodeBlockComponent` khi hiển thị trên màn hình nhỏ hoặc trong các layout chia cột (grid 2 cột) trên Desktop/Tablet để tab không bị che khuất hoặc bị đẩy mất chữ.
 - **Phân tích kỹ thuật & Nguyên nhân:**

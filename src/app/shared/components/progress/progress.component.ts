@@ -1,6 +1,5 @@
 import { Component, Input, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IconComponent } from '../icon/icon.component';
 
 export interface ProgressSegment {
   value: number;
@@ -16,7 +15,7 @@ export type ProgressValuePosition = 'right' | 'top' | 'inside' | 'bottom' | 'non
 @Component({
   selector: 'app-progress',
   standalone: true,
-  imports: [CommonModule, IconComponent],
+  imports: [CommonModule],
   templateUrl: './progress.component.html',
   host: { 'class': 'block' },
 })
@@ -90,7 +89,7 @@ export class ProgressComponent {
   getVariantClasses(): string {
     switch (this.variant) {
       case 'primary':
-        return 'bg-[var(--color-primary)]';
+        return 'bg-primary';
       case 'secondary':
         return 'bg-slate-600 dark:bg-slate-400';
       case 'success':
@@ -102,16 +101,16 @@ export class ProgressComponent {
       case 'info':
         return 'bg-sky-500 dark:bg-sky-400';
       case 'gradient':
-        return 'bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)]';
+        return 'bg-gradient-to-r from-primary to-secondary';
       default:
-        return 'bg-[var(--color-primary)]';
+        return 'bg-primary';
     }
   }
 
   getVariantStrokeColor(): string {
     switch (this.variant) {
       case 'primary':
-        return 'stroke-[var(--color-primary)]';
+        return 'stroke-primary';
       case 'secondary':
         return 'stroke-slate-600 dark:stroke-slate-400';
       case 'success':
@@ -123,16 +122,16 @@ export class ProgressComponent {
       case 'info':
         return 'stroke-sky-500 dark:stroke-sky-400';
       case 'gradient':
-        return 'stroke-[var(--color-primary)]';
+        return 'stroke-primary';
       default:
-        return 'stroke-[var(--color-primary)]';
+        return 'stroke-primary';
     }
   }
 
   getVariantTextColor(): string {
     switch (this.variant) {
       case 'primary':
-        return 'text-[var(--color-primary)]';
+        return 'text-primary';
       case 'secondary':
         return 'text-slate-600 dark:text-slate-400';
       case 'success':
@@ -144,9 +143,9 @@ export class ProgressComponent {
       case 'info':
         return 'text-sky-600 dark:text-sky-400';
       case 'gradient':
-        return 'text-[var(--color-primary)]';
+        return 'text-primary';
       default:
-        return 'text-[var(--color-primary)]';
+        return 'text-primary';
     }
   }
 
@@ -170,17 +169,17 @@ export class ProgressComponent {
   getCircleSizePx(): number {
     switch (this.size) {
       case 'xs':
-        return 48;
+        return 60;
       case 'sm':
-        return 64;
+        return 76;
       case 'md':
-        return 88;
+        return 96;
       case 'lg':
-        return 112;
+        return 124;
       case 'xl':
-        return 136;
+        return 152;
       default:
-        return 88;
+        return 96;
     }
   }
 
