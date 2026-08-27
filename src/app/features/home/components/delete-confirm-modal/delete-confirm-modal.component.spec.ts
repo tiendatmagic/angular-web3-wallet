@@ -70,4 +70,21 @@ describe('DeleteConfirmModalComponent', () => {
     expect(keywordLabel).toBeTruthy();
     expect(keywordLabel?.classList.contains('form-label')).toBe(true);
   });
+
+  it('should render modal with animate-modal-in and animate-modal-backdrop-in when used as non-dynamic template component', async () => {
+    const standaloneFixture = TestBed.createComponent(DeleteConfirmModalComponent);
+    const standaloneComp = standaloneFixture.componentInstance;
+    standaloneComp.isDynamic = false;
+    standaloneComp.isOpen = true;
+    standaloneComp.inputTitle = 'Delete Item Modal';
+    standaloneFixture.detectChanges();
+
+    const backdrop = standaloneFixture.nativeElement.querySelector('.animate-modal-backdrop-in');
+    expect(backdrop).toBeTruthy();
+
+    const dialog = standaloneFixture.nativeElement.querySelector('.glass-dialog');
+    expect(dialog).toBeTruthy();
+    expect(dialog?.classList.contains('animate-modal-in')).toBe(true);
+  });
 });
+

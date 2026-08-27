@@ -1,3 +1,14 @@
+### Yêu cầu: Rà Soát Tốc Độ Cuộn Trang Home Khi Sử Dụng Trackpad Laptop
+- **Nội dung yêu cầu:** Kiểm tra trang Home và phân tích nguyên nhân tại sao khi sử dụng trackpad laptop (Precision Touchpad) thì cảm giác tốc độ scroll trang bị nhanh hơn bình thường, xác định xem có liên quan đến thiết lập code web hay hệ thống.
+- **Phân tích kỹ thuật & Nguyên nhân:**
+  1. **Trạng thái Mã Nguồn Web:** Toàn bộ dự án Angular không sử dụng bất kỳ thư viện can thiệp cuộn (Scroll Hijacking / SmoothScroll JS / Lenis) và không can thiệp sự kiện `wheel`/`deltaY`. Trang web hoàn toàn sử dụng 100% Native Scrolling của trình duyệt.
+  2. **Cơ Chế Trackpad vs Chuột Cơ:** Chuột lăn cơ học phát tín hiệu rời rạc theo từng nấc (~100-120px/nấc), trong khi Windows Precision Touchpad / macOS Trackpad phát tín hiệu liên tục dạng pixel kèm **Quán tính động lượng (Inertial Physics)** và **Gia tốc vuốt (Velocity Acceleration)**.
+  3. **Độ Dài Trang Home Cực Lớn:** Trang Home là showcase hơn 25 nhóm component UI với chiều dài DOM lên đến ~15.000px (>3.100 dòng HTML), khiến một cú vuốt có quán tính lướt qua khoảng cách rất dài tạo cảm giác trôi nhanh.
+- **Hướng dẫn & Giải pháp:**
+  - Tinh chỉnh tốc độ cuộn Trackpad trong Windows Settings (`Bluetooth & devices` > `Touchpad` > `Scroll & zoom` > `Scrolling speed`).
+  - Kiểm tra cờ `Smooth Scrolling` trong Chrome/Edge (`chrome://flags/#smooth-scrolling`).
+  - Có thể mở rộng thêm Floating Back-to-Top hoặc thanh điều hướng mục lục nếu muốn tăng tính tiện dụng khi duyệt trang dài.
+
 ### Yêu cầu: Khắc Phục Triệt Để Hiện Tượng Rung Giật Hover & Lỗi Avatar Nổi Đè Lên Sticky Header Khi Cuộn Trang
 - **Nội dung yêu cầu:** Sửa lỗi hover avatar bị giật giật bần bật và khắc phục triệt để tình trạng khi cuộn trang hoặc hover, component avatar (đặc biệt là nút `+3` counter) bị nổi đè lên trên thanh Sticky Header (`Connect Wallet`, selector ngôn ngữ, viền header).
 - **Phân tích kỹ thuật & Nguyên nhân gốc rễ:**

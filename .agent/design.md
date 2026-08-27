@@ -59,6 +59,8 @@ Hệ thống sử dụng cơ chế màu sắc động (Dynamic Theme) cho phép 
   --animate-popover-in: popoverIn 150ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
   --animate-drawer-backdrop-in: drawerFadeIn 250ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
   --animate-drawer-backdrop-out: drawerFadeOut 250ms ease-in forwards;
+  --animate-modal-in: modalZoomIn 200ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-modal-backdrop-in: modalBackdropFadeIn 200ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
   --animate-scale-up: scaleUp 0.15s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   --animate-otp-caret: otp-caret-blink 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   --animate-fade-in: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -242,13 +244,19 @@ Các bề mặt nổi sử dụng các utility toàn cục trong `src/styles.scs
 
 ### 6.2. Backdrop Overlay cho Modal & Drawer
 
-- Màu sắc: `bg-black/40` thống nhất.
-- Không dùng `backdrop-blur-*` trên overlay để tối ưu hiệu năng đồ họa trên mọi thiết bị.
+- **Màu sắc**: `bg-black/40` thống nhất toàn hệ thống.
+- **Hoạt ảnh**: Gán `animate-modal-backdrop-in` (`opacity: 0` $\rightarrow$ `opacity: 1`, `200ms cubic-bezier(0.16, 1, 0.3, 1)`).
+- **Hiệu năng**: Không dùng `backdrop-blur-*` trên overlay toàn màn hình để tối ưu hiệu năng đồ họa trên mọi thiết bị.
 
-### 6.3. Kiến trúc Modal Động & Không Animation Delay
+### 6.3. Kiến Trúc Modal Động & Quy Chuẩn Hoạt Ảnh Zoom In Toàn Cục (Modal Zoom-In Standard)
 
-- Điều khiển qua `ModalService` và `ModalRef`. Không dùng native `alert` / `confirm` của trình duyệt.
-- Loại bỏ animation delay (`fade-in`, `zoom-in-95`...) giúp modal phản hồi bật mở tức thì.
+- **Cơ chế điều khiển**: Điều khiển qua `ModalService` và `ModalRef`. Không dùng native `alert` / `confirm` của trình duyệt.
+- **Quy Chuẩn Hiệu Ứng Zoom In Bắt Buộc**: 100% modal trong hệ thống (bao gồm `ModalComponent`, `ModalWrapperComponent`, `ConfirmModalComponent`, `DeleteConfirmModalComponent`, Preview Modal của `FileUploadComponent`, và mọi dynamic modal mở qua `ModalService.open()`) **bắt buộc** phải áp dụng hiệu ứng **Zoom In** khi hiển thị:
+  - **Khung Dialog (`glass-dialog`)**: Gán class `animate-modal-in` (hoặc alias utility `modal-zoom-in`).
+    - **Keyframe `modalZoomIn`**: Chuyển đổi từ `opacity: 0; transform: scale(0.92);` sang `opacity: 1; transform: scale(1);`.
+    - **Thời lượng & Easing**: `200ms cubic-bezier(0.16, 1, 0.3, 1)` với tâm co giãn `transform-origin: center center`.
+    - **Tối ưu phần cứng**: Khai báo `will-change: transform, opacity`, đảm bảo hoạt ảnh hiển thị tức thì, mượt mà 60-120fps không lag giật.
+  - **Khung Nền Backdrop (Overlay)**: Gán class `animate-modal-backdrop-in` kết hợp `bg-black/40` với hoạt ảnh fade in mượt mà `opacity: 0` $\rightarrow$ `opacity: 1` (`200ms cubic-bezier(0.16, 1, 0.3, 1)`).
 
 ### 6.4. Hệ Thống Nút Bấm Toàn Diện (Button System Token Catalog)
 

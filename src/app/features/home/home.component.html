@@ -2964,34 +2964,39 @@
       </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 pt-6">
-      <app-stat-card
-        [title]="'cards.stat_card.tvl_title' | translate"
-        value="$12,845,920"
-        [subtitle]="'cards.stat_card.tvl_subtitle' | translate"
-        iconName="wallet"
-        changeValue="+14.2%"
-        changeType="increase"
-        iconBgGradient="from-purple-600 to-violet-600"
-      />
-      <app-stat-card
-        [title]="'cards.stat_card.vol_title' | translate"
-        value="$3,412,050"
-        [subtitle]="'cards.stat_card.vol_subtitle' | translate"
-        iconName="trending-up"
-        changeValue="-2.4%"
-        changeType="decrease"
-        iconBgGradient="from-indigo-600 to-blue-600"
-      />
-      <app-stat-card
-        [title]="'cards.stat_card.stakers_title' | translate"
-        value="4,892 Users"
-        [subtitle]="'cards.stat_card.stakers_subtitle' | translate"
-        iconName="user"
-        changeValue="+8.7%"
-        changeType="increase"
-        iconBgGradient="from-emerald-600 to-teal-600"
-      />
+    <div class="@container pt-6">
+      <div
+        class="grid grid-cols-1 @[560px]:grid-cols-2 @[900px]:grid-cols-3 gap-5 sm:gap-6"
+      >
+        <app-stat-card
+          [title]="'cards.stat_card.tvl_title' | translate"
+          value="$12,845,920"
+          [subtitle]="'cards.stat_card.tvl_subtitle' | translate"
+          iconName="wallet"
+          changeValue="+14.2%"
+          changeType="increase"
+          iconBgGradient="from-purple-600 to-violet-600"
+        />
+        <app-stat-card
+          [title]="'cards.stat_card.vol_title' | translate"
+          value="$3,412,050"
+          [subtitle]="'cards.stat_card.vol_subtitle' | translate"
+          iconName="trending-up"
+          changeValue="-2.4%"
+          changeType="decrease"
+          iconBgGradient="from-indigo-600 to-blue-600"
+        />
+        <app-stat-card
+          [title]="'cards.stat_card.stakers_title' | translate"
+          value="4,892 Users"
+          [subtitle]="'cards.stat_card.stakers_subtitle' | translate"
+          iconName="user"
+          changeValue="+8.7%"
+          changeType="increase"
+          iconBgGradient="from-emerald-600 to-teal-600"
+          class="@[560px]:col-span-2 @[900px]:col-span-1"
+        />
+      </div>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-6">

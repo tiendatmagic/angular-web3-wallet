@@ -1,9 +1,9 @@
 <div class="fixed inset-0 z-50 flex items-center justify-center p-4">
-  <div (click)="onBackdropClick()" class="fixed inset-0 bg-black/40"></div>
+  <div (click)="onBackdropClick()" class="fixed inset-0 bg-black/40 animate-modal-backdrop-in"></div>
 
   <div
     [class]="
-      'relative glass-dialog rounded-[15px] border border-slate-200/50 dark:border-slate-800/50 pt-6 pb-5 w-full text-slate-800 dark:text-slate-200 flex flex-col max-h-[90vh] ' +
+      'relative glass-dialog animate-modal-in rounded-[15px] border border-slate-200/50 dark:border-slate-800/50 pt-6 pb-5 w-full text-slate-800 dark:text-slate-200 flex flex-col max-h-[90vh] ' +
       getSizeClass()
     "
   >

@@ -1,10 +1,10 @@
 @if (!isDynamic) {
   @if (isOpen) {
     <div class="fixed inset-0 z-[60] flex items-center justify-center p-4">
-      <div (click)="onCancel()" class="fixed inset-0 bg-black/40"></div>
+      <div (click)="onCancel()" class="fixed inset-0 bg-black/40 animate-modal-backdrop-in"></div>
 
       <div
-        class="relative glass-dialog rounded-[15px] border border-slate-200 dark:border-slate-800 p-6 max-w-sm w-full text-slate-800 dark:text-slate-200 text-center"
+        class="relative glass-dialog animate-modal-in rounded-[15px] border border-slate-200 dark:border-slate-800 p-6 max-w-sm w-full text-slate-800 dark:text-slate-200 text-center"
       >
         <div aria-hidden="true" class="glass-dialog-backdrop"></div>
 

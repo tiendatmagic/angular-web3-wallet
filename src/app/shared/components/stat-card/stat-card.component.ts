@@ -1,4 +1,4 @@
-﻿import { Component, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '../icon/icon.component';
 
@@ -7,7 +7,7 @@ import { IconComponent } from '../icon/icon.component';
   standalone: true,
   imports: [CommonModule, IconComponent],
   templateUrl: './stat-card.component.html',
-  host: { 'class': 'block w-full' },
+  host: { 'class': 'block w-full min-w-0' },
 })
 export class StatCardComponent {
   @Input() title: string = '';
