@@ -225,9 +225,16 @@ export const VI_TRANSLATIONS: TranslationDictionary = {
       token_amount: 'Khối lượng Token gửi (Neutral / No Marks)'
     },
     modal_demo: {
-      title: 'Hệ Thống Hộp Thoại Modal Động',
-      subtitle: 'Mở modal động qua ModalService không bị đè DOM.',
-      open_btn: 'Mở Modal Demo Form'
+      title: 'Hệ Thống Hộp Thoại Modal Động & Xác Nhận Xóa',
+      subtitle: 'Kiến trúc Modal động qua ModalService, Glassmorphism 15px radius, kiểm tra an toàn và kết quả trả về.',
+      open_btn: 'Mở Modal Demo Form',
+      open_delete_btn: 'Mở Modal Xác Nhận Xóa Mẫu',
+      open_form_btn: 'Mở Modal Form Cấu Hình',
+      open_quick_confirm_btn: 'Mở Hộp Thoại Xác Nhận Nhanh',
+      last_result_title: 'Kết quả tương tác Modal gần nhất',
+      no_action_yet: 'Chưa có thao tác nào từ modal',
+      how_to_use_title: 'Mẫu chuẩn code tích hợp Modal (Gold Standard Template)',
+      how_to_use_desc: 'Chỉ cần gọi ModalService để mở modal bất đồng bộ và nhận kết quả sạch sẽ mà không cần can thiệp template HTML cha.'
     },
     date_picker: {
       title: 'Bộ Chọn Ngày & Khoảng Thời Gian',
@@ -569,6 +576,33 @@ export const VI_TRANSLATIONS: TranslationDictionary = {
     cancel: 'Hủy Bỏ',
     confirm: 'Lưu Cấu Hình',
     updated_toast: 'Đã cập nhật cấu hình thành công!'
+  },
+  delete_modal: {
+    default_title: 'Xác Nhận Xóa Bản Ghi',
+    default_subtitle: 'Vui lòng kiểm tra kỹ thông tin trước khi thực hiện thao tác xóa.',
+    default_warning: 'Cảnh báo: Hành động này là vĩnh viễn và không thể khôi phục. Mọi dữ liệu, lịch sử giao dịch và tài nguyên liên quan sẽ bị xóa khỏi hệ thống.',
+    target_item: 'TÀI NGUYÊN SẼ XÓA',
+    confirm_btn: 'Xác Nhận Xóa Vĩnh Viễn',
+    reason_label: 'LÝ DO XÓA DỮ LIỆU',
+    reason_placeholder: '-- Chọn lý do xóa --',
+    reason_no_longer_needed: 'Không còn nhu cầu sử dụng',
+    reason_duplicate: 'Dữ liệu hoặc bản ghi bị trùng lặp',
+    reason_expired: 'Tài nguyên đã hết hạn sử dụng',
+    reason_testing: 'Dữ liệu thử nghiệm (Testing/Sandbox)',
+    reason_other: 'Lý do khác',
+    custom_reason_label: 'GHI CHÚ CHI TIẾT LÝ DO',
+    custom_reason_placeholder: 'Nhập chi tiết lý do muốn xóa...',
+    confirm_keyword_prompt: 'GÕ TỪ KHÓA "{keyword}" ĐỂ XÁC NHẬN',
+    matched: 'Đã khớp chính xác',
+    checkbox_agreement_text: 'Tôi đã hiểu rõ rủi ro và xác nhận xóa vĩnh viễn tài nguyên này',
+    toast_deleted_success: 'Đã xóa bản ghi thành công khỏi hệ thống!',
+    toast_cancelled: 'Đã hủy thao tác xóa.',
+    sample_item_name: 'Bộ sưu tập NFT: Cyber Samurai #9821',
+    sample_item_type: 'ERC-721 Smart Contract',
+    detail_network: 'Mạng lưới',
+    detail_token_id: 'Mã Token / Hash',
+    detail_created_at: 'Thời gian tạo',
+    detail_estimated_gas: 'Phí hủy hợp đồng'
   },
   showcase: {
     wrong_network_title: 'Chuyển Mạng Lưới',

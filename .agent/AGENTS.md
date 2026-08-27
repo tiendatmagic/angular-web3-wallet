@@ -1,3 +1,71 @@
+### Yêu cầu: Xây Dựng Component Demo Modal Mới Chuẩn Mẫu (Modal Xác Nhận Xóa - Delete Confirmation Modal)
+- **Nội dung yêu cầu:** Tạo component modal demo mới (tiêu biểu là Modal Xác Nhận Xóa - `DeleteConfirmModalComponent`) hoàn chỉnh, chuẩn mực để sau này các modal khác và các dự án khác có thể dựa vào đó làm theo chuẩn thống nhất.
+- **Phân tích kỹ thuật & Kiến trúc Giải pháp:**
+  1. **Kiến trúc Modal Động 2 Chiều (Dual Invocation Architecture):**
+     - **Dynamic Injection qua `ModalService`:** Gọi `modalService.deleteConfirm(...)` hoặc `modalService.open(...)` trực tiếp trong controller TypeScript, nhận kết quả bất đồng bộ qua `modalRef.afterClosed$` mà không cần viết boilerplate HTML trong parent template.
+     - **Template Binding qua Selector:** Hỗ trợ dùng trực tiếp thẻ `<app-delete-confirm-modal>` với các `@Input()` và `@Output()`.
+  2. **Tiêu Chuẩn Thiết Kế & Trải Nghiệm Người Dùng (Gold Standard Pattern):**
+     - **Header:** Icon cảnh báo / thùng rác soft badge với hiệu ứng viền hồng đỏ (`bg-rose-500/10 text-rose-500 ring-4 ring-rose-500/5`), tiêu đề và subtitle rõ ràng.
+     - **Target Resource Summary Card:** Bảng tóm tắt thông tin tài nguyên bị xóa (Tên, Mã Token/Hash, Mạng lưới, Loại tài nguyên, Thời gian tạo, Gas fee) hiển thị trong thẻ bo góc tối đa 15px.
+     - **Irreversible Warning Banner:** Banner cảnh báo màu cam/đỏ nổi bật với icon `warning` nhấn mạnh thao tác không thể khôi phục.
+     - **Safety Verification Input:** Ô nhập liệu yêu cầu gõ chính xác từ khóa xác nhận (ví dụ tên item hoặc từ khóa `"CYBER-SAMURAI"` / `"DELETE"`) để kích hoạt nút xóa.
+     - **Reason Selection:** Dropdown chọn lý do xóa dữ liệu kèm ô nhập ghi chú chi tiết khi chọn lý do khác.
+     - **Agreement Checkbox:** Checkbox cam kết hiểu rõ rủi ro trước khi xóa vĩnh viễn.
+     - **Footer Actions:** Nút "Hủy Bỏ" (`variant="cancel"`) và nút "Xác Nhận Xóa" (`variant="danger"`) tích hợp icon SVG, loading spinner và disabled state.
+  3. **Tuân Thủ Tuyệt Đối Design System & Clean Code:**
+     - Sử dụng `:host { display: block; }`.
+     - Tích hợp lớp bề mặt `glass-dialog` và `glass-dialog-backdrop`.
+     - Hiệu ứng nút bấm loại bỏ hoàn toàn `transition-all` và `border-color`.
+     - 100% SVG Icons qua `<app-icon>`, không dùng Raw Emoji.
+     - Không có comment tiếng Việt trong mã nguồn (mã sạch tự giải thích).
+     - Hỗ trợ đầy đủ Đa ngôn ngữ (i18n Tiếng Việt và Tiếng Anh).
+- **Các bước & Vị trí đã thực hiện:**
+  1. **Component Modal Mới (`src/app/features/home/components/delete-confirm-modal/`):**
+     - `delete-confirm-modal.types.ts`: Định nghĩa interfaces `DeleteConfirmItemDetail`, `DeleteConfirmReasonOption`, `DeleteConfirmModalData`, `DeleteConfirmModalResult`.
+     - `delete-confirm-modal.component.html`: Template Glassmorphism responsive cho desktop và mobile.
+     - `delete-confirm-modal.component.ts`: Logic quản trị trạng thái bằng Signals & Computed (`isValid`, `isKeywordMatched`, `isDeleting`).
+     - `delete-confirm-modal.component.spec.ts`: Bộ Unit Test tự động (3/3 tests passed).
+  2. **Nâng Cấp `ModalService` (`src/app/core/services/modal.service.ts`):**
+     - Bổ sung helper method `deleteConfirm(data: DeleteConfirmModalData): ModalRef<DeleteConfirmModalResult>`.
+  3. **Đa Ngôn Ngữ i18n (`src/app/core/i18n/`):**
+     - Cập nhật `i18n.types.ts`, `vi.ts`, `en.ts` với đầy đủ từ điển `delete_modal` và nâng cấp `cards.modal_demo`.
+  4. **Nâng Cấp Showcase Card Trên Dashboard (`src/app/features/home/`):**
+     - `home.component.ts`: Bổ sung các phương thức `openDeleteConfirmModal()`, `openQuickConfirmModal()`, quản lý `lastModalResult` và code snippet `modalStandardCodeSnippet`.
+     - `home.component.html`: Xây dựng Thẻ Showcase Hệ thống Modal hoàn chỉnh gồm 3 nút mở modal (Modal Xóa, Modal Form, Quick Confirm), khối hiển thị kết quả tương tác realtime và code block mẫu chuẩn.
+- **Xác thực:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npm test`: 9/9 tests passed (100%).
+  - `npm run build`: Build production hoàn tất thành công 100%.
+
+### Yêu cầu: Chuẩn Hóa `select-none` Cho Các Interactive Component (Tab Group, Button, Dropdown, DatePicker, Pagination, Switch, ...)
+- **Nội dung yêu cầu:** Đảm bảo tất cả các component tương tác như Tab Group, Button, Dropdown, Custom Select, Date Picker, Pagination, Switch, Stepper, Theme Switcher, v.v. phải có class `select-none` (`user-select: none`) để ngăn chặn việc bôi đen văn bản ngoài ý muốn khi người dùng click nhanh, double-click hoặc chạm vuốt trên thiết bị cảm ứng.
+- **Phân tích kỹ thuật:**
+  1. Khi người dùng bấm nút, chuyển tab, mở dropdown hoặc click chọn ngày/trang liên tục, việc thiếu `user-select: none` sẽ kích hoạt cơ chế chọn văn bản mặc định của trình duyệt, làm bôi xanh text và gây trải nghiệm người dùng kém tự nhiên (không giống native app).
+  2. Việc bổ sung `select-none` ở tầng CSS base (`button`, `[role='button']`), hệ thống utility class (`.btn`, `.btn-*`, `@utility tab-group`, `@utility tab-item`, `@utility dropdown-menu-popover`, `@utility date-picker-popover`, `@utility date-time-range-popover`) và trong template của các component tương tác đảm bảo trải nghiệm đồng bộ và mượt mà trên toàn hệ thống.
+- **Các bước & Vị trí đã thực hiện:**
+  1. **Hệ Thống Utility & Base Styles (`src/styles.scss`):**
+     - Base `button, [role='button']`: Thêm `@apply select-none;`.
+     - Button utilities: `.btn`, `.btn-primary`, `.btn-secondary`, `.btn-danger`, `.btn-danger-light`, `.btn-cancel`, `.btn-ghost`, `.btn-success`, `.btn-info`, `.btn-reload`, `.btn-outline`, `.btn-close`, `.btn-close-sm` ➡️ Bổ sung `select-none`.
+     - Tab Utilities: `@utility tab-group` và `@utility tab-item` ➡️ Bổ sung `select-none`.
+     - Popover Utilities: `@utility dropdown-menu-popover`, `@utility date-picker-popover`, `@utility date-time-range-popover` ➡️ Bổ sung `user-select: none;`.
+  2. **Các Component Tương Tác:**
+     - `TabGroupComponent`: Bổ sung `select-none` vào container `#containerEl`, các nút `tab-item`, nhãn `opt.label`, và badge.
+     - `DropdownMenuComponent`: Bổ sung `select-none` vào trigger container, `#popoverEl`, header, submenu button, checkbox button, radio button, action button, `#submenuEl` và các submenu child buttons.
+     - `CustomSelectComponent`: Bổ sung `select-none` vào wrapper container, trigger button, dropdown popover, nhãn option và các item button.
+     - `AccountDropdownComponent`: Bổ sung `select-none` vào popover container, header details, địa chỉ, số dư và tất cả action buttons.
+     - `NetworkSelectorComponent`: Bổ sung `select-none` vào trigger button, popover container và danh sách chain item buttons.
+     - `LanguageSelectorComponent`: Bổ sung `select-none` vào trigger buttons (compact & full), popover container và danh sách language item buttons.
+     - `CustomDatePickerComponent` & `CustomDateTimeRangeComponent`: Bổ sung `select-none` vào trigger div, popover panel, preset buttons, nút prev/next tháng, tiêu đề tháng/năm, weekday header, calendar day buttons và time controls/done buttons.
+     - `PaginationComponent`: Bổ sung `select-none` vào pagination container, nút prev/next, các nút số trang và dấu `...`.
+     - `CustomSwitchComponent`: Bổ sung `select-none` vào full-layout container, label và description.
+     - `StepperComponent`: Bổ sung `select-none` vào stepper wrapper container và các nhãn bước.
+     - `ThemeSwitcherComponent`: Bổ sung `select-none` vào switcher container, pill indicator và các nút chọn chế độ (light/auto/dark).
+     - `TxSpeedSelectorComponent`: Bổ sung `select-none` vào container, label, speed options và custom multiplier controls.
+- **Xác thực:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npm test`: 6/6 tests passed (100%).
+  - `npm run build`: Build production hoàn tất thành công.
+
 ### Yêu cầu: Tối Ưu Hóa Responsive Cho Màn Hình Siêu Nhỏ (320px & Dưới 260px) Ở Component Voice Chat
 - **Nội dung yêu cầu:** Tối ưu hóa triệt để component Voice Chat (`VoiceChatComponent`) trên các màn hình siêu nhỏ (320px viewport, container khả dụng từ 200px - 250px) để không bị cắt xén bất kỳ avatar hay nhãn tên nào (như Albert, Ben ở cột thứ 3).
 - **Phân tích nguyên nhân gốc rễ kỹ thuật:**

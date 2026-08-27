@@ -312,6 +312,74 @@ export class HomeComponent {
     }
   }
 
+  public readonly lastModalResult = signal<{
+    type: 'delete_confirm' | 'form_modal' | 'quick_confirm';
+    status: 'confirmed' | 'cancelled';
+    data?: any;
+    timestamp: string;
+  } | null>(null);
+
+  public readonly modalStandardCodeSnippet = `// 1. Mở Modal Xác Nhận Xóa chuẩn mẫu:
+const modalRef = this.modalService.deleteConfirm({
+  title: 'Xác Nhận Xóa Bản Ghi',
+  itemName: 'Cyber Samurai #9821',
+  itemType: 'ERC-721 Token',
+  itemDetails: [
+    { label: 'Mạng lưới', value: 'Arbitrum One', isBadge: true },
+    { label: 'Mã Hash', value: '0x71C7...9821', isMono: true }
+  ],
+  requireConfirmationText: true,
+  confirmationKeyword: 'CYBER-SAMURAI',
+  requireReason: true,
+  requireCheckboxAgreement: true
+});
+
+// 2. Lắng nghe kết quả trả về bất đồng bộ:
+modalRef.afterClosed$.subscribe(result => {
+  if (result?.confirmed) {
+    console.log('Đã xóa thành công với lý do:', result.reason);
+  }
+});`;
+
+  public openDeleteConfirmModal(): void {
+    const ref = this.modalService.deleteConfirm({
+      title: this.translationService.t('delete_modal.default_title'),
+      subtitle: this.translationService.t('delete_modal.default_subtitle'),
+      itemName: this.translationService.t('delete_modal.sample_item_name'),
+      itemType: this.translationService.t('delete_modal.sample_item_type'),
+      itemDetails: [
+        { label: this.translationService.t('delete_modal.detail_network'), value: 'Arbitrum One', isBadge: true, badgeVariant: 'primary' },
+        { label: this.translationService.t('delete_modal.detail_token_id'), value: '0x71C7...9821', isMono: true },
+        { label: this.translationService.t('delete_modal.detail_created_at'), value: '2026-08-15 14:20' },
+        { label: this.translationService.t('delete_modal.detail_estimated_gas'), value: '0.00042 ETH ($1.25)', isMono: true }
+      ],
+      warningMessage: this.translationService.t('delete_modal.default_warning'),
+      requireConfirmationText: true,
+      confirmationKeyword: 'CYBER-SAMURAI',
+      requireReason: true,
+      requireCheckboxAgreement: true
+    });
+
+    ref.afterClosed$.subscribe(result => {
+      if (result && result.confirmed) {
+        this.lastModalResult.set({
+          type: 'delete_confirm',
+          status: 'confirmed',
+          data: result,
+          timestamp: new Date().toLocaleTimeString()
+        });
+        this.stateService.showToast(this.translationService.t('delete_modal.toast_deleted_success'), 'success');
+      } else {
+        this.lastModalResult.set({
+          type: 'delete_confirm',
+          status: 'cancelled',
+          timestamp: new Date().toLocaleTimeString()
+        });
+        this.stateService.showToast(this.translationService.t('delete_modal.toast_cancelled'), 'warning');
+      }
+    });
+  }
+
   public openDemoModal(): void {
     const ref = this.modalService.open(DemoModalComponent, {
       title: this.translationService.t('showcase.demo_form_components'),
@@ -321,6 +389,12 @@ export class HomeComponent {
 
     ref.afterClosed$.subscribe(result => {
       if (result) {
+        this.lastModalResult.set({
+          type: 'form_modal',
+          status: 'confirmed',
+          data: result,
+          timestamp: new Date().toLocaleTimeString()
+        });
         this.stateService.showToast(
           this.translationService.t('showcase.modal_result', {
             date: result.date || this.translationService.t('showcase.not_selected'),
@@ -328,6 +402,39 @@ export class HomeComponent {
           }),
           'success'
         );
+      } else {
+        this.lastModalResult.set({
+          type: 'form_modal',
+          status: 'cancelled',
+          timestamp: new Date().toLocaleTimeString()
+        });
+      }
+    });
+  }
+
+  public openQuickConfirmModal(): void {
+    const ref = this.modalService.confirm({
+      title: this.translationService.t('showcase.confirm_action'),
+      description: this.translationService.t('showcase.confirm_modal_desc'),
+      confirmText: this.translationService.t('common.confirm'),
+      cancelText: this.translationService.t('common.cancel'),
+      confirmButtonClass: 'btn-danger'
+    });
+
+    ref.afterClosed$.subscribe(confirmed => {
+      if (confirmed) {
+        this.lastModalResult.set({
+          type: 'quick_confirm',
+          status: 'confirmed',
+          timestamp: new Date().toLocaleTimeString()
+        });
+        this.stateService.showToast(this.translationService.t('common.confirmed'), 'success');
+      } else {
+        this.lastModalResult.set({
+          type: 'quick_confirm',
+          status: 'cancelled',
+          timestamp: new Date().toLocaleTimeString()
+        });
       }
     });
   }

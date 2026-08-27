@@ -1,15 +1,15 @@
-<div class="w-full">
+<div class="w-full select-none">
   <div
     #triggerDiv
     (click)="toggleOpen()"
-    class="form-input flex items-center justify-between !py-0 cursor-pointer"
+    class="form-input flex items-center justify-between !py-0 cursor-pointer select-none"
     [class.opacity-50]="disabled"
     [class.pointer-events-none]="disabled"
     [class.border-[var(--color-primary)]]="isOpen()"
     [class.ring-1]="isOpen()"
     [class.ring-[var(--color-primary)]/20]="isOpen()"
   >
-    <span [class.text-slate-400]="!value()" class="truncate">
+    <span [class.text-slate-400]="!value()" class="truncate select-none">
       {{ value() ? displayValue() : placeholder || lang.translate('date.select') }}
     </span>
     <app-icon name="calendar" class="w-4 h-4 text-slate-400 dark:text-slate-500 shrink-0 ml-2" />
@@ -18,18 +18,18 @@
   @if (isOpen()) {
     <div
       [ngStyle]="popoverStyle"
-      class="date-picker-popover dropdown-menu-popover glass-popover border border-slate-200/80 dark:border-slate-800/80 rounded-[15px] p-4 flex flex-col gap-4"
+      class="date-picker-popover dropdown-menu-popover glass-popover border border-slate-200/80 dark:border-slate-800/80 rounded-[15px] p-4 flex flex-col gap-4 select-none"
       (click)="$event.stopPropagation()"
     >
       @if (showPresets) {
         <div
-          class="grid grid-cols-3 gap-2 pb-3.5 border-b border-slate-100 dark:border-slate-800/60"
+          class="grid grid-cols-3 gap-2 pb-3.5 border-b border-slate-100 dark:border-slate-800/60 select-none"
         >
           @for (p of presets; track p.days) {
             <button
               type="button"
               (click)="selectPreset(p.days, $event)"
-              class="text-xs font-semibold px-2 py-1.5 rounded-[12px] transition-[transform,scale,background-color,color,box-shadow] duration-150 cursor-pointer border text-center flex items-center justify-center whitespace-nowrap"
+              class="text-xs font-semibold px-2 py-1.5 rounded-[12px] transition-[transform,scale,background-color,color,box-shadow] duration-150 cursor-pointer border text-center flex items-center justify-center whitespace-nowrap select-none"
               [class.bg-[var(--color-primary)]]="selectedPresetDays() === p.days"
               [class.border-transparent]="selectedPresetDays() === p.days"
               [class.text-white]="selectedPresetDays() === p.days"
@@ -52,43 +52,43 @@
         </div>
       }
 
-      <div class="flex flex-col">
-        <div class="flex items-center justify-between mb-4">
+      <div class="flex flex-col select-none">
+        <div class="flex items-center justify-between mb-4 select-none">
           <button
             type="button"
             (click)="prevMonth($event)"
-            class="w-7 h-7 flex items-center justify-center shrink-0 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-500 hover:text-[var(--color-primary)] active:scale-90 transition-[transform,scale,background-color,color] duration-150 cursor-pointer"
+            class="w-7 h-7 flex items-center justify-center shrink-0 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-500 hover:text-[var(--color-primary)] active:scale-90 transition-[transform,scale,background-color,color] duration-150 cursor-pointer select-none"
           >
             <app-icon name="chevron-left" class="w-4 h-4 shrink-0" />
           </button>
-          <span class="text-sm font-extrabold text-slate-800 dark:text-slate-200 tracking-wide">
+          <span class="text-sm font-extrabold text-slate-800 dark:text-slate-200 tracking-wide select-none">
             {{ currentMonthName() }}, {{ currentYear() }}
           </span>
           <button
             type="button"
             (click)="nextMonth($event)"
-            class="w-7 h-7 flex items-center justify-center shrink-0 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-500 hover:text-[var(--color-primary)] active:scale-90 transition-[transform,scale,background-color,color] duration-150 cursor-pointer"
+            class="w-7 h-7 flex items-center justify-center shrink-0 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-500 hover:text-[var(--color-primary)] active:scale-90 transition-[transform,scale,background-color,color] duration-150 cursor-pointer select-none"
           >
             <app-icon name="chevron-right" class="w-4 h-4 shrink-0" />
           </button>
         </div>
 
-        <div class="grid grid-cols-7 gap-0.5 text-center mb-2">
+        <div class="grid grid-cols-7 gap-0.5 text-center mb-2 select-none">
           @for (day of weekdays; track day) {
-            <span class="text-xs font-bold text-[var(--color-primary)]/70 py-1">
+            <span class="text-xs font-bold text-[var(--color-primary)]/70 py-1 select-none">
               {{ day }}
             </span>
           }
         </div>
 
-        <div class="grid grid-cols-7 gap-0.5">
+        <div class="grid grid-cols-7 gap-0.5 select-none">
           @for (day of calendarDays(); track day.getTime()) {
-            <div class="relative w-full aspect-square flex items-center justify-center">
+            <div class="relative w-full aspect-square flex items-center justify-center select-none">
               <button
                 type="button"
                 (click)="selectDate(day, $event)"
                 [disabled]="isDateDisabled(day)"
-                class="relative z-10 w-full h-full flex items-center justify-center text-sm font-bold rounded-full transition-[transform,scale,background-color,color,box-shadow] duration-150"
+                class="relative z-10 w-full h-full flex items-center justify-center text-sm font-bold rounded-full transition-[transform,scale,background-color,color,box-shadow] duration-150 select-none"
                 [class.text-slate-300]="
                   !isCurrentMonth(day) && !isSelected(day) && !isDateDisabled(day)
                 "
@@ -122,20 +122,20 @@
 
       @if (enableTime) {
         <div
-          class="pt-3.5 border-t border-slate-100 dark:border-slate-800/60 flex items-center justify-between gap-2"
+          class="pt-3.5 border-t border-slate-100 dark:border-slate-800/60 flex items-center justify-between gap-2 select-none"
         >
           <div
-            class="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 font-bold"
+            class="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 font-bold select-none"
           >
             <app-icon name="clock" class="w-3.5 h-3.5 text-[var(--color-primary)] shrink-0" />
-            <span>{{ 'date.hour' | translate }}:</span>
+            <span class="select-none">{{ 'date.hour' | translate }}:</span>
             <div
-              class="flex items-center gap-1 bg-slate-100 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700/60 rounded-lg px-2 py-1"
+              class="flex items-center gap-1 bg-slate-100 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700/60 rounded-lg px-2 py-1 select-none"
             >
               <select
                 [ngModel]="selectedHour()"
                 (ngModelChange)="onHourChange($event)"
-                class="bg-transparent text-xs font-black text-slate-800 dark:text-slate-200 outline-none cursor-pointer"
+                class="bg-transparent text-xs font-black text-slate-800 dark:text-slate-200 outline-none cursor-pointer select-none"
               >
                 @for (h of hours; track h) {
                   <option
@@ -146,11 +146,11 @@
                   </option>
                 }
               </select>
-              <span class="font-black text-slate-400 dark:text-slate-500">:</span>
+              <span class="font-black text-slate-400 dark:text-slate-500 select-none">:</span>
               <select
                 [ngModel]="selectedMinute()"
                 (ngModelChange)="onMinuteChange($event)"
-                class="bg-transparent text-xs font-black text-slate-800 dark:text-slate-200 outline-none cursor-pointer"
+                class="bg-transparent text-xs font-black text-slate-800 dark:text-slate-200 outline-none cursor-pointer select-none"
               >
                 @for (m of minutes; track m) {
                   <option
@@ -166,7 +166,7 @@
           <button
             type="button"
             (click)="confirmSelection($event)"
-            class="min-w-[76px] px-3 py-1.5 text-xs font-extrabold text-white bg-[var(--color-primary)] rounded-lg hover:opacity-90 active:scale-95 transition-[transform,scale,opacity,box-shadow] duration-150 cursor-pointer shadow-sm shadow-[var(--color-primary)]/20 flex items-center justify-center text-center"
+            class="min-w-[76px] px-3 py-1.5 text-xs font-extrabold text-white bg-[var(--color-primary)] rounded-lg hover:opacity-90 active:scale-95 transition-[transform,scale,opacity,box-shadow] duration-150 cursor-pointer shadow-sm shadow-[var(--color-primary)]/20 flex items-center justify-center text-center select-none"
           >
             {{ 'action.done' | translate }}
           </button>

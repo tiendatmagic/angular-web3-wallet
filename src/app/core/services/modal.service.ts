@@ -4,10 +4,16 @@ import {
   ComponentRef,
   createComponent,
   Type,
-  Injector} from '@angular/core';
+  Injector
+} from '@angular/core';
 import { ModalRef, MODAL_DATA, ModalConfig, ConfirmConfig } from './modal-ref';
 import { ModalWrapperComponent } from '@shared/components/modal/modal-wrapper.component';
 import { ConfirmModalComponent } from '@shared/components/confirm-modal/confirm-modal.component';
+import { DeleteConfirmModalComponent } from '@features/home/components/delete-confirm-modal/delete-confirm-modal.component';
+import {
+  DeleteConfirmModalData,
+  DeleteConfirmModalResult
+} from '@features/home/components/delete-confirm-modal/delete-confirm-modal.types';
 import { TranslationService } from './translation.service';
 
 @Injectable({
@@ -67,6 +73,16 @@ export class ModalService {
       closeOnBackdropClick: false,
       showHeader: false,
       data: config
+    });
+  }
+
+  deleteConfirm(data: DeleteConfirmModalData): ModalRef<DeleteConfirmModalResult> {
+    return this.open(DeleteConfirmModalComponent, {
+      title: data.title || this.translationService.t('delete_modal.default_title'),
+      size: 'md',
+      closeOnBackdropClick: false,
+      showHeader: false,
+      data
     });
   }
 }

@@ -3,16 +3,16 @@
     <button
       type="button"
       (click)="toggleDropdown($event)"
-      class="h-9 min-[360px]:h-10 px-2 min-[360px]:px-3 rounded-xl bg-slate-100/80 dark:bg-slate-900/80 hover:bg-slate-200/80 dark:hover:bg-slate-800/80 border border-slate-200/50 dark:border-slate-800/50 text-slate-700 dark:text-slate-200 text-xs font-bold transition-[transform,scale,background-color,color,box-shadow] duration-200 flex items-center gap-1 min-[360px]:gap-2 cursor-pointer shadow-xs active:scale-95 shrink-0"
+      class="h-9 min-[360px]:h-10 px-2 min-[360px]:px-3 rounded-xl bg-slate-100/80 dark:bg-slate-900/80 hover:bg-slate-200/80 dark:hover:bg-slate-800/80 border border-slate-200/50 dark:border-slate-800/50 text-slate-700 dark:text-slate-200 text-xs font-bold transition-[transform,scale,background-color,color,box-shadow] duration-200 flex items-center gap-1 min-[360px]:gap-2 cursor-pointer shadow-xs active:scale-95 shrink-0 select-none"
       [attr.aria-expanded]="isOpen()"
       [title]="'language.select_language' | translate"
     >
       <app-icon
         [name]="translationService.getCurrentLanguageOption().flagIcon"
         viewBox="0 0 640 480"
-        class="w-4.5 h-3 sm:w-5 sm:h-3.5 rounded-xs overflow-hidden shrink-0 shadow-xs border border-slate-200/50 dark:border-slate-700/50"
+        class="w-4.5 h-3 sm:w-5 sm:h-3.5 rounded-xs overflow-hidden shrink-0 shadow-xs border border-slate-200/50 dark:border-slate-700/50 select-none"
       />
-      <span class="font-extrabold uppercase text-[10px] sm:text-[11px] tracking-wider">
+      <span class="font-extrabold uppercase text-[10px] sm:text-[11px] tracking-wider select-none">
         {{ translationService.currentLang() }}
       </span>
       <span class="!hidden sm:!inline-flex items-center shrink-0">
@@ -28,16 +28,16 @@
     <button
       type="button"
       (click)="toggleDropdown($event)"
-      class="w-full px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-900/80 hover:bg-slate-100 dark:hover:bg-slate-800/80 border border-slate-200/60 dark:border-slate-800/60 text-slate-800 dark:text-slate-200 text-sm font-semibold transition-[transform,scale,background-color,color,box-shadow] duration-200 flex items-center justify-between cursor-pointer active:scale-[0.99]"
+      class="w-full px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-900/80 hover:bg-slate-100 dark:hover:bg-slate-800/80 border border-slate-200/60 dark:border-slate-800/60 text-slate-800 dark:text-slate-200 text-sm font-semibold transition-[transform,scale,background-color,color,box-shadow] duration-200 flex items-center justify-between cursor-pointer active:scale-[0.99] select-none"
       [attr.aria-expanded]="isOpen()"
     >
       <div class="flex items-center gap-3">
         <app-icon
           [name]="translationService.getCurrentLanguageOption().flagIcon"
           viewBox="0 0 640 480"
-          class="w-6 h-4 rounded-xs overflow-hidden shrink-0 shadow-xs border border-slate-200/50 dark:border-slate-700/50"
+          class="w-6 h-4 rounded-xs overflow-hidden shrink-0 shadow-xs border border-slate-200/50 dark:border-slate-700/50 select-none"
         />
-        <span class="font-bold text-slate-800 dark:text-slate-100">
+        <span class="font-bold text-slate-800 dark:text-slate-100 select-none">
           {{ translationService.getCurrentLanguageOption().nativeName }}
         </span>
       </div>
@@ -59,7 +59,7 @@
         'bottom-full mb-2': direction === 'up',
         'top-full mt-2': direction === 'down' && variant === 'full',
       }"
-      class="dropdown-menu-popover glass-popover border border-slate-200/80 dark:border-slate-800/80 rounded-[15px] p-2 text-slate-800 dark:text-slate-100 focus:outline-none z-[250]"
+      class="dropdown-menu-popover glass-popover border border-slate-200/80 dark:border-slate-800/80 rounded-[15px] p-2 text-slate-800 dark:text-slate-100 focus:outline-none z-[250] select-none"
     >
       <div
         class="px-3 py-2 text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 select-none"
@@ -67,12 +67,12 @@
         {{ 'language.select_language' | translate }}
       </div>
 
-      <div class="space-y-0.5">
+      <div class="space-y-0.5 select-none">
         @for (opt of translationService.availableLanguages; track opt.code) {
           <button
             type="button"
             (click)="selectLanguage(opt.code, $event)"
-            class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-colors text-left cursor-pointer"
+            class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-colors text-left cursor-pointer select-none"
             [ngClass]="{
               'bg-purple-50 dark:bg-purple-950/40 text-purple-600 dark:text-purple-300 font-bold':
                 translationService.currentLang() === opt.code,
@@ -84,9 +84,9 @@
               <app-icon
                 [name]="opt.flagIcon"
                 viewBox="0 0 640 480"
-                class="w-5 h-3.5 rounded-xs overflow-hidden shrink-0 shadow-xs border border-slate-200/50 dark:border-slate-700/50"
+                class="w-5 h-3.5 rounded-xs overflow-hidden shrink-0 shadow-xs border border-slate-200/50 dark:border-slate-700/50 select-none"
               />
-              <span class="truncate">
+              <span class="truncate select-none">
                 {{ opt.nativeName }}
               </span>
             </div>

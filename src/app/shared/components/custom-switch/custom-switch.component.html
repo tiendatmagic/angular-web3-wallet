@@ -1,14 +1,14 @@
 @if (type === 'full') {
   <div
-    class="flex items-center justify-between p-4 bg-slate-100 dark:bg-slate-950/60 rounded-xl border border-slate-200/50 dark:border-slate-800/80 w-full"
+    class="flex items-center justify-between p-4 bg-slate-100 dark:bg-slate-950/60 rounded-xl border border-slate-200/50 dark:border-slate-800/80 w-full select-none"
     [class.opacity-50]="disabled"
   >
-    <div class="space-y-0.5 pr-4 min-w-0 flex-1">
+    <div class="space-y-0.5 pr-4 min-w-0 flex-1 select-none">
       @if (label) {
-        <span class="text-xs font-bold text-slate-800 dark:text-white block">{{ label }}</span>
+        <span class="text-xs font-bold text-slate-800 dark:text-white block select-none">{{ label }}</span>
       }
       @if (description) {
-        <span class="text-xs text-slate-400 font-semibold block leading-tight">
+        <span class="text-xs text-slate-400 font-semibold block leading-tight select-none">
           {{ description }}
         </span>
       }

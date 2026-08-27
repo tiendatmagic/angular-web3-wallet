@@ -2494,11 +2494,159 @@
       </div>
     </div>
 
-    <div class="flex items-center justify-center pt-6">
-      <button app-button variant="primary" size="md" (click)="openDemoModal()">
-        <app-icon name="bolt-solid" class="w-4 h-4" />
-        {{ 'cards.modal_demo.open_btn' | translate }}
-      </button>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-6">
+      <div app-card class="lg:col-span-2 space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 dark:border-slate-800/60 pb-4">
+          <div>
+            <h4
+              class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 flex items-center gap-2"
+            >
+              <app-icon name="sparkles" class="w-3.5 h-3.5 text-primary" />
+              {{ 'cards.modal_demo.title' | translate }}
+            </h4>
+            <p class="text-xs text-slate-400 dark:text-slate-500">
+              {{ 'cards.modal_demo.subtitle' | translate }}
+            </p>
+          </div>
+          <div class="flex items-center gap-2">
+            <app-badge variant="primary">ModalService</app-badge>
+            <app-badge variant="secondary">Glassmorphism</app-badge>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="p-4 rounded-xl bg-slate-100/60 dark:bg-slate-950/40 border border-slate-200/50 dark:border-slate-800/50 flex flex-col justify-between space-y-4">
+            <div class="space-y-1.5">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+                <h5 class="text-sm font-black text-slate-800 dark:text-slate-100">
+                  {{ 'cards.modal_demo.open_delete_btn' | translate }}
+                </h5>
+              </div>
+              <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-semibold">
+                {{ 'delete_modal.default_subtitle' | translate }}
+              </p>
+            </div>
+            <button
+              app-button
+              variant="danger"
+              size="md"
+              (click)="openDeleteConfirmModal()"
+              class="w-full shadow-md shadow-rose-500/10"
+            >
+              <app-icon name="trash" class="w-4 h-4" strokeWidth="2" />
+              <span>{{ 'cards.modal_demo.open_delete_btn' | translate }}</span>
+            </button>
+          </div>
+
+          <div class="p-4 rounded-xl bg-slate-100/60 dark:bg-slate-950/40 border border-slate-200/50 dark:border-slate-800/50 flex flex-col justify-between space-y-4">
+            <div class="space-y-1.5">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+                <h5 class="text-sm font-black text-slate-800 dark:text-slate-100">
+                  {{ 'cards.modal_demo.open_form_btn' | translate }}
+                </h5>
+              </div>
+              <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-semibold">
+                {{ 'modal_demo.desc' | translate }}
+              </p>
+            </div>
+            <button
+              app-button
+              variant="primary"
+              size="md"
+              (click)="openDemoModal()"
+              class="w-full shadow-md"
+            >
+              <app-icon name="bolt-solid" class="w-4 h-4" />
+              <span>{{ 'cards.modal_demo.open_form_btn' | translate }}</span>
+            </button>
+          </div>
+
+          <div class="p-4 rounded-xl bg-slate-100/60 dark:bg-slate-950/40 border border-slate-200/50 dark:border-slate-800/50 flex flex-col justify-between space-y-4">
+            <div class="space-y-1.5">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                <h5 class="text-sm font-black text-slate-800 dark:text-slate-100">
+                  {{ 'cards.modal_demo.open_quick_confirm_btn' | translate }}
+                </h5>
+              </div>
+              <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-semibold">
+                {{ 'showcase.confirm_modal_desc' | translate }}
+              </p>
+            </div>
+            <button
+              app-button
+              variant="cancel"
+              size="md"
+              (click)="openQuickConfirmModal()"
+              class="w-full"
+            >
+              <app-icon name="warning" class="w-4 h-4 text-amber-500" strokeWidth="2.2" />
+              <span>{{ 'cards.modal_demo.open_quick_confirm_btn' | translate }}</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="p-4 rounded-xl bg-slate-100/50 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 space-y-3">
+            <div class="flex items-center justify-between">
+              <h5 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest flex items-center gap-1.5">
+                <app-icon name="check-circle" class="w-3.5 h-3.5 text-primary" />
+                {{ 'cards.modal_demo.last_result_title' | translate }}
+              </h5>
+              @if (lastModalResult()) {
+                <app-badge [variant]="lastModalResult()?.status === 'confirmed' ? 'success' : 'secondary'">
+                  {{ lastModalResult()?.status | uppercase }} • {{ lastModalResult()?.timestamp }}
+                </app-badge>
+              }
+            </div>
+
+            @if (lastModalResult()) {
+              <div class="space-y-2 text-xs font-mono bg-white/70 dark:bg-slate-900/70 p-3 rounded-lg border border-slate-200/50 dark:border-slate-800/50 text-slate-700 dark:text-slate-300">
+                <div class="flex justify-between">
+                  <span class="text-slate-400 font-bold">Modal Type:</span>
+                  <span class="font-bold text-primary">{{ lastModalResult()?.type }}</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-slate-400 font-bold">Status:</span>
+                  <span [class]="lastModalResult()?.status === 'confirmed' ? 'text-emerald-500 font-bold' : 'text-slate-400 font-bold'">
+                    {{ lastModalResult()?.status }}
+                  </span>
+                </div>
+                @if (lastModalResult()?.data) {
+                  <div class="pt-2 border-t border-slate-200/40 dark:border-slate-800/40">
+                    <span class="text-slate-400 font-bold block mb-1">Payload:</span>
+                    <pre class="text-[11px] overflow-x-auto p-2 bg-slate-100 dark:bg-slate-950 rounded">{{ lastModalResult()?.data | json }}</pre>
+                  </div>
+                }
+              </div>
+            } @else {
+              <div class="py-6 text-center text-xs font-semibold text-slate-400 dark:text-slate-500">
+                {{ 'cards.modal_demo.no_action_yet' | translate }}
+              </div>
+            }
+          </div>
+
+          <div class="space-y-3">
+            <div class="space-y-1">
+              <h5 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest flex items-center gap-1.5">
+                <app-icon name="code" class="w-3.5 h-3.5 text-primary" />
+                {{ 'cards.modal_demo.how_to_use_title' | translate }}
+              </h5>
+              <p class="text-xs text-slate-500 dark:text-slate-400 font-semibold">
+                {{ 'cards.modal_demo.how_to_use_desc' | translate }}
+              </p>
+            </div>
+            <app-code-block
+              [code]="modalStandardCodeSnippet"
+              language="typescript"
+              fileName="delete-modal-usage.ts"
+              [collapsible]="true"
+            />
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">

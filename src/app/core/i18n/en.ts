@@ -225,9 +225,16 @@ export const EN_TRANSLATIONS: TranslationDictionary = {
       token_amount: 'Token Transfer Volume (Neutral / No Marks)'
     },
     modal_demo: {
-      title: 'Dynamic Modal Dialog System',
-      subtitle: 'Open dynamic modals via ModalService without template cluttering.',
-      open_btn: 'Open Demo Form Modal'
+      title: 'Dynamic Modal System & Delete Confirmation',
+      subtitle: 'Dynamic Modal architecture via ModalService, Glassmorphism 15px radius, safety verification and clean return payload.',
+      open_btn: 'Open Demo Form Modal',
+      open_delete_btn: 'Open Delete Confirmation Modal',
+      open_form_btn: 'Open Config Form Modal',
+      open_quick_confirm_btn: 'Open Quick Confirm Dialog',
+      last_result_title: 'Latest Modal Interaction Result',
+      no_action_yet: 'No modal action performed yet',
+      how_to_use_title: 'Modal Integration Standard Pattern (Gold Standard Template)',
+      how_to_use_desc: 'Easily invoke ModalService to open asynchronous modals and receive clean results without touching parent templates.'
     },
     date_picker: {
       title: 'Date & Range Pickers',
@@ -569,6 +576,33 @@ export const EN_TRANSLATIONS: TranslationDictionary = {
     cancel: 'Cancel',
     confirm: 'Save Settings',
     updated_toast: 'Settings updated successfully!'
+  },
+  delete_modal: {
+    default_title: 'Confirm Resource Deletion',
+    default_subtitle: 'Please review the item details carefully before performing this action.',
+    default_warning: 'Warning: This action is permanent and irreversible. All associated data, transaction history, and resources will be permanently removed.',
+    target_item: 'TARGET RESOURCE',
+    confirm_btn: 'Confirm Permanent Deletion',
+    reason_label: 'DELETION REASON',
+    reason_placeholder: '-- Select reason --',
+    reason_no_longer_needed: 'No longer needed',
+    reason_duplicate: 'Duplicate record / data',
+    reason_expired: 'Resource has expired',
+    reason_testing: 'Test / Sandbox data',
+    reason_other: 'Other reason',
+    custom_reason_label: 'DETAILED REASON NOTE',
+    custom_reason_placeholder: 'Enter details for deletion...',
+    confirm_keyword_prompt: 'TYPE "{keyword}" TO CONFIRM',
+    matched: 'Exact match verified',
+    checkbox_agreement_text: 'I understand the risks and confirm permanent deletion of this resource',
+    toast_deleted_success: 'Resource deleted successfully!',
+    toast_cancelled: 'Deletion operation cancelled.',
+    sample_item_name: 'NFT Collection: Cyber Samurai #9821',
+    sample_item_type: 'ERC-721 Smart Contract',
+    detail_network: 'Network',
+    detail_token_id: 'Token ID / Hash',
+    detail_created_at: 'Created At',
+    detail_estimated_gas: 'Burn Gas Fee'
   },
   showcase: {
     wrong_network_title: 'Switch Network',

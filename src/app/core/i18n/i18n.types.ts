@@ -235,6 +235,13 @@ export interface TranslationDictionary {
       title: string;
       subtitle: string;
       open_btn: string;
+      open_delete_btn: string;
+      open_form_btn: string;
+      open_quick_confirm_btn: string;
+      last_result_title: string;
+      no_action_yet: string;
+      how_to_use_title: string;
+      how_to_use_desc: string;
     };
     date_picker: {
       title: string;
@@ -576,6 +583,33 @@ export interface TranslationDictionary {
     cancel: string;
     confirm: string;
     updated_toast: string;
+  };
+  delete_modal: {
+    default_title: string;
+    default_subtitle: string;
+    default_warning: string;
+    target_item: string;
+    confirm_btn: string;
+    reason_label: string;
+    reason_placeholder: string;
+    reason_no_longer_needed: string;
+    reason_duplicate: string;
+    reason_expired: string;
+    reason_testing: string;
+    reason_other: string;
+    custom_reason_label: string;
+    custom_reason_placeholder: string;
+    confirm_keyword_prompt: string;
+    matched: string;
+    checkbox_agreement_text: string;
+    toast_deleted_success: string;
+    toast_cancelled: string;
+    sample_item_name: string;
+    sample_item_type: string;
+    detail_network: string;
+    detail_token_id: string;
+    detail_created_at: string;
+    detail_estimated_gas: string;
   };
   showcase: {
     wrong_network_title: string;
