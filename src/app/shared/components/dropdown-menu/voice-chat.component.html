@@ -6,12 +6,10 @@
   [style.height.px]="isExpanded() ? expandedHeight() : 58"
   [style.borderRadius.px]="isExpanded() ? 15 : 999"
 >
-  <!-- Collapsed UI Elements -->
   <div
     class="absolute inset-0 flex items-center justify-between px-2.5 sm:px-3 transition-[opacity,transform,scale] duration-200 pointer-events-none"
     [ngClass]="isExpanded() ? 'opacity-0 scale-90 pointer-events-none duration-100' : 'opacity-100 scale-100 delay-150 duration-200'"
   >
-    <!-- Wave Icon -->
     <div class="relative flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-secondary)] text-white shadow-md shadow-primary/30 shrink-0">
       <div class="flex items-center justify-center gap-0.5">
         <span class="w-[2.5px] sm:w-[3px] rounded-full bg-white animate-wave-1"></span>
@@ -24,7 +22,6 @@
       </span>
     </div>
 
-    <!-- Badge +N -->
     @if (participants.length > 3) {
       <div
         class="font-extrabold text-[11px] sm:text-xs text-primary bg-primary/10 rounded-full flex items-center justify-center ring-2 ring-white dark:ring-slate-900 border border-primary/20 shadow-xs ml-auto mr-6 sm:mr-7 shrink-0"
@@ -35,13 +32,11 @@
       </div>
     }
 
-    <!-- Chevron Down -->
     <div class="text-slate-400 dark:text-slate-400 shrink-0 mr-1">
       <app-icon name="chevron-down" class="h-4 w-4"></app-icon>
     </div>
   </div>
 
-  <!-- Expanded Header -->
   <div
     class="absolute inset-x-0 top-0 px-3 sm:px-4 pt-3 pb-2 transition-[opacity,transform] duration-200 z-20"
     [ngClass]="isExpanded() ? 'opacity-100 translate-y-0 delay-100' : 'opacity-0 -translate-y-3 pointer-events-none duration-100'"
@@ -73,7 +68,6 @@
     <div class="mt-2 h-px bg-slate-200/60 dark:bg-slate-800/60 w-full"></div>
   </div>
 
-  <!-- Avatar Morphing Grid -->
   @for (p of participants; track p.id; let idx = $index) {
     @let pos = getAvatarPosition(idx);
     <div
@@ -113,7 +107,6 @@
     </div>
   }
 
-  <!-- Expanded Footer Action Buttons -->
   <div
     class="absolute inset-x-3 sm:inset-x-4 bottom-3 sm:bottom-4 flex flex-col items-center gap-2 transition-[opacity,transform] duration-200 z-20"
     [ngClass]="isExpanded() ? 'opacity-100 translate-y-0 delay-150' : 'opacity-0 translate-y-3 pointer-events-none duration-100'"

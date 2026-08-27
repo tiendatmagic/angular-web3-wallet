@@ -46,15 +46,15 @@ describe('ThemeSwitcherComponent', () => {
   it('updates theme mode when buttons are clicked', () => {
     const buttons = fixture.nativeElement.querySelectorAll('button');
 
-    buttons[0].click(); // Light
+    buttons[0].click();
     fixture.detectChanges();
     expect(stateService.themeMode()).toBe('light');
 
-    buttons[1].click(); // Auto
+    buttons[1].click();
     fixture.detectChanges();
     expect(stateService.themeMode()).toBe('auto');
 
-    buttons[2].click(); // Dark
+    buttons[2].click();
     fixture.detectChanges();
     expect(stateService.themeMode()).toBe('dark');
   });

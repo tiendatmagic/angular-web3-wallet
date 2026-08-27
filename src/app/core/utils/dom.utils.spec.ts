@@ -32,7 +32,6 @@ describe('getContainingBlockOffset', () => {
   it('should detect ancestor with CSS transform as containing block', () => {
     const parent = document.createElement('div');
     parent.style.transform = 'scale(0.95)';
-    // Mock getBoundingClientRect
     parent.getBoundingClientRect = () => ({
       left: 150,
       top: 80,

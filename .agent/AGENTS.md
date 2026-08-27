@@ -1,3 +1,19 @@
+### Yêu cầu: Dọn Dẹp Toàn Bộ Comment Code Không Cần Thiết, Comment Rác & Dư Thừa
+- **Nội dung yêu cầu:** Kiểm tra toàn bộ mã nguồn dự án, rà soát và xóa bỏ triệt để tất cả các comment không cần thiết, comment rác, comment dư thừa/tầm thường.
+- **Phân tích & Các vị trí đã xử lý:**
+  1. `src/app/core/utils/dom.utils.ts`: Loại bỏ block comment JSDoc dư thừa.
+  2. `src/app/core/utils/dom.utils.spec.ts`: Loại bỏ comment mock rác `// Mock getBoundingClientRect`.
+  3. `src/app/shared/components/language-selector/language-selector.component.spec.ts`: Loại bỏ comment thao tác test `// Click English option (second option)`.
+  4. `src/app/shared/components/theme-switcher/theme-switcher.component.spec.ts`: Loại bỏ các inline comments `// Light`, `// Auto`, `// Dark`.
+  5. `src/app/shared/components/dropdown-menu/voice-chat.component.html`: Loại bỏ toàn bộ HTML comments (`<!-- Collapsed UI Elements -->`, `<!-- Wave Icon -->`, `<!-- Badge +N -->`, `<!-- Chevron Down -->`, `<!-- Expanded Header -->`, `<!-- Avatar Morphing Grid -->`, `<!-- Expanded Footer Action Buttons -->`).
+  6. `src/app/shared/components/progress/progress.component.html`: Loại bỏ các HTML comments trong SVG (`<!-- Background Track -->`, `<!-- Value Arc -->`).
+  7. `src/index.html`: Loại bỏ comments `<!-- Google Fonts Preconnect & Stylesheet -->` và `/* Defensive basic constraints */`.
+  8. `src/styles.scss`: Loại bỏ toàn bộ các banner separator comments rác `/* ========================================================================== ... */` và các header comment dư thừa.
+- **Xác thực:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npm test`: 15 files / 70 tests passed (100%).
+  - `npm run build`: Build production hoàn tất thành công 100%.
+
 ### Yêu cầu: Khắc Phục Lỗi Dropdown / Popover Bị Lệch Tọa Độ Khi Hiển Thị Trên Modal (DatePicker, DateTimeRange, CustomSelect, DropdownMenu)
 - **Nội dung yêu cầu:** Xem lại nguyên nhân một số component bị lỗi vị trí/lệch toạ độ khi hiển thị trên Modal (ví dụ: Custom Date Picker, Custom Date Time Range, Custom Select, Dropdown Menu) và khắc phục triệt để.
 - **Phân tích kỹ thuật & Nguyên nhân:**

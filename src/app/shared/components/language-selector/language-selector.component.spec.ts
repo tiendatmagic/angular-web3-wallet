@@ -127,7 +127,6 @@ describe('LanguageSelectorComponent', () => {
     const optionButtons = fixture.nativeElement.querySelectorAll('.dropdown-menu-popover button') as NodeListOf<HTMLButtonElement>;
     expect(optionButtons.length).toBeGreaterThanOrEqual(2);
 
-    // Click English option (second option)
     optionButtons[1].click();
     fixture.detectChanges();
 

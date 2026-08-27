@@ -102,9 +102,6 @@ html.theme-transition-disabled *:not(.theme-switcher-pill):not(.tab-group-pill):
   transition: none !important;
 }
 
-/* ==========================================================================
-   Keyframes System
-   ========================================================================== */
 @keyframes toastProgress {
   from {
     width: 100%;
@@ -320,11 +317,6 @@ html.theme-transition-disabled *:not(.theme-switcher-pill):not(.tab-group-pill):
   inherits: false;
 }
 
-/* ==========================================================================
-   Tailwind CSS v4 Utilities
-   ========================================================================== */
-
-/* Global & Custom Scrollbars */
 ::-webkit-scrollbar {
   @apply w-1.5 h-1.5;
 }
@@ -369,7 +361,6 @@ body.dark ::-webkit-scrollbar-thumb {
   }
 }
 
-/* Animation Utilities */
 @utility toast-animate {
   animation: var(--animate-toast-in);
 }
@@ -451,7 +442,6 @@ body.dark ::-webkit-scrollbar-thumb {
   user-select: none;
 }
 
-/* Progress Bar Utilities */
 @utility progress-striped {
   background-image: linear-gradient(
     45deg,
@@ -475,9 +465,6 @@ body.dark ::-webkit-scrollbar-thumb {
   transform-origin: left center;
 }
 
-/* ==========================================================================
-   Button Utilities & System
-   ========================================================================== */
 .btn {
   @apply inline-flex items-center justify-center gap-1.5 font-bold text-sm rounded-xl whitespace-nowrap transition-[transform,scale,background-color,background-image,color,box-shadow,opacity] duration-200 cursor-pointer select-none active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed px-4 py-2.5;
 }
@@ -543,9 +530,6 @@ body.dark ::-webkit-scrollbar-thumb {
   @apply w-full justify-center;
 }
 
-/* ==========================================================================
-   Form Controls (DRY Optimized with Mixin)
-   ========================================================================== */
 @mixin form-control-base {
   @apply w-full text-sm font-semibold rounded-xl bg-slate-100 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 text-slate-800 dark:text-white placeholder-slate-400 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20;
 }
@@ -583,7 +567,6 @@ body.dark ::-webkit-scrollbar-thumb {
   @apply h-[42px] pl-9 pr-4 transition-[background-color,color,box-shadow] duration-200;
 }
 
-/* Tabs & Cards */
 @utility tab-group {
   @apply h-[42px] flex items-center gap-1 bg-slate-100 dark:bg-slate-900/80 p-1 rounded-xl border border-slate-200/40 dark:border-slate-800/40 overflow-x-auto flex-nowrap shrink-0 max-w-full select-none;
   -ms-overflow-style: none;
@@ -610,7 +593,6 @@ body.dark ::-webkit-scrollbar-thumb {
   @apply bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-lg shadow-slate-200/50 dark:shadow-slate-900/30 rounded-[15px] p-4 sm:p-6 transition-[transform,scale,background-color,color,box-shadow] duration-300 hover:shadow-lg hover:shadow-primary/10 hover:border-primary/30 hover:scale-[1.01] cursor-pointer;
 }
 
-/* Glass Surfaces */
 @utility glass-popover {
   @apply bg-white/90 dark:bg-slate-900/80 backdrop-blur-xl shadow-lg shadow-slate-900/10 dark:shadow-slate-950/50;
 }
@@ -628,7 +610,6 @@ body.dark ::-webkit-scrollbar-thumb {
   @apply bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl;
 }
 
-/* Ripple */
 .app-ripple-element {
   position: absolute;
   border-radius: 9999px;
@@ -645,9 +626,6 @@ body.dark ::-webkit-scrollbar-thumb {
   z-index: 10;
 }
 
-/* ==========================================================================
-   Aura Glow & Gradient System (DRY Optimized)
-   ========================================================================== */
 @utility aura-wrapper {
   @apply relative w-full h-full;
   border-radius: var(--aura-radius, 15px);
@@ -721,9 +699,6 @@ body.dark ::-webkit-scrollbar-thumb {
   border-radius: inherit;
 }
 
-/* ==========================================================================
-   Code Block Syntax Tokens (DRY Nested & Tailwind v4 @apply)
-   ========================================================================== */
 .tok-keyword {
   @apply text-violet-600 dark:text-violet-400 font-semibold;
 }
@@ -749,9 +724,6 @@ body.dark ::-webkit-scrollbar-thumb {
   @apply text-cyan-600 dark:text-cyan-400;
 }
 
-/* ==========================================================================
-   Alert System (Tailwind CSS v4 @apply)
-   ========================================================================== */
 .alert-info-soft {
   @apply bg-sky-100 text-sky-950 border border-sky-300/70 dark:bg-sky-950/85 dark:text-sky-200 dark:border-sky-800/70;
 }
