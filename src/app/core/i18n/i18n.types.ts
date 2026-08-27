@@ -111,6 +111,7 @@ export interface TranslationDictionary {
     retry: string;
     remove: string;
     close_modal: string;
+    file_format: string;
   };
   table_ui: {
     empty_title: string;
@@ -620,6 +621,9 @@ export interface TranslationDictionary {
     detail_estimated_gas: string;
   };
   showcase: {
+    balance: string;
+    network: string;
+    switch_network: string;
     wrong_network_title: string;
     wrong_network_description: string;
     disconnect_wallet: string;

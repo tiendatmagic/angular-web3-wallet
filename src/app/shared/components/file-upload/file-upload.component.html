@@ -363,7 +363,7 @@
       <div
         class="flex items-center justify-between pt-3 mt-3 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500"
       >
-        <span>Format: {{ file.type }}</span>
+        <span>{{ 'file_upload_ui.file_format' | translate: { format: file.type } }}</span>
         <button
           app-button
           variant="cancel"

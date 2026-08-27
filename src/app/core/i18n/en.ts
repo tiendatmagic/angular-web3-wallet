@@ -103,7 +103,8 @@ export const EN_TRANSLATIONS: TranslationDictionary = {
     preview: 'View image',
     retry: 'Retry',
     remove: 'Remove file',
-    close_modal: 'Close window'
+    close_modal: 'Close window',
+    file_format: 'Format: {format}'
   },
   table_ui: {
     empty_title: 'No data available',
@@ -613,6 +614,9 @@ export const EN_TRANSLATIONS: TranslationDictionary = {
     detail_estimated_gas: 'Burn Gas Fee'
   },
   showcase: {
+    balance: 'Available Balance',
+    network: 'Current Network',
+    switch_network: 'Quick Switch Network',
     wrong_network_title: 'Switch Network',
     wrong_network_description: 'This application does not support your current network. Switch to one of the available networks below to continue.',
     disconnect_wallet: 'Disconnect Wallet',

@@ -103,7 +103,8 @@ export const VI_TRANSLATIONS: TranslationDictionary = {
     preview: 'Xem ảnh',
     retry: 'Thử lại',
     remove: 'Xóa tệp',
-    close_modal: 'Đóng cửa sổ'
+    close_modal: 'Đóng cửa sổ',
+    file_format: 'Định dạng: {format}'
   },
   table_ui: {
     empty_title: 'Không có dữ liệu hiển thị',
@@ -613,6 +614,9 @@ export const VI_TRANSLATIONS: TranslationDictionary = {
     detail_estimated_gas: 'Phí hủy hợp đồng'
   },
   showcase: {
+    balance: 'Số Dư Khả Dụng',
+    network: 'Mạng Lưới',
+    switch_network: 'Chuyển Đổi Mạng Nhanh',
     wrong_network_title: 'Chuyển Mạng Lưới',
     wrong_network_description: 'Ứng dụng không hỗ trợ mạng hiện tại của bạn. Vui lòng chuyển sang một trong các mạng khả dụng dưới đây để tiếp tục.',
     disconnect_wallet: 'Ngắt Kết Nối Ví',
