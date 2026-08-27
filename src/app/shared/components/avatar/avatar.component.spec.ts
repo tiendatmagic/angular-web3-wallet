@@ -22,11 +22,15 @@ describe('AvatarComponent', () => {
     expect(component).toBeTruthy();
     expect(component.initials).toBe('SN');
 
-    const avatarEl = fixture.nativeElement.querySelector('div.cursor-pointer');
-    expect(avatarEl).toBeTruthy();
-    expect(avatarEl.classList.contains('transition-[transform,scale,box-shadow]')).toBe(true);
-    expect(avatarEl.classList.contains('hover:scale-110')).toBe(true);
-    expect(avatarEl.classList.contains('transform-gpu')).toBe(true);
+    const triggerEl = fixture.nativeElement.querySelector('div.cursor-pointer');
+    expect(triggerEl).toBeTruthy();
+    expect(triggerEl.classList.contains('group/avatar')).toBe(true);
+
+    const motionEl = fixture.nativeElement.querySelector('.transform-gpu');
+    expect(motionEl).toBeTruthy();
+    expect(motionEl.classList.contains('transition-[transform,scale,box-shadow]')).toBe(true);
+    expect(motionEl.classList.contains('group-hover/avatar:scale-110')).toBe(true);
+    expect(motionEl.classList.contains('group-hover/avatar:-translate-y-1.5')).toBe(true);
   });
 
   it('should render image and status dot when provided', () => {
@@ -63,11 +67,14 @@ describe('AvatarComponent', () => {
     const counterBadge = fixture.nativeElement.querySelector('.z-10');
     expect(counterBadge).toBeTruthy();
     expect(counterBadge.textContent.trim()).toBe('+2');
-    expect(counterBadge.classList.contains('transition-[transform,scale,background-color,color,box-shadow]')).toBe(true);
-    expect(counterBadge.classList.contains('hover:-translate-y-2')).toBe(true);
-    expect(counterBadge.classList.contains('hover:scale-110')).toBe(true);
     expect(counterBadge.classList.contains('cursor-pointer')).toBe(true);
     expect(counterBadge.classList.contains('select-none')).toBe(true);
+
+    const counterMotion = counterBadge.querySelector('.transform-gpu');
+    expect(counterMotion).toBeTruthy();
+    expect(counterMotion.classList.contains('transition-[transform,scale,background-color,color,box-shadow]')).toBe(true);
+    expect(counterMotion.classList.contains('group-hover/stack-counter:-translate-y-2')).toBe(true);
+    expect(counterMotion.classList.contains('group-hover/stack-counter:scale-110')).toBe(true);
   });
 
   it('should not render +N counter when total avatars is less than or equal to max', () => {

@@ -162,20 +162,24 @@ Hệ thống sử dụng cơ chế màu sắc động (Dynamic Theme) cho phép 
 3. **Whitelist các thuộc tính được phép transition**:
    - `transform`, `scale`, `background-color`, `background-image`, `color`, `box-shadow`, `opacity`, `width`, `height`, `stroke-dashoffset`, `grid-template-rows`, `left`, `top`, `border-radius`, `filter`.
 
-### 5.2. Hoạt Ảnh Avatar & Avatar Group Motion Standard
+### 5.2. Hoạt Ảnh Avatar & Avatar Group Motion Standard (Kiến Trúc Chống Giật & Siêu Mượt 60-120fps)
 
 Áp dụng cho `AvatarComponent` (Single Avatar, Avatar Group Stack & `+N Counter`):
 
+- **Kiến Trúc Phân Tách Trigger Container Tĩnh & Motion Canvas**:
+  - **Trigger Wrapper (Bên ngoài)**: Thẻ nhận hover (`group/avatar`, `group/stack-item`, `group/stack-counter`) cố định 100% trong luồng layout, không nhận `translate-y` hay `scale`, mở rộng vùng hit-test an toàn `p-1.5 -m-1.5` trên Single Avatar và `hover:z-30` trên Avatar Stack.
+  - **Motion Canvas (Bên trong)**: Thẻ con bên trong đảm nhiệm toàn bộ chuyển động đồ họa với `transform-gpu transition-[transform,scale,box-shadow] duration-500 ease-[cubic-bezier(0.34,1.25,0.64,1)]`.
+  - **Lợi ích cốt lõi**: Do Trigger Wrapper đứng yên tuyệt đối, con trỏ chuột không bao giờ bị rơi ra khỏi Hitbox khi avatar bay lên hay phóng to, triệt tiêu 100% hiện tượng mất/nhận hover lặp vô tận (Boundary Jitter/Flicker Loop) mà vẫn giữ trọn vẹn hiệu ứng nảy bồng bềnh siêu mượt.
 - **GPU Acceleration**: Sử dụng `transform-gpu` chống vỡ pixel / răng cưa khi phóng to.
 - **Đường cong đàn hồi cao cấp (Spring Physics 500ms)**:
-  - `duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]` tạo hiệu ứng nảy nhẹ tự nhiên, êm dịu.
-- **Single Avatar**:
-  - Wrapper: `hover:-translate-y-1.5 hover:scale-110`
-  - Đồng bộ status dot: `group-hover/avatar:scale-110`
+  - `duration-500 ease-[cubic-bezier(0.34,1.25,0.64,1)]` tạo hiệu ứng nảy nhẹ tinh tế 25%, bồng bềnh tự nhiên và êm dịu.
+- **Single Avatar Motion**:
+  - Motion Container: `group-hover/avatar:-translate-y-1.5 group-hover/avatar:scale-110 active:scale-95`
+  - Đồng bộ status dot: `group-hover/avatar:scale-110` cùng easing spring.
   - Bóng mờ: `group-hover/avatar:shadow-xl group-hover/avatar:shadow-purple-500/25`
-- **Avatar Group Items & `+N Counter`**:
-  - `hover:z-30 hover:-translate-y-2 hover:scale-110 hover:shadow-xl hover:shadow-purple-500/25`
-  - Đệm lề an toàn: `py-1.5 px-1` tránh bị cắt bóng ở viền ngoài.
+- **Avatar Group Items & `+N Counter` Motion**:
+  - Motion Container: `group-hover/stack-item:-translate-y-2 group-hover/stack-item:scale-110 group-hover/stack-item:shadow-xl group-hover/stack-item:shadow-purple-500/25 active:scale-95`
+  - Đệm lề an toàn: `py-2 px-1` tránh bị cắt bóng ở viền ngoài.
 
 ### 5.3. Hệ Thống Phát Sáng Aura Glow & Gradient Conic
 
