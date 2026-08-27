@@ -121,7 +121,7 @@
     <button
       type="button"
       (click)="toggleJoin($event)"
-      class="w-full flex items-center justify-center gap-2 rounded-[15px] py-3 text-sm font-bold transition-all cursor-pointer shadow-md active:scale-[0.98]"
+      class="w-full flex items-center justify-center gap-2 rounded-[15px] py-3 text-sm font-bold transition-[transform,scale,background-color,background-image,color,box-shadow] duration-200 cursor-pointer shadow-md active:scale-[0.98]"
       [ngClass]="isJoined()
         ? 'bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white shadow-rose-500/25'
         : 'bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white shadow-purple-500/25'"

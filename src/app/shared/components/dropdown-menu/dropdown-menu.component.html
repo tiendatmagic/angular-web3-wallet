@@ -9,7 +9,7 @@
       type="button"
       [disabled]="disabled"
       (click)="toggleOpen($event)"
-      class="inline-flex items-center justify-center transition-all duration-200 focus:outline-none select-none font-semibold cursor-pointer active:scale-[0.98] bg-transparent"
+      class="inline-flex items-center justify-center transition-[transform,scale,background-color,color,box-shadow] duration-200 focus:outline-none select-none font-semibold cursor-pointer active:scale-[0.98] bg-transparent"
       [ngClass]="{
         'px-3 py-1.5 text-xs rounded-[10px] justify-between gap-2':
           triggerVariant !== 'icon' && triggerVariant !== 'avatar' && triggerSize === 'sm',
@@ -33,7 +33,7 @@
           triggerVariant === 'primary',
         'border border-transparent bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800/80 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white':
           triggerVariant === 'ghost',
-        'border border-transparent rounded-full ring-2 ring-primary/30 hover:ring-primary/50 transition-all !p-0 overflow-hidden':
+        'border border-transparent rounded-full ring-2 ring-primary/30 hover:ring-primary/50 transition-[box-shadow,ring-color] duration-200 !p-0 overflow-hidden':
           triggerVariant === 'avatar',
         'rounded-xl bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80 hover:text-slate-900 dark:hover:text-white shadow-xs':
           triggerVariant === 'icon',
@@ -132,7 +132,7 @@
                 [disabled]="item.disabled"
                 (click)="toggleSubmenu(item, $event)"
                 (mouseenter)="openSubmenu(item, $event)"
-                class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-all duration-150 text-left cursor-pointer"
+                class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-[background-color,color] duration-150 text-left cursor-pointer"
                 [ngClass]="{
                   'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80':
                     !item.disabled && activeSubmenuId() !== (item.id || item.label),
@@ -164,7 +164,7 @@
               [disabled]="item.disabled"
               (click)="onItemClick(item, $event)"
               (mouseenter)="onItemHover(item)"
-              class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-all duration-150 text-left cursor-pointer"
+              class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-[background-color,color] duration-150 text-left cursor-pointer"
               [ngClass]="{
                 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80':
                   !item.disabled,
@@ -199,7 +199,7 @@
               [disabled]="item.disabled"
               (click)="onItemClick(item, $event)"
               (mouseenter)="onItemHover(item)"
-              class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-all duration-150 text-left cursor-pointer"
+              class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-[background-color,color] duration-150 text-left cursor-pointer"
               [ngClass]="{
                 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80':
                   !item.disabled,
@@ -228,7 +228,7 @@
               [disabled]="item.disabled"
               (click)="onItemClick(item, $event)"
               (mouseenter)="onItemHover(item)"
-              class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-all duration-150 text-left cursor-pointer"
+              class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-[background-color,color] duration-150 text-left cursor-pointer"
               [ngClass]="{
                 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80':
                   !item.disabled && item.variant !== 'danger' && item.variant !== 'success',
@@ -300,7 +300,7 @@
             type="button"
             [disabled]="subItem.disabled"
             (click)="onItemClick(subItem, $event)"
-            class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-all duration-150 text-left cursor-pointer"
+            class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-[background-color,color] duration-150 text-left cursor-pointer"
             [ngClass]="{
               'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80':
                 !subItem.disabled && subItem.variant !== 'danger',

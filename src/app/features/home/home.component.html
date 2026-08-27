@@ -53,7 +53,7 @@
                 </span>
                 <button
                   (click)="copyAddress($event)"
-                  class="w-7 h-7 flex items-center justify-center rounded-lg transition-all cursor-pointer flex-shrink-0 outline-none focus:outline-none text-slate-400 hover:text-primary hover:bg-primary/10 focus:text-slate-400 focus:bg-transparent"
+                  class="w-7 h-7 flex items-center justify-center rounded-lg transition-[transform,background-color,color] duration-150 cursor-pointer flex-shrink-0 outline-none focus:outline-none text-slate-400 hover:text-primary hover:bg-primary/10 focus:text-slate-400 focus:bg-transparent"
                   [title]="'showcase.copy_address' | translate"
                 >
                   <app-icon name="copy" class="w-4 h-4" />
@@ -64,46 +64,45 @@
             <div
               class="grid grid-cols-2 gap-4 border-t border-slate-100 dark:border-slate-800/40 pt-4"
             >
-              <div class="flex flex-col">
-                <span class="text-[10px] font-bold text-slate-400 uppercase">{{
-                  'wallet.network' | translate
-                }}</span>
-                <span class="text-sm font-extrabold text-slate-700 dark:text-slate-200 truncate">
-                  {{ stateService.networkName() }}
+              <div>
+                <span
+                  class="text-xs font-bold text-slate-400 dark:text-slate-500 block mb-1 uppercase tracking-wider"
+                >
+                  {{ 'showcase.balance' | translate }}
+                </span>
+                <span class="text-lg font-black text-slate-800 dark:text-slate-100">
+                  {{ stateService.balance() || '0.00' }} ETH
                 </span>
               </div>
-              <div class="flex flex-col">
-                <span class="text-[10px] font-bold text-slate-400 uppercase">{{
-                  'showcase.chain_id' | translate
-                }}</span>
-                <span class="text-sm font-mono font-bold text-slate-700 dark:text-slate-200">
-                  {{ stateService.chainId() }}
+              <div>
+                <span
+                  class="text-xs font-bold text-slate-400 dark:text-slate-500 block mb-1 uppercase tracking-wider"
+                >
+                  {{ 'showcase.network' | translate }}
+                </span>
+                <span
+                  class="text-xs font-extrabold px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 inline-block"
+                >
+                  {{ stateService.networkName() }}
                 </span>
               </div>
             </div>
           </div>
         </div>
 
-        <div app-card>
-          <h3
-            class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4"
-          >
-            {{ 'wallet.switch_network_btn' | translate }}
+        <div class="space-y-4">
+          <h3 class="text-sm font-extrabold text-slate-800 dark:text-slate-200 tracking-tight">
+            {{ 'showcase.switch_network' | translate }}
           </h3>
-
-          @if (stateService.isWrongChain()) {
-            <div
-              class="bg-red-500/10 border border-red-500/25 rounded-xl p-3 mb-4 text-xs font-bold text-red-500 flex items-start gap-2"
-            >
-              <app-icon name="warning" class="w-4 h-4 mt-0.5 flex-shrink-0" />
-              <span>{{ 'home.wrong_network_desc' | translate }}</span>
-            </div>
-          }
-
           <div class="grid grid-cols-2 gap-3">
             @for (chain of stateService.POPULAR_CHAINS; track chain.chainId) {
               <button
                 [class.!border-primary]="
+                  (stateService.isConnected()
+                    ? stateService.chainId()
+                    : +stateService.configuredChainId()) === +chain.chainId
+                "
+                [class.!bg-primary\/5]="
                   (stateService.isConnected()
                     ? stateService.chainId()
                     : +stateService.configuredChainId()) === +chain.chainId
@@ -114,7 +113,7 @@
                     : +stateService.configuredChainId()) === +chain.chainId
                 "
                 (click)="stateService.switchNetwork(+chain.chainId)"
-                class="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl border border-slate-200/60 dark:border-slate-800/60 text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-100/80 dark:hover:bg-slate-900/80 transition-all cursor-pointer shadow-xs"
+                class="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl border border-slate-200/60 dark:border-slate-800/60 text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-100/80 dark:hover:bg-slate-900/80 transition-[transform,scale,background-color,color,box-shadow] duration-200 cursor-pointer shadow-xs"
               >
                 <span
                   [style.backgroundColor]="chain.color || '#94a3b8'"
@@ -282,7 +281,7 @@
                   </span>
                   <button
                     (click)="copySignature()"
-                    class="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-500 hover:text-primary flex-shrink-0 cursor-pointer transition-all mt-0.5"
+                    class="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-500 hover:text-primary flex-shrink-0 cursor-pointer transition-[background-color,color] duration-150 mt-0.5"
                     [title]="'showcase.copy_signature' | translate"
                   >
                     <app-icon name="copy" class="w-4 h-4" />
@@ -1462,7 +1461,7 @@
               <div class="hidden sm:block h-4 w-px bg-slate-200 dark:bg-slate-800"></div>
               <button
                 (click)="resetTableFilters()"
-                class="px-2.5 py-1 rounded-lg border border-[var(--color-primary)]/30 hover:border-[var(--color-primary)]/50 bg-[var(--color-primary)]/10 hover:bg-[var(--color-primary)]/15 text-[var(--color-primary)] transition-all text-xs font-bold flex items-center gap-1 cursor-pointer shadow-xs"
+                class="px-2.5 py-1 rounded-lg border border-[var(--color-primary)]/30 hover:border-[var(--color-primary)]/50 bg-[var(--color-primary)]/10 hover:bg-[var(--color-primary)]/15 text-[var(--color-primary)] transition-[background-color,color,box-shadow] duration-150 text-xs font-bold flex items-center gap-1 cursor-pointer shadow-xs"
               >
                 <app-icon name="close" class="w-3 h-3" />
                 {{ 'showcase.reset' | translate }}

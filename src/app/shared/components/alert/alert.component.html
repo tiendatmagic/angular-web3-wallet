@@ -46,7 +46,7 @@
       <button
         type="button"
         (click)="handleClose()"
-        class="shrink-0 w-7 h-7 flex items-center justify-center rounded-lg hover:bg-black/10 dark:hover:bg-white/15 transition-all opacity-70 hover:opacity-100 active:scale-95 cursor-pointer"
+        class="shrink-0 w-7 h-7 flex items-center justify-center rounded-lg hover:bg-black/10 dark:hover:bg-white/15 transition-[transform,scale,background-color,opacity] duration-150 opacity-70 hover:opacity-100 active:scale-95 cursor-pointer"
         [attr.aria-label]="'showcase.close_alert' | translate"
       >
         <app-icon name="close" class="w-4 h-4 flex items-center justify-center"></app-icon>

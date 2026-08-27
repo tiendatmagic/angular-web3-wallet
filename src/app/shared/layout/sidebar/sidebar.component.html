@@ -5,7 +5,7 @@
 >
   <button
     (click)="stateService.toggleSidebarCollapse()"
-    class="absolute -right-[17px] top-8 sm:top-10 -translate-y-1/2 z-10 w-8.5 h-8.5 rounded-full bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-md flex items-center justify-center cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-primary transition-all duration-200 active:scale-95 hover:scale-105"
+    class="absolute -right-[17px] top-8 sm:top-10 -translate-y-1/2 z-10 w-8.5 h-8.5 rounded-full bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-md flex items-center justify-center cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-primary transition-[transform,scale,background-color,color,box-shadow] duration-200 active:scale-95 hover:scale-105"
     [attr.aria-label]="
       (stateService.isSidebarCollapsed() ? 'showcase.expand_sidebar' : 'showcase.collapse_sidebar')
         | translate
@@ -115,7 +115,7 @@
         <button
           (click)="stateService.toggleTheme()"
           [title]="'theme.label' | translate"
-          class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 flex items-center justify-center transition-all cursor-pointer shadow-xs border border-slate-200/50 dark:border-slate-800/50"
+          class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 flex items-center justify-center transition-[transform,scale,background-color,color,box-shadow] duration-200 cursor-pointer shadow-xs border border-slate-200/50 dark:border-slate-800/50"
         >
           <app-icon
             [name]="stateService.isDarkMode() ? 'sun' : 'moon'"

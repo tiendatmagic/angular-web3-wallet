@@ -29,7 +29,7 @@
             <button
               type="button"
               (click)="selectPreset(p.days, $event)"
-              class="text-xs font-semibold px-2 py-1.5 rounded-[12px] transition-all cursor-pointer border text-center flex items-center justify-center whitespace-nowrap"
+              class="text-xs font-semibold px-2 py-1.5 rounded-[12px] transition-[transform,scale,background-color,color,box-shadow] duration-150 cursor-pointer border text-center flex items-center justify-center whitespace-nowrap"
               [class.bg-[var(--color-primary)]]="selectedPresetDays() === p.days"
               [class.border-transparent]="selectedPresetDays() === p.days"
               [class.text-white]="selectedPresetDays() === p.days"
@@ -57,7 +57,7 @@
           <button
             type="button"
             (click)="prevMonth($event)"
-            class="w-7 h-7 flex items-center justify-center shrink-0 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-500 hover:text-[var(--color-primary)] active:scale-90 transition-all cursor-pointer"
+            class="w-7 h-7 flex items-center justify-center shrink-0 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-500 hover:text-[var(--color-primary)] active:scale-90 transition-[transform,scale,background-color,color] duration-150 cursor-pointer"
           >
             <app-icon name="chevron-left" class="w-4 h-4 shrink-0" />
           </button>
@@ -67,7 +67,7 @@
           <button
             type="button"
             (click)="nextMonth($event)"
-            class="w-7 h-7 flex items-center justify-center shrink-0 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-500 hover:text-[var(--color-primary)] active:scale-90 transition-all cursor-pointer"
+            class="w-7 h-7 flex items-center justify-center shrink-0 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-500 hover:text-[var(--color-primary)] active:scale-90 transition-[transform,scale,background-color,color] duration-150 cursor-pointer"
           >
             <app-icon name="chevron-right" class="w-4 h-4 shrink-0" />
           </button>
@@ -88,7 +88,7 @@
                 type="button"
                 (click)="selectDate(day, $event)"
                 [disabled]="isDateDisabled(day)"
-                class="relative z-10 w-full h-full flex items-center justify-center text-sm font-bold rounded-full transition-all"
+                class="relative z-10 w-full h-full flex items-center justify-center text-sm font-bold rounded-full transition-[transform,scale,background-color,color,box-shadow] duration-150"
                 [class.text-slate-300]="
                   !isCurrentMonth(day) && !isSelected(day) && !isDateDisabled(day)
                 "
@@ -166,7 +166,7 @@
           <button
             type="button"
             (click)="confirmSelection($event)"
-            class="min-w-[76px] px-3 py-1.5 text-xs font-extrabold text-white bg-[var(--color-primary)] rounded-lg hover:opacity-90 active:scale-95 transition-all cursor-pointer shadow-sm shadow-[var(--color-primary)]/20 flex items-center justify-center text-center"
+            class="min-w-[76px] px-3 py-1.5 text-xs font-extrabold text-white bg-[var(--color-primary)] rounded-lg hover:opacity-90 active:scale-95 transition-[transform,scale,opacity,box-shadow] duration-150 cursor-pointer shadow-sm shadow-[var(--color-primary)]/20 flex items-center justify-center text-center"
           >
             {{ 'action.done' | translate }}
           </button>

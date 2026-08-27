@@ -25,7 +25,7 @@
         <button
       type="button"
       (click)="onClear()"
-      class="absolute right-2.5 top-1/2 -translate-y-1/2 w-6 h-6 text-slate-400 hover:text-slate-800 dark:hover:text-white transition-all cursor-pointer rounded-md hover:bg-slate-200/90 dark:hover:bg-slate-800/90 active:scale-95 flex items-center justify-center shrink-0"
+      class="absolute right-2.5 top-1/2 -translate-y-1/2 w-6 h-6 text-slate-400 hover:text-slate-800 dark:hover:text-white transition-[transform,scale,background-color,color] duration-150 cursor-pointer rounded-md hover:bg-slate-200/90 dark:hover:bg-slate-800/90 active:scale-95 flex items-center justify-center shrink-0"
       [title]="translationService.t('showcase.clear_search')"
     >
       <app-icon name="close" class="h-3.5 w-3.5 flex items-center justify-center" strokeWidth="2.5"></app-icon>

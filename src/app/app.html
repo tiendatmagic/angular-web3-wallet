@@ -35,7 +35,7 @@
       @for (chain of stateService.POPULAR_CHAINS; track chain.chainId) {
         <button
           (click)="switchNetwork(+chain.chainId)"
-          class="w-full flex items-center gap-3.5 px-4 py-3 rounded-xl border border-slate-200/60 dark:border-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-800/40 transition-all cursor-pointer group text-left"
+          class="w-full flex items-center gap-3.5 px-4 py-3 rounded-xl border border-slate-200/60 dark:border-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-800/40 transition-[background-color,color] duration-150 cursor-pointer group text-left"
         >
           <span
             [style.backgroundColor]="chain.color || '#94a3b8'"

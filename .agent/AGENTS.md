@@ -1,3 +1,66 @@
+### Yêu cầu: Loại Bỏ Triệt Để `border-color` Khỏi Toàn Bộ Thuộc Tính Transition
+- **Nội dung yêu cầu:** Loại bỏ hoàn toàn `border-color` ra khỏi tất cả các khai báo transition trong toàn bộ ứng dụng (`src/styles.scss` và tất cả các component).
+- **Phân tích kỹ thuật:**
+  - `border-color` trong thuộc tính transition buộc trình duyệt phải theo dõi biến đổi màu viền liên tục giữa các frame (Color Interpolation), gây gia tăng chi phí repaint trên các phần tử có border phức tạp và hiệu ứng active/hover.
+  - Khi loại bỏ `border-color`, trạng thái màu viền khi hover hoặc active sẽ phản hồi tức thì, kết hợp cùng `transform`, `background-color`, `color`, `box-shadow`, `opacity` cho trải nghiệm mượt mà, sắc nét và đạt hiệu năng tối ưu nhất.
+- **Các bước & Vị trí đã thực hiện:**
+  1. **Hệ Thống Button Utility (`src/styles.scss`):** Loại bỏ `border-color` khỏi `.btn`, `.btn-primary`, `.btn-secondary`, `.btn-danger`, `.btn-danger-light`, `.btn-cancel`, `.btn-ghost`, `.btn-success`, `.btn-info`, `.btn-reload`, `.btn-outline` ➡️ `transition-[transform,background-color,background-image,color,box-shadow,opacity] duration-200`.
+  2. **Toàn Bộ Các Component:**
+     - `SidebarComponent`: Nút thu phóng và nút đổi theme ➡️ `transition-[transform,background-color,color,box-shadow] duration-200`.
+     - `HeaderComponent`: Nút Hamburger ➡️ `transition-[transform,background-color,color,box-shadow] duration-200`.
+     - `NetworkSelectorComponent`: Nút chọn mạng ➡️ `transition-[transform,background-color,color,box-shadow] duration-200`.
+     - `LanguageSelectorComponent`: Nút chọn ngôn ngữ (Compact & Full) ➡️ `transition-[transform,background-color,color,box-shadow] duration-200`.
+     - `PaginationComponent`: Nút Prev, Next và số trang ➡️ `transition-[transform,background-color,color,opacity] duration-200`.
+     - `FileUploadComponent`: Nút chọn file ➡️ `transition-[transform,background-color,color,box-shadow] duration-200`.
+     - `CustomSelectComponent`: Nút trigger dropdown ➡️ `transition-[transform,background-color,color,box-shadow] duration-200`.
+     - `DropdownMenuComponent`: Nút trigger ➡️ `transition-[transform,background-color,color,box-shadow] duration-200`.
+     - `CustomDatePickerComponent` & `CustomDateTimeRangeComponent`: Nút presets ➡️ `transition-[transform,background-color,color,box-shadow] duration-150`.
+     - `CodeBlockComponent`: Nút wrap, copy và nút thu gọn/mở rộng mã.
+     - `CopyToClipboardComponent`: Nút copy ➡️ `transition-[transform,background-color,color] duration-150`.
+     - `StatCardComponent`: Card container ➡️ `transition-[transform,shadow] duration-200`.
+     - `HomeComponent` & `AppComponent`: Nút đổi mạng nhanh và nút reset filters.
+- **Xác thực:**
+  - Quét toàn bộ `src/`: 0 thuộc tính `border-color` còn tồn tại trong transition.
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npm test`: 6/6 tests passed (100%).
+  - `npm run build`: Build production hoàn tất thành công.
+
+### Yêu cầu: Tối Ưu Hiệu Năng Nút Bấm - Loại Bỏ `transition-all` & Dùng Thuộc Tính Transition Chuyên Biệt
+- **Nội dung yêu cầu:** Phân tích nguyên nhân làm giảm hiệu năng của class `transition-all` trên web và loại bỏ triệt để `transition-all` trên toàn bộ các nút bấm (`<button>`, `.btn`, `.btn-*`, `.btn-close`, `.btn-close-sm`), thay thế bằng các thuộc tính transition có hiệu năng cao như `transition-transform`, `background-color`, `background-image`, `color`, `border-color`, `box-shadow`, `opacity` mà không làm ảnh hưởng các component không phải button.
+- **Phân tích nguyên nhân gốc rễ & Ảnh hưởng của `transition-all`:**
+  1. **Layout Thrashing & Style Recalculation:** `transition-all` buộc trình duyệt phải theo dõi, tính toán và nội suy mọi thuộc tính CSS (bao gồm các thuộc tính liên quan đến Layout/Reflow như `width`, `height`, `padding`, `margin`, `font-size`) bất kỳ khi nào trạng thái nút thay đổi (hover, active, focus, disabled, theme switch).
+  2. **Tăng tải Render/Repaint:** Khi hover qua lại nhiều nút bấm trên giao diện phức tạp, việc ép trình duyệt kiểm tra tất cả thuộc tính làm tụt FPS và gây hiện tượng giật lag (jank).
+  3. **Giải pháp tối ưu GPU:** Chỉ transition các thuộc tính thực sự biến đổi khi tương tác nút: `transform` (khi `active:scale-95` / `hover:scale-*` được xử lý trực tiếp trên GPU Composite Layer), `background-color`, `background-image`, `color`, `border-color`, `box-shadow`, `opacity`.
+- **Các bước & Vị trí đã thực hiện tối ưu (Chỉ áp dụng cho Button):**
+  1. **Hệ Thống Button Utility Toàn Cục (`src/styles.scss`):**
+     - Thay thế toàn bộ `transition-all duration-200` trong `.btn`, `.btn-primary`, `.btn-secondary`, `.btn-danger`, `.btn-danger-light`, `.btn-cancel`, `.btn-ghost`, `.btn-success`, `.btn-info`, `.btn-reload`, `.btn-outline` bằng `transition-[transform,background-color,background-image,color,border-color,box-shadow,opacity] duration-200`.
+     - Thay thế `transition-all` trong `.btn-close`, `.btn-close-sm` bằng `transition-[transform,background-color,color] duration-150`.
+     - Cập nhật `@utility tab-item` sang `transition-[color,background-color,box-shadow,transform] duration-200`.
+  2. **Rà soát và Cập nhật Toàn Bộ Thẻ `<button>` Trong Tất Cả Component:**
+     - `SidebarComponent`: Cập nhật nút thu phóng sidebar và nút chuyển đổi theme (`transition-[transform,background-color,color,border-color,box-shadow] duration-200`).
+     - `HeaderComponent`: Cập nhật nút Hamburger mobile menu.
+     - `NetworkSelectorComponent`: Cập nhật nút kích hoạt dropdown Đa Chain.
+     - `LanguageSelectorComponent`: Cập nhật nút kích hoạt compact và full của Đa Ngôn Ngữ.
+     - `PaginationComponent`: Cập nhật nút Prev, Next và các nút số trang (`transition-[transform,background-color,border-color,color,opacity] duration-200`).
+     - `FileUploadComponent`: Cập nhật nút chọn file và nút xóa file.
+     - `VoiceChatComponent`: Cập nhật nút tham gia/rời phòng trò chuyện thoại.
+     - `DropdownMenuComponent`: Cập nhật nút Trigger dropdown, Trigger avatar, các nút Submenu, Checkbox, Radio, Action và Submenu child.
+     - `CustomSelectComponent`: Cập nhật nút trigger chọn danh sách.
+     - `CustomSearchInputComponent`: Cập nhật nút xóa nội dung tìm kiếm.
+     - `CustomDatePickerComponent`: Cập nhật các nút Presets, Prev/Next tháng, nút chọn ngày và nút Xong.
+     - `CustomDateTimeRangeComponent`: Cập nhật nút Clear, Presets, Prev/Next tháng, nút chọn ngày và nút Áp dụng.
+     - `CodeBlockComponent`: Cập nhật nút sao chép mã, nút chuyển Tab file và nút bật/tắt wrap dòng.
+     - `CopyToClipboardComponent`: Cập nhật nút copy icon/label.
+     - `AccordionComponent`: Cập nhật nút accordion header.
+     - `AlertComponent`: Cập nhật nút đóng thông báo alert.
+     - `TabGroupComponent`: Cập nhật các nút tab chuyển đổi.
+     - `HomeComponent` & `AppComponent`: Cập nhật các nút sao chép địa chỉ, đổi mạng nhanh, copy chữ ký và reset bộ lọc bảng.
+- **Xác thực:**
+  - Quét kiểm tra sâu (AST/regex): 0 thẻ `<button>` còn sót `transition-all`.
+  - Chạy `npx tsc --noEmit` đạt 0 lỗi type.
+  - Vượt qua 100% bộ unit tests (6/6 tests passed).
+  - Đóng gói Production (`npm run build`) hoàn tất thành công 100%.
+
 ### Yêu cầu: Khắc Phục Triệt Để Lỗi Không Responsive & Xuất Hiện Scroll Ngang Trên Mobile
 - **Nội dung yêu cầu:** Rà soát và xử lý toàn diện các vị trí chưa responsive trên mobile/màn hình nhỏ gây tràn chiều ngang và xuất hiện thanh cuộn ngang (horizontal scroll), đặc biệt là component Input OTP (`InputOtpComponent`), Header, Account Dropdown, Date Picker và Voice Chat.
 - **Phân tích nguyên nhân gốc rễ:**
