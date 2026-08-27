@@ -520,10 +520,16 @@ body.dark ::-webkit-scrollbar-thumb {
   @apply py-3 px-4 transition-[background-color,color,box-shadow] duration-200 resize-none;
 }
 
+@utility form-label {
+  @apply block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider select-none;
+}
+
 @utility form-field {
   @apply flex flex-col gap-2 w-full;
 
-  & > label {
+  & > label,
+  & > div > label:not(.group):not([class*="custom-"]):not(.sr-only),
+  .form-label {
     @apply block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider select-none;
   }
 }

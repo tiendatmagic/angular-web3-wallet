@@ -26,14 +26,14 @@
       <div class="lg:col-span-5 space-y-5 md:space-y-6">
         <div app-card>
           <h3
-            class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4"
+            class="form-label mb-4"
           >
             {{ 'wallet.account_address' | translate }}
           </h3>
 
           <div class="space-y-4">
             <div class="flex flex-col py-1">
-              <span class="text-xs font-bold text-slate-400 dark:text-slate-500">{{
+              <span class="form-label">{{
                 'wallet.balance' | translate
               }}</span>
               <span
@@ -66,7 +66,7 @@
             >
               <div>
                 <span
-                  class="text-xs font-bold text-slate-400 dark:text-slate-500 block mb-1 uppercase tracking-wider"
+                  class="form-label mb-1"
                 >
                   {{ 'showcase.balance' | translate }}
                 </span>
@@ -76,7 +76,7 @@
               </div>
               <div>
                 <span
-                  class="text-xs font-bold text-slate-400 dark:text-slate-500 block mb-1 uppercase tracking-wider"
+                  class="form-label mb-1"
                 >
                   {{ 'showcase.network' | translate }}
                 </span>
@@ -197,7 +197,7 @@
                 </div>
                 <div class="flex items-center justify-between gap-4">
                   <span
-                    class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider"
+                    class="form-label !mb-0"
                     >{{ 'showcase.transaction_hash' | translate }}</span
                   >
                   <a
@@ -439,10 +439,7 @@
         </h4>
         <div class="space-y-4">
           <div class="form-field">
-            <label
-              class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider select-none"
-              >{{ 'cards.selects.label_single' | translate }}</label
-            >
+            <label>{{ 'cards.selects.label_single' | translate }}</label>
             <app-custom-select
               placeholder="-- {{ 'cards.selects.title' | translate }} --"
               [options]="demoChainOptions"
@@ -461,10 +458,7 @@
           </div>
 
           <div class="form-field">
-            <label
-              class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider select-none"
-              >{{ 'cards.selects.label_ten' | translate }}</label
-            >
+            <label>{{ 'cards.selects.label_ten' | translate }}</label>
             <app-custom-select
               placeholder="-- {{ 'cards.selects.title' | translate }} --"
               [options]="demoTenChainOptions"
@@ -484,10 +478,7 @@
           </div>
 
           <div class="form-field">
-            <label
-              class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider select-none"
-              >{{ 'cards.selects.label_multi' | translate }}</label
-            >
+            <label>{{ 'cards.selects.label_multi' | translate }}</label>
             <app-custom-select
               placeholder="-- {{ 'cards.selects.title' | translate }} --"
               [options]="demoMultiSelectOptions()"
@@ -628,7 +619,7 @@
         <div class="space-y-5">
           <div class="space-y-2">
             <label
-              class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider select-none"
+              class="form-label"
               >{{ 'showcase.tooltip_placement' | translate }}</label
             >
             <div class="flex flex-wrap gap-2.5 pt-1">
@@ -677,7 +668,7 @@
 
           <div class="space-y-2">
             <label
-              class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider select-none"
+              class="form-label"
               >{{ 'showcase.badge_variants' | translate }}</label
             >
             <div class="flex flex-wrap gap-2 pt-1">
@@ -1052,7 +1043,7 @@
             <div class="space-y-4">
               <div class="form-field">
                 <div class="flex justify-between items-center">
-                  <label class="!mb-0">{{ 'cards.ripple.duration' | translate }}</label>
+                  <label class="form-label !mb-0">{{ 'cards.ripple.duration' | translate }}</label>
                   <span class="text-xs font-mono font-bold text-primary"
                     >{{ demoRippleDuration() }}ms</span
                   >
@@ -1068,7 +1059,7 @@
 
               <div class="form-field">
                 <div class="flex justify-between items-center">
-                  <label class="!mb-0">{{ 'cards.ripple.opacity' | translate }}</label>
+                  <label class="form-label !mb-0">{{ 'cards.ripple.opacity' | translate }}</label>
                   <span class="text-xs font-mono font-bold text-secondary">{{
                     demoRippleOpacity()
                   }}</span>
@@ -2778,7 +2769,7 @@
             </div>
           </div>
 
-          <div class="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-800/40">
+          <div class="space-y-2">
             <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider">{{
               'cards.avatar.group_label' | translate
             }}</label>

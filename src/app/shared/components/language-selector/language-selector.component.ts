@@ -13,7 +13,9 @@ import { TranslatePipe } from '@shared/pipes/translate.pipe';
   imports: [CommonModule, IconComponent, TranslatePipe],
   templateUrl: './language-selector.component.html',
   host: {
-    'class': 'block',
+    '[class.w-full]': 'variant === "full"',
+    '[class.block]': 'variant === "full"',
+    '[class.inline-block]': 'variant === "compact"',
     '(document:keydown.escape)': 'onEscape()'
   },
 })

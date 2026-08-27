@@ -60,4 +60,14 @@ describe('DeleteConfirmModalComponent', () => {
     component.cancel();
     expect(mockClose).toHaveBeenCalled();
   });
+
+  it('should apply form-label class to keyword label and target item label', () => {
+    const compiled = fixture.nativeElement as HTMLElement;
+    const targetItemLabel = compiled.querySelector('.form-label');
+    expect(targetItemLabel).toBeTruthy();
+
+    const keywordLabel = compiled.querySelector('label.form-label');
+    expect(keywordLabel).toBeTruthy();
+    expect(keywordLabel?.classList.contains('form-label')).toBe(true);
+  });
 });

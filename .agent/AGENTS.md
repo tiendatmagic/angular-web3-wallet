@@ -1,3 +1,84 @@
+### Yêu cầu: Chuẩn Hóa & Đồng Bộ Toàn Diện Hệ Thống Form Label (Khắc Phục Lỗi Mất Định Dạng Nhãn Trong Modal Xác Nhận Xóa & Toàn Bộ Các Form)
+- **Nội dung yêu cầu:** Rà soát và sửa lỗi nhãn form chưa đồng bộ trên toàn bộ hệ thống giao diện, khắc phục tình trạng nhãn xác nhận từ khóa ("GÕ TỪ KHÓA 'CYBER-SAMURAI' ĐỂ XÁC NHẬN") trong Delete Confirm Modal và các form khác bị to, đậm màu và mất định dạng so với các nhãn chuẩn.
+- **Phân tích kỹ thuật & Nguyên nhân:**
+  1. **Giới hạn Direct Child Selector của `.form-field > label`:** Trong `styles.scss`, `.form-field` chỉ áp dụng quy tắc cho thẻ `<label>` là con trực tiếp (`>`). Khi một trường form có layout header mở rộng chứa badge hoặc icon (ví dụ `<div class="flex items-center justify-between mb-1"><label>...</label></div>`), thẻ `<label>` không còn là con trực tiếp nên bị rớt hoàn toàn CSS (kế thừa font-size lớn 14px-16px và text đen đậm của modal).
+  2. **Thiếu Utility `.form-label` độc lập:** Trước đó chưa có `@utility form-label` chuẩn mực toàn cục, dẫn đến nhiều nơi phải gán class thủ công hoặc dùng các kiểu chữ lệch chuẩn (`text-[10px] font-black tracking-widest`, `text-xs font-bold text-slate-500`, v.v.).
+- **Các bước & Vị trí đã thực hiện:**
+  1. **Hệ Thống Stylesheet Toàn Cục (`src/styles.scss`):**
+     - Bổ sung `@utility form-label`: `@apply block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider select-none;`.
+     - Nâng cấp `@utility form-field`: mở rộng selector bao gồm `& > label`, `& > div > label:not(.group):not([class*="custom-"]):not(.sr-only)`, và `.form-label`.
+  2. **Modal Xác Nhận Xóa (`delete-confirm-modal.component.html`):**
+     - Gán class `form-label !mb-0` cho thẻ `<label>` tại khối nhập từ khóa xác nhận `confirm_keyword_prompt`.
+     - Chuẩn hóa nhãn `target_item` (`TÀI NGUYÊN SẼ XÓA`) sang `<span class="form-label mb-0.5">`.
+  3. **Đồng Bộ Trên Các Component & Layout Khác:**
+     - `custom-date-time-range.component.html`: Chuẩn hóa các label `date.start_time` và `date.end_time` sang `class="form-label"`.
+     - `tx-speed-selector.component.html`: Chuẩn hóa các nhãn `tx_speed.label` và `tx_speed.fee_multiplier` sang `class="form-label !mb-0"`.
+     - `demo-modal.component.html`: Chuẩn hóa các nhãn switch cấu hình (`cards.date_picker.label_max_date`, `option_min_date`, `option_presets`) và tiêu đề section sang `form-label`.
+     - `home.component.html`: Chuẩn hóa các label của Selects, Tooltips, Badges, Ripple duration/opacity sang `form-label`.
+  4. **Bổ Sung Unit Test (`delete-confirm-modal.component.spec.ts`):**
+     - Thêm test case kiểm tra class `form-label` áp dụng chính xác cho keyword label và target item label (38/38 tests passed).
+- **Xác thực:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npm test`: 38/38 tests passed (100%).
+  - `npm run build`: Build production hoàn tất thành công 100%.
+
+### Yêu cầu: Tối Ưu Hóa & Làm Mượt Hoạt Ảnh Hover & Transition Cho Component Avatar (`AvatarComponent`) Bao Gồm Nút Đếm (+N Counter)
+- **Nội dung yêu cầu:** Rà soát và tinh chỉnh độ mượt, loại bỏ cảm giác giật/cứng khi hover trên Avatar Group Stack (+N counter) và Single Avatar; tăng thời gian chuyển động lên `duration-500` tạo hiệu ứng êm ái, bồng bềnh và mượt mà tối đa.
+- **Phân tích kỹ thuật & Nguyên nhân gây cảm giác "cứng":**
+  1. **Đường cong chuyển động mặc định (Default Easing & Timing):** Trước đó dùng `duration-200` với easing mặc định của trình duyệt khiến chuyển động bị cụt, dừng đột ngột và thiếu độ đàn hồi tự nhiên.
+  2. **Chuyển vị 1 chiều thiếu chiều sâu 3D:** Stack items chỉ có `hover:-translate-y-1` (tịnh tiến đơn thuần) mà không có phóng to (`scale-110`) và không có bóng nổi đa lớp (`shadow-xl shadow-purple-500/25`), khiến cảm giác như các khối cứng bị đẩy lên trục Y.
+  3. **Lệch pha trên Single Avatar:** Phần tử bọc ngoài không chuyển động mà chỉ có `div` con phóng to, khiến chấm trạng thái (`status dot`) bị đứng yên và tách rời khỏi avatar.
+- **Các bước & Vị trí đã thực hiện:**
+  1. **Template `avatar.component.html`:**
+     - Tích hợp GPU Acceleration `transform-gpu` giúp render 60-120fps không răng cưa.
+     - Ứng dụng đường cong đàn hồi cao cấp với thời gian mở rộng: `duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]` (Spring Physics 500ms) tạo hiệu ứng nảy nhẹ tự nhiên, êm dịu và cực kỳ mượt mà.
+     - Single Avatar: Đưa toàn bộ wrapper lên `hover:-translate-y-1.5 hover:scale-110`, đồng bộ chấm trạng thái `group-hover/avatar:scale-110` và bóng tím mờ `group-hover/avatar:shadow-xl group-hover/avatar:shadow-purple-500/25`.
+     - Avatar Group Items & `+N Counter`: Đồng bộ `hover:z-30 hover:-translate-y-2 hover:scale-110 hover:shadow-xl hover:shadow-purple-500/25`, bổ sung đệm lề an toàn `py-1.5 px-1` tránh bị cắt mép.
+  2. **Unit Test `avatar.component.spec.ts`:**
+     - Đồng bộ và vượt qua toàn bộ 5 test cases (`duration-500`, `transform-gpu`, `hover:scale-110`, `hover:-translate-y-2`).
+- **Xác thực:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npm test`: 37/37 tests passed (100%).
+  - `npm run build`: Build production hoàn tất thành công 100%.
+
+### Yêu cầu: Khắc Phục Lỗi Dropdown Popover Quá Ngắn & Mất Cân Đối Cho Multi-Language i18n Dropdown (`LanguageSelectorComponent`)
+- **Nội dung yêu cầu:** Rà soát và sửa lỗi dropdown ngôn ngữ bên trái ("SELECT SYSTEM LANGUAGE") trong card Multi-Language i18n Dropdown bị quá ngắn, popover co hẹp làm gãy tiêu đề và cắt cụt chữ (`Tiếng V...`, `Engl...`), cần fix cân đối đồng bộ.
+- **Phân tích kỹ thuật & Nguyên nhân:**
+  1. **Thẻ wrapper cố định `inline-block`:** Trong `language-selector.component.html`, container gốc bị gán cứng class `inline-block`. Khi component ở chế độ `variant="full"` (như tại showcase trên Dashboard và trong Sidebar), component bị co ngắn lại theo độ dài text của nút bấm thay vì dàn trải `w-full` theo chiều rộng của khung `.form-field` cha hoặc card bên dưới.
+  2. **Popover thiếu `min-width` an toàn và bị ép theo container hẹp:** Popover khi `variant="full"` có `w-full` dựa trên container cha ~130px. Kích thước này không đủ chứa padding, icon cờ 20px, gap, text tên ngôn ngữ và icon check, khiến tiêu đề `SELECT LANGUAGE` bị gãy thành 2 dòng (`SELECT` / `LANGUAGE`) và chữ `Tiếng Việt`, `English` bị co cụt (`Tiếng V...`, `Engl...`).
+- **Các bước & Vị trí đã thực hiện:**
+  1. **Component Host & Controller `language-selector.component.ts`:**
+     - Cập nhật host bindings: `[class.w-full]="variant === 'full'"`, `[class.block]="variant === 'full'"`, `[class.inline-block]="variant === 'compact'"`.
+  2. **Template `language-selector.component.html`:**
+     - Wrapper container chuyển sang `[ngClass]="{ 'w-full block': variant === 'full', 'inline-block': variant === 'compact' }"`.
+     - Nút trigger `variant="full"`: chuẩn hóa `w-full flex items-center justify-between`, bổ sung `hover:bg-slate-200/80 dark:hover:bg-slate-800/80`, `shadow-xs`, và `truncate min-w-0` cho nhãn text.
+     - Popover menu: bổ sung `absolute left-0 right-0 w-full min-w-[220px]`, thêm `whitespace-nowrap` cho tiêu đề `SELECT LANGUAGE` để đảm bảo luôn nằm phẳng trên 1 hàng, hiển thị trọn vẹn nhãn `Tiếng Việt` và `English`.
+     - Tối ưu transition nút item trong popover sang `transition-[background-color,color] duration-150` chuẩn hiệu năng.
+  3. **Bổ Sung Bộ Unit Test Toàn Diện (`language-selector.component.spec.ts` - 5 test cases):**
+     - Kiểm tra khởi tạo default compact variant, kiểm tra render full variant với class `w-full` và native name, toggle popover với class `min-w-[220px]`, đổi ngôn ngữ cập nhật Signal state và đóng popover trên phím Escape.
+- **Xác thực:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npm test`: 32/32 tests passed (100%).
+  - `npm run build`: Build production hoàn tất thành công 100%.
+
+### Yêu cầu: Chuẩn Hóa Căn Chỉnh Dọc (`items-center`) Cho Component Custom Checkbox (`CustomCheckboxComponent`)
+- **Nội dung yêu cầu:** Rà soát và cập nhật `app-custom-checkbox` bổ sung `items-center` đồng bộ với `app-custom-radio`, khắc phục tình trạng lệch trục dọc và mất cân đối giao diện.
+- **Phân tích kỹ thuật & Nguyên nhân:**
+  1. Trước đó, `CustomCheckboxComponent` sử dụng `items-start` kết hợp với padding-top bù trừ thủ công `pt-0.5` trên vùng label và `ng-content`. Điều này gây ra hiện tượng ô checkbox bị lệch vị trí so với văn bản (đặc biệt khi hiển thị cạnh `app-custom-radio` hoặc trong form có label/description).
+  2. Trong khi đó, `CustomRadioComponent` sử dụng `items-center` và không dùng `pt-0.5`, giúp nút radio và text luôn căn giữa hoàn hảo theo trục dọc.
+- **Các bước & Vị trí đã thực hiện:**
+  1. **Template `custom-checkbox.component.html`:**
+     - Đổi `items-start` thành `items-center` trên thẻ `<label class="group flex items-center gap-3 cursor-pointer select-none" ...>`.
+     - Loại bỏ hoàn toàn class `pt-0.5` khỏi container text `@if (label || description)` và thẻ `<span>` chứa `<ng-content>`.
+     - Chuẩn hóa thụt lề cho thẻ `<app-icon>`.
+  2. **Bổ Sung Bộ Unit Test Toàn Diện:**
+     - `custom-checkbox.component.spec.ts` (5 test cases): Kiểm tra khởi tạo default values, class `items-center`, hiển thị label/description, logic toggle checked/emit checkedChange, vô hiệu hóa khi disabled, và tương thích ControlValueAccessor.
+     - `custom-radio.component.spec.ts` (5 test cases): Kiểm tra khởi tạo default values, class `items-center`, hiển thị label/description, logic select/checkedChange, vô hiệu hóa khi disabled, và tương thích ControlValueAccessor.
+- **Xác thực:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npm test`: 27/27 tests passed (100%).
+  - `npm run build`: Build production hoàn tất thành công 100%.
+
 ### Yêu cầu: Rà Soát & Tối Ưu Hóa Toàn Diện Transition Classes (Loại Bỏ `transition-all`, Tuyệt Đối Không Dùng Transition Cho `border` & `padding`)
 - **Nội dung yêu cầu:** Rà soát lại toàn bộ codebase để tối ưu hóa, loại bỏ hoàn toàn các class `transition-all`, chuyển sang khai báo danh sách thuộc tính cụ thể (`transform`, `scale`, `background-color`, `color`, `box-shadow`, `opacity`, `width`, `height`, `stroke-dashoffset`, `grid-template-rows`, ...). Tuyệt đối không sử dụng transition với `border` (border-color, border-width) hay `padding`.
 - **Phân tích kỹ thuật & Hiệu năng trình duyệt:**

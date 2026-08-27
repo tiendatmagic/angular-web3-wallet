@@ -1,4 +1,4 @@
-﻿import { Component, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 
@@ -13,6 +13,11 @@ export interface AvatarItem {
   standalone: true,
   imports: [CommonModule, TranslatePipe],
   templateUrl: './avatar.component.html',
+  styles: [`
+    :host {
+      display: inline-block;
+    }
+  `],
   host: { 'class': 'inline-block' },
 })
 export class AvatarComponent {

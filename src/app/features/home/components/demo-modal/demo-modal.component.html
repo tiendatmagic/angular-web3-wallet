@@ -3,7 +3,7 @@
     class="flex flex-col gap-2.5 p-3 bg-slate-100/50 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 rounded-xl space-y-1.5"
   >
     <div class="flex items-center justify-between">
-      <span class="text-xs font-bold text-slate-500 dark:text-slate-400">{{
+      <span class="form-label !mb-0">{{
         'cards.date_picker.label_max_date' | translate
       }}</span>
       <app-custom-switch
@@ -13,7 +13,7 @@
     </div>
 
     <div class="flex items-center justify-between">
-      <span class="text-xs font-bold text-slate-500 dark:text-slate-400">{{
+      <span class="form-label !mb-0">{{
         'cards.date_picker.option_min_date' | translate
       }}</span>
       <app-custom-switch
@@ -23,7 +23,7 @@
     </div>
 
     <div class="flex items-center justify-between">
-      <span class="text-xs font-bold text-slate-500 dark:text-slate-400">{{
+      <span class="form-label !mb-0">{{
         'cards.date_picker.option_presets' | translate
       }}</span>
       <app-custom-switch
@@ -136,7 +136,7 @@
 
   <div class="border-t border-slate-100 dark:border-slate-800/40 pt-4.5 space-y-4">
     <div class="flex items-center justify-between">
-      <h5 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">
+      <h5 class="form-label !mb-0">
         {{ 'showcase.demo_form_components' | translate }}
       </h5>
       <app-badge variant="ultra" [pulse]="true">{{ 'showcase.new_badge' | translate }}</app-badge>
@@ -185,7 +185,7 @@
   <div
     class="bg-slate-100 dark:bg-slate-950/40 rounded-xl p-4 space-y-1.5 border border-slate-200/30 dark:border-slate-800/30"
   >
-    <h5 class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-2">
+    <h5 class="form-label mb-2">
       {{ 'showcase.current_value' | translate }}
     </h5>
     <div class="text-xs font-mono text-slate-500 dark:text-slate-400">
