@@ -208,16 +208,24 @@
             >
               <div class="flex items-center gap-3 truncate min-w-0">
                 <div
-                  class="w-4.5 h-4.5 rounded-full border flex items-center justify-center transition-colors shrink-0"
+                  class="w-4.5 h-4.5 rounded-full border grid place-items-center transition-colors shrink-0"
                   [ngClass]="{
                     'border-primary text-primary': activeRadioValue === item.radioValue,
                     'border-slate-300 dark:border-slate-700 bg-transparent':
                       activeRadioValue !== item.radioValue,
                   }"
                 >
-                  @if (activeRadioValue === item.radioValue) {
-                    <div class="w-2.5 h-2.5 rounded-full bg-primary"></div>
-                  }
+                  <svg
+                    class="w-2.5 h-2.5 text-primary transition-[transform,opacity] duration-150 ease-out pointer-events-none"
+                    [class.scale-100]="activeRadioValue === item.radioValue"
+                    [class.scale-0]="activeRadioValue !== item.radioValue"
+                    [class.opacity-100]="activeRadioValue === item.radioValue"
+                    [class.opacity-0]="activeRadioValue !== item.radioValue"
+                    viewBox="0 0 10 10"
+                    fill="currentColor"
+                  >
+                    <circle cx="5" cy="5" r="5" />
+                  </svg>
                 </div>
                 <span class="truncate">{{ item.label }}</span>
               </div>

@@ -1,3 +1,24 @@
+### Yêu Cầu: Khắc Phục Lỗi Lệch Tâm Chấm Tròn Bên Trong Của Component Radio Button
+- **Nội dung yêu cầu:** Xem xét và sửa lỗi chấm tròn (inner dot) của nút Radio (`CustomRadioComponent`) bị lệch tâm so với viền tròn ngoài (đặc biệt là option ở cuối cùng).
+- **Phân tích kỹ thuật & Nguyên nhân:**
+  1. **Nguyên nhân lệch tâm trên subpixel layout:**
+     - Trước đó `CustomRadioComponent` sử dụng thẻ `div` con với animation `animate-scale-up` (`@keyframes scaleUp { from { transform: scale(0); } to { transform: scale(1); } } forwards`).
+     - Thuộc tính `forwards` lưu vĩnh viễn `transform: scale(1)` trên DOM, ép trình duyệt tạo ra một GPU composited texture/layer riêng biệt cho chấm tròn.
+     - Khi nằm ở option thứ 3 (cuối cùng), toạ độ `Y` trên trang bị rơi vào số lẻ/phần thập phân subpixel (do text/description của các option phía trên có line-height và margins).
+     - GPU layer của chấm tròn bị Chromium pixel-snapping theo `Math.floor()` độc lập với viền tròn `border-2` của thẻ cha, dẫn đến việc chấm tròn bị dịch lệch 1px lên trên và 1px sang trái.
+  2. **Giải pháp kiến trúc toàn diện:**
+     - Chuyển đổi chấm tròn bên trong sang **SVG Vector Circle** (`<svg viewBox="0 0 10 10" class="w-2.5 h-2.5 ..."><circle cx="5" cy="5" r="5" fill="currentColor"/></svg>`), đảm bảo tâm vector `(5, 5)` luôn được SVG rasterizer định vị chính xác 100% về mặt toán học ở mọi tỉ lệ DPI/zoom.
+     - Sử dụng CSS Grid `grid place-items-center` thay cho flexbox để đảm bảo căn giữa tuyệt đối trong bounding box.
+     - Áp dụng cơ chế transition mượt mà `transition-[transform,opacity] duration-150 ease-out` kết hợp `scale-100 opacity-100` / `scale-0 opacity-0` (đồng bộ chuẩn cơ chế với `CustomCheckboxComponent`), loại bỏ triệt để GPU texture compositing layer treo vĩnh viễn.
+     - Đồng bộ hóa cấu trúc radio item trong `DropdownMenuComponent` (`dropdown-menu.component.html`).
+- **Các vị trí đã xử lý:**
+  1. `src/app/shared/components/custom-radio/custom-radio.component.html`: Thay thế div transform bằng SVG circle + `grid place-items-center` và transition `scale/opacity`.
+  2. `src/app/shared/components/dropdown-menu/dropdown-menu.component.html`: Đồng bộ radio dot sang SVG circle + `grid place-items-center`.
+- **Xác thực:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npm test`: 20 files / 102 tests passed (100%).
+  - `npm run build`: Build production hoàn tất thành công 100%.
+
 ### Yêu Cầu: Rà Soát Toàn Diện Đa Ngôn Ngữ (i18n), Đối Chiếu Key EN / VI & Quét Toàn Bộ Source HTML / TS
 - **Nội dung yêu cầu:** Kiểm tra lại toàn bộ source code xem có còn chỗ nào chưa dịch đa ngôn ngữ không, các key EN / VI đã đầy đủ hay chưa, tra cứu toàn bộ file HTML và TS.
 - **Phân tích kỹ thuật & Kết quả rà soát:**

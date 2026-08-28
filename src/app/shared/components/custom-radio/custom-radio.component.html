@@ -4,16 +4,24 @@
   [class.pointer-events-none]="disabled"
 >
   <div
-    class="relative shrink-0 h-5 w-5 rounded-full border-2 transition-[background-color,box-shadow,transform,scale] duration-200 flex items-center justify-center"
+    class="relative shrink-0 w-5 h-5 rounded-full border-2 transition-[background-color,border-color,box-shadow] duration-200 grid place-items-center"
     [ngClass]="
       checked()
         ? 'border-[var(--color-primary)] bg-white dark:bg-slate-900 shadow-sm shadow-[var(--color-primary)]/15'
         : 'bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 group-hover:border-slate-400 dark:group-hover:border-slate-500'
     "
   >
-    @if (checked()) {
-      <div class="h-2.5 w-2.5 rounded-full bg-[var(--color-primary)] animate-scale-up"></div>
-    }
+    <svg
+      class="w-2.5 h-2.5 text-[var(--color-primary)] transition-[transform,opacity] duration-150 ease-out pointer-events-none"
+      [class.scale-100]="checked()"
+      [class.scale-0]="!checked()"
+      [class.opacity-100]="checked()"
+      [class.opacity-0]="!checked()"
+      viewBox="0 0 10 10"
+      fill="currentColor"
+    >
+      <circle cx="5" cy="5" r="5" />
+    </svg>
   </div>
 
   <input
