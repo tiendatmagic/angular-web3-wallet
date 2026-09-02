@@ -1,3 +1,23 @@
+### Yêu Cầu: Full Width Container Chuẩn Hoá Cho Đa Ngôn Ngữ, Đa Chain & Account Dropdown
+- **Nội dung yêu cầu:** Cấu hình riêng cho 3 dropdown trên Header: Đa ngôn ngữ (`app-language-selector`), Đa chain (`app-network-selector`) và Account Dropdown (`app-account-dropdown`) hiển thị full width bám theo container chuẩn (`px-4` / `16px` trên mobile) đồng bộ 100% với các thẻ Card nội dung trang chủ bên dưới.
+- **Phân tích kỹ thuật & Tối ưu hóa:**
+  1. **Đồng bộ chuẩn Container Grid trên Mobile (`< 640px`):**
+     - Đặt `popoverWidth = window.innerWidth - 32`, `left = 16`, `maxWidth = 'calc(100vw - 32px)'` (tính kèm bù trừ containing block offset nếu có).
+     - Đồng bộ `HeaderComponent` container padding từ `px-2` sang `px-4 sm:px-6` (`max-w-[1530px] mx-auto w-full px-4 sm:px-6`).
+     - Chiều rộng của popover trải dài từ `left: 16px` đến `right: 16px`, khớp chuẩn xác 100% với hai đường gióng biên của các thẻ Card nội dung bên dưới, triệt tiêu hoàn toàn độ lệch biên.
+  2. **Duy trì hiển thị chuẩn mực trên Desktop (`>= 640px`):**
+     - Giữ nguyên cơ chế menu popover thả nổi bám theo trigger button bên phải với các kích thước chuẩn hóa (`220px` cho Ngôn ngữ, `280px` cho Mạng, `320px` cho Tài khoản).
+     - Chế độ `variant="full"` của `LanguageSelector` trong showcase tiếp tục bám theo full width của thẻ cha.
+- **Các vị trí đã xử lý:**
+  1. `src/app/shared/layout/header/header.component.html`
+  2. `src/app/shared/components/language-selector/language-selector.component.ts`
+  3. `src/app/shared/components/network-selector/network-selector.component.ts`
+  4. `src/app/shared/components/account-dropdown/account-dropdown.component.ts`
+- **Xác thực:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npm test` (`npx ng test --watch=false`): 20 files / 102 tests passed (100%).
+  - `npm run build`: Build production thành công 100%.
+
 ### Yêu Cầu: Sửa Lỗi Responsive Button Bị Tràn & Đè Chữ (Aura & Ripple Showcase Cards)
 - **Nội dung yêu cầu:** Khắc phục lỗi responsive button bị tràn chữ, co rúm và đè chéo văn bản lên nhau trong nhóm điều khiển Tốc độ quay (Speed), Bo góc (Border Radius), Kiểu màu sắc (Variant) của Showcase Component Aura và nhóm nút trong Ripple Card.
 - **Phân tích kỹ thuật & Nguyên nhân:**

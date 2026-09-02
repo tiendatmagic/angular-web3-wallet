@@ -112,16 +112,22 @@ export class NetworkSelectorComponent implements OnDestroy {
     const offset = getContainingBlockOffset(trigger);
     const gap = 6;
 
-    let popoverWidth = 256; // w-64
-    if (window.innerWidth < 640) {
-      popoverWidth = Math.min(280, window.innerWidth - 16);
+    const isMobile = window.innerWidth < 640;
+    let popoverWidth: number;
+    let left: number;
+
+    if (isMobile) {
+      popoverWidth = window.innerWidth - 32;
+      left = 16;
+    } else {
+      popoverWidth = 280;
+      left = triggerRect.right - popoverWidth;
     }
 
-    let left = triggerRect.right - popoverWidth;
-    if (left + popoverWidth > window.innerWidth - 8) {
-      left = Math.max(8, window.innerWidth - 8 - popoverWidth);
+    if (left + popoverWidth > window.innerWidth - 16) {
+      left = Math.max(16, window.innerWidth - 16 - popoverWidth);
     }
-    if (left < 8) left = 8;
+    if (left < 16 && isMobile) left = 16;
 
     const spaceBelow = window.innerHeight - triggerRect.bottom - gap - 12;
     const spaceAbove = triggerRect.top - gap - 12;
@@ -138,7 +144,7 @@ export class NetworkSelectorComponent implements OnDestroy {
         top: `${triggerRect.bottom + gap - offset.top}px`,
         left: `${left - offset.left}px`,
         width: `${popoverWidth}px`,
-        maxWidth: 'calc(100vw - 16px)',
+        maxWidth: isMobile ? 'calc(100vw - 32px)' : 'calc(100vw - 16px)',
         maxHeight: `${Math.max(160, spaceBelow)}px`,
         transform: 'none',
         overflowY: 'auto',
@@ -150,7 +156,7 @@ export class NetworkSelectorComponent implements OnDestroy {
         top: `${triggerRect.top - gap - offset.top}px`,
         left: `${left - offset.left}px`,
         width: `${popoverWidth}px`,
-        maxWidth: 'calc(100vw - 16px)',
+        maxWidth: isMobile ? 'calc(100vw - 32px)' : 'calc(100vw - 16px)',
         maxHeight: `${Math.max(160, spaceAbove)}px`,
         transform: 'translateY(-100%)',
         overflowY: 'auto',
