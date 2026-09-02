@@ -5,13 +5,15 @@ import {
   EventEmitter,
   forwardRef,
   signal,
-  computed
+  computed,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'app-custom-slider',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, FormsModule],
   templateUrl: './custom-slider.component.html',
   host: { 'class': 'block' },

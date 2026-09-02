@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, Input, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '../icon/icon.component';
 import { ToastService } from '../../../core/services/toast.service';
@@ -8,6 +8,7 @@ import { TranslatePipe } from '../../pipes/translate.pipe';
 @Component({
   selector: 'app-copy-to-clipboard',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, IconComponent, TranslatePipe],
   templateUrl: './copy-to-clipboard.component.html',
   host: { 'class': 'inline-block' },
@@ -22,14 +23,21 @@ export class CopyToClipboardComponent {
   @Input() showToast: boolean = true;
   @Input() successMessage?: string;
 
-  copied: boolean = false;
+  public readonly copiedSignal = signal<boolean>(false);
+
+  get copied(): boolean {
+    return this.copiedSignal();
+  }
+  set copied(val: boolean) {
+    this.copiedSignal.set(val);
+  }
 
   async copy(): Promise<void> {
     if (!this.textToCopy) return;
 
     try {
       await navigator.clipboard.writeText(this.textToCopy);
-      this.copied = true;
+      this.copiedSignal.set(true);
 
       if (this.showToast) {
         const msg = this.successMessage || this.translationService.t('common.copied_to_clipboard');
@@ -37,7 +45,7 @@ export class CopyToClipboardComponent {
       }
 
       setTimeout(() => {
-        this.copied = false;
+        this.copiedSignal.set(false);
       }, 2000);
     } catch (err) {
       console.error('Failed to copy text: ', err);

@@ -1,4 +1,4 @@
-﻿import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ButtonComponent } from '../button/button.component';
 import { IconComponent } from '../icon/icon.component';
@@ -7,6 +7,7 @@ import { TranslationService } from '../../../core/services/translation.service';
 @Component({
   selector: 'app-empty-state',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, IconComponent, ButtonComponent],
   templateUrl: './empty-state.component.html',
   host: { 'class': 'block w-full' },

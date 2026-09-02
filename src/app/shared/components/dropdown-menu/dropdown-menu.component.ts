@@ -9,10 +9,9 @@ import {
   effect,
   ViewChild,
   ChangeDetectorRef,
-  HostListener,
-  AfterViewChecked,
-  OnInit,
+  ChangeDetectionStrategy,
   OnDestroy,
+  NgZone,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '../icon/icon.component';
@@ -51,37 +50,21 @@ export interface DropdownMenuHeader {
   standalone: true,
   imports: [CommonModule, IconComponent, TranslatePipe],
   templateUrl: './dropdown-menu.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'inline-block',
     '(document:click)': 'onClickOutside($event)',
     '(document:keydown.escape)': 'onEscape()',
   },
 })
-export class DropdownMenuComponent implements AfterViewChecked, OnInit, OnDestroy {
+export class DropdownMenuComponent implements OnDestroy {
   private readonly elementRef = inject(ElementRef);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly dropdownService = inject(DropdownService);
+  private readonly ngZone = inject(NgZone);
   public readonly instanceId = 'dropdown_menu_' + Math.random().toString(36).substring(2, 9);
   private scrollListener: any;
-
-  ngOnInit(): void {
-    this.scrollListener = () => {
-      if (this.isOpen()) {
-        this.updateMenuPosition();
-        if (this.activeSubmenuId()) {
-          this.updateSubmenuPosition();
-        }
-        this.cdr.detectChanges();
-      }
-    };
-    window.addEventListener('scroll', this.scrollListener, true);
-  }
-
-  ngOnDestroy(): void {
-    if (this.scrollListener) {
-      window.removeEventListener('scroll', this.scrollListener, true);
-    }
-  }
+  private rafId: number | null = null;
 
   @ViewChild('triggerWrapper') triggerWrapper?: ElementRef<HTMLElement>;
   @ViewChild('popoverEl') popoverEl?: ElementRef<HTMLElement>;
@@ -125,9 +108,49 @@ export class DropdownMenuComponent implements AfterViewChecked, OnInit, OnDestro
       this.isOpen.set(false);
       this.activeSubmenuId.set(null);
       this.activeSubmenuTriggerEl = null;
+      this.detachListeners();
       this.openChange.emit(false);
+      this.cdr.markForCheck();
     }
   });
+
+  private attachListeners(): void {
+    if (this.scrollListener || typeof window === 'undefined') return;
+    this.ngZone.runOutsideAngular(() => {
+      this.scrollListener = () => {
+        if (!this.rafId) {
+          this.rafId = requestAnimationFrame(() => {
+            this.rafId = null;
+            if (this.isOpen()) {
+              this.updateMenuPosition();
+              if (this.activeSubmenuId()) {
+                this.updateSubmenuPosition();
+              }
+              this.cdr.markForCheck();
+            }
+          });
+        }
+      };
+      window.addEventListener('scroll', this.scrollListener, { capture: true, passive: true });
+      window.addEventListener('resize', this.scrollListener, { passive: true });
+    });
+  }
+
+  private detachListeners(): void {
+    if (this.rafId) {
+      cancelAnimationFrame(this.rafId);
+      this.rafId = null;
+    }
+    if (this.scrollListener) {
+      window.removeEventListener('scroll', this.scrollListener, true);
+      window.removeEventListener('resize', this.scrollListener);
+      this.scrollListener = null;
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.detachListeners();
+  }
 
   public toggleOpen(event?: MouseEvent): void {
     if (event) {
@@ -138,11 +161,15 @@ export class DropdownMenuComponent implements AfterViewChecked, OnInit, OnDestro
     this.isOpen.set(newState);
     if (newState) {
       this.dropdownService.open(this.instanceId);
+      this.attachListeners();
       this.updateMenuPosition();
+      this.cdr.markForCheck();
     } else {
       this.dropdownService.close(this.instanceId);
       this.activeSubmenuId.set(null);
       this.activeSubmenuTriggerEl = null;
+      this.detachListeners();
+      this.cdr.markForCheck();
     }
     this.openChange.emit(newState);
   }
@@ -151,8 +178,10 @@ export class DropdownMenuComponent implements AfterViewChecked, OnInit, OnDestro
     if (this.disabled || this.isOpen()) return;
     this.isOpen.set(true);
     this.dropdownService.open(this.instanceId);
+    this.attachListeners();
     this.updateMenuPosition();
     this.openChange.emit(true);
+    this.cdr.markForCheck();
   }
 
   public close(): void {
@@ -161,7 +190,9 @@ export class DropdownMenuComponent implements AfterViewChecked, OnInit, OnDestro
     this.dropdownService.close(this.instanceId);
     this.activeSubmenuId.set(null);
     this.activeSubmenuTriggerEl = null;
+    this.detachListeners();
     this.openChange.emit(false);
+    this.cdr.markForCheck();
   }
 
   public onClickOutside(event: MouseEvent): void {
@@ -186,6 +217,7 @@ export class DropdownMenuComponent implements AfterViewChecked, OnInit, OnDestro
     if (item.type !== 'sub' && this.activeSubmenuId()) {
       this.activeSubmenuId.set(null);
       this.activeSubmenuTriggerEl = null;
+      this.cdr.markForCheck();
     }
   }
 
@@ -201,12 +233,14 @@ export class DropdownMenuComponent implements AfterViewChecked, OnInit, OnDestro
       } else {
         this.openSubmenu(item, event);
       }
+      this.cdr.markForCheck();
       return;
     }
 
     if (item.type === 'checkbox') {
       item.checked = !item.checked;
       this.checkboxChange.emit({ item, checked: item.checked });
+      this.cdr.markForCheck();
       return;
     }
 
@@ -215,6 +249,8 @@ export class DropdownMenuComponent implements AfterViewChecked, OnInit, OnDestro
       this.radioChange.emit({ item, value: item.radioValue });
       if (this.closeOnSelect) {
         this.close();
+      } else {
+        this.cdr.markForCheck();
       }
       return;
     }
@@ -226,6 +262,8 @@ export class DropdownMenuComponent implements AfterViewChecked, OnInit, OnDestro
 
     if (this.closeOnSelect) {
       this.close();
+    } else {
+      this.cdr.markForCheck();
     }
   }
 
@@ -239,6 +277,7 @@ export class DropdownMenuComponent implements AfterViewChecked, OnInit, OnDestro
     } else {
       this.openSubmenu(item, event);
     }
+    this.cdr.markForCheck();
   }
 
   public openSubmenu(item: DropdownMenuItem, event: MouseEvent): void {
@@ -247,6 +286,7 @@ export class DropdownMenuComponent implements AfterViewChecked, OnInit, OnDestro
     this.activeSubmenuTriggerEl = event.currentTarget as HTMLElement;
     this.activeSubmenuId.set(item.id || item.label || '');
     this.updateSubmenuPosition();
+    this.cdr.markForCheck();
   }
 
   public onSubmenuMouseEnter(): void {}
@@ -254,6 +294,7 @@ export class DropdownMenuComponent implements AfterViewChecked, OnInit, OnDestro
   public onPopoverScroll(): void {
     if (this.activeSubmenuId()) {
       this.updateSubmenuPosition();
+      this.cdr.markForCheck();
     }
   }
 
@@ -418,25 +459,5 @@ export class DropdownMenuComponent implements AfterViewChecked, OnInit, OnDestro
       overflowY: 'auto',
       zIndex: '10000',
     };
-  }
-
-  ngAfterViewChecked(): void {
-    if (this.isOpen()) {
-      this.updateMenuPosition();
-      if (this.activeSubmenuId()) {
-        this.updateSubmenuPosition();
-      }
-    }
-  }
-
-  @HostListener('window:scroll')
-  @HostListener('window:resize')
-  onWindowChange(): void {
-    if (this.isOpen()) {
-      this.updateMenuPosition();
-      if (this.activeSubmenuId()) {
-        this.updateSubmenuPosition();
-      }
-    }
   }
 }

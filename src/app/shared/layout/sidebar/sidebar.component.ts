@@ -9,7 +9,8 @@ import {
   AfterViewInit,
   OnDestroy,
   signal,
-  effect
+  effect,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router, NavigationEnd } from '@angular/router';
@@ -33,6 +34,7 @@ export interface NavItem {
 @Component({
   selector: 'app-sidebar',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     RouterModule,

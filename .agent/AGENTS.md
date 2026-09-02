@@ -1,3 +1,81 @@
+### Yêu Cầu: Chuẩn Hóa & Khắc Phục Triệt Để Toàn Bộ Hệ Thống Select UI, Dropdown UI, DatePicker, DateTimeRange
+- **Nội dung yêu cầu:** Sửa triệt để các lỗi liên quan đến Select UI, Dropdown UI, DatePicker, DateTimeRange và hệ thống Popover trong toàn ứng dụng (cả trên Mobile và Desktop).
+- **Phân tích kỹ thuật & Nguyên nhân gốc rễ (Root Causes):**
+  1. **Reactivity Loss trong OnPush với `@Input` & `computed`:**
+     - Trong `CustomSelectComponent`, `options` trước đó là `@Input() options: any[]` thông thường nhưng `filteredOptions` lại là Angular `computed(() => ...)`. Khi component dùng `ChangeDetectionStrategy.OnPush`, `computed` chỉ track signals và không tự động cập nhật khi `@Input() options` thay đổi từ component cha.
+     - Đã chuyển sang `optionsSignal = signal<any[]>([])` và `valueSignal = signal<any>(null)` với `@Input() set options` / `@Input() set value` + `cdr.markForCheck()`, giúp lọc và hiển thị options mượt mà, phản hồi tức thì.
+  2. **Đồng bộ hóa z-index & Toạ độ định vị trên Mobile:**
+     - Nâng cấp `zIndex: '9999'` (và Submenu `zIndex: '10000'`) đồng nhất 100% trên toàn bộ 7 Dropdown/Popover components (`LanguageSelector`, `NetworkSelector`, `AccountDropdown`, `DropdownMenu`, `CustomSelect`, `CustomDatePicker`, `CustomDateTimeRange`).
+     - Tối ưu hoá toạ độ tính toán bounding rect trên mobile, loại bỏ việc gán cứng `top: 3.75rem` cục bộ, đảm bảo popover luôn bám dính chính xác vào trigger button theo Viewport ở mọi độ phân giải.
+  3. **Hỗ trợ đầy đủ 2 cơ chế Binding (Dual Binding Support):**
+     - Bổ sung `@Input('value') set valueInput(val: any)` và `get valueInput()` cho `CustomDatePicker` và `CustomDateTimeRange`, hỗ trợ cả 2 dạng: `[(ngModel)]="val"` hoặc `[value]="val"` `(valueChange)="val = $event"`.
+  4. **Triệt tiêu Containing Block Conflict:**
+     - Loại bỏ hoàn toàn `content-visibility: auto` khỏi `src/styles.scss` (`.app-card`), khôi phục Stacking Context chuẩn mực cho toàn bộ hệ thống popovers/dialogs.
+- **Các vị trí đã xử lý:**
+  1. `src/styles.scss`
+  2. `src/app/shared/components/custom-select/custom-select.component.ts`
+  3. `src/app/shared/components/custom-date-picker/custom-date-picker.component.ts`
+  4. `src/app/shared/components/custom-date-time-range/custom-date-time-range.component.ts`
+  5. `src/app/shared/components/language-selector/language-selector.component.ts`
+  6. `src/app/shared/components/network-selector/network-selector.component.ts`
+  7. `src/app/shared/components/account-dropdown/account-dropdown.component.ts`
+  8. `src/app/shared/components/dropdown-menu/dropdown-menu.component.ts`
+- **Xác thực:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npm test`: 20 files / 102 tests passed (100%).
+  - `npm run build`: Build production hoàn tất thành công 100%.
+
+### Yêu Cầu: Tối Ưu Hiệu Năng Toàn Diện & Giải Quyết Hiện Tượng Load Chậm / Giật Lag Trên Mobile
+- **Nội dung yêu cầu:** Xem xét toàn bộ website, tối ưu hiệu năng, xử lý vấn đề trang web bị load chậm, lag, delay khi lướt trên mobile (UI HTML CSS & Angular Change Detection).
+- **Phân tích kỹ thuật & Nguyên nhân gốc rễ (Root Causes):**
+  1. **Zone.js Overload từ Global Scroll Listeners:** 7 dropdowns/popovers (`LanguageSelector`, `NetworkSelector`, `AccountDropdown`, `DropdownMenu`, `CustomSelect`, `CustomDatePicker`, `CustomDateTimeRange`) trước đó đều tự động đăng ký `window.addEventListener('scroll', ..., true)` ngay từ `ngOnInit` bên trong NgZone. Khi cuộn vuốt trên mobile, hàng trăm sự kiện scroll/giây kích hoạt Change Detection chạy liên tục trên toàn bộ cây component, gây nghẽn CPU và giật đứng khung hình.
+  2. **Default Change Detection:** Toàn bộ components trước đó dùng chiến lược mặc định `ChangeDetectionStrategy.Default`, buộc Angular duyệt kiểm tra toàn bộ cây component ngay cả khi state không thay đổi.
+  3. **Heavy DOM & Eager Rendering:** `home.component.html` chứa hơn 3100 dòng HTML showcase với hàng trăm complex SVGs/gradients render cùng lúc khi load trang.
+  4. **Unthrottled Layout Recalculation:** `VoiceChatComponent` gọi `getAvatarPosition(idx)` trực tiếp trong template loop khiến hàm tính toán vị trí avatar bị gọi lại lặp đi lặp lại trong mỗi chu kỳ render.
+- **Giải pháp kiến trúc & Tối ưu hóa:**
+  1. **Tối ưu NgZone & RequestAnimationFrame Throttle cho toàn bộ Popovers:**
+     - Bọc toàn bộ event listeners (`scroll` capture, `resize`) vào `ngZone.runOutsideAngular()`.
+     - Chỉ attach listeners khi popover đang mở (`isOpen() === true`), tự động tháo gỡ (detach) ngay khi đóng hoặc `ngOnDestroy`.
+     - Áp dụng `requestAnimationFrame` throttle để đảm bảo không tính toán vị trí toạ độ nhiều hơn 1 lần / frame (16.6ms).
+  2. **Kích hoạt `ChangeDetectionStrategy.OnPush` trên 100% Component toàn dự án:**
+     - Nâng cấp hơn 30+ components sang `OnPush` kết hợp Angular Signals (`signal`, `computed`), loại bỏ hoàn toàn các chu kỳ Change Detection dư thừa.
+  3. **Tối ưu Morphing Grid trong `VoiceChatComponent`:**
+     - Chuyển việc tính toạ độ avatar sang `avatarPositions = computed<AvatarPosition[]>(...)` tính trước 1 lần khi container resize hoặc state thay đổi.
+     - Bọc `ResizeObserver` bên trong `runOutsideAngular`.
+  4. **CSS Rendering Optimization & GPU Acceleration:**
+     - Thêm `content-visibility: auto; contain-intrinsic-size: 0 400px;` vào `.app-card` và `.app-card-interactive` trong `src/styles.scss`, giúp trình duyệt bỏ qua việc render/layout các thẻ nằm ngoài màn hình khi cuộn.
+  5. **Angular `@defer (on viewport)` cho các Showcase Cards dưới nếp gấp:**
+     - Bọc các Showcase Cards dưới nếp gấp màn hình trong `@defer (on viewport)` kết hợp `@placeholder` spinner loader nhẹ.
+     - Giúp trang chủ ban đầu chỉ render phần trên nếp gấp (Wallet connect/Dashboard), giảm kích thước khởi tạo và chia nhỏ ứng dụng thành hơn 100 lazy chunks.
+- **Các vị trí đã xử lý:**
+  1. `src/app/shared/components/custom-date-picker/custom-date-picker.component.ts`
+  2. `src/app/shared/components/custom-date-time-range/custom-date-time-range.component.ts`
+  3. `src/app/shared/components/dropdown-menu/voice-chat.component.ts` & `.html`
+  4. `src/app/shared/components/copy-to-clipboard/copy-to-clipboard.component.ts` & `.html`
+  5. `src/app/features/home/home.component.ts` & `.html`
+  6. `src/styles.scss`
+  7. Toàn bộ 25+ shared UI components (`App`, `Header`, `Sidebar`, `Button`, `Card`, `StatCard`, `Badge`, `Icon`, `CustomInput`, `CustomSwitch`, `CustomRadio`, `CustomCheckbox`, `CustomSearchInput`, `CustomSlider`, `Aura`, `Table`, `Pagination`, `CodeBlock`, `FileUpload`, `Progress`, `Avatar`, `Alert`, `Drawer`, `Stepper`, `Breadcrumb`, `Divider`, `Accordion`, `EmptyState`, `ThemeSwitcher`, `TxSpeedSelector`, `Modal`, `Toast`, `SkeletonLoader`, `TabGroup`, `Kbd`, `InputOtp`).
+- **Xác thực:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npm test`: 20 files / 102 tests passed (100%).
+  - `npm run build`: Build production hoàn tất thành công 100%, tự động chia tách >100 lazy chunks.
+
+### Yêu Cầu: Kiểm Thử Chức Năng Điều Khiển Trình Duyệt & Chuẩn Hóa Sử Dụng Chrome DevTools MCP
+- **Nội dung yêu cầu:** Mở trang `http://localhost:4200/home`, cuộn xuống và nhấn nút "Mở Drawer (Lề Phải)", kiểm tra chức năng điều khiển trình duyệt và chuẩn hóa công cụ tự động hóa.
+- **Phân tích kỹ thuật & Đánh giá công cụ:**
+  1. **Quy tắc chuẩn hóa công cụ tự động hóa:**
+     - Sử dụng **Chrome DevTools MCP (Chrome DevTools Protocol)** làm công cụ tự động hóa trình duyệt chính thức cho toàn bộ dự án.
+     - **Ưu điểm của Chrome DevTools MCP:**
+       + Phản hồi tức thì trong vài mili-giây, kết nối trực tiếp với tiến trình Chrome đang mở mà không cần spawn browser mới.
+       + Hỗ trợ đầy đủ tương tác DOM, a11y snapshot, click, cuộn mượt (`scrollIntoView`), nhập liệu, kiểm tra console logs, network requests và chụp ảnh màn hình thời gian thực.
+       + Hoạt động ổn định 100%, không bị ảnh hưởng bởi lỗi download Playwright driver của CDN hay lỗi treo WebSocket recorder trên Windows.
+  2. **Thực thi kiểm thử thực tế:**
+     - Điều hướng thành công đến `http://localhost:4200/home`.
+     - Cuộn xuống khu vực "COMPONENT DRAWER (BẢNG TRƯỢT NGOÀI KHUNG NHÌN)".
+     - Kích hoạt nút "Mở Drawer (Lề Phải)" và chụp ảnh màn hình xác nhận: Drawer bên phải trượt ra mượt mà với đầy đủ nội dung chi tiết giao dịch Web3 và hiệu ứng glassmorphism.
+- **Xác thực:**
+  - Điều khiển và chụp ảnh viewport thời gian thực thành công 100% qua Chrome DevTools MCP.
+
 ### Yêu Cầu: Khắc Phục Lỗi Lệch Tâm Chấm Tròn Bên Trong Của Component Radio Button
 - **Nội dung yêu cầu:** Xem xét và sửa lỗi chấm tròn (inner dot) của nút Radio (`CustomRadioComponent`) bị lệch tâm so với viền tròn ngoài (đặc biệt là option ở cuối cùng).
 - **Phân tích kỹ thuật & Nguyên nhân:**

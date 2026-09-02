@@ -1,9 +1,11 @@
-﻿import { Component, Input, ContentChildren, QueryList, AfterContentInit } from '@angular/core';
+import { Component, Input, ContentChildren, QueryList, AfterContentInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AccordionItemComponent } from './accordion-item.component';
 
 @Component({
   selector: 'app-accordion',
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule],
   templateUrl: './accordion.component.html',
   host: { 'class': 'block' },
@@ -32,6 +34,7 @@ export class AccordionComponent implements AfterContentInit {
     if (this.multiple) {
       targetItem.expanded = !targetItem.expanded;
       targetItem.expandedChange.emit(targetItem.expanded);
+      targetItem.cdr.markForCheck();
     } else {
       const isCurrentlyExpanded = targetItem.expanded;
       
@@ -39,10 +42,12 @@ export class AccordionComponent implements AfterContentInit {
         if (item === targetItem) {
           item.expanded = !isCurrentlyExpanded;
           item.expandedChange.emit(item.expanded);
+          item.cdr.markForCheck();
         } else {
           if (item.expanded) {
             item.expanded = false;
             item.expandedChange.emit(false);
+            item.cdr.markForCheck();
           }
         }
       });

@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, Inject, Optional, OnInit, inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Inject, Optional, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '@shared/components/icon/icon.component';
 import { ButtonComponent } from '@shared/components/button/button.component';
@@ -8,6 +8,7 @@ import { TranslationService } from '@core/services/translation.service';
 @Component({
   selector: 'app-confirm-modal',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, IconComponent, ButtonComponent],
   templateUrl: './confirm-modal.component.html'
 })

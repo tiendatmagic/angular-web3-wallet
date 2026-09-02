@@ -8,7 +8,8 @@ import {
   TemplateRef,
   Directive,
   signal,
-  computed
+  computed,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '@shared/components/icon/icon.component';
@@ -38,6 +39,7 @@ export class TableCellDirective {
 @Component({
   selector: 'app-table',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, IconComponent, SkeletonLoaderComponent, EmptyStateComponent, TranslatePipe],
   templateUrl: './table.component.html',
   host: { 'class': 'block w-full' },

@@ -1,4 +1,4 @@
-import { Component, inject, computed } from '@angular/core';
+import { Component, inject, computed, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { StateService } from '@core/services/state.service';
@@ -10,6 +10,7 @@ import { TranslatePipe } from '@shared/pipes/translate.pipe';
 @Component({
   selector: 'app-tx-speed-selector',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, FormsModule, TabGroupComponent, BadgeComponent, TranslatePipe],
   templateUrl: './tx-speed-selector.component.html',
   host: { 'class': 'block' },

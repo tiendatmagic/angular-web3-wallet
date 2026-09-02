@@ -1,9 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '../icon/icon.component';
 
 @Component({
   selector: 'button[app-button], a[app-button]',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, IconComponent],
   templateUrl: './button.component.html',
   host: {

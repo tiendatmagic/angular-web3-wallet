@@ -1,10 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'app-icon',
-  
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './icon.component.html',
-  
   host: {
     'class': 'inline-flex items-center justify-center shrink-0 leading-none align-middle'
   }

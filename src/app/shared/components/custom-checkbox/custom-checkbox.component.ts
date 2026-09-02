@@ -1,17 +1,19 @@
-﻿import {
+import {
   Component,
   Input,
   Output,
   EventEmitter,
   forwardRef,
-  signal} from '@angular/core';
+  signal,
+  ChangeDetectionStrategy
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { IconComponent } from '../icon/icon.component';
 
 @Component({
   selector: 'app-custom-checkbox',
-  
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, FormsModule, IconComponent],
   templateUrl: './custom-checkbox.component.html',
   host: { 'class': 'block' },
@@ -19,7 +21,8 @@ import { IconComponent } from '../icon/icon.component';
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => CustomCheckboxComponent),
-      multi: true},
+      multi: true
+    },
   ],
 })
 export class CustomCheckboxComponent implements ControlValueAccessor {

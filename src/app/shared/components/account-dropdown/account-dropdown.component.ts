@@ -7,10 +7,10 @@ import {
   HostListener,
   effect,
   ViewChild,
-  AfterViewChecked,
-  OnInit,
   OnDestroy,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  ChangeDetectionStrategy,
+  NgZone
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StateService } from '@core/services/state.service';
@@ -29,12 +29,13 @@ import { getContainingBlockOffset } from '@core/utils/dom.utils';
   standalone: true,
   imports: [CommonModule, IconComponent, ButtonComponent, BadgeComponent, ShortAddressPipe, TranslatePipe],
   templateUrl: './account-dropdown.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     'class': 'block',
     '(document:keydown.escape)': 'onEscape()'
   },
 })
-export class AccountDropdownComponent implements AfterViewChecked, OnInit, OnDestroy {
+export class AccountDropdownComponent implements OnDestroy {
   @Input() avatarUrl?: string;
   @Input() statusBadge?: string;
 
@@ -43,8 +44,10 @@ export class AccountDropdownComponent implements AfterViewChecked, OnInit, OnDes
   private dropdownService = inject(DropdownService);
   private elementRef = inject(ElementRef);
   private cdr = inject(ChangeDetectorRef);
+  private ngZone = inject(NgZone);
   public readonly instanceId = 'account_dropdown_' + Math.random().toString(36).substring(2, 9);
   private scrollListener: any;
+  private rafId: number | null = null;
 
   @ViewChild('triggerBtn') triggerBtn?: ElementRef<HTMLElement>;
   public dropdownStyle: Record<string, string> = {};
@@ -55,23 +58,44 @@ export class AccountDropdownComponent implements AfterViewChecked, OnInit, OnDes
     const activeId = this.dropdownService.activeDropdownId();
     if (activeId !== this.instanceId && this.isOpen()) {
       this.isOpen.set(false);
+      this.detachListeners();
+      this.cdr.markForCheck();
     }
   });
 
-  ngOnInit(): void {
-    this.scrollListener = () => {
-      if (this.isOpen()) {
-        this.updateDropdownPosition();
-        this.cdr.detectChanges();
-      }
-    };
-    window.addEventListener('scroll', this.scrollListener, true);
+  private attachListeners(): void {
+    if (this.scrollListener || typeof window === 'undefined') return;
+    this.ngZone.runOutsideAngular(() => {
+      this.scrollListener = () => {
+        if (!this.rafId) {
+          this.rafId = requestAnimationFrame(() => {
+            this.rafId = null;
+            if (this.isOpen()) {
+              this.updateDropdownPosition();
+              this.cdr.markForCheck();
+            }
+          });
+        }
+      };
+      window.addEventListener('scroll', this.scrollListener, { capture: true, passive: true });
+      window.addEventListener('resize', this.scrollListener, { passive: true });
+    });
+  }
+
+  private detachListeners(): void {
+    if (this.rafId) {
+      cancelAnimationFrame(this.rafId);
+      this.rafId = null;
+    }
+    if (this.scrollListener) {
+      window.removeEventListener('scroll', this.scrollListener, true);
+      window.removeEventListener('resize', this.scrollListener);
+      this.scrollListener = null;
+    }
   }
 
   ngOnDestroy(): void {
-    if (this.scrollListener) {
-      window.removeEventListener('scroll', this.scrollListener, true);
-    }
+    this.detachListeners();
   }
 
   public toggleDropdown(event: Event): void {
@@ -80,9 +104,13 @@ export class AccountDropdownComponent implements AfterViewChecked, OnInit, OnDes
     this.isOpen.set(newState);
     if (newState) {
       this.dropdownService.open(this.instanceId);
+      this.attachListeners();
       this.updateDropdownPosition();
+      this.cdr.markForCheck();
     } else {
       this.dropdownService.close(this.instanceId);
+      this.detachListeners();
+      this.cdr.markForCheck();
     }
   }
 
@@ -94,19 +122,15 @@ export class AccountDropdownComponent implements AfterViewChecked, OnInit, OnDes
     const offset = getContainingBlockOffset(trigger);
     const gap = 6;
 
+    let popoverWidth = 288; // w-72
     if (window.innerWidth < 640) {
-      this.dropdownStyle = {
-        position: 'fixed',
-        top: '3.75rem',
-        left: '12px',
-        right: '12px',
-        zIndex: '200',
-      };
-      return;
+      popoverWidth = Math.min(300, window.innerWidth - 16);
     }
 
-    const popoverWidth = 288; // w-72
     let left = triggerRect.right - popoverWidth;
+    if (left + popoverWidth > window.innerWidth - 8) {
+      left = Math.max(8, window.innerWidth - 8 - popoverWidth);
+    }
     if (left < 8) left = 8;
 
     const spaceBelow = window.innerHeight - triggerRect.bottom - gap - 12;
@@ -128,7 +152,7 @@ export class AccountDropdownComponent implements AfterViewChecked, OnInit, OnDes
         maxHeight: `${Math.max(160, spaceBelow)}px`,
         transform: 'none',
         overflowY: 'auto',
-        zIndex: '200',
+        zIndex: '9999',
       };
     } else {
       this.dropdownStyle = {
@@ -140,21 +164,8 @@ export class AccountDropdownComponent implements AfterViewChecked, OnInit, OnDes
         maxHeight: `${Math.max(160, spaceAbove)}px`,
         transform: 'translateY(-100%)',
         overflowY: 'auto',
-        zIndex: '200',
+        zIndex: '9999',
       };
-    }
-  }
-
-  ngAfterViewChecked(): void {
-    if (this.isOpen()) {
-      this.updateDropdownPosition();
-    }
-  }
-
-  @HostListener('window:resize')
-  onWindowResize(): void {
-    if (this.isOpen()) {
-      this.updateDropdownPosition();
     }
   }
 
@@ -170,6 +181,8 @@ export class AccountDropdownComponent implements AfterViewChecked, OnInit, OnDes
       this.stateService.showToast(this.translationService.t('header.copied_address_toast'), 'success');
       this.isOpen.set(false);
       this.dropdownService.close(this.instanceId);
+      this.detachListeners();
+      this.cdr.markForCheck();
     }
   }
 
@@ -177,6 +190,8 @@ export class AccountDropdownComponent implements AfterViewChecked, OnInit, OnDes
     event.stopPropagation();
     this.isOpen.set(false);
     this.dropdownService.close(this.instanceId);
+    this.detachListeners();
+    this.cdr.markForCheck();
     setTimeout(async () => {
       await this.stateService.openAccountModal();
     }, 100);
@@ -193,6 +208,8 @@ export class AccountDropdownComponent implements AfterViewChecked, OnInit, OnDes
     window.open(`${explorerUrl}/address/${address}`, '_blank');
     this.isOpen.set(false);
     this.dropdownService.close(this.instanceId);
+    this.detachListeners();
+    this.cdr.markForCheck();
   }
 
   public async disconnectWallet(event: Event): Promise<void> {
@@ -200,6 +217,8 @@ export class AccountDropdownComponent implements AfterViewChecked, OnInit, OnDes
     await this.stateService.disconnectWallet();
     this.isOpen.set(false);
     this.dropdownService.close(this.instanceId);
+    this.detachListeners();
+    this.cdr.markForCheck();
   }
 
   @HostListener('document:click', ['$event'])
@@ -207,6 +226,8 @@ export class AccountDropdownComponent implements AfterViewChecked, OnInit, OnDes
     if (this.isOpen() && !this.elementRef.nativeElement.contains(event.target)) {
       this.isOpen.set(false);
       this.dropdownService.close(this.instanceId);
+      this.detachListeners();
+      this.cdr.markForCheck();
     }
   }
 
@@ -214,6 +235,8 @@ export class AccountDropdownComponent implements AfterViewChecked, OnInit, OnDes
     if (this.isOpen()) {
       this.isOpen.set(false);
       this.dropdownService.close(this.instanceId);
+      this.detachListeners();
+      this.cdr.markForCheck();
     }
   }
 }

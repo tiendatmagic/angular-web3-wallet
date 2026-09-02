@@ -4,17 +4,16 @@ import {
   Output,
   EventEmitter,
   ElementRef,
-  HostListener,
   inject,
   signal,
   computed,
   effect,
   forwardRef,
   ViewChild,
-  AfterViewChecked,
-  OnInit,
   OnDestroy,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  ChangeDetectionStrategy,
+  NgZone,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
@@ -26,6 +25,8 @@ import { getContainingBlockOffset } from '@core/utils/dom.utils';
 
 @Component({
   selector: 'app-custom-date-picker',
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     'class': 'block',
     '(document:click)': 'onClickOutside($event)',
@@ -41,29 +42,15 @@ import { getContainingBlockOffset } from '@core/utils/dom.utils';
     }
   ],
 })
-export class CustomDatePickerComponent implements ControlValueAccessor, AfterViewChecked, OnInit, OnDestroy {
+export class CustomDatePickerComponent implements ControlValueAccessor, OnDestroy {
   private readonly elementRef = inject(ElementRef);
   private readonly cdr = inject(ChangeDetectorRef);
   public readonly lang = inject(TranslationService);
   private readonly dropdownService = inject(DropdownService);
+  private readonly ngZone = inject(NgZone);
   public readonly instanceId = 'date_picker_' + Math.random().toString(36).substring(2, 9);
   private scrollListener: any;
-
-  ngOnInit(): void {
-    this.scrollListener = () => {
-      if (this.isOpen()) {
-        this.updatePopoverPosition();
-        this.cdr.detectChanges();
-      }
-    };
-    window.addEventListener('scroll', this.scrollListener, true);
-  }
-
-  ngOnDestroy(): void {
-    if (this.scrollListener) {
-      window.removeEventListener('scroll', this.scrollListener, true);
-    }
-  }
+  private rafId: number | null = null;
 
   @Input() placeholder: string = '';
   @Input() disabled: boolean = false;
@@ -73,6 +60,13 @@ export class CustomDatePickerComponent implements ControlValueAccessor, AfterVie
   @Input() enableTime: boolean = false;
   @Input() placement: 'auto' | 'top' | 'bottom' = 'auto';
   @Input() clearable: boolean = true;
+
+  @Input('value') set valueInput(val: any) {
+    this.writeValue(val);
+  }
+  get valueInput(): string {
+    return this.value();
+  }
 
   @Output() valueChange = new EventEmitter<string>();
 
@@ -86,6 +80,8 @@ export class CustomDatePickerComponent implements ControlValueAccessor, AfterVie
     const activeId = this.dropdownService.activeDropdownId();
     if (activeId !== this.instanceId && this.isOpen()) {
       this.isOpen.set(false);
+      this.detachListeners();
+      this.cdr.markForCheck();
     }
   });
 
@@ -161,12 +157,49 @@ export class CustomDatePickerComponent implements ControlValueAccessor, AfterVie
       .format(new Date(this.currentYear(), this.currentMonth(), 1));
   });
 
+  private attachListeners(): void {
+    if (this.scrollListener || typeof window === 'undefined') return;
+    this.ngZone.runOutsideAngular(() => {
+      this.scrollListener = () => {
+        if (!this.rafId) {
+          this.rafId = requestAnimationFrame(() => {
+            this.rafId = null;
+            if (this.isOpen()) {
+              this.updatePopoverPosition();
+              this.cdr.markForCheck();
+            }
+          });
+        }
+      };
+      window.addEventListener('scroll', this.scrollListener, { capture: true, passive: true });
+      window.addEventListener('resize', this.scrollListener, { passive: true });
+    });
+  }
+
+  private detachListeners(): void {
+    if (this.rafId) {
+      cancelAnimationFrame(this.rafId);
+      this.rafId = null;
+    }
+    if (this.scrollListener) {
+      window.removeEventListener('scroll', this.scrollListener, true);
+      window.removeEventListener('resize', this.scrollListener);
+      this.scrollListener = null;
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.detachListeners();
+  }
+
   public onClickOutside(event: MouseEvent): void {
     if (this.isOpen() && !this.elementRef.nativeElement.contains(event.target)) {
       const popover = document.querySelector('.date-picker-popover');
       if (popover && popover.contains(event.target as Node)) return;
       this.isOpen.set(false);
       this.dropdownService.close(this.instanceId);
+      this.detachListeners();
+      this.cdr.markForCheck();
     }
   }
 
@@ -174,6 +207,8 @@ export class CustomDatePickerComponent implements ControlValueAccessor, AfterVie
     if (this.isOpen()) {
       this.isOpen.set(false);
       this.dropdownService.close(this.instanceId);
+      this.detachListeners();
+      this.cdr.markForCheck();
     }
   }
 
@@ -192,11 +227,14 @@ export class CustomDatePickerComponent implements ControlValueAccessor, AfterVie
           this.selectedMinute.set(dateVal.getMinutes());
         }
       }
-      this.updatePopoverPosition();
       this.dropdownService.open(this.instanceId);
+      this.attachListeners();
+      this.updatePopoverPosition();
     } else {
       this.dropdownService.close(this.instanceId);
+      this.detachListeners();
     }
+    this.cdr.markForCheck();
   }
 
   public clear(event: Event): void {
@@ -209,6 +247,8 @@ export class CustomDatePickerComponent implements ControlValueAccessor, AfterVie
     this.selectedPresetDays.set(null);
     this.isOpen.set(false);
     this.dropdownService.close(this.instanceId);
+    this.detachListeners();
+    this.cdr.markForCheck();
   }
 
   public readonly selectedPresetDays = signal<number | null>(null);
@@ -282,20 +322,6 @@ export class CustomDatePickerComponent implements ControlValueAccessor, AfterVie
     }
   }
 
-  ngAfterViewChecked(): void {
-    if (this.isOpen() && this.triggerDiv) {
-      this.updatePopoverPosition();
-    }
-  }
-
-  @HostListener('window:scroll')
-  @HostListener('window:resize')
-  onWindowChange(): void {
-    if (this.isOpen()) {
-      this.updatePopoverPosition();
-    }
-  }
-
   public prevMonth(event: Event): void {
     event.stopPropagation();
     const current = this.currentMonth();
@@ -305,6 +331,7 @@ export class CustomDatePickerComponent implements ControlValueAccessor, AfterVie
     } else {
       this.currentMonth.set(current - 1);
     }
+    this.cdr.markForCheck();
   }
 
   public nextMonth(event: Event): void {
@@ -316,6 +343,7 @@ export class CustomDatePickerComponent implements ControlValueAccessor, AfterVie
     } else {
       this.currentMonth.set(current + 1);
     }
+    this.cdr.markForCheck();
   }
 
   public selectDate(date: Date, event: Event): void {
@@ -340,7 +368,10 @@ export class CustomDatePickerComponent implements ControlValueAccessor, AfterVie
       this.onChange(formatted);
       this.onTouched();
       this.isOpen.set(false);
+      this.dropdownService.close(this.instanceId);
+      this.detachListeners();
     }
+    this.cdr.markForCheck();
   }
 
   public onHourChange(hVal: any): void {
@@ -348,6 +379,7 @@ export class CustomDatePickerComponent implements ControlValueAccessor, AfterVie
     if (!isNaN(h)) {
       this.selectedHour.set(h);
       this.updateDateTimeValue();
+      this.cdr.markForCheck();
     }
   }
 
@@ -356,12 +388,16 @@ export class CustomDatePickerComponent implements ControlValueAccessor, AfterVie
     if (!isNaN(m)) {
       this.selectedMinute.set(m);
       this.updateDateTimeValue();
+      this.cdr.markForCheck();
     }
   }
 
   public confirmSelection(event: Event): void {
     event.stopPropagation();
     this.isOpen.set(false);
+    this.dropdownService.close(this.instanceId);
+    this.detachListeners();
+    this.cdr.markForCheck();
   }
 
   private updateDateTimeValue(): void {
@@ -404,7 +440,10 @@ export class CustomDatePickerComponent implements ControlValueAccessor, AfterVie
       this.onChange(formatted);
       this.onTouched();
       this.isOpen.set(false);
+      this.dropdownService.close(this.instanceId);
+      this.detachListeners();
     }
+    this.cdr.markForCheck();
   }
 
   public isToday(date: Date): boolean {
@@ -493,6 +532,7 @@ export class CustomDatePickerComponent implements ControlValueAccessor, AfterVie
         this.selectedMinute.set(dateObj.getMinutes());
       }
     }
+    this.cdr.markForCheck();
   }
 
   public registerOnChange(fn: any): void {
@@ -505,5 +545,6 @@ export class CustomDatePickerComponent implements ControlValueAccessor, AfterVie
 
   public setDisabledState(isDisabled: boolean): void {
     this.disabled = isDisabled;
+    this.cdr.markForCheck();
   }
 }

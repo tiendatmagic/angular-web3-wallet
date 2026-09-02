@@ -1,4 +1,4 @@
-import { Component, Type, Injector } from '@angular/core';
+import { Component, Type, Injector, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ModalRef } from '@core/services/modal-ref';
 import { IconComponent } from '@shared/components/icon/icon.component';
@@ -6,6 +6,7 @@ import { TranslatePipe } from '@shared/pipes/translate.pipe';
 
 @Component({
   selector: 'app-modal-wrapper',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, IconComponent, TranslatePipe],
   templateUrl: './modal-wrapper.component.html'
 })

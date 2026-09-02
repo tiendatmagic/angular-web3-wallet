@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 
@@ -11,6 +11,7 @@ export interface AvatarItem {
 @Component({
   selector: 'app-avatar',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, TranslatePipe],
   templateUrl: './avatar.component.html',
   styles: [`

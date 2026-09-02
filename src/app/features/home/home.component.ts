@@ -1,4 +1,4 @@
-import { Component, signal, inject, computed, effect } from '@angular/core';
+import { Component, signal, inject, computed, effect, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '@shared/components/icon/icon.component';
@@ -48,6 +48,7 @@ import { DEMO_TRANSACTIONS } from './mock-transactions.data';
 
 @Component({
   selector: 'app-home',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     FormsModule,

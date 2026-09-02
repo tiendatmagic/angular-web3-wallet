@@ -4,17 +4,16 @@ import {
   Output,
   EventEmitter,
   ElementRef,
-  HostListener,
   inject,
   signal,
   computed,
   effect,
   forwardRef,
   ViewChild,
-  AfterViewChecked,
-  OnInit,
   OnDestroy,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  ChangeDetectionStrategy,
+  NgZone,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
@@ -31,6 +30,8 @@ export interface DateTimeRangeValue {
 
 @Component({
   selector: 'app-custom-date-time-range',
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     'class': 'block',
     '(document:click)': 'onClickOutside($event)',
@@ -46,29 +47,15 @@ export interface DateTimeRangeValue {
     }
   ]
 })
-export class CustomDateTimeRangeComponent implements ControlValueAccessor, AfterViewChecked, OnInit, OnDestroy {
+export class CustomDateTimeRangeComponent implements ControlValueAccessor, OnDestroy {
   private readonly elementRef = inject(ElementRef);
   private readonly cdr = inject(ChangeDetectorRef);
   public readonly lang = inject(TranslationService);
   private readonly dropdownService = inject(DropdownService);
+  private readonly ngZone = inject(NgZone);
   public readonly instanceId = 'date_range_' + Math.random().toString(36).substring(2, 9);
   private scrollListener: any;
-
-  ngOnInit(): void {
-    this.scrollListener = () => {
-      if (this.isOpen()) {
-        this.updatePopoverPosition();
-        this.cdr.detectChanges();
-      }
-    };
-    window.addEventListener('scroll', this.scrollListener, true);
-  }
-
-  ngOnDestroy(): void {
-    if (this.scrollListener) {
-      window.removeEventListener('scroll', this.scrollListener, true);
-    }
-  }
+  private rafId: number | null = null;
 
   @Input() placeholder: string = '';
   @Input() disabled: boolean = false;
@@ -78,6 +65,13 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
   @Input() maxDate: string = '';
   @Input() placement: 'auto' | 'top' | 'bottom' = 'auto';
   @Input() clearable: boolean = true;
+
+  @Input('value') set valueInput(val: any) {
+    this.writeValue(val);
+  }
+  get valueInput(): DateTimeRangeValue {
+    return this.value();
+  }
 
   @Output() valueChange = new EventEmitter<DateTimeRangeValue>();
 
@@ -91,6 +85,8 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
     if (activeId !== this.instanceId && this.isOpen()) {
       this.isOpen.set(false);
       this.closeAllTimeDropdowns();
+      this.detachListeners();
+      this.cdr.markForCheck();
     }
   });
 
@@ -186,6 +182,41 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
       .format(new Date(this.currentYear(), this.currentMonth(), 1));
   });
 
+  private attachListeners(): void {
+    if (this.scrollListener || typeof window === 'undefined') return;
+    this.ngZone.runOutsideAngular(() => {
+      this.scrollListener = () => {
+        if (!this.rafId) {
+          this.rafId = requestAnimationFrame(() => {
+            this.rafId = null;
+            if (this.isOpen()) {
+              this.updatePopoverPosition();
+              this.cdr.markForCheck();
+            }
+          });
+        }
+      };
+      window.addEventListener('scroll', this.scrollListener, { capture: true, passive: true });
+      window.addEventListener('resize', this.scrollListener, { passive: true });
+    });
+  }
+
+  private detachListeners(): void {
+    if (this.rafId) {
+      cancelAnimationFrame(this.rafId);
+      this.rafId = null;
+    }
+    if (this.scrollListener) {
+      window.removeEventListener('scroll', this.scrollListener, true);
+      window.removeEventListener('resize', this.scrollListener);
+      this.scrollListener = null;
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.detachListeners();
+  }
+
   public onClickOutside(event: MouseEvent): void {
     if (this.isOpen() && !this.elementRef.nativeElement.contains(event.target)) {
       const popover = document.querySelector('.date-time-range-popover');
@@ -264,7 +295,9 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
     this.closeAllTimeDropdowns();
     this.isOpen.set(true);
     this.dropdownService.open(this.instanceId);
+    this.attachListeners();
     this.updatePopoverPosition();
+    this.cdr.markForCheck();
   }
 
   private updatePopoverPosition(): void {
@@ -336,20 +369,6 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
     }
   }
 
-  ngAfterViewChecked(): void {
-    if (this.isOpen() && this.triggerDiv) {
-      this.updatePopoverPosition();
-    }
-  }
-
-  @HostListener('window:scroll')
-  @HostListener('window:resize')
-  onWindowChange(): void {
-    if (this.isOpen()) {
-      this.updatePopoverPosition();
-    }
-  }
-
   public prevMonth(event: Event): void {
     event.stopPropagation();
     const current = this.currentMonth();
@@ -360,6 +379,7 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
       this.currentMonth.set(current - 1);
     }
     this.closeAllTimeDropdowns();
+    this.cdr.markForCheck();
   }
 
   public nextMonth(event: Event): void {
@@ -372,6 +392,7 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
       this.currentMonth.set(current + 1);
     }
     this.closeAllTimeDropdowns();
+    this.cdr.markForCheck();
   }
 
   public readonly activePresetId = signal<string | null>(null);
@@ -399,6 +420,7 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
       }
     }
     this.closeAllTimeDropdowns();
+    this.cdr.markForCheck();
   }
 
   public onDateHover(date: Date): void {
@@ -431,6 +453,7 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
 
     this.onTimeChange();
     this.closeAllTimeDropdowns();
+    this.cdr.markForCheck();
   }
 
   public onTimeChange(): void {
@@ -470,6 +493,9 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
     this.onTouched();
     this.closeAllTimeDropdowns();
     this.isOpen.set(false);
+    this.dropdownService.close(this.instanceId);
+    this.detachListeners();
+    this.cdr.markForCheck();
   }
 
   public cancel(event?: Event): void {
@@ -477,6 +503,8 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
     this.closeAllTimeDropdowns();
     this.isOpen.set(false);
     this.dropdownService.close(this.instanceId);
+    this.detachListeners();
+    this.cdr.markForCheck();
   }
 
   public clear(event: Event): void {
@@ -494,6 +522,9 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
     this.activePresetId.set(null);
     this.closeAllTimeDropdowns();
     this.isOpen.set(false);
+    this.dropdownService.close(this.instanceId);
+    this.detachListeners();
+    this.cdr.markForCheck();
   }
 
   public selectPreset(presetId: string, event: Event): void {
@@ -734,6 +765,7 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
     } else {
       this.value.set({ startDate: '', endDate: '' });
     }
+    this.cdr.markForCheck();
   }
 
   public registerOnChange(fn: any): void {
@@ -746,6 +778,6 @@ export class CustomDateTimeRangeComponent implements ControlValueAccessor, After
 
   public setDisabledState(isDisabled: boolean): void {
     this.disabled = isDisabled;
+    this.cdr.markForCheck();
   }
 }
-

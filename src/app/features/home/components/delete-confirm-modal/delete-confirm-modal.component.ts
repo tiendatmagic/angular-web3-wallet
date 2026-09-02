@@ -8,7 +8,8 @@ import {
   OnInit,
   inject,
   signal,
-  computed
+  computed,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -32,6 +33,7 @@ import {
 @Component({
   selector: 'app-delete-confirm-modal',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     FormsModule,

@@ -4,17 +4,17 @@ import {
   Output,
   EventEmitter,
   ElementRef,
-  HostListener,
   inject,
   signal,
   computed,
   effect,
   forwardRef,
   ViewChild,
-  AfterViewChecked,
-  OnInit,
   OnDestroy,
-  ChangeDetectorRef} from '@angular/core';
+  ChangeDetectorRef,
+  ChangeDetectionStrategy,
+  NgZone,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { IconComponent } from '../icon/icon.component';
@@ -30,50 +30,56 @@ export interface SelectOption {
 @Component({
   selector: 'app-custom-select',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     'class': 'block',
     '(document:click)': 'onClickOutside($event)',
     '(document:keydown.escape)': 'onEscape()'
   },
-
   imports: [CommonModule, FormsModule, IconComponent, TranslatePipe],
   templateUrl: './custom-select.component.html',
-
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => CustomSelectComponent),
-      multi: true},
+      multi: true
+    },
   ],
 })
-export class CustomSelectComponent implements ControlValueAccessor, AfterViewChecked, OnInit, OnDestroy {
+export class CustomSelectComponent implements ControlValueAccessor, OnDestroy {
   private readonly elementRef = inject(ElementRef);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly translationService = inject(TranslationService);
   private readonly dropdownService = inject(DropdownService);
+  private readonly ngZone = inject(NgZone);
   public readonly instanceId = 'custom_select_' + Math.random().toString(36).substring(2, 9);
   private scrollListener: any;
+  private rafId: number | null = null;
 
-  ngOnInit(): void {
-    this.scrollListener = () => {
-      if (this.isOpen()) {
-        this.updateDropdownPosition();
-        this.cdr.detectChanges();
-      }
-    };
-    window.addEventListener('scroll', this.scrollListener, true);
+  private _value: any = null;
+  public readonly valueSignal = signal<any>(null);
+  @Input() set value(val: any) {
+    this._value = val;
+    this.valueSignal.set(val);
+    this.cdr.markForCheck();
+  }
+  get value(): any {
+    return this._value;
   }
 
-  ngOnDestroy(): void {
-    if (this.scrollListener) {
-      window.removeEventListener('scroll', this.scrollListener, true);
-    }
-  }
-
-  @Input() value: any = null;
   @Output() valueChange = new EventEmitter<any>();
 
-  @Input() options: any[] = [];
+  private _options: any[] = [];
+  public readonly optionsSignal = signal<any[]>([]);
+  @Input() set options(val: any[]) {
+    this._options = val || [];
+    this.optionsSignal.set(val || []);
+    this.cdr.markForCheck();
+  }
+  get options(): any[] {
+    return this._options;
+  }
+
   @Input() valueKey: string = '';
   @Input() labelKey: string = '';
   @Input() placeholder: string = '';
@@ -93,6 +99,8 @@ export class CustomSelectComponent implements ControlValueAccessor, AfterViewChe
     const activeId = this.dropdownService.activeDropdownId();
     if (activeId !== this.instanceId && this.isOpen()) {
       this.isOpen.set(false);
+      this.detachListeners();
+      this.cdr.markForCheck();
     }
   });
 
@@ -103,10 +111,47 @@ export class CustomSelectComponent implements ControlValueAccessor, AfterViewChe
     return this.placeholder || this.translationService.t('showcase.select_placeholder');
   }
 
+  private attachListeners(): void {
+    if (this.scrollListener || typeof window === 'undefined') return;
+    this.ngZone.runOutsideAngular(() => {
+      this.scrollListener = () => {
+        if (!this.rafId) {
+          this.rafId = requestAnimationFrame(() => {
+            this.rafId = null;
+            if (this.isOpen()) {
+              this.updateDropdownPosition();
+              this.cdr.markForCheck();
+            }
+          });
+        }
+      };
+      window.addEventListener('scroll', this.scrollListener, { capture: true, passive: true });
+      window.addEventListener('resize', this.scrollListener, { passive: true });
+    });
+  }
+
+  private detachListeners(): void {
+    if (this.rafId) {
+      cancelAnimationFrame(this.rafId);
+      this.rafId = null;
+    }
+    if (this.scrollListener) {
+      window.removeEventListener('scroll', this.scrollListener, true);
+      window.removeEventListener('resize', this.scrollListener);
+      this.scrollListener = null;
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.detachListeners();
+  }
+
   public onClickOutside(event: MouseEvent): void {
     if (this.isOpen() && !this.elementRef.nativeElement.contains(event.target)) {
       this.isOpen.set(false);
       this.dropdownService.close(this.instanceId);
+      this.detachListeners();
+      this.cdr.markForCheck();
     }
   }
 
@@ -114,20 +159,25 @@ export class CustomSelectComponent implements ControlValueAccessor, AfterViewChe
     if (this.isOpen()) {
       this.isOpen.set(false);
       this.dropdownService.close(this.instanceId);
+      this.detachListeners();
+      this.cdr.markForCheck();
     }
   }
 
   public toggleOpen(): void {
     if (this.disabled) return;
     const nextState = !this.isOpen();
+    this.isOpen.set(nextState);
     if (nextState) {
       this.searchQuery.set('');
-      this.updateDropdownPosition();
       this.dropdownService.open(this.instanceId);
+      this.attachListeners();
+      this.updateDropdownPosition();
     } else {
       this.dropdownService.close(this.instanceId);
+      this.detachListeners();
     }
-    this.isOpen.set(nextState);
+    this.cdr.markForCheck();
   }
 
   private updateDropdownPosition(): void {
@@ -188,20 +238,6 @@ export class CustomSelectComponent implements ControlValueAccessor, AfterViewChe
     }
   }
 
-  ngAfterViewChecked(): void {
-    if (this.isOpen() && this.triggerBtn) {
-      this.updateDropdownPosition();
-    }
-  }
-
-  @HostListener('window:scroll')
-  @HostListener('window:resize')
-  onWindowChange(): void {
-    if (this.isOpen()) {
-      this.updateDropdownPosition();
-    }
-  }
-
   public selectOption(option: any): void {
     const val = this.getOptionValue(option);
     if (this.multiple) {
@@ -216,12 +252,16 @@ export class CustomSelectComponent implements ControlValueAccessor, AfterViewChe
       this.valueChange.emit(currentVal);
       this.onChange(currentVal);
       this.onTouched();
+      this.cdr.markForCheck();
     } else {
       this.value = val;
       this.valueChange.emit(val);
       this.onChange(val);
       this.onTouched();
       this.isOpen.set(false);
+      this.dropdownService.close(this.instanceId);
+      this.detachListeners();
+      this.cdr.markForCheck();
     }
   }
 
@@ -271,7 +311,7 @@ export class CustomSelectComponent implements ControlValueAccessor, AfterViewChe
   }
 
   public readonly filteredOptions = computed(() => {
-    const opts = this.options || [];
+    const opts = this.optionsSignal() || [];
     const query = this.searchQuery().trim().toLowerCase();
     if (!query) return opts;
     return opts.filter((opt) => {
@@ -289,6 +329,7 @@ export class CustomSelectComponent implements ControlValueAccessor, AfterViewChe
     } else {
       this.value = value;
     }
+    this.cdr.markForCheck();
   }
 
   public registerOnChange(fn: any): void {
@@ -301,5 +342,6 @@ export class CustomSelectComponent implements ControlValueAccessor, AfterViewChe
 
   public setDisabledState(isDisabled: boolean): void {
     this.disabled = isDisabled;
+    this.cdr.markForCheck();
   }
 }

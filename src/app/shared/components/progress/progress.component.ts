@@ -1,4 +1,4 @@
-import { Component, Input, computed, signal } from '@angular/core';
+import { Component, Input, computed, signal, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 export interface ProgressSegment {
@@ -15,6 +15,7 @@ export type ProgressValuePosition = 'right' | 'top' | 'inside' | 'bottom' | 'non
 @Component({
   selector: 'app-progress',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule],
   templateUrl: './progress.component.html',
   host: { 'class': 'block' },

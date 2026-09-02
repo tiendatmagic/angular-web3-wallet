@@ -8,7 +8,8 @@ import {
   inject,
   ElementRef,
   ViewChild,
-  forwardRef
+  forwardRef,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -36,6 +37,7 @@ export interface UploadFileItem {
 @Component({
   selector: 'app-file-upload',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     IconComponent,

@@ -1,4 +1,4 @@
-import { Component, Input, computed, signal, inject } from '@angular/core';
+import { Component, Input, computed, signal, inject, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '../icon/icon.component';
 import { RippleDirective } from '../ripple/ripple.directive';
@@ -16,6 +16,7 @@ export interface CodeFile {
 @Component({
   selector: 'app-code-block',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, IconComponent, RippleDirective, TooltipDirective, TranslatePipe],
   templateUrl: './code-block.component.html',
   host: { 'class': 'block' }

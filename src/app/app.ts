@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from '@shared/layout/header/header.component';
 import { ToastComponent } from '@shared/components/toast/toast.component';
@@ -11,7 +11,7 @@ import { TranslatePipe } from '@shared/pipes/translate.pipe';
 
 @Component({
   selector: 'app-root',
-  
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     RouterOutlet,
     HeaderComponent,

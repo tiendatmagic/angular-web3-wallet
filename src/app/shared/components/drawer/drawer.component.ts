@@ -8,6 +8,7 @@ import {
   Output,
   SimpleChanges,
   inject,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '../icon/icon.component';
@@ -16,6 +17,7 @@ import { TranslatePipe } from '../../pipes/translate.pipe';
 @Component({
   selector: 'app-drawer',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, IconComponent, TranslatePipe],
   templateUrl: './drawer.component.html',
   host: { class: 'block' },

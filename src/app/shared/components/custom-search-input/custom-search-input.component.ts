@@ -1,4 +1,4 @@
-﻿import {
+import {
   Component,
   Input,
   Output,
@@ -6,7 +6,8 @@
   forwardRef,
   signal,
   OnDestroy,
-  inject
+  inject,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -17,7 +18,7 @@ import { TranslationService } from '../../../core/services/translation.service';
 
 @Component({
   selector: 'app-custom-search-input',
-  
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, FormsModule, IconComponent],
   templateUrl: './custom-search-input.component.html',
   host: { 'class': 'block' },
@@ -25,7 +26,8 @@ import { TranslationService } from '../../../core/services/translation.service';
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => CustomSearchInputComponent),
-      multi: true},
+      multi: true
+    },
   ],
 })
 export class CustomSearchInputComponent implements ControlValueAccessor, OnDestroy {

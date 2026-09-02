@@ -1,10 +1,11 @@
-import { Component, Input, Output, EventEmitter, forwardRef, signal } from '@angular/core';
+import { Component, Input, Output, EventEmitter, forwardRef, signal, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'app-custom-switch',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, FormsModule],
   templateUrl: './custom-switch.component.html',
   host: {

@@ -1,4 +1,4 @@
-import { Component, inject, computed } from '@angular/core';
+import { Component, inject, computed, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StateService, ThemeMode } from '@core/services/state.service';
 import { IconComponent } from '@shared/components/icon/icon.component';
@@ -7,6 +7,7 @@ import { TranslatePipe } from '@shared/pipes/translate.pipe';
 @Component({
   selector: 'app-theme-switcher',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, IconComponent, TranslatePipe],
   templateUrl: './theme-switcher.component.html',
   host: {

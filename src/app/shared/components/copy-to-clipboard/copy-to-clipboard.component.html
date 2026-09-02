@@ -11,18 +11,18 @@
     'w-8.5 h-8.5 text-[11px] !p-0': !label && size === 'md',
     'w-10 h-10 text-xs !p-0': !label && size === 'lg',
 
-    'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30': copied,
-    'bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20': !copied
+    'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30': copiedSignal(),
+    'bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20': !copiedSignal()
   }"
-  [title]="copied ? ('cards.copy_to_clipboard.copied_btn' | translate) : ('common.copy' | translate)"
+  [title]="copiedSignal() ? ('cards.copy_to_clipboard.copied_btn' | translate) : ('common.copy' | translate)"
 >
   <app-icon
-    [name]="copied ? 'check' : 'copy'"
+    [name]="copiedSignal() ? 'check' : 'copy'"
     [class]="size === 'sm' ? 'w-3 h-3' : size === 'md' ? 'w-3.5 h-3.5' : 'w-4 h-4'"
-    [ngClass]="{'animate-bounce': copied}"
+    [ngClass]="{'animate-bounce': copiedSignal()}"
   ></app-icon>
 
   @if (label) {
-    <span class="whitespace-nowrap font-bold text-[10px] sm:text-[10px]">{{ copied ? ('cards.copy_to_clipboard.copied_btn' | translate) : label }}</span>
+    <span class="whitespace-nowrap font-bold text-[10px] sm:text-[10px]">{{ copiedSignal() ? ('cards.copy_to_clipboard.copied_btn' | translate) : label }}</span>
   }
 </button>

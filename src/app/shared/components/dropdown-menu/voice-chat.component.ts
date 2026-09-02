@@ -3,12 +3,14 @@ import {
   Input,
   signal,
   computed,
-  HostListener,
   OnInit,
   AfterViewInit,
   OnDestroy,
   ElementRef,
   inject,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  NgZone,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '../icon/icon.component';
@@ -21,16 +23,29 @@ export interface VoiceParticipant {
   isSpeaking?: boolean;
 }
 
+export interface AvatarPosition {
+  x: number;
+  y: number;
+  size: number;
+  opacity: number;
+  zIndex: number;
+  delay: number;
+}
+
 @Component({
   selector: 'app-voice-chat',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, IconComponent, TranslatePipe],
   templateUrl: './voice-chat.component.html',
   host: { class: 'w-full flex justify-center max-w-full' },
 })
 export class VoiceChatComponent implements OnInit, AfterViewInit, OnDestroy {
   private readonly el = inject(ElementRef<HTMLElement>);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly ngZone = inject(NgZone);
   private resizeObserver?: ResizeObserver;
+  private resizeListener?: () => void;
 
   @Input() participants: VoiceParticipant[] = [
     {
@@ -105,32 +120,138 @@ export class VoiceChatComponent implements OnInit, AfterViewInit, OnDestroy {
     Math.min(this.COLLAPSED_WIDTH, this.currentWidth())
   );
 
+  public readonly avatarPositions = computed<AvatarPosition[]>(() => {
+    const expanded = this.isExpanded();
+    const width = this.currentWidth();
+    const isUltra = this.isUltraCompact();
+    const isNar = this.isNarrow();
+    const cWidth = this.collapsedWidth();
+
+    return this.participants.map((_, index) => {
+      if (!expanded) {
+        const size = cWidth < 235 ? 30 : cWidth < 268 ? 34 : this.AVATAR_SIZE_COLLAPSED;
+        const overlap = cWidth < 235 ? -8 : cWidth < 268 ? -10 : this.AVATAR_OVERLAP;
+        const startX = cWidth < 235 ? 38 : cWidth < 268 ? 44 : 54;
+        const limit = 3;
+        const isVisible = index < limit;
+        return {
+          x: isVisible
+            ? startX + index * (size + overlap)
+            : startX + 2 * (size + overlap),
+          y: Math.round((58 - size) / 2),
+          size,
+          opacity: isVisible ? 1 : 0,
+          zIndex: 4 - Math.min(index, 3),
+          delay: 0,
+        };
+      }
+
+      if (isUltra) {
+        const avatarSize = 38;
+        const cols = 3;
+        const colWidth = Math.floor((width - 12) / cols);
+        const gridStartX = Math.round((width - cols * colWidth) / 2 + (colWidth - avatarSize) / 2);
+        const gridStartY = 62;
+        const rowHeight = 64;
+
+        const row = Math.floor(index / cols);
+        const col = index === 6 ? 1 : index % cols;
+
+        return {
+          x: gridStartX + col * colWidth,
+          y: gridStartY + row * rowHeight,
+          size: avatarSize,
+          opacity: 1,
+          zIndex: 1,
+          delay: index * 15,
+        };
+      }
+
+      if (isNar) {
+        const avatarSize = 44;
+        const cols = 3;
+        const colWidth = Math.floor((width - 16) / cols);
+        const gridStartX = Math.round((width - cols * colWidth) / 2 + (colWidth - avatarSize) / 2);
+        const gridStartY = 68;
+        const rowHeight = 74;
+
+        const row = Math.floor(index / cols);
+        const col = index === 6 ? 1 : index % cols;
+
+        return {
+          x: gridStartX + col * colWidth,
+          y: gridStartY + row * rowHeight,
+          size: avatarSize,
+          opacity: 1,
+          zIndex: 1,
+          delay: index * 15,
+        };
+      }
+
+      const avatarSize = this.AVATAR_SIZE_EXPANDED;
+      const cols = 4;
+      const colWidth = Math.floor(width / cols);
+      const gridStartX = Math.round((width - cols * colWidth) / 2 + (colWidth - avatarSize) / 2);
+      const gridStartY = 72;
+      const rowHeight = 84;
+
+      if (index < 4) {
+        return {
+          x: gridStartX + index * colWidth,
+          y: gridStartY,
+          size: avatarSize,
+          opacity: 1,
+          zIndex: 1,
+          delay: index * 15,
+        };
+      }
+
+      const colIndex = index - 4;
+      return {
+        x: Math.round(gridStartX + (colIndex + 0.5) * colWidth),
+        y: gridStartY + rowHeight,
+        size: avatarSize,
+        opacity: 1,
+        zIndex: 1,
+        delay: index * 15,
+      };
+    });
+  });
+
   ngOnInit(): void {
     this.updateWidth();
   }
 
   ngAfterViewInit(): void {
-    if (typeof ResizeObserver !== 'undefined') {
-      this.resizeObserver = new ResizeObserver(entries => {
-        for (const entry of entries) {
-          const width = entry.contentRect.width;
-          if (width > 0) {
-            const available = Math.min(360, Math.floor(width));
-            this.currentWidth.set(available);
+    this.ngZone.runOutsideAngular(() => {
+      if (typeof ResizeObserver !== 'undefined') {
+        this.resizeObserver = new ResizeObserver(entries => {
+          for (const entry of entries) {
+            const width = entry.contentRect.width;
+            if (width > 0) {
+              const available = Math.min(360, Math.floor(width));
+              if (this.currentWidth() !== available) {
+                this.currentWidth.set(available);
+                this.cdr.markForCheck();
+              }
+            }
           }
-        }
-      });
-      this.resizeObserver.observe(this.el.nativeElement);
-    }
+        });
+        this.resizeObserver.observe(this.el.nativeElement);
+      }
+
+      this.resizeListener = () => {
+        this.updateWidth();
+      };
+      window.addEventListener('resize', this.resizeListener, { passive: true });
+    });
   }
 
   ngOnDestroy(): void {
     this.resizeObserver?.disconnect();
-  }
-
-  @HostListener('window:resize')
-  public onResize(): void {
-    this.updateWidth();
+    if (this.resizeListener) {
+      window.removeEventListener('resize', this.resizeListener);
+    }
   }
 
   private updateWidth(): void {
@@ -140,7 +261,11 @@ export class VoiceChatComponent implements OnInit, AfterViewInit, OnDestroy {
         hostWidth && hostWidth > 0
           ? Math.min(360, Math.floor(hostWidth))
           : Math.min(360, window.innerWidth - 32);
-      this.currentWidth.set(available > 0 ? available : 320);
+      const targetWidth = available > 0 ? available : 320;
+      if (this.currentWidth() !== targetWidth) {
+        this.currentWidth.set(targetWidth);
+        this.cdr.markForCheck();
+      }
     }
   }
 
@@ -154,107 +279,6 @@ export class VoiceChatComponent implements OnInit, AfterViewInit, OnDestroy {
   public closeExpand(event: MouseEvent): void {
     event.stopPropagation();
     this.isExpanded.set(false);
-  }
-
-  public getAvatarPosition(index: number): {
-    x: number;
-    y: number;
-    size: number;
-    opacity: number;
-    zIndex: number;
-    delay: number;
-  } {
-    const expanded = this.isExpanded();
-    const width = this.currentWidth();
-
-    if (!expanded) {
-      const cWidth = this.collapsedWidth();
-      const size = cWidth < 235 ? 30 : cWidth < 268 ? 34 : this.AVATAR_SIZE_COLLAPSED;
-      const overlap = cWidth < 235 ? -8 : cWidth < 268 ? -10 : this.AVATAR_OVERLAP;
-      const startX = cWidth < 235 ? 38 : cWidth < 268 ? 44 : 54;
-      const limit = 3;
-      const isVisible = index < limit;
-      return {
-        x: isVisible
-          ? startX + index * (size + overlap)
-          : startX + 2 * (size + overlap),
-        y: Math.round((58 - size) / 2),
-        size,
-        opacity: isVisible ? 1 : 0,
-        zIndex: 4 - Math.min(index, 3),
-        delay: 0,
-      };
-    }
-
-    if (this.isUltraCompact()) {
-      const avatarSize = 38;
-      const cols = 3;
-      const colWidth = Math.floor((width - 12) / cols);
-      const gridStartX = Math.round((width - cols * colWidth) / 2 + (colWidth - avatarSize) / 2);
-      const gridStartY = 62;
-      const rowHeight = 64;
-
-      const row = Math.floor(index / cols);
-      const col = index === 6 ? 1 : index % cols;
-
-      return {
-        x: gridStartX + col * colWidth,
-        y: gridStartY + row * rowHeight,
-        size: avatarSize,
-        opacity: 1,
-        zIndex: 1,
-        delay: index * 15,
-      };
-    }
-
-    if (this.isNarrow()) {
-      const avatarSize = 44;
-      const cols = 3;
-      const colWidth = Math.floor((width - 16) / cols);
-      const gridStartX = Math.round((width - cols * colWidth) / 2 + (colWidth - avatarSize) / 2);
-      const gridStartY = 68;
-      const rowHeight = 74;
-
-      const row = Math.floor(index / cols);
-      const col = index === 6 ? 1 : index % cols;
-
-      return {
-        x: gridStartX + col * colWidth,
-        y: gridStartY + row * rowHeight,
-        size: avatarSize,
-        opacity: 1,
-        zIndex: 1,
-        delay: index * 15,
-      };
-    }
-
-    const avatarSize = this.AVATAR_SIZE_EXPANDED;
-    const cols = 4;
-    const colWidth = Math.floor(width / cols);
-    const gridStartX = Math.round((width - cols * colWidth) / 2 + (colWidth - avatarSize) / 2);
-    const gridStartY = 72;
-    const rowHeight = 84;
-
-    if (index < 4) {
-      return {
-        x: gridStartX + index * colWidth,
-        y: gridStartY,
-        size: avatarSize,
-        opacity: 1,
-        zIndex: 1,
-        delay: index * 15,
-      };
-    }
-
-    const colIndex = index - 4;
-    return {
-      x: Math.round(gridStartX + (colIndex + 0.5) * colWidth),
-      y: gridStartY + rowHeight,
-      size: avatarSize,
-      opacity: 1,
-      zIndex: 1,
-      delay: index * 15,
-    };
   }
 
   public toggleJoin(event: MouseEvent): void {

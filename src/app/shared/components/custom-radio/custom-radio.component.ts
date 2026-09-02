@@ -1,16 +1,18 @@
-﻿import {
+import {
   Component,
   Input,
   Output,
   EventEmitter,
   forwardRef,
-  signal} from '@angular/core';
+  signal,
+  ChangeDetectionStrategy
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'app-custom-radio',
-  
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, FormsModule],
   templateUrl: './custom-radio.component.html',
   host: { 'class': 'block' },
@@ -18,7 +20,8 @@ import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/f
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => CustomRadioComponent),
-      multi: true},
+      multi: true
+    },
   ],
 })
 export class CustomRadioComponent implements ControlValueAccessor {

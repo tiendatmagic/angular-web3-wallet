@@ -1,4 +1,4 @@
-import { Component, inject, signal, computed } from '@angular/core';
+import { Component, inject, signal, computed, ChangeDetectionStrategy } from '@angular/core';
 import { DropdownMenuComponent, DropdownMenuItem, DropdownMenuHeader } from '@shared/components/dropdown-menu/dropdown-menu.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -25,6 +25,7 @@ import { TranslatePipe } from '@shared/pipes/translate.pipe';
 @Component({
   selector: 'app-demo-modal',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     FormsModule,
