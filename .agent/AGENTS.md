@@ -1,3 +1,67 @@
+### Yêu Cầu: Khắc Phục Vị Trí Hiển Thị Dropdown Menu & Submenu Trên Mobile Tránh Đè Lệch Màn Hình
+- **Nội dung yêu cầu:** Xem xét vị trí hiển thị của Dropdown và Submenu dropdown trên Mobile, tránh việc popover menu bị tính toán sai vị trí văng lệch sang mép trái màn hình và đè lên các nút kích hoạt lân cận (tham khảo cơ chế hiển thị chuẩn mực của nút "Thao tác Web3 Ví").
+- **Phân tích kỹ thuật & Nguyên nhân gốc rễ:**
+  1. **Lỗi tràn biên khi dùng `placement="bottom-right"`:**
+     - Khi component con được cấu hình `placement="bottom-right"`, toạ độ `left` được tính bằng `triggerRect.right - popoverWidth`.
+     - Trên thiết bị Mobile (màn hình nhỏ) hoặc khi nút trigger nằm ở khoảng giữa/trái, `triggerRect.right - popoverWidth` cho ra giá trị âm (ví dụ: $180 - 240 = -60\text{px}$).
+     - Sau đó toạ độ bị ép cứng về `left = 8px`, khiến popover văng hoàn toàn sang sát mép trái màn hình, che mất các nút trigger khác ở bên trái và tách rời khỏi nút trigger thực tế.
+  2. **Submenu thiếu cơ chế thích ứng đa tầng (Smart Cascading):**
+     - Khi không đủ không gian ở cả 2 phía ngoài main popover (trên mobile), submenu bị gán toạ độ thiếu kiểm tra biên giới hạn vùng hiển thị.
+- **Giải pháp kiến trúc & Tối ưu hóa:**
+  1. **Thuật toán Smart Auto-Flip & Viewport Fitting cho Dropdown chính (`updateMenuPosition`):**
+     - Nếu `placement.endsWith('right')`: Ưu tiên căn phải (`triggerRect.right - popoverWidth`). Nếu bị tràn mép trái ($< 8\text{px}$), tự động lật sang căn trái (`triggerRect.left`) nếu không gian bên phải đủ rộng, giữ menu luôn dính chuẩn xác bên dưới trigger button.
+     - Nếu `placement.endsWith('left')`: Ưu tiên căn trái (`triggerRect.left`). Nếu bị tràn mép phải, tự động lật sang căn phải (`triggerRect.right - popoverWidth`).
+     - Luôn kẹp toạ độ trong khoảng an toàn $[8, \text{window.innerWidth} - 8 - \text{popoverWidth}]$.
+  2. **Thuật toán Smart Cascading cho Submenu (`updateSubmenuPosition`):**
+     - Khi có không gian ngoài main popover: mở sang phải hoặc sang trái.
+     - Khi trên mobile không đủ chỗ ngoài main popover: xếp lớp tinh tế lệch sang trái với độ offset an toàn `Math.max(8, parentLeft - subWidth + 30)`, đảm bảo hiển thị trọn vẹn trong màn hình tương tự như demo "Thao tác Web3 Ví".
+- **Các vị trí đã xử lý:**
+  1. `src/app/shared/components/dropdown-menu/dropdown-menu.component.ts`
+- **Xác thực:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npm test` (`npx ng test --watch=false`): 20 files / 102 tests passed (100%).
+  - `npm run build`: Build production hoàn tất thành công 100%.
+
+### Yêu Cầu: Sửa Lỗi Logo Icon SVG Bị Lệch, Không Đồng Đều & Chuẩn Hóa Hình Học Vector
+- **Nội dung yêu cầu:** Khắc phục lỗi logo SVG (`name="logo"`, `app-logo`, `public/assets/logo.svg`) bị biến dạng, các nét đứt và nan hoa không bằng nhau, bị méo/lệch khi hiển thị và quay animation.
+- **Phân tích kỹ thuật & Nguyên nhân gốc rễ:**
+  1. **Lỗi chu vi & số lượng dash không nguyên (Fractional Dash Period Overlap):**
+     - Trước đó vòng tròn ngoài sử dụng `r="40"` ($C \approx 251.327$) với `stroke-dasharray="10 6"` (chu kỳ 16). Chu vi chia cho chu kỳ ra $15.708$ (không phải số nguyên), khiến đoạn gap cuối cùng bị cụt chỉ còn $1.327$px thay vì $6$px. Vòng tròn bị co giật, đè nét và bất đối xứng nghiêm trọng khi xoay.
+  2. **Nan hoa lệch pha với các đoạn dash (Quadrants Asymmetry):**
+     - Các nan hoa ở 4 góc 0°, 90°, 180°, 270° chạm vào các vị trí dash/gap ngẫu nhiên (nửa chạm dash, nửa rơi vào gap), khiến 4 góc phần tư trông hoàn toàn khác nhau.
+  3. **Lỗi đè nét bo góc quá đà (Round Cap Overshoot):**
+     - `stroke-linecap="round"` với nét `stroke-width="6"` trên đoạn nối từ Y=10 đến Y=25 làm đầu bo góc lồi vào bên trong vòng tròn trong $1$px và lồi ra ngoài vòng ngoài $3$px.
+- **Giải pháp kiến trúc & Tối ưu hóa:**
+  1. **Chuẩn hóa vòng ngoài với `pathLength="160"` và `stroke-dashoffset="3"`:**
+     - Sử dụng `pathLength="160"` kết hợp `stroke-dasharray="6 4"`, tạo ra đúng 16 đoạn nét đứt đồng đều tuyệt đối ($160 / 10 = 16$).
+     - Áp dụng `stroke-dashoffset="3"` đưa đúng tâm của đoạn dash vào 4 nan hoa chính (0°, 90°, 180°, 270°), đảm bảo tính đối xứng 4 góc phần tư và 8 hướng đạt 100% hoàn hảo.
+  2. **Đồng bộ toạ độ nan hoa & độ dày nét:**
+     - Đặt `r="38"` (vòng ngoài, `stroke-width="5"`), `r="24"` (vòng trong, `stroke-width="3.5"`), nan hoa `M50 12V24M50 76V88M12 50H24M76 50H88` kết nối mượt mà, triệt tiêu hoàn toàn hiện tượng lồi nét.
+  3. **Đồng bộ hóa 100%:**
+     - Cập nhật cả `IconComponent` (`icon.component.html`) và asset tĩnh `public/assets/logo.svg`.
+- **Các vị trí đã xử lý:**
+  1. `src/app/shared/components/icon/icon.component.html`
+  2. `public/assets/logo.svg`
+- **Xác thực:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npm test`: 20 files / 102 tests passed (100%).
+  - `npm run build`: Build production hoàn tất thành công 100%.
+  - Kiểm thử trực quan thời gian thực qua Chrome DevTools MCP: Logo xoay mượt mà, các nét đứt và nan hoa đối xứng tuyệt đối.
+
+### Yêu Cầu: Sửa Lỗi Icon SVG Grid Bị Lệch & Không Đồng Đều Kích Thước
+- **Nội dung yêu cầu:** Khắc phục lỗi icon SVG `grid` (biểu tượng 4 ô vuông cạnh tiêu đề "Bộ Thư viện Component & Giao Diện Cao Cấp") bị biến dạng, 4 ô không bằng nhau (bị méo thành hình bầu dục/hình chữ nhật lệch).
+- **Phân tích kỹ thuật & Nguyên nhân:**
+  - Trong `IconComponent` (`src/app/shared/components/icon/icon.component.html`), `@case ('grid')` và `@case ('dashboard')` trước đó sử dụng chuỗi lệnh `path` SVG thủ công chứa các giá trị `h-2`, `H6`, `v-2`, `V6` hỗn hợp toạ độ tương đối và tuyệt đối, khiến các cung bo góc và chiều cao của 4 ô bị lệch tâm và bất đối xứng.
+- **Giải pháp kiến trúc & Tối ưu:**
+  - Chuẩn hóa `@case ('grid')` sang 4 thẻ `<rect>` chuẩn Vector SVG hình học (`x="3/14"`, `y="3/14"`, `width="7"`, `height="7"`, `rx="1.5"`), đảm bảo cả 4 góc phần tư đối xứng 100%, đồng đều tuyệt đối về kích thước, khoảng cách và độ bo góc.
+  - Tương tự đồng bộ `@case ('dashboard')` sang dạng thẻ `<rect>` chuẩn mực.
+- **Các vị trí đã xử lý:**
+  1. `src/app/shared/components/icon/icon.component.html`
+- **Xác thực:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npm test` (`npx ng test --watch=false`): 20 files / 102 tests passed (100%).
+  - `npm run build`: Build production thành công 100%.
+
 ### Yêu Cầu: Full Width Container Chuẩn Hoá Cho Đa Ngôn Ngữ, Đa Chain & Account Dropdown
 - **Nội dung yêu cầu:** Cấu hình riêng cho 3 dropdown trên Header: Đa ngôn ngữ (`app-language-selector`), Đa chain (`app-network-selector`) và Account Dropdown (`app-account-dropdown`) hiển thị full width bám theo container chuẩn (`px-4` / `16px` trên mobile) đồng bộ 100% với các thẻ Card nội dung trang chủ bên dưới.
 - **Phân tích kỹ thuật & Tối ưu hóa:**

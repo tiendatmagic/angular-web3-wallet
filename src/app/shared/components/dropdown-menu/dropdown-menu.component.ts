@@ -354,14 +354,32 @@ export class DropdownMenuComponent implements OnDestroy {
       }
     }
 
-    let left = triggerRect.left;
+    let left: number;
 
     if (this.placement.endsWith('right')) {
-      left = triggerRect.right - popoverWidth;
+      const rightAlignedLeft = triggerRect.right - popoverWidth;
+      if (rightAlignedLeft >= 8) {
+        left = rightAlignedLeft;
+      } else if (triggerRect.left + popoverWidth <= window.innerWidth - 8) {
+        // If right-alignment overflows the left edge, flip to left-aligned
+        left = triggerRect.left;
+      } else {
+        left = Math.max(8, window.innerWidth - 8 - popoverWidth);
+      }
     } else if (this.placement.endsWith('center')) {
-      left = triggerRect.left + (triggerRect.width - popoverWidth) / 2;
+      const centerLeft = triggerRect.left + (triggerRect.width - popoverWidth) / 2;
+      left = Math.max(8, Math.min(centerLeft, window.innerWidth - 8 - popoverWidth));
     } else {
-      left = triggerRect.left;
+      // Default: left-aligned
+      const leftAlignedLeft = triggerRect.left;
+      if (leftAlignedLeft + popoverWidth <= window.innerWidth - 8) {
+        left = leftAlignedLeft;
+      } else if (triggerRect.right - popoverWidth >= 8) {
+        // If left-alignment overflows the right edge, flip to right-aligned
+        left = triggerRect.right - popoverWidth;
+      } else {
+        left = Math.max(8, window.innerWidth - 8 - popoverWidth);
+      }
     }
 
     if (left + popoverWidth > window.innerWidth - 8) {
@@ -408,6 +426,7 @@ export class DropdownMenuComponent implements OnDestroy {
     const triggerRect = this.activeSubmenuTriggerEl.getBoundingClientRect();
     const mainTrigger = this.triggerWrapper?.nativeElement || this.elementRef.nativeElement;
     const offset = getContainingBlockOffset(mainTrigger);
+    const popoverRect = this.popoverEl?.nativeElement?.getBoundingClientRect();
 
     if (triggerRect.bottom <= 0 || triggerRect.top >= window.innerHeight || triggerRect.width === 0) {
       this.activeSubmenuId.set(null);
@@ -425,14 +444,30 @@ export class DropdownMenuComponent implements OnDestroy {
     const subItemCount = currentSub?.children?.length ?? 2;
     const subEstimatedHeight = subItemCount * 38 + 16;
 
-    let subLeft = triggerRect.right + 4;
-    if (subLeft + subWidth > window.innerWidth - 8) {
-      subLeft = triggerRect.left - subWidth - 4;
+    const parentRight = popoverRect ? popoverRect.right : triggerRect.right;
+    const parentLeft = popoverRect ? popoverRect.left : triggerRect.left;
+
+    let subLeft: number;
+    const canPlaceRight = parentRight + subWidth + 4 <= window.innerWidth - 8;
+    const canPlaceLeft = parentLeft - subWidth - 4 >= 8;
+
+    if (canPlaceRight) {
+      subLeft = parentRight + 4;
+    } else if (canPlaceLeft) {
+      subLeft = parentLeft - subWidth - 4;
+    } else {
+      const spaceOnLeft = parentRight - 8;
+      if (spaceOnLeft >= subWidth) {
+        subLeft = Math.max(8, parentLeft - subWidth + 30);
+      } else {
+        subLeft = Math.max(8, window.innerWidth - 8 - subWidth);
+      }
     }
-    if (subLeft < 8) subLeft = 8;
+
     if (subLeft + subWidth > window.innerWidth - 8) {
       subLeft = Math.max(8, window.innerWidth - 8 - subWidth);
     }
+    if (subLeft < 8) subLeft = 8;
 
     const spaceBelow = window.innerHeight - triggerRect.top - 12;
     const spaceAbove = triggerRect.bottom - 12;

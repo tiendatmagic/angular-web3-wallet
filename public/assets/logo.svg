@@ -1,7 +1,7 @@
 <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="50" cy="50" r="40" stroke="#8000ff" stroke-width="6" stroke-dasharray="10 6" />
-  <circle cx="50" cy="50" r="25" stroke="#8000ff" stroke-width="4" />
-  <path d="M50 10V25M50 75V90M10 50H25M75 50H90" stroke="#8000ff" stroke-width="6" stroke-linecap="round" />
+  <circle cx="50" cy="50" r="38" stroke="#8000ff" stroke-width="5" pathLength="160" stroke-dasharray="6 4" stroke-dashoffset="3" />
+  <circle cx="50" cy="50" r="24" stroke="#8000ff" stroke-width="3.5" />
+  <path d="M50 12V24M50 76V88M12 50H24M76 50H88" stroke="#8000ff" stroke-width="5" stroke-linecap="round" />
   <circle cx="50" cy="50" r="8" fill="url(#logo-grad-comp)" />
   <defs>
     <linearGradient id="logo-grad-comp" x1="0%" y1="0%" x2="100%" y2="100%">
