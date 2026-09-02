@@ -1,3 +1,19 @@
+### Yêu Cầu: Khắc Phục Lỗi Khung Icon Showcase Bị Co Kéo Biến Dạng Thành Hình Bầu Dục Dài Trên Mobile
+- **Nội dung yêu cầu:** Khắc phục tình trạng khung chứa icon Grid (cạnh tiêu đề "Bộ Thư viện Component & Giao Diện Cao Cấp") và các header icon khác trên trang chủ bị bóp méo, co hẹp chiều ngang thành hình bầu dục/hình con nhộng dài trên màn hình nhỏ.
+- **Phân tích kỹ thuật & Nguyên nhân gốc rễ:**
+  - Phần tử chứa icon được đặt trong thẻ cha Flexbox (`flex items-center gap-3`). Mặc định phần tử con trong Flexbox có `flex-shrink: 1`.
+  - Khi tiêu đề và mô tả bên cạnh chiếm nhiều dòng văn bản trên thiết bị Mobile, chiều rộng của khung icon bị Flexbox nén lại từ $40\text{px}$ xuống chỉ còn $\approx 20\text{px} - 27\text{px}$ trong khi chiều cao vẫn giữ nguyên $40\text{px}$. Điều này khiến khung icon bị biến dạng kéo dài theo chiều dọc thành hình bầu dục.
+- **Giải pháp kiến trúc & Tối ưu hóa:**
+  - Bổ sung `shrink-0` (`flex-shrink: 0`) và `aspect-square` (`aspect-ratio: 1 / 1`) vào toàn bộ các khung chứa icon tiêu đề section và thẻ Card trên trang chủ (`home.component.html`).
+  - Đảm bảo khung icon luôn giữ đúng kích thước cố định chuẩn $40\text{px} \times 40\text{px}$ vuông vắn trên mọi kích cỡ màn hình.
+- **Các vị trí đã xử lý:**
+  1. `src/app/features/home/home.component.html` (Header Showcase title, Send transaction card, Sign message card)
+- **Xác thực:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npm test`: 20 files / 102 tests passed (100%).
+  - `npm run build`: Build production hoàn tất thành công 100%.
+  - Kiểm thử trực quan trên viewport mobile (360px - 400px) qua Chrome DevTools MCP: Khung icon giữ chuẩn $40\text{px} \times 40\text{px}$, các ô vuông vector bên trong hiển thị cân đối 100%.
+
 ### Yêu Cầu: Khắc Phục Vị Trí Hiển Thị Dropdown Menu & Submenu Trên Mobile Tránh Đè Lệch Màn Hình
 - **Nội dung yêu cầu:** Xem xét vị trí hiển thị của Dropdown và Submenu dropdown trên Mobile, tránh việc popover menu bị tính toán sai vị trí văng lệch sang mép trái màn hình và đè lên các nút kích hoạt lân cận (tham khảo cơ chế hiển thị chuẩn mực của nút "Thao tác Web3 Ví").
 - **Phân tích kỹ thuật & Nguyên nhân gốc rễ:**
