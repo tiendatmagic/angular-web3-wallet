@@ -1,3 +1,22 @@
+### Yêu Cầu: Sửa Lỗi Responsive Button Bị Tràn & Đè Chữ (Aura & Ripple Showcase Cards)
+- **Nội dung yêu cầu:** Khắc phục lỗi responsive button bị tràn chữ, co rúm và đè chéo văn bản lên nhau trong nhóm điều khiển Tốc độ quay (Speed), Bo góc (Border Radius), Kiểu màu sắc (Variant) của Showcase Component Aura và nhóm nút trong Ripple Card.
+- **Phân tích kỹ thuật & Nguyên nhân:**
+  1. **Nguyên nhân co ép đa cột (Nested Multi-Column Grid Overload):**
+     - Trước đó hai nhóm "Tốc độ quay" và "Bo góc" được bọc chung trong `<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">`. Khi ở desktop (trang chủ chia 2 card/hàng), mỗi card chỉ có ~450px -> mỗi cột chỉ có ~200px.
+     - Bên trong 200px đó lại chia tiếp `grid grid-cols-3 gap-2`, ép mỗi button chỉ còn ~60px. Trong khi văn bản như "Mặc định (15px)" (15 ký tự) hay "Mặc định (4s)" dài > 100px. Vì `.btn` có `whitespace-nowrap`, chữ tràn ra ngoài button và đè chéo lên button lân cận (`Mặc định (15Nhỏ (8px)Tròn (9999px)`).
+     - Tương tự, nhóm "Kiểu màu sắc (Variant)" dùng `grid-cols-4` ép 4 nút dài ("Toàn Ảnh (Holographic)", "Ánh Kim Vàng", "Ánh Kim Bạc", "Phát Sáng Tĩnh") vào card 450px khiến text bị co rút, tràn viền.
+- **Giải pháp kiến trúc & Tối ưu:**
+  1. **Tách riêng biệt Speed & Border Radius:** Bỏ `sm:grid-cols-2`, mỗi form-field chiếm trọn 1 hàng full-width (`space-y-4`), chia `grid grid-cols-3 gap-2` cho 3 nút (mỗi nút ~140px - 170px), thêm `!px-2 !py-2 text-xs font-bold justify-center`.
+  2. **Responsive Variant Grid linh hoạt:** Nâng cấp sang `grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 2xl:grid-cols-4 gap-2` kèm `!px-2 !py-2 justify-center`, hiển thị 2 cột cân đối, rộng rãi khi ở desktop có sidebar (hoặc mobile) và 4 cột khi ở màn hình cực rộng.
+  3. **Đồng bộ Ripple Card:** Cân đối 3 switch Ripple với `grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3.5` và Preset Colors sang `grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 2xl:grid-cols-4 gap-2`.
+- **Các vị trí đã xử lý:**
+  1. `src/app/features/home/home.component.html`
+- **Xác thực:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npm test`: 20 files / 102 tests passed (100%).
+  - `npm run build`: Build production hoàn tất thành công 100%.
+  - Kiểm thử giao diện thực tế qua Chrome DevTools MCP trên cả Desktop (1440px) và Mobile (375px) chụp ảnh xác nhận nút hiển thị hoàn hảo, không còn đè chữ.
+
 ### Yêu Cầu: Chuẩn Hóa & Khắc Phục Triệt Để Toàn Bộ Hệ Thống Select UI, Dropdown UI, DatePicker, DateTimeRange
 - **Nội dung yêu cầu:** Sửa triệt để các lỗi liên quan đến Select UI, Dropdown UI, DatePicker, DateTimeRange và hệ thống Popover trong toàn ứng dụng (cả trên Mobile và Desktop).
 - **Phân tích kỹ thuật & Nguyên nhân gốc rễ (Root Causes):**
