@@ -1,3 +1,21 @@
+### Yêu Cầu: Điều Khiển Mở Modal Cấu Hình (Open Config Modal) Trực Quan Qua Chrome DevTools MCP
+- **Nội dung yêu cầu:** Điều khiển trình duyệt đang mở trên desktop để tìm và bấm mở nút "Open Config Modal" / "Mở Modal Form" cho người dùng quan sát trực tiếp.
+- **Phương pháp kỹ thuật & Thao tác tự động hóa:**
+  1. Kết nối Chrome DevTools MCP qua port 9222 trên phiên Chrome thật đang hiển thị trên màn hình người dùng.
+  2. Tự động đóng Drawer lề trái còn mở từ bước trước để trả lại không gian thoáng đãng cho giao diện.
+  3. Cuộn trang mượt mà tới Showcase `Dynamic Modal System & Delete Confirmation` (`H4: {{ 'cards.modal_demo.title' | translate }}`).
+  4. Tìm kiếm và kích hoạt sự kiện click vào nút `"Open Config Modal"` (hoặc `"Mở Modal Form"` tương ứng theo ngôn ngữ giao diện).
+  5. Chờ animation mở modal (`DemoModalComponent`) hiển thị giữa màn hình với đầy đủ các thành phần điều khiển cấu hình:
+     - Toggle switches (Maximum Date, MinDate restriction, Quick presets).
+     - Trường nhập Date Picker, Date Time Range Picker.
+     - Custom Select (Dropdown chọn chain & multi-select).
+     - Switch thông báo Smart Contract Event.
+     - Radio group chọn Primary Network (Arbitrum One, ...).
+  6. Xác thực DOM: `modalVisible: true`, `inputsCount: 15`, `backdropVisible: true`.
+  7. Chụp ảnh màn hình lưu vào `config_modal_visible.png` làm bằng chứng nghiệm thu, giữ nguyên cửa sổ trình duyệt cho người dùng trực tiếp trải nghiệm.
+- **Kết quả nghiệm thu:**
+  - Modal Form cấu hình hiển thị trang trọng, đúng chuẩn Glassmorphism bo góc 15px ngay giữa màn hình desktop người dùng.
+
 ### Yêu Cầu: Khắc Phục Lỗi Khung Icon Showcase Bị Co Kéo Biến Dạng Thành Hình Bầu Dục Dài Trên Mobile
 - **Nội dung yêu cầu:** Khắc phục tình trạng khung chứa icon Grid (cạnh tiêu đề "Bộ Thư viện Component & Giao Diện Cao Cấp") và các header icon khác trên trang chủ bị bóp méo, co hẹp chiều ngang thành hình bầu dục/hình con nhộng dài trên màn hình nhỏ.
 - **Phân tích kỹ thuật & Nguyên nhân gốc rễ:**
