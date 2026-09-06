@@ -2,7 +2,7 @@ import { Injectable, signal, inject, effect } from '@angular/core';
 import { createAppKit, type AppKit } from '@reown/appkit';
 import { EthersAdapter } from '@reown/appkit-adapter-ethers';
 import { mainnet, arbitrum, arbitrumSepolia, bsc, bscTestnet } from '@reown/appkit/networks';
-import { ApiController } from '@reown/appkit-controllers';
+import { ApiController, ModalController, RouterController } from '@reown/appkit-controllers';
 import { BrowserProvider, formatEther } from 'ethers';
 import { environment } from '@environments/environment';
 import { ThemeService } from './theme.service';
@@ -66,6 +66,14 @@ export class Web3Service {
 
     effect(() => {
       const isConn = this.isConnected();
+      const addr = this.address();
+      if (isConn && addr) {
+        this.closeConnectModalIfOpen();
+      }
+    });
+
+    effect(() => {
+      const isConn = this.isConnected();
       const confId = this.configuredChainId();
       if (!isConn) {
         const popular = POPULAR_CHAINS.find(c => c.chainId === confId);
@@ -103,6 +111,22 @@ export class Web3Service {
     });
   }
 
+  public closeConnectModalIfOpen(): void {
+    try {
+      if (typeof window === 'undefined') return;
+      if (ModalController.state.open) {
+        const view = RouterController.state.view;
+        // Chỉ đóng nếu modal đang ở các view kết nối (tránh can thiệp khi người dùng chủ động mở Account hoặc Networks)
+        if (!view || view.startsWith('Connect') || view === 'AllWallets') {
+          ModalController.close();
+          this.modal?.close();
+        }
+      }
+    } catch (e) {
+      console.warn('[Web3] Error closing connect modal:', e);
+    }
+  }
+
   private async initAppKit() {
     if (typeof window === 'undefined') return;
 
@@ -131,9 +155,6 @@ export class Web3Service {
       },
       projectId,
       themeMode: isDark ? 'dark' : 'light',
-      defaultAccountTypes: {
-        eip155: 'smartAccount'
-      },
       features: {
         analytics: false,
         reownAuthentication: false
@@ -147,6 +168,9 @@ export class Web3Service {
       this.isConnected.set(accountState.isConnected);
 
       if (accountState.isConnected && accountState.address) {
+        // Tự động đóng modal kết nối nếu còn mở
+        this.closeConnectModalIfOpen();
+
         await this.updateBalanceAndNetwork();
         const currentChainId = this.chainId();
         const targetChainId = Number(this.configuredChainId());
@@ -181,8 +205,19 @@ export class Web3Service {
       }
     });
 
+    RouterController.subscribeKey('view', (view) => {
+      if (this.isConnected() && this.address()) {
+        if (view && (view.startsWith('Connect') || view === 'AllWallets')) {
+          this.closeConnectModalIfOpen();
+        }
+      }
+    });
+
     this.modal.subscribeEvents(async (event: any) => {
       const eventName = event.data?.event;
+      if (eventName === 'CONNECT_SUCCESS') {
+        this.closeConnectModalIfOpen();
+      }
       const errorMsg = event.data?.properties?.message || event.data?.error || '';
       const isConnectionError = eventName === 'CONNECT_ERROR' || errorMsg.toString().toLowerCase().includes('declined') || errorMsg.toString().toLowerCase().includes('active');
 
@@ -275,6 +310,13 @@ export class Web3Service {
 
   public async connect() {
     if (!this.isEnabled) return;
+
+    // Nếu ví đã kết nối và có địa chỉ, lập tức đóng modal nếu đang bị treo và không mở lại
+    if (this.isConnected() && this.address()) {
+      this.closeConnectModalIfOpen();
+      return;
+    }
+
     try {
       const defaultChain = this.supportedChains.find(c => !(c as any).testnet && !c.name.toLowerCase().includes('sepolia') && !c.name.toLowerCase().includes('testnet')) || this.supportedChains[0];
       if (defaultChain) {
@@ -285,11 +327,6 @@ export class Web3Service {
         }
       }
 
-      if (!this.isConnected()) {
-        try {
-          await this.modal.disconnect();
-        } catch (e) { }
-      }
       await this.modal.open();
     } catch (error: any) {
       console.error('[Web3] Wallet connection error:', error);
