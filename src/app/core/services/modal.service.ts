@@ -1,4 +1,4 @@
-import {
+﻿import {
   Injectable,
   ApplicationRef,
   ComponentRef,
@@ -14,10 +14,13 @@ import {
   DeleteConfirmModalData,
   DeleteConfirmModalResult
 } from '@features/home/components/delete-confirm-modal/delete-confirm-modal.types';
+import { TxSuccessModalComponent } from '@shared/components/tx-success-modal/tx-success-modal.component';
+import { TxSuccessModalData } from '@shared/components/tx-success-modal/tx-success-modal.types';
 import { TranslationService } from './translation.service';
 
 @Injectable({
-  providedIn: 'root'})
+  providedIn: 'root'
+})
 export class ModalService {
   constructor(
     private appRef: ApplicationRef,
@@ -81,6 +84,16 @@ export class ModalService {
       title: data.title || this.translationService.t('delete_modal.default_title'),
       size: 'md',
       closeOnBackdropClick: false,
+      showHeader: false,
+      data
+    });
+  }
+
+  showTransactionSuccess(data: TxSuccessModalData): ModalRef<void> {
+    return this.open(TxSuccessModalComponent, {
+      title: data.title || this.translationService.t('showcase.tx_modal_title'),
+      size: 'md',
+      closeOnBackdropClick: true,
       showHeader: false,
       data
     });

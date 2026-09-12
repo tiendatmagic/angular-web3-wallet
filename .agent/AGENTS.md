@@ -4797,3 +4797,24 @@
 
 
 
+
+### Yêu cầu: Nâng cấp Cơ chế "Tx Hash Tức Thì (Instant Tx Hash Modal)" Đồng Bộ từ Staking DApp
+- **Nội dung yêu cầu:** Đồng bộ cơ chế gửi giao dịch theo chuẩn Web3 cao cấp từ DApp Staking sang Angular Web3 Wallet: Có ngay mã Tx Hash chuẩn xác 100% khi người dùng vừa bấm "Xác nhận" trên MetaMask mà không phải chờ block mining (`tx.wait()`), hiển thị Modal Tx Hash sang trọng kèm liên kết Explorer chính xác.
+- **Giải pháp:**
+  1. **Tạo Component [TxSuccessModalComponent](file:///d:/git/angular-web3-wallet/src/app/shared/components/tx-success-modal/tx-success-modal.component.ts):**
+     - Thiết kế theo chuẩn DeFi Glassmorphism (`design.md`): Icon 3D Glow xanh ngọc (`emerald-500`), badge trạng thái mạng lưới, tóm tắt số lượng coin và địa chỉ nhận.
+     - Hộp hiển thị Tx Hash chữ `font-mono` với nút Copy 1-chạm (phản hồi "Đã sao chép!"), đường link mở trực tiếp Block Explorer tương ứng với mạng hiện tại.
+     - Nút hành động chính "Đã Hiểu / Đóng".
+  2. **Tiện ích Blockchain (`blockchain.utils.ts`):**
+     - Bổ sung `getExplorerTxUrl(chainId, txHash)` và `getExplorerName(chainId)` tự động nhận diện tất cả các mạng (Arbitrum One, Ethereum, BNB Smart Chain, Arbitrum Sepolia, BSC Testnet).
+  3. **Mở rộng [ModalService](file:///d:/git/angular-web3-wallet/src/app/core/services/modal.service.ts):**
+     - Thêm phương thức `showTransactionSuccess(data: TxSuccessModalData)` mở modal chỉ với 1 dòng lệnh.
+  4. **Cập nhật [HomeComponent](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.ts):**
+     - Sửa `sendTransaction()`: Ngay khi `await signer.sendTransaction(txRequest)` trả về `tx`:
+       - Lập tức lấy `tx.hash` và kích hoạt `modalService.showTransactionSuccess(...)`.
+       - Lập tức xóa form input (`toAddress`, `amount`) và tắt loading `txLoading = false` (Optimistic UI mượt mà).
+       - Chạy ngầm `tx.wait()` trong background để cập nhật số dư on-chain (`updateBalanceAndNetwork`) khi block đóng xong mà không làm treo giao diện.
+     - Sửa `home.component.html`: Cập nhật thẻ inline Tx Hash liên kết động theo mạng qua `currentTxExplorerUrl()`.
+  5. **Đa ngôn ngữ & Types (`i18n.types.ts`, `vi.ts`, `en.ts`):**
+     - Bổ sung đầy đủ type definitions và bản dịch tiếng Việt / tiếng Anh cho Tx Success Modal.
+- **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Đóng gói Production (`npm run build`) hoàn thành 100%.

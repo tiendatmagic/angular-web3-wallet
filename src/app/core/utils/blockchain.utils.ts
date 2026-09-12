@@ -29,3 +29,23 @@ export function getBackupRpcUrls(chainId: string | number): string[] {
     default: return [];
   }
 }
+
+export function getExplorerTxUrl(chainId: string | number | null | undefined, txHash: string): string {
+  if (!txHash) return '';
+  const id = (chainId || '42161').toString().trim();
+  const chain = POPULAR_CHAINS.find(c => c.chainId === id);
+  const base = chain ? chain.explorerUrl : 'https://arbiscan.io';
+  return base + '/tx/' + txHash;
+}
+
+export function getExplorerName(chainId: string | number | null | undefined): string {
+  const id = (chainId || '42161').toString().trim();
+  switch (id) {
+    case '1': return 'Etherscan';
+    case '56': return 'BscScan';
+    case '97': return 'BscScan Testnet';
+    case '42161': return 'Arbiscan';
+    case '421614': return 'Arbiscan Sepolia';
+    default: return 'Block Explorer';
+  }
+}

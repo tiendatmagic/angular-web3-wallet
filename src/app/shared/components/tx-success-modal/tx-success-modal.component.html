@@ -1,0 +1,106 @@
+<div class="text-center pt-2 pb-1 space-y-4">
+  <div
+    class="w-16 h-16 rounded-full bg-emerald-500/15 text-emerald-500 border-2 border-emerald-500/30 flex items-center justify-center mx-auto mb-2 shadow-[0_0_35px_rgba(16,185,129,0.25)] ring-4 ring-emerald-500/10 animate-scale-up"
+  >
+    <app-icon name="check-circle" class="w-8 h-8" strokeWidth="2.5" />
+  </div>
+
+  <div class="space-y-1">
+    <h3 class="text-lg sm:text-xl font-black text-slate-900 dark:text-white tracking-tight">
+      {{ title() }}
+    </h3>
+    <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 max-w-sm mx-auto leading-relaxed">
+      {{ subtitle() }}
+    </p>
+  </div>
+
+  @if (amount() || toAddress()) {
+    <div
+      class="p-3.5 rounded-xl bg-slate-100/70 dark:bg-slate-950/50 border border-slate-200/60 dark:border-slate-800/60 space-y-2 text-xs text-left"
+    >
+      @if (amount()) {
+        <div class="flex items-center justify-between gap-2">
+          <span class="font-bold text-slate-400 dark:text-slate-500 select-none">
+            {{ 'showcase.tx_modal_amount' | translate }}
+          </span>
+          <span class="font-extrabold text-slate-900 dark:text-white text-sm">
+            {{ amount() }} <span class="text-primary font-bold">{{ symbol() }}</span>
+          </span>
+        </div>
+      }
+
+      @if (toAddress()) {
+        <div class="flex items-center justify-between gap-2 pt-1 border-t border-slate-200/40 dark:border-slate-800/40">
+          <span class="font-bold text-slate-400 dark:text-slate-500 select-none">
+            {{ 'showcase.tx_modal_recipient' | translate }}
+          </span>
+          <span class="font-mono font-bold text-slate-700 dark:text-slate-200 truncate max-w-[210px] text-right">
+            {{ toAddress() }}
+          </span>
+        </div>
+      }
+
+      <div class="flex items-center justify-between gap-2 pt-1 border-t border-slate-200/40 dark:border-slate-800/40">
+        <span class="font-bold text-slate-400 dark:text-slate-500 select-none">
+          {{ 'showcase.tx_modal_network' | translate }}
+        </span>
+        <div class="flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <app-badge variant="secondary">{{ networkName() }}</app-badge>
+        </div>
+      </div>
+    </div>
+  }
+
+  <div
+    class="p-3.5 rounded-xl bg-slate-900/90 dark:bg-slate-950/80 border border-slate-800/80 text-left space-y-2.5 shadow-inner"
+  >
+    <div class="flex items-center justify-between gap-2">
+      <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-400 select-none">
+        {{ 'showcase.tx_modal_hash_label' | translate }}
+      </span>
+
+      <button
+        type="button"
+        (click)="copyTxHash()"
+        class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold transition-all text-primary hover:text-primary/80 bg-primary/10 hover:bg-primary/20 select-none cursor-pointer"
+      >
+        <app-icon [name]="isCopied() ? 'check' : 'copy'" class="w-3.5 h-3.5" strokeWidth="2.5" />
+        <span>{{ isCopied() ? ('common.copied' | translate) : ('common.copy' | translate) }}</span>
+      </button>
+    </div>
+
+    <div
+      class="font-mono text-xs text-slate-200 break-all leading-relaxed bg-black/40 p-2.5 rounded-lg border border-slate-800/60 select-all"
+    >
+      {{ txHash() }}
+    </div>
+
+    @if (explorerUrl()) {
+      <div class="pt-0.5">
+        <a
+          [href]="explorerUrl()"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-1.5 text-xs font-extrabold text-primary hover:text-primary/80 hover:underline select-none"
+        >
+          <span>{{ 'showcase.tx_modal_view_explorer' | translate: { explorer: explorerName() } }}</span>
+          <app-icon name="external-link" class="w-3.5 h-3.5" />
+        </a>
+      </div>
+    }
+  </div>
+
+  <div class="pt-2">
+    <button
+      app-button
+      variant="primary"
+      size="md"
+      type="button"
+      (click)="close()"
+      class="w-full shadow-lg shadow-primary/25 font-bold"
+    >
+      {{ confirmText() }}
+    </button>
+  </div>
+</div>

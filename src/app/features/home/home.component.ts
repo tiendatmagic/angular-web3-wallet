@@ -44,6 +44,7 @@ import { CopyToClipboardComponent } from '@shared/components/copy-to-clipboard/c
 import { TranslatePipe } from '@shared/pipes/translate.pipe';
 import { TranslationService } from '@core/services/translation.service';
 import { parseEther } from 'ethers';
+import { getExplorerTxUrl } from '@core/utils/blockchain.utils';
 import { DEMO_TRANSACTIONS } from './mock-transactions.data';
 
 @Component({
@@ -104,6 +105,11 @@ export class HomeComponent {
   public toAddress = signal('');
   public amount = signal('');
   public txHash = signal<string | null>(null);
+  public readonly currentTxExplorerUrl = computed(() => {
+    const hash = this.txHash();
+    if (!hash) return '';
+    return getExplorerTxUrl(this.stateService.chainId(), hash);
+  });
   public txLoading = signal(false);
   public txError = signal<string | null>(null);
 
@@ -261,14 +267,35 @@ export class HomeComponent {
 
       const tx = await signer.sendTransaction(txRequest);
       
+      // Cơ chế Tx Hash tức thì (như DApp Staking): Có ngay khi người dùng xác nhận ví
       this.txHash.set(tx.hash);
-      this.stateService.showToast(this.translationService.t('home.toast_tx_sent'), 'warning');
-      await tx.wait();
-      await this.stateService.web3Service.updateBalanceAndNetwork();
-      this.stateService.showToast(this.translationService.t('home.toast_tx_success'), 'success');
+      
+      // Mở Modal thông báo chi tiết Tx Hash với nút Copy và link Block Explorer
+      this.modalService.showTransactionSuccess({
+        txHash: tx.hash,
+        amount: val,
+        symbol: this.stateService.chainSymbol() || 'ETH',
+        toAddress: to,
+        chainId: this.stateService.chainId(),
+        networkName: this.stateService.networkName(),
+      });
 
+      this.stateService.showToast(this.translationService.t('home.toast_tx_sent'), 'success');
+
+      // Giải phóng form ngay lập tức cho người dùng
       this.toAddress.set('');
       this.amount.set('');
+      this.txLoading.set(false);
+
+      // Chạy ngầm xác nhận block trong background mà không chặn giao diện
+      tx.wait().then(async (receipt: any) => {
+        if (receipt && receipt.status === 1) {
+          await this.stateService.web3Service.updateBalanceAndNetwork();
+          this.stateService.showToast(this.translationService.t('home.toast_tx_success'), 'success');
+        }
+      }).catch((waitErr: any) => {
+        console.warn('[Web3] Error waiting for transaction receipt:', waitErr);
+      });
     } catch (err: any) {
       console.error('Error sending transaction:', err);
       const errMsg = err.reason || err.message || 'Error occurred.';

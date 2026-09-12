@@ -632,6 +632,15 @@ export interface TranslationDictionary {
     collapse_sidebar: string;
     chain_id: string;
     transaction_hash: string;
+    tx_modal_title: string;
+    tx_modal_subtitle: string;
+    tx_modal_hash_label: string;
+    tx_modal_view_explorer: string;
+    tx_modal_amount: string;
+    tx_modal_recipient: string;
+    tx_modal_network: string;
+    tx_modal_status_broadcasted: string;
+    tx_modal_btn_close: string;
     copy_address: string;
     copy_signature: string;
     send_transaction_title: string;
