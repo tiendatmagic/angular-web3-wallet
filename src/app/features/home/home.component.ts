@@ -335,13 +335,13 @@ export class HomeComponent {
     timestamp: string;
   } | null>(null);
 
-  public readonly modalStandardCodeSnippet = `const modalRef = this.modalService.deleteConfirm({
-  title: 'Xác Nhận Xóa Bản Ghi',
+    public readonly modalStandardCodeSnippet = `const modalRef = this.modalService.deleteConfirm({
+  title: 'Confirm Record Deletion',
   itemName: 'Cyber Samurai #9821',
   itemType: 'ERC-721 Token',
   itemDetails: [
-    { label: 'Mạng lưới', value: 'Arbitrum One', isBadge: true },
-    { label: 'Mã Hash', value: '0x71C7...9821', isMono: true }
+    { label: 'Network', value: 'Arbitrum One', isBadge: true },
+    { label: 'Tx Hash', value: '0x71C7...9821', isMono: true }
   ],
   requireConfirmationText: true,
   confirmationKeyword: 'CYBER-SAMURAI',
@@ -351,7 +351,7 @@ export class HomeComponent {
 
 modalRef.afterClosed$.subscribe(result => {
   if (result?.confirmed) {
-    console.log('Đã xóa thành công với lý do:', result.reason);
+    console.log('Successfully deleted with reason:', result.reason);
   }
 });`;
 

@@ -4910,3 +4910,10 @@
   3. Xử lý hàm `sendTransaction` tự động sanitize `val.replace(/,/g, '.')` trước khi gọi `parseEther(val)`.
   4. Nâng cấp tương tự cho ô nhập custom multiplier trong `tx-speed-selector`.
   5. Đã kiểm tra `npm run build` thành công 100% (Zero Errors).
+
+## 2026-09-12: Rà soát & bảo đảm 100% sạch comment tiếng Việt
+- **Yêu cầu từ User**: Quét lại toàn bộ source, xóa tất cả comment code tiếng Việt trên toàn source.
+- **Thực hiện**:
+  + Rà soát lại toàn bộ 181 files trong dự án `angular-web3-wallet`.
+  + Xác nhận 100% mã nguồn không còn bất kỳ dòng comment tiếng Việt nào.
+  + Kiểm tra `npm run build` xác thực: Thành công 100% (Zero Errors).
