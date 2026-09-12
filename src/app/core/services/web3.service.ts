@@ -16,6 +16,8 @@ export interface ExecuteTxOptions {
   symbol?: string;
   toAddress?: string;
   confirmText?: string;
+  chainId?: number | string;
+  networkName?: string;
   onSuccess?: (receipt: any) => void;
   onError?: (error: any) => void;
 }
@@ -468,24 +470,36 @@ export class Web3Service {
 
     if (this.isConnected()) {
       try {
+        const hexChainId = '0x' + Number(chainId).toString(16);
+        const walletProvider: any = this.modal.getWalletProvider() || (typeof window !== 'undefined' ? (window as any).ethereum : null);
+
+        if (walletProvider?.request) {
+          try {
+            await walletProvider.request({
+              method: 'wallet_switchEthereumChain',
+              params: [{ chainId: hexChainId }]
+            });
+          } catch (switchErr: any) {
+            if (switchErr?.code === 4902 || switchErr?.data?.originalError?.code === 4902) {
+              const added = await this.addNetworkToWallet(chainId);
+              if (added) {
+                await walletProvider.request({
+                  method: 'wallet_switchEthereumChain',
+                  params: [{ chainId: hexChainId }]
+                });
+              }
+            }
+          }
+        }
+
         const network = this.supportedChains.find(chain => Number(chain.id) === chainId);
         if (network) {
           try {
             await this.modal.switchNetwork(network as any);
-          } catch (switchErr: any) {
-            console.warn(`[Web3] AppKit switchNetwork failed for chain ${chainId}, trying addNetworkToWallet:`, switchErr);
-            const added = await this.addNetworkToWallet(chainId);
-            if (added) {
-              await this.modal.switchNetwork(network as any);
-            } else {
-              throw switchErr;
-            }
-          }
-        } else {
-          console.warn(`[Web3] ChainId ${chainId} is not supported for switching.`);
+          } catch (e) { }
         }
-      } catch (error) {
-        console.error(`[Web3] Error switching to chain ${chainId}:`, error);
+      } catch (error: any) {
+        console.warn('[Web3] Error switching to chain:', chainId, error);
       }
     } else {
       const popular = POPULAR_CHAINS.find(c => Number(c.chainId) === chainId);
@@ -542,16 +556,12 @@ export class Web3Service {
         const multiplier = speed === 'fast' ? 1.5 : this.gasMultiplier();
         const factor = BigInt(Math.round(multiplier * 100));
 
-        // EIP-1559 (Ethereum, Arbitrum, Sepolia)
         if (feeData.maxFeePerGas) {
           overrides.maxFeePerGas = (feeData.maxFeePerGas * factor) / 100n;
-        }
-        if (feeData.maxPriorityFeePerGas) {
-          overrides.maxPriorityFeePerGas = (feeData.maxPriorityFeePerGas * factor) / 100n;
-        }
-
-        // Legacy / BSC / BSC Testnet (gasPrice)
-        if (feeData.gasPrice) {
+          if (feeData.maxPriorityFeePerGas) {
+            overrides.maxPriorityFeePerGas = (feeData.maxPriorityFeePerGas * factor) / 100n;
+          }
+        } else if (feeData.gasPrice) {
           overrides.gasPrice = (feeData.gasPrice * factor) / 100n;
         }
       }
@@ -565,6 +575,26 @@ export class Web3Service {
     options?: ExecuteTxOptions
   ): Promise<any> {
     try {
+      const targetChainId = options?.chainId ? Number(options.chainId) : (this.configuredChainId() ? Number(this.configuredChainId()) : null);
+      if (targetChainId && this.isConnected()) {
+        try {
+          const signer = await this.getSigner();
+          if (signer?.provider) {
+            const net = await signer.provider.getNetwork();
+            const activeChainId = Number(net.chainId);
+            if (activeChainId !== targetChainId) {
+              await this.switchNetwork(targetChainId);
+              await new Promise(resolve => setTimeout(resolve, 350));
+            }
+          }
+        } catch (switchErr: any) {
+          if (switchErr?.code === 4001 || switchErr?.message?.includes('rejected')) {
+            throw switchErr;
+          }
+          console.warn('[Web3] Global network guard auto-switch warning:', switchErr);
+        }
+      }
+
       let txPromise: Promise<any>;
       if (typeof txPromiseOrFn === 'function') {
         const overrides = await this.getGasOverrides();

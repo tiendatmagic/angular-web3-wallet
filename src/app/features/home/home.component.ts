@@ -265,15 +265,12 @@ export class HomeComponent {
 
     try {
       const signer = await this.stateService.getSigner();
-      const currentChainId = this.stateService.chainId() ? Number(this.stateService.chainId()) : undefined;
 
       const tx = await this.stateService.executeContractTx(
         (overrides) =>
           signer.sendTransaction({
             to,
             value: parseEther(val),
-            data: '0x',
-            chainId: currentChainId,
             ...overrides,
           }),
         {

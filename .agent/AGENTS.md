@@ -4917,3 +4917,12 @@
   + Rà soát lại toàn bộ 181 files trong dự án `angular-web3-wallet`.
   + Xác nhận 100% mã nguồn không còn bất kỳ dòng comment tiếng Việt nào.
   + Kiểm tra `npm run build` xác thực: Thành công 100% (Zero Errors).
+
+## 2026-09-12: Nâng cấp Auto Chain Guard toàn cục vào executeContractTx
+- **Vấn đề**: Người dùng thắc mắc nếu chỉ đặt kiểm tra mạng ở `home.component.ts` thì các trang khác sẽ không được bảo vệ khi gửi giao dịch bị lệch mạng.
+- **Giải pháp Kiến trúc**:
+  1. Di chuyển toàn bộ cơ chế Auto Chain Guard vào trực tiếp hàm lõi `Web3Service.executeContractTx`.
+  2. Mọi giao dịch phát sinh ở bất kỳ trang nào trong toàn bộ dApp (Home, Swap, Transfer, Contract Call...) đều tự động được kiểm tra và tự động yêu cầu MetaMask chuyển mạng nếu phát hiện lệch mạng.
+  3. Đã cập nhật `interface ExecuteTxOptions` hỗ trợ `chainId` và `networkName`.
+  4. Sửa dứt điểm lỗi xung đột gas giữa `maxFeePerGas` và `gasPrice` trên Arbitrum Sepolia.
+  5. Kiểm tra `npm run build` thành công 100% (Zero Errors).
