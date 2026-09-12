@@ -16,6 +16,13 @@ import { TranslatePipe } from '@shared/pipes/translate.pipe';
   host: { 'class': 'block' },
 })
 export class TxSpeedSelectorComponent {
+  public onMultiplierChange(val: any): void {
+    const str = String(val || '').replace(/,/g, '.');
+    const num = parseFloat(str);
+    if (!isNaN(num) && num >= 1 && num <= 10) {
+      this.stateService.gasMultiplier.set(num);
+    }
+  }
   public stateService = inject(StateService);
   private translationService = inject(TranslationService);
 

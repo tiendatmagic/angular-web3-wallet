@@ -29,6 +29,7 @@ export class CustomInputComponent implements ControlValueAccessor {
   @Input() step: number | string = '';
   @Input() name: string = '';
   @Input() customClass: string = '';
+  @Input() inputmode: string = '';
 
   @Output() valueChange = new EventEmitter<any>();
 

@@ -239,9 +239,19 @@ export class HomeComponent {
     }
   }
 
+    public onAmountChange(value: any): void {
+    let str = String(value || '').replace(/,/g, '.');
+    str = str.replace(/[^0-9.]/g, '');
+    const parts = str.split('.');
+    if (parts.length > 2) {
+      str = parts[0] + '.' + parts.slice(1).join('');
+    }
+    this.amount.set(str);
+  }
+
   public async sendTransaction() {
     const to = String(this.toAddress() || '').trim();
-    const val = String(this.amount() || '').trim();
+    const val = String(this.amount() || '').trim().replace(/,/g, '.');
 
     if (!to || !val) {
       this.stateService.showToast(this.translationService.t('home.toast_enter_fields'), 'error');
@@ -255,52 +265,30 @@ export class HomeComponent {
 
     try {
       const signer = await this.stateService.getSigner();
-      
-      const overrides = await this.stateService.getGasOverrides(signer);
-      const txRequest: any = {
-        to,
-        value: parseEther(val),
-        data: '0x',
-        chainId: this.stateService.chainId() ? Number(this.stateService.chainId()) : undefined,
-        ...overrides
-      };
+      const currentChainId = this.stateService.chainId() ? Number(this.stateService.chainId()) : undefined;
 
-      const tx = await signer.sendTransaction(txRequest);
-      
-      // Cơ chế Tx Hash tức thì (như DApp Staking): Có ngay khi người dùng xác nhận ví
+      const tx = await this.stateService.executeContractTx(
+        (overrides) =>
+          signer.sendTransaction({
+            to,
+            value: parseEther(val),
+            data: '0x',
+            chainId: currentChainId,
+            ...overrides,
+          }),
+        {
+          amount: val,
+          symbol: this.stateService.chainSymbol() || 'ETH',
+          toAddress: to,
+        }
+      );
+
       this.txHash.set(tx.hash);
-      
-      // Mở Modal thông báo chi tiết Tx Hash với nút Copy và link Block Explorer
-      this.modalService.showTransactionSuccess({
-        txHash: tx.hash,
-        amount: val,
-        symbol: this.stateService.chainSymbol() || 'ETH',
-        toAddress: to,
-        chainId: this.stateService.chainId(),
-        networkName: this.stateService.networkName(),
-      });
-
-      this.stateService.showToast(this.translationService.t('home.toast_tx_sent'), 'success');
-
-      // Giải phóng form ngay lập tức cho người dùng
       this.toAddress.set('');
       this.amount.set('');
-      this.txLoading.set(false);
-
-      // Chạy ngầm xác nhận block trong background mà không chặn giao diện
-      tx.wait().then(async (receipt: any) => {
-        if (receipt && receipt.status === 1) {
-          await this.stateService.web3Service.updateBalanceAndNetwork();
-          this.stateService.showToast(this.translationService.t('home.toast_tx_success'), 'success');
-        }
-      }).catch((waitErr: any) => {
-        console.warn('[Web3] Error waiting for transaction receipt:', waitErr);
-      });
     } catch (err: any) {
-      console.error('Error sending transaction:', err);
       const errMsg = err.reason || err.message || 'Error occurred.';
       this.txError.set(errMsg);
-      this.stateService.showToast(this.translationService.t('home.toast_tx_failed') + errMsg, 'error');
     } finally {
       this.txLoading.set(false);
     }
@@ -347,8 +335,7 @@ export class HomeComponent {
     timestamp: string;
   } | null>(null);
 
-  public readonly modalStandardCodeSnippet = `// 1. Mở Modal Xác Nhận Xóa chuẩn mẫu:
-const modalRef = this.modalService.deleteConfirm({
+  public readonly modalStandardCodeSnippet = `const modalRef = this.modalService.deleteConfirm({
   title: 'Xác Nhận Xóa Bản Ghi',
   itemName: 'Cyber Samurai #9821',
   itemType: 'ERC-721 Token',
@@ -362,7 +349,6 @@ const modalRef = this.modalService.deleteConfirm({
   requireCheckboxAgreement: true
 });
 
-// 2. Lắng nghe kết quả trả về bất đồng bộ:
 modalRef.afterClosed$.subscribe(result => {
   if (result?.confirmed) {
     console.log('Đã xóa thành công với lý do:', result.reason);

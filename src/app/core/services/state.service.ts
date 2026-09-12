@@ -1,5 +1,5 @@
 import { Injectable, inject, computed } from '@angular/core';
-import { Web3Service } from './web3.service';
+import { Web3Service, ExecuteTxOptions } from './web3.service';
 import { UiStateService } from './ui-state.service';
 import { ThemeService } from './theme.service';
 import { ToastService } from './toast.service';
@@ -108,5 +108,12 @@ export class StateService {
 
   public async getGasOverrides(signer?: any) {
     return await this.web3Service.getGasOverrides(signer);
+  }
+
+  public async executeContractTx(
+    txPromiseOrFn: Promise<any> | ((overrides: any) => Promise<any>),
+    options?: ExecuteTxOptions
+  ): Promise<any> {
+    return await this.web3Service.executeContractTx(txPromiseOrFn, options);
   }
 }

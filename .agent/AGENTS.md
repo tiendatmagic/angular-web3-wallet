@@ -1,3 +1,28 @@
+### Yêu Cầu: Rà Soát & Xóa Toàn Bộ Comment Code Tiếng Việt Trong Mã Nguồn
+- **Nội dung yêu cầu:** Kiểm tra toàn bộ source code của dự án, phát hiện và xóa sạch tất cả comment code tiếng Việt ở mọi file.
+- **Phân tích kỹ thuật & Triển khai thực hiện:**
+  1. Sử dụng parser phân tích cú pháp AST / Regex quét sâu toàn bộ cây thư mục `src/` (TypeScript, HTML, SCSS, CSS) và các scripts, loại trừ chuỗi văn bản UI, file tài nguyên i18n (`vi.json`) và string literals.
+  2. Xác định chính xác 7 comment tiếng Việt tồn tại trong code:
+     - `src/app/core/services/web3.service.ts`:
+       - Comment kiểm tra đóng modal kết nối trong `closeConnectModalIfOpen()` (dòng 119).
+       - Comment tự động đóng modal khi ví đã kết nối trong `initAppKit()` (dòng 171).
+       - Comment ngăn mở modal khi ví đã kết nối trong `connect()` (dòng 314).
+     - `src/app/features/home/home.component.ts`:
+       - Comment xử lý Tx Hash tức thì trong `sendTransaction()` (dòng 270).
+       - Comment mở modal Tx Hash success trong `sendTransaction()` (dòng 273).
+       - Comment reset form sau khi gửi tx (dòng 285).
+       - Comment xử lý transaction wait background (dòng 290).
+       - Comment mẫu trong chuỗi code snippet `modalStandardCodeSnippet` (dòng 350 & 365).
+  3. Tiến hành loại bỏ hoàn toàn các comment tiếng Việt, giữ nguyên logic thực thi và kiến trúc code sạch sẽ, tuân thủ nguyên tắc Clean Code quốc tế (comments/code đều là tiếng Anh hoặc tự tài liệu hóa).
+- **Các vị trí đã xử lý:**
+  1. `src/app/core/services/web3.service.ts`
+  2. `src/app/features/home/home.component.ts`
+- **Xác thực:**
+  - Quét lại toàn bộ source code: 0 comment tiếng Việt còn sót lại.
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npm test` (`npx ng test --watch=false`): 20 files / 102 tests passed (100%).
+  - `npm run build`: Build production hoàn tất thành công 100%.
+
 ### Yêu Cầu: Điều Khiển Mở Modal Cấu Hình (Open Config Modal) Trực Quan Qua Chrome DevTools MCP
 - **Nội dung yêu cầu:** Điều khiển trình duyệt đang mở trên desktop để tìm và bấm mở nút "Open Config Modal" / "Mở Modal Form" cho người dùng quan sát trực tiếp.
 - **Phương pháp kỹ thuật & Thao tác tự động hóa:**
@@ -4818,3 +4843,70 @@
   5. **Đa ngôn ngữ & Types (`i18n.types.ts`, `vi.ts`, `en.ts`):**
      - Bổ sung đầy đủ type definitions và bản dịch tiếng Việt / tiếng Anh cho Tx Success Modal.
 - **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Đóng gói Production (`npm run build`) hoàn thành 100%.
+
+### Yêu cầu: Tích hợp Bộ Điều Phối Giao Dịch Trung Tâm `executeContractTx`
+- **Nội dung yêu cầu:** Thiết kế cơ chế chuẩn hóa trung tâm trong `Web3Service` và `StateService` để mọi giao dịch gọi Smart Contract (ghi hàm write, transfer, approve, stake, mint...) trong toàn bộ dự án đều tự động có mã Tx Hash tức thì ngay khi vừa bấm "Xác nhận" trên ví.
+- **Giải pháp:**
+  1. **Định nghĩa `ExecuteTxOptions` & Thêm `executeContractTx` trong `web3.service.ts`:**
+     - Nhận `txPromise: Promise<any>` và các tùy chọn (`title`, `subtitle`, `amount`, `symbol`, `toAddress`, `onSuccess`, `onError`).
+     - Ngay khi người dùng ký xác nhận: lập tức trích xuất `tx.hash`, kích hoạt `modalService.showTransactionSuccess(...)`.
+     - Tự động theo dõi `tx.wait()` ngầm: khi khối được đào xong, tự động cập nhật số dư ví on-chain và gửi Toast thông báo.
+     - Xử lý bắt lỗi tập trung (phát hiện lỗi người dùng từ chối / hủy yêu cầu và toast tiếng Việt rõ ràng).
+  2. **Ủy quyền tại `state.service.ts`:**
+     - Expose `executeContractTx` để các component dễ dàng gọi từ `this.stateService.executeContractTx(...)`.
+  3. **Refactor `HomeComponent`:**
+     - Tinh gọn hàm `sendTransaction()` chỉ còn 1 dòng gọi qua `this.stateService.executeContractTx`.
+- **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Đóng gói Production (`npm run build`) thành công 100%.
+
+- **Đa ngôn ngữ i18n toàn diện 100% (Zero Hardcoded Strings):**
+  - Mọi câu thông báo, tiêu đề modal, nút bấm, và thông điệp Toast trong `executeContractTx` và `TxSuccessModalComponent` đều sử dụng `TranslationService` và pipe `| translate`.
+  - Hỗ trợ đổi ngôn ngữ linh hoạt (Reactive): Khi người dùng bấm chuyển đổi Tiếng Việt / Tiếng Anh trên giao diện, Modal và các thông báo tự động cập nhật ngôn ngữ ngay lập tức mà không cần tải lại trang.
+
+### Yêu cầu: Quét Toàn Bộ Source & Xóa Sạch 100% Comment Tiếng Việt Trong Mã Nguồn
+- **Nội dung yêu cầu:** Rà soát toàn diện tất cả các tệp mã nguồn trong dự án, loại bỏ hoàn toàn các comment code tiếng Việt (`//`, `/* ... */`, `<!-- ... -->`).
+- **Giải pháp:**
+  - Viết bộ script quét đệ quy toàn bộ thư mục `src/` kiểm tra ký tự tiếng Việt trong các khối comment.
+  - Đã loại bỏ sạch sẽ 100% các dòng comment tiếng Việt trong `web3.service.ts` và các tệp liên quan.
+  - Xác thực lại bằng script quét: kết quả phát hiện **0 tệp** còn comment tiếng Việt.
+- **Xác thực:** Chạy `npm run build` đạt 100% thành công.
+
+### Yêu cầu: Tự Động Hóa 100% Tốc Độ Giao Dịch (Tx Speed) Cho Mọi Lời Gọi Smart Contract
+- **Nội dung yêu cầu:** Đảm bảo mọi giao dịch trong toàn bộ dApp (bất kể hàm Smart Contract nào) đều tự động tuân theo thiết lập tốc độ gas của `tx-speed-selector` (Fast: 1.5x gas, Custom: multiplier x gas).
+- **Phân tích & Giải pháp:**
+  1. **Nâng cấp `getGasOverrides()` trong `web3.service.ts`:**
+     - Trước đây chỉ hỗ trợ EIP-1559 (`maxFeePerGas`, `maxPriorityFeePerGas`).
+     - Đã nâng cấp bổ sung hỗ trợ cả `feeData.gasPrice` có nhân hệ số để tương thích 100% với các mạng EVM Legacy / BNB Smart Chain (BSC & BSC Testnet).
+  2. **Nâng cấp `executeContractTx` hỗ trợ Auto-Overrides:**
+     - Cho phép nhận callback dạng `(overrides) => contract.method(args, overrides)`.
+     - Hệ thống tự động gọi `getGasOverrides()` đọc trực tiếp từ `tx-speed-selector` và bơm vào hàm contract mà lập trình viên không cần tự tính toán hay lo lắng bị quên.
+  3. **Đồng bộ vào tài liệu kiến trúc [ARCHITECTURE.md](file:///d:/git/angular-web3-wallet/ARCHITECTURE.md) và [.agent/ARCHITECTURE.md](file:///d:/git/angular-web3-wallet/.agent/ARCHITECTURE.md):**
+     - Hướng dẫn quy chuẩn 5 trong 1 cho mọi cuộc gọi Smart Contract.
+- **Xác thực:** Chạy `npx tsc --noEmit` đạt 0 lỗi type. Đóng gói Production (`npm run build`) thành công 100%.
+
+## 2026-09-12: Tối ưu & tinh gọn tài liệu cấu trúc dự án
+- **Yêu cầu từ User**: Làm gọn lại, chỉ để 2 file tài liệu (`ARCHITECTURE.md` và `design.md`) thay vì lưu trùng lặp ở cả root và `.agent/`.
+- **Thực hiện**:
+  1. Giữ lại 2 file chuẩn mực bên trong thư mục `.agent/` (`.agent/ARCHITECTURE.md` và `.agent/design.md`) để tuân thủ quy tắc toàn cục của AI agent và giữ thư mục gốc (root) gọn gàng, sạch sẽ.
+  2. Xóa bỏ 2 file trùng lặp tại thư mục gốc: `ARCHITECTURE.md` và `design.md`.
+  3. Kiểm tra và xác nhận toàn bộ dự án hiện chỉ còn đúng 2 file duy nhất tại thư mục `.agent/`.
+  4. Kiểm tra `npm run build` đảm bảo dự án hoạt động ổn định 100%.
+
+## 2026-09-12: Xóa sạch toàn bộ comment code tiếng Việt trong mã nguồn
+- **Yêu cầu từ User**: Quét toàn bộ source code, xóa tất cả các comment code tiếng Việt trên toàn bộ source.
+- **Thực hiện**:
+  1. Quét sâu toàn bộ 181 file mã nguồn trong dự án (`.ts`, `.html`, `.scss`, `.js`, `.json`).
+  2. Phát hiện và xử lý các comment tiếng Việt / mojibake còn sót lại tại `src/app/core/services/web3.service.ts` (tại line 553 và line 570 liên quan đến gas overrides và tx-speed-selector).
+  3. Đã chuẩn hóa sang tiếng Anh kỹ thuật hoặc xóa bỏ hoàn toàn dòng comment.
+  4. Quét lại xác nhận: 0 comment tiếng Việt tồn tại trên toàn bộ codebase.
+  5. Chạy `npm run build` kiểm thử: thành công 100% (Zero Errors).
+
+## 2026-09-12: Khắc phục sự cố nhập dấu chấm (.) và dấu phẩy (,) cho số lượng thập phân
+- **Hiện tượng**: Trên trình duyệt tiếng Việt / locale vi-VN, ô nhập số lượng (`amount`) dùng `<input type="number">` chỉ nhận dấu phẩy (`,`), không nhận dấu chấm (`.`). Khi gửi giao dịch, `parseEther` của ethers.js bị lỗi do không chấp nhận dấu phẩy.
+- **Nguyên nhân**:
+  - Chuẩn HTML5 `type="number"` phụ thuộc vào Locale của trình duyệt/hệ điều hành. Ở Việt Nam, dấu phẩy là dấu thập phân (decimal separator), còn dấu chấm là dấu phân cách hàng nghìn nên bị trình duyệt chặn.
+- **Giải pháp & Thực hiện**:
+  1. Nâng cấp `CustomInputComponent` hỗ trợ thuộc tính `inputmode="decimal"` và chuyển ô nhập số lượng sang `type="text"`.
+  2. Bổ sung hàm `onAmountChange` tự động chuyển đổi dấu phẩy (`,`) thành dấu chấm (`.`) ngay khi người dùng gõ, đồng thời lọc chỉ cho phép số và tối đa một dấu chấm.
+  3. Xử lý hàm `sendTransaction` tự động sanitize `val.replace(/,/g, '.')` trước khi gọi `parseEther(val)`.
+  4. Nâng cấp tương tự cho ô nhập custom multiplier trong `tx-speed-selector`.
+  5. Đã kiểm tra `npm run build` thành công 100% (Zero Errors).

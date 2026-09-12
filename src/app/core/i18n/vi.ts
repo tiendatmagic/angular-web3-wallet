@@ -151,6 +151,8 @@ export const VI_TRANSLATIONS: TranslationDictionary = {
     toast_tx_sent: 'Giao dịch đã được phát đi! Đang chờ xác nhận...',
     toast_tx_success: 'Giao dịch chuyển tiền đã thành công!',
     toast_tx_failed: 'Giao dịch thất bại: ',
+    toast_tx_rejected: 'Bạn đã hủy yêu cầu giao dịch trên ví.',
+    toast_tx_confirmed: 'Giao dịch đã hoàn tất và được ghi vào khối!',
     toast_enter_msg: 'Vui lòng nhập nội dung tin nhắn cần ký.',
     toast_signing_msg: 'Đang yêu cầu ký tin nhắn...',
     toast_signed_success: 'Đã ký tin nhắn thành công!',

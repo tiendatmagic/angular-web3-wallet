@@ -7,6 +7,18 @@ import { BrowserProvider, formatEther } from 'ethers';
 import { environment } from '@environments/environment';
 import { ThemeService } from './theme.service';
 import { ToastService } from './toast.service';
+import { ModalService } from './modal.service';
+
+export interface ExecuteTxOptions {
+  title?: string;
+  subtitle?: string;
+  amount?: string;
+  symbol?: string;
+  toAddress?: string;
+  confirmText?: string;
+  onSuccess?: (receipt: any) => void;
+  onError?: (error: any) => void;
+}
 import { POPULAR_CHAINS } from '../utils/blockchain.utils';
 import { TranslationService } from './translation.service';
 
@@ -56,6 +68,7 @@ export class Web3Service {
 
   private readonly themeService = inject(ThemeService);
   private readonly toastService = inject(ToastService);
+  private readonly modalService = inject(ModalService);
 
   constructor() {
     if (!this.isEnabled) {
@@ -116,7 +129,6 @@ export class Web3Service {
       if (typeof window === 'undefined') return;
       if (ModalController.state.open) {
         const view = RouterController.state.view;
-        // Chỉ đóng nếu modal đang ở các view kết nối (tránh can thiệp khi người dùng chủ động mở Account hoặc Networks)
         if (!view || view.startsWith('Connect') || view === 'AllWallets') {
           ModalController.close();
           this.modal?.close();
@@ -168,7 +180,6 @@ export class Web3Service {
       this.isConnected.set(accountState.isConnected);
 
       if (accountState.isConnected && accountState.address) {
-        // Tự động đóng modal kết nối nếu còn mở
         this.closeConnectModalIfOpen();
 
         await this.updateBalanceAndNetwork();
@@ -311,7 +322,6 @@ export class Web3Service {
   public async connect() {
     if (!this.isEnabled) return;
 
-    // Nếu ví đã kết nối và có địa chỉ, lập tức đóng modal nếu đang bị treo và không mở lại
     if (this.isConnected() && this.address()) {
       this.closeConnectModalIfOpen();
       return;
@@ -530,16 +540,84 @@ export class Web3Service {
       const speed = this.txSpeed();
       if (speed !== 'default') {
         const multiplier = speed === 'fast' ? 1.5 : this.gasMultiplier();
+        const factor = BigInt(Math.round(multiplier * 100));
+
+        // EIP-1559 (Ethereum, Arbitrum, Sepolia)
         if (feeData.maxFeePerGas) {
-          overrides.maxFeePerGas = (feeData.maxFeePerGas * BigInt(Math.round(multiplier * 100))) / 100n;
+          overrides.maxFeePerGas = (feeData.maxFeePerGas * factor) / 100n;
         }
         if (feeData.maxPriorityFeePerGas) {
-          overrides.maxPriorityFeePerGas = (feeData.maxPriorityFeePerGas * BigInt(Math.round(multiplier * 100))) / 100n;
+          overrides.maxPriorityFeePerGas = (feeData.maxPriorityFeePerGas * factor) / 100n;
+        }
+
+        // Legacy / BSC / BSC Testnet (gasPrice)
+        if (feeData.gasPrice) {
+          overrides.gasPrice = (feeData.gasPrice * factor) / 100n;
         }
       }
     } catch (err) {
       console.warn('[Web3] Unable to fetch fee data for gas overrides:', err);
     }
     return overrides;
+  }
+  public async executeContractTx(
+    txPromiseOrFn: Promise<any> | ((overrides: any) => Promise<any>),
+    options?: ExecuteTxOptions
+  ): Promise<any> {
+    try {
+      let txPromise: Promise<any>;
+      if (typeof txPromiseOrFn === 'function') {
+        const overrides = await this.getGasOverrides();
+        txPromise = txPromiseOrFn(overrides);
+      } else {
+        txPromise = txPromiseOrFn;
+      }
+
+      const tx = await txPromise;
+      const txHash = tx?.hash || (typeof tx === 'string' ? tx : null);
+
+      if (txHash) {
+        this.modalService.showTransactionSuccess({
+          txHash,
+          title: options?.title || this.translationService.t('showcase.tx_modal_title'),
+          subtitle: options?.subtitle || this.translationService.t('showcase.tx_modal_subtitle'),
+          amount: options?.amount,
+          symbol: options?.symbol || this.chainSymbol() || 'ETH',
+          toAddress: options?.toAddress,
+          confirmText: options?.confirmText,
+          chainId: this.chainId(),
+          networkName: this.networkName(),
+        });
+      }
+
+      if (tx && typeof tx.wait === 'function') {
+        tx.wait().then(async (receipt: any) => {
+          if (receipt && receipt.status === 1) {
+            await this.updateBalanceAndNetwork();
+            this.toastService.showToast(
+              this.translationService.t('home.toast_tx_confirmed'),
+              'success'
+            );
+            options?.onSuccess?.(receipt);
+          }
+        }).catch((waitErr: any) => {
+          console.warn('[Web3] Error background waiting for tx receipt:', waitErr);
+        });
+      }
+
+      return tx;
+    } catch (err: any) {
+      console.error('[Web3] Error executing contract transaction:', err);
+      const isRejected =
+        err?.message?.includes('user rejected') ||
+        err?.message?.includes('User rejected') ||
+        err?.code === 'ACTION_REJECTED';
+      const errMsg = isRejected
+        ? this.translationService.t('home.toast_tx_rejected')
+        : (err?.reason || err?.message || this.translationService.t('home.toast_tx_failed'));
+      this.toastService.showToast(errMsg, 'error');
+      options?.onError?.(err);
+      throw err;
+    }
   }
 }

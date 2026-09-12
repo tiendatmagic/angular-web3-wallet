@@ -18,6 +18,7 @@
       [min]="min"
       [max]="max"
       [step]="step"
+      [attr.inputmode]="inputmode || null"
       [value]="val()"
       (input)="onInput($event)"
       class="form-input {{ customClass }}"

@@ -151,6 +151,8 @@ export const EN_TRANSLATIONS: TranslationDictionary = {
     toast_tx_sent: 'Transaction broadcasted! Awaiting confirmation...',
     toast_tx_success: 'Transaction succeeded!',
     toast_tx_failed: 'Transaction failed: ',
+    toast_tx_rejected: 'You rejected the transaction in your wallet.',
+    toast_tx_confirmed: 'Transaction confirmed on-chain!',
     toast_enter_msg: 'Please enter a message to sign.',
     toast_signing_msg: 'Requesting message signature...',
     toast_signed_success: 'Message signed successfully!',

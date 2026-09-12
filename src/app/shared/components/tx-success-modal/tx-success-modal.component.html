@@ -7,10 +7,18 @@
 
   <div class="space-y-1">
     <h3 class="text-lg sm:text-xl font-black text-slate-900 dark:text-white tracking-tight">
-      {{ title() }}
+      @if (customTitle()) {
+        {{ customTitle() }}
+      } @else {
+        {{ 'showcase.tx_modal_title' | translate }}
+      }
     </h3>
     <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 max-w-sm mx-auto leading-relaxed">
-      {{ subtitle() }}
+      @if (customSubtitle()) {
+        {{ customSubtitle() }}
+      } @else {
+        {{ 'showcase.tx_modal_subtitle' | translate }}
+      }
     </p>
   </div>
 
@@ -100,7 +108,11 @@
       (click)="close()"
       class="w-full shadow-lg shadow-primary/25 font-bold"
     >
-      {{ confirmText() }}
+      @if (customConfirmText()) {
+        {{ customConfirmText() }}
+      } @else {
+        {{ 'showcase.tx_modal_btn_close' | translate }}
+      }
     </button>
   </div>
 </div>

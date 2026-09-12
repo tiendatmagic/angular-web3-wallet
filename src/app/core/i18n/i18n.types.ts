@@ -158,6 +158,8 @@ export interface TranslationDictionary {
     toast_tx_sent: string;
     toast_tx_success: string;
     toast_tx_failed: string;
+    toast_tx_rejected: string;
+    toast_tx_confirmed: string;
     toast_enter_msg: string;
     toast_signing_msg: string;
     toast_signed_success: string;

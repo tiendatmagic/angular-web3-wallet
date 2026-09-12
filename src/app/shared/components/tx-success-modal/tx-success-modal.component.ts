@@ -1,4 +1,4 @@
-﻿import {
+import {
   Component,
   OnInit,
   signal,
@@ -27,7 +27,7 @@ import { TxSuccessModalData } from './tx-success-modal.types';
   templateUrl: './tx-success-modal.component.html'
 })
 export class TxSuccessModalComponent implements OnInit {
-  private readonly translationService = inject(TranslationService);
+  public readonly translationService = inject(TranslationService);
   private readonly toastService = inject(ToastService);
 
   public readonly txHash = signal<string>('');
@@ -36,9 +36,9 @@ export class TxSuccessModalComponent implements OnInit {
   public readonly toAddress = signal<string>('');
   public readonly chainId = signal<string | number | null>(null);
   public readonly networkName = signal<string>('');
-  public readonly title = signal<string>('');
-  public readonly subtitle = signal<string>('');
-  public readonly confirmText = signal<string>('');
+  public readonly customTitle = signal<string | null>(null);
+  public readonly customSubtitle = signal<string | null>(null);
+  public readonly customConfirmText = signal<string | null>(null);
   public readonly isCopied = signal<boolean>(false);
 
   public readonly explorerUrl = computed(() =>
@@ -69,15 +69,9 @@ export class TxSuccessModalComponent implements OnInit {
     }
     this.networkName.set(netName || this.translationService.t('showcase.unknown_network'));
 
-    this.title.set(
-      data.title || this.translationService.t('showcase.tx_modal_title')
-    );
-    this.subtitle.set(
-      data.subtitle || this.translationService.t('showcase.tx_modal_subtitle')
-    );
-    this.confirmText.set(
-      data.confirmText || this.translationService.t('showcase.tx_modal_btn_close')
-    );
+    if (data.title) this.customTitle.set(data.title);
+    if (data.subtitle) this.customSubtitle.set(data.subtitle);
+    if (data.confirmText) this.customConfirmText.set(data.confirmText);
   }
 
   public copyTxHash(): void {
