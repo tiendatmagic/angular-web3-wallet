@@ -3,7 +3,7 @@ import { createAppKit, type AppKit } from '@reown/appkit';
 import { EthersAdapter } from '@reown/appkit-adapter-ethers';
 import { mainnet, arbitrum, arbitrumSepolia, bsc, bscTestnet } from '@reown/appkit/networks';
 import { ApiController, ModalController, RouterController } from '@reown/appkit-controllers';
-import { BrowserProvider, JsonRpcProvider, formatEther } from 'ethers';
+import { BrowserProvider, JsonRpcProvider, formatEther, parseEther } from 'ethers';
 import { environment } from '@environments/environment';
 import { ThemeService } from './theme.service';
 import { ToastService } from './toast.service';
@@ -30,7 +30,6 @@ import { TranslationService } from './translation.service';
 export class Web3Service {
   private modal!: AppKit;
   private readonly translationService = inject(TranslationService);
-  private isInitialAccountSync = true;
 
   public readonly isEnabled: boolean = environment.enableWeb3;
 
@@ -163,9 +162,6 @@ export class Web3Service {
       networks: this.supportedChains as any,
       defaultNetwork: this.supportedChains[0] as any,
       allowUnsupportedChain: true,
-      defaultAccountTypes: {
-        eip155: 'eoa'
-      },
       metadata: {
         name: 'Angular Web3 DApp',
         description: this.translationService.t('about.subtitle'),
@@ -174,55 +170,43 @@ export class Web3Service {
       },
       projectId,
       themeMode: isDark ? 'dark' : 'light',
+      allWallets: 'SHOW',
+      featuredWalletIds: [
+        '4622a2b2d6af1c9844944291e5e7351a6aa24cd7b23099efac1b2fd875da31a0'
+      ],
       features: {
-        analytics: false,
-        reownAuthentication: false,
-        smartSessions: false,
         email: false,
-        socials: []
+        socials: false,
+        analytics: false,
+        reownAuthentication: false
       },
       enableCoinbase: false
     } as any);
 
     this.modal.subscribeAccount(async (accountState) => {
       const prevConnected = this.isConnected();
+      const hasAddress = !!accountState.address;
 
-      if (this.isInitialAccountSync) {
-        this.isInitialAccountSync = false;
-        if (!accountState.isConnected) {
-          const wasConnected = typeof window !== 'undefined' && typeof localStorage !== 'undefined' && localStorage.getItem('angular_web3_was_connected') === 'true';
-          if (wasConnected) {
-            return;
-          }
-        }
-      }
+      if (hasAddress && accountState.isConnected) {
+        const nextAddress = accountState.address || null;
+        this.address.set(nextAddress);
+        this.isConnected.set(true);
 
-      this.address.set(accountState.address || null);
-      this.isConnected.set(accountState.isConnected);
-
-      if (accountState.isConnected && accountState.address) {
         if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
-          localStorage.setItem('angular_web3_last_address', accountState.address);
+          localStorage.setItem('angular_web3_last_address', nextAddress || '');
           localStorage.setItem('angular_web3_was_connected', 'true');
         }
+
         this.closeConnectModalIfOpen();
 
-        await this.updateBalanceAndNetwork();
-        const currentChainId = this.chainId();
-        const targetChainId = Number(this.configuredChainId());
-
-        if (currentChainId && targetChainId && currentChainId !== targetChainId) {
-          setTimeout(async () => {
-            await this.switchNetwork(targetChainId);
-          }, 400);
-        } else if (currentChainId) {
-          this.checkAndUpdateNetworkState(currentChainId, false);
-        }
-      } else if (!accountState.isConnected) {
+        void this.updateBalanceAndNetwork();
+      } else if (!hasAddress) {
         if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
           localStorage.removeItem('angular_web3_last_address');
           localStorage.removeItem('angular_web3_was_connected');
         }
+        this.address.set(null);
+        this.isConnected.set(false);
         this.balance.set('0.0000');
         this.chainId.set(null);
         this.networkName.set(this.translationService.t('showcase.unknown_network'));
@@ -626,19 +610,91 @@ export class Web3Service {
     }
   }
 
+  public async getWalletProviderWithRetry(maxWaitMs = 3000): Promise<any> {
+    const startTime = Date.now();
+    while (Date.now() - startTime < maxWaitMs) {
+      let provider: any = null;
+      if (this.modal) {
+        try {
+          provider = this.modal.getWalletProvider();
+        } catch (e) { }
+      }
+      if (!provider && typeof window !== 'undefined' && (window as any).ethereum) {
+        provider = (window as any).ethereum;
+      }
+      if (provider) return provider;
+      await new Promise(r => setTimeout(r, 200));
+    }
+    return null;
+  }
+
+  public parseProviderChainId(value: unknown): number | null {
+    if (typeof value === 'number') return Number.isFinite(value) ? value : null;
+    if (typeof value !== 'string' || !value) return null;
+
+    const parsed = value.toLowerCase().startsWith('0x')
+      ? parseInt(value, 16)
+      : Number(value);
+    return Number.isFinite(parsed) ? parsed : null;
+  }
+
+  public async ensureProviderChain(provider: any, targetChainId: number): Promise<void> {
+    if (!provider || typeof provider.request !== 'function') {
+      throw new Error('Wallet provider does not support EIP-1193 requests');
+    }
+
+    let activeChainId: number | null = null;
+    try {
+      activeChainId = this.parseProviderChainId(await provider.request({ method: 'eth_chainId' }));
+    } catch (error) {
+      console.warn('[Web3] Unable to read provider chain:', error);
+    }
+
+    if (activeChainId !== null && activeChainId !== targetChainId) {
+      const chainIdHex = '0x' + targetChainId.toString(16);
+      try {
+        await provider.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: chainIdHex }]
+        });
+      } catch (error: any) {
+        const isNotAdded = error?.code === 4902 ||
+          error?.info?.error?.code === 4902 ||
+          error?.message?.toLowerCase().includes('unrecognized') ||
+          error?.message?.toLowerCase().includes('add');
+
+        if (!isNotAdded || !(await this.addNetworkToWallet(targetChainId, provider))) {
+          throw error;
+        }
+
+        await provider.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: chainIdHex }]
+        });
+      }
+    }
+
+    const verifiedChainId = this.parseProviderChainId(
+      await provider.request({ method: 'eth_chainId' })
+    );
+    if (verifiedChainId !== targetChainId) {
+      throw new Error(`Wallet is on chain ${verifiedChainId ?? 'unknown'}, expected chain ${targetChainId}`);
+    }
+
+    this.checkAndUpdateNetworkState(targetChainId, false);
+  }
+
   public async getSigner(targetChainIdParam?: number | string) {
     if (!this.isEnabled) throw new Error(this.translationService.t('showcase.web3_disabled'));
-    const walletProvider: any = this.modal.getWalletProvider();
+    const walletProvider: any = await this.getWalletProviderWithRetry(3000);
     if (!walletProvider) {
       throw new Error(this.translationService.t('showcase.web3_wallet_not_connected'));
     }
 
     const targetChainId = Number(targetChainIdParam || this.configuredChainId() || this.chainId() || 42161);
-    const caipChainId = `eip155:${targetChainId}`;
-
     this.syncDefaultChainToProvider(targetChainId);
 
-    const ethersProvider = new BrowserProvider(walletProvider as any, targetChainId);
+    const ethersProvider = new BrowserProvider(walletProvider as any);
     const currentAddress = this.address();
     const originalSend = ethersProvider.send.bind(ethersProvider);
 
@@ -648,37 +704,46 @@ export class Web3Service {
           return [currentAddress];
         }
       }
-
-      if (method === 'eth_sendTransaction') {
-        this.syncDefaultChainToProvider(targetChainId);
-
-        if (typeof walletProvider.request === 'function') {
-          try {
-            return await walletProvider.request({ method, params });
-          } catch (wcErr: any) {
-            const errLower = (wcErr?.message || '').toLowerCase();
-            const isMethodOrSessionError =
-              wcErr?.code === 5300 ||
-              wcErr?.code === 5201 ||
-              errLower.includes('invalid session properties') ||
-              errLower.includes('unknown method');
-
-            if (isMethodOrSessionError) {
-              try {
-                return await originalSend(method, params);
-              } catch (fallbackErr) {
-                throw wcErr;
-              }
-            }
-            throw wcErr;
-          }
-        }
-      }
-
       return await originalSend(method, params);
     };
 
     return await ethersProvider.getSigner();
+  }
+
+  public async sendNativeTransaction(to: string, amountEth: string, targetChainId?: number): Promise<{ hash: string }> {
+    const userAddress = this.address();
+    if (!userAddress) {
+      throw new Error(this.translationService.t('showcase.web3_wallet_not_connected'));
+    }
+
+    const chainId = Number(targetChainId || this.configuredChainId() || this.chainId() || 42161);
+    const walletProvider = await this.getWalletProviderWithRetry(3000);
+    if (!walletProvider) {
+      throw new Error('Wallet provider is not available');
+    }
+
+    await this.ensureProviderChain(walletProvider, chainId);
+
+    const valBigInt = parseEther(amountEth);
+    const valHex = '0x' + valBigInt.toString(16);
+
+    const txParams: any = {
+      from: userAddress,
+      to,
+      value: valHex,
+      data: '0x'
+    };
+
+    if (chainId === 56 || chainId === 97) {
+      txParams.gas = '0x5208';
+    }
+
+    const txHash = await walletProvider.request({
+      method: 'eth_sendTransaction',
+      params: [txParams]
+    });
+
+    return { hash: txHash };
   }
 
   public getReadonlyProvider(chainId?: number | string): JsonRpcProvider {
@@ -755,6 +820,14 @@ export class Web3Service {
       const targetChainId = options?.chainId ? Number(options.chainId) : (this.configuredChainId() ? Number(this.configuredChainId()) : null);
       if (targetChainId && this.isConnected()) {
         this.syncDefaultChainToProvider(targetChainId);
+        const walletProvider = await this.getWalletProviderWithRetry(2000);
+        if (walletProvider) {
+          try {
+            await this.ensureProviderChain(walletProvider, targetChainId);
+          } catch (chainErr) {
+            console.warn('[Web3] ensureProviderChain warning in executeContractTx:', chainErr);
+          }
+        }
       }
 
       let txPromise: Promise<any>;
@@ -794,6 +867,20 @@ export class Web3Service {
           }
         }).catch((waitErr: any) => {
           console.warn('[Web3] Error background waiting for tx receipt:', waitErr);
+        });
+      } else if (txHash) {
+        const provider = this.getReadonlyProvider(targetChainId || undefined);
+        provider.waitForTransaction(txHash).then(async (receipt: any) => {
+          if (receipt && receipt.status === 1) {
+            await this.updateBalanceAndNetwork();
+            this.toastService.showToast(
+              this.translationService.t('home.toast_tx_confirmed'),
+              'success'
+            );
+            options?.onSuccess?.(receipt);
+          }
+        }).catch((waitErr: any) => {
+          console.warn('[Web3] Error background waiting for tx receipt by hash:', waitErr);
         });
       }
 

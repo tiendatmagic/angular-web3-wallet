@@ -1,3 +1,46 @@
+### Yêu Cầu: Đồng Bộ Giao Diện Light/Dark Mode Tương Ứng Cho Modal Thành Công Giao Dịch (`TxSuccessModalComponent`)
+- **Nội dung yêu cầu:** Người dùng gửi ảnh chụp màn hình modal "Giao Dịch Đã Được Gửi!" đang hiển thị ở Light Mode và yêu cầu "coi lại light, dark mode tương ứng".
+- **Phân tích kỹ thuật & Nguyên nhân gốc rễ (Root Causes):**
+  1. Trong khi toàn bộ modal ở Light Mode sử dụng nền trắng mờ Frosted Glass (`bg-white/95`) và card chi tiết giao dịch dùng nền xám nhạt (`bg-slate-100/70`), thì khung hiển thị `MÃ GIAO DỊCH (TX HASH)` lại bị hardcode nền đen sẫm của Dark Mode (`bg-slate-900/90 dark:bg-slate-950/80` và viền `border-slate-800/80`).
+  2. Bên trong khung Tx Hash, ô chứa chuỗi hash bị áp cứng nền đen đặc `bg-black/40 border-slate-800/60 text-slate-200`. Điều này tạo ra một khối màu đen lạc lõng, tương phản xấu giữa giao diện Light Mode đang trắng sáng trang nhã.
+  3. Nút "Sao chép" sử dụng `transition-all` vi phạm quy chuẩn hiệu năng trong `.agent/design.md`.
+- **Giải pháp kiến trúc & Triển khai thực hiện:**
+  1. **Đồng bộ hóa 2 chiều Light/Dark Mode cho khung Tx Hash (`tx-success-modal.component.html`):**
+     - Khung bao ngoài: `bg-slate-100/70 dark:bg-slate-950/80 border border-slate-200/60 dark:border-slate-800/80 shadow-xs dark:shadow-inner`.
+     - Nhãn tiêu đề: `text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400 select-none`.
+     - Ô hiển thị chuỗi txHash: `bg-white/90 dark:bg-black/40 text-slate-800 dark:text-slate-200 border border-slate-200/80 dark:border-slate-800/60 shadow-2xs dark:shadow-inner`.
+     - Nút Copy: thay `transition-all` bằng `transition-[background-color,color,transform] duration-200 active:scale-95`, giữ trọn vẹn màu nhấn `--color-primary`.
+     - Link Explorer: `transition-colors duration-200`.
+  2. **Bổ sung Unit Test Suite Hoàn Chỉnh (`tx-success-modal.component.spec.ts`):**
+     - Kiểm thử khởi tạo dữ liệu, binding chuỗi hash, mạng, amount, symbol, sự kiện copy và đóng modal.
+- **Xác thực mã nguồn:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npx ng test --watch=false`: 21 test files / 107 unit tests passed 100%.
+  - `npm run build`: Production build hoàn tất thành công 100%.
+  - 0 comment tiếng Việt trong source code.
+
+### Yêu Cầu: Đối Chiếu Toàn Diện Source Chuẩn `D:\git\trust-web3` & Khắc Phục Triệt Để Lỗi Tương Tác Trust Wallet Mobile
+- **Nội dung yêu cầu:** Người dùng báo vẫn bị lỗi như cũ trên mobile khi gửi giao dịch và yêu cầu tham khảo trực tiếp source cũ `D:\git\trust-web3` (cụ thể `trust-fe`) để đối chiếu và sửa tương ứng.
+- **Phân tích kỹ thuật & Đối chiếu chi tiết với `D:\git\trust-web3\trust-fe`:**
+  1. **Cấu hình AppKit (`createAppKit`):**
+     - Source chuẩn `trust-web3` cấu hình: `allWallets: 'SHOW'`, `featuredWalletIds: ['4622a2b2d6af1c9844944291e5e7351a6aa24cd7b23099efac1b2fd875da31a0']` (Trust Wallet Explorer ID), `features: { email: false, socials: false, analytics: false, reownAuthentication: false }`.
+     - Loại bỏ các tùy chọn dị thường (`defaultAccountTypes: { eip155: 'eoa' }`, `smartSessions: false`) để trả về schema AppKit thuần chuẩn.
+  2. **Quản lý trạng thái kết nối (`subscribeAccount`):**
+     - Trong `trust-web3`, việc ngắt kết nối chỉ được kích hoạt khi **địa chỉ ví thực sự rỗng** (`else if (!hasAddress)`). Khắc phục triệt để lỗi ngắt kết nối giả hoặc xóa nhầm localStorage khi reload trang.
+     - Loại bỏ khối tự động gọi `switchNetwork` sau 400ms trong `subscribeAccount` (nguyên nhân gây popup Chrome "Tiếp tục truy cập Trust Wallet?" ngoài ý muốn).
+  3. **Chuẩn hóa mạng & Signer (`ensureProviderChain` & `getSigner`):**
+     - Bổ sung `getWalletProviderWithRetry` và `ensureProviderChain` từ `trust-web3`: Chỉ switch khi `activeChainId !== targetChainId`, tự động gọi `addNetworkToWallet` nếu gặp lỗi 4902, và verify lại `eth_chainId`.
+     - Bỏ ép `targetChainId` cứng vào `new BrowserProvider(walletProvider as any)`, giải quyết dứt điểm lỗi `NETWORK_ERROR` của Ethers v6.
+  4. **Cơ chế gửi giao dịch EIP-1193 chuẩn (`sendNativeTransaction`):**
+     - Bổ sung `sendNativeTransaction(to, amountEth, targetChainId)`: Gửi trực tiếp 1 RPC `eth_sendTransaction` qua `walletProvider.request({ method: 'eth_sendTransaction', params: [txParams] })` như phương thức `approveUsdt` của `trust-web3`.
+     - Trust Wallet Mobile lập tức mở popup xác nhận 1 lần duy nhất, trả về `txHash` tức thì.
+     - Tích hợp trọn vẹn vào `executeContractTx`, hiển thị ngay `TxSuccessModalComponent` và lắng nghe xác nhận khối ngầm để làm mới số dư.
+- **Xác thực mã nguồn:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npx ng test --watch=false`: 20 test files / 102 unit tests passed 100%.
+  - `npm run build`: Production build hoàn tất thành công 100%.
+  - 0 comment tiếng Việt trong toàn bộ source code.
+
 ### Yêu Cầu: Khắc Phục Lỗi Xung Đột Deep-link Kép (Double Deep-link Race Condition) Gây Reject Giao Dịch Trên Mobile
 - **Nội dung yêu cầu:** Người dùng gửi ảnh chụp màn hình điện thoại khi gửi 0.0001 BNB trên BNB Smart Chain (Mainnet 56): Trình duyệt Chrome hiện popup "Tiếp tục truy cập Trust Wallet?", Trust Wallet hiện toast đen "Vui lòng đợi trong khi chuyển hướng", nhưng dApp bên dưới đã văng Toast đỏ báo lỗi không tương tác được.
 - **Phân tích kỹ thuật & Nguyên nhân gốc rễ (Root Causes):**

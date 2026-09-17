@@ -114,6 +114,10 @@ export class StateService {
     return this.web3Service.formatWeb3Error(err);
   }
 
+  public async sendNativeTransaction(to: string, amountEth: string, targetChainId?: number): Promise<{ hash: string }> {
+    return await this.web3Service.sendNativeTransaction(to, amountEth, targetChainId);
+  }
+
   public async executeContractTx(
     txPromiseOrFn: Promise<any> | ((overrides: any) => Promise<any>),
     options?: ExecuteTxOptions

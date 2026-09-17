@@ -265,15 +265,9 @@ export class HomeComponent {
 
     try {
       const targetChainId = Number(this.stateService.configuredChainId() || this.stateService.chainId() || 42161);
-      const signer = await this.stateService.getSigner(targetChainId);
 
       const tx = await this.stateService.executeContractTx(
-        (overrides) => signer.sendTransaction({
-          to,
-          value: parseEther(val),
-          gasLimit: BigInt(21000),
-          ...overrides,
-        }),
+        () => this.stateService.sendNativeTransaction(to, val, targetChainId),
         {
           amount: val,
           symbol: this.stateService.chainSymbol() || 'ETH',
@@ -282,7 +276,8 @@ export class HomeComponent {
         }
       );
 
-      this.txHash.set(tx.hash);
+      const hash = tx?.hash || (typeof tx === 'string' ? tx : null);
+      this.txHash.set(hash);
       this.toAddress.set('');
       this.amount.set('');
     } catch (err: any) {
