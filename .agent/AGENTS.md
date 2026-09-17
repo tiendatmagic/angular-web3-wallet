@@ -1,3 +1,27 @@
+### Yêu Cầu: Khắc Phục Lỗi Xung Đột Deep-link Kép (Double Deep-link Race Condition) Gây Reject Giao Dịch Trên Mobile
+- **Nội dung yêu cầu:** Người dùng gửi ảnh chụp màn hình điện thoại khi gửi 0.0001 BNB trên BNB Smart Chain (Mainnet 56): Trình duyệt Chrome hiện popup "Tiếp tục truy cập Trust Wallet?", Trust Wallet hiện toast đen "Vui lòng đợi trong khi chuyển hướng", nhưng dApp bên dưới đã văng Toast đỏ báo lỗi không tương tác được.
+- **Phân tích kỹ thuật & Nguyên nhân gốc rễ (Root Causes):**
+  1. **Xung đột Deep-link Kép (Double Deep-link Race Condition):**
+     - Trong `executeContractTx`: trước khi gửi giao dịch, hệ thống tự động kiểm tra `if (activeChainId !== targetChainId) { await this.switchNetwork(targetChainId); await new Promise(r => setTimeout(r, 350)); }`.
+     - Trên thiết bị di động (Trust Wallet / WalletConnect), lệnh `switchNetwork` kích hoạt Deep-link mở Trust Wallet lần 1 (Chrome bật popup hỏi người dùng "Tiếp tục truy cập Trust Wallet?").
+     - Trong khi người dùng còn chưa kịp bấm "Tiếp tục" và Trust Wallet chưa kịp chuyển mạng (vẫn đang hiện toast đen "Vui lòng đợi trong khi chuyển hướng"), `executeContractTx` chỉ đợi đúng 350ms rồi bắn tiếp lệnh thứ hai: `signer.sendTransaction(...)` kích hoạt Deep-link lần 2.
+     - Hai Deep-link dồn dập trong 350ms khiến hệ điều hành Android và ứng dụng Trust Wallet bị xung đột intent, session cũ bị mismatch và request gửi giao dịch bị reject ngay lập tức trước khi người dùng kịp mở ví.
+  2. **Yêu cầu `eth_estimateGas` không cần thiết với Native Coin:**
+     - Ethers v6 mặc định gọi `provider.estimateGas(tx)` trước khi gửi `eth_sendTransaction`. Trên WalletConnect, thêm một lượt RPC `eth_estimateGas` dễ bị timeout hoặc lỗi không cần thiết khi chuyển native coin (BNB, ETH).
+- **Giải pháp kiến trúc & Triển khai thực hiện:**
+  1. **Loại bỏ Hoàn Toàn Tự Động Switch Network Ngầm Trong `executeContractTx`:**
+     - Xoá bỏ khối lệnh tự động `switchNetwork` ngầm trong `executeContractTx`. Chỉ giữ lại `this.syncDefaultChainToProvider(targetChainId)` để đồng bộ ngầm cho UniversalProvider.
+     - Tách biệt rành mạch 2 luồng: Luồng chuyển mạng được thực hiện độc lập khi người dùng chủ động chọn mạng ở Header/Quick Switch; Luồng gửi giao dịch chỉ kích hoạt đúng **1 Deep-link duy nhất** cho việc ký và xác nhận giao dịch `eth_sendTransaction`.
+  2. **Chuẩn hóa Giao Thức EIP-1193 Thuần Túy Trong `getSigner`:**
+     - Bỏ việc ép truyền `caipChainId` vào `walletProvider.request({ method, params })`.
+     - Gửi request chuẩn EIP-1193 không gượng ép chainId, và tự động fallback sang `originalSend` nếu ví gặp mã lỗi 5300/5201.
+  3. **Tối ưu Gas Limit Cho Native Coin Transfer:**
+     - Gán sẵn `gasLimit: BigInt(21000)` cho demo send native coin, triệt tiêu lượt gọi RPC `eth_estimateGas` trung gian trên di động.
+- **Xác thực mã nguồn:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npx ng test --watch=false`: 20 test files / 102 unit tests passed 100%.
+  - `npm run build`: Production build hoàn tất thành công 100%.
+
 ### Yêu Cầu: Khắc Phục Lỗi Toast "Đã ngắt kết nối ví" Giả & Lỗi "Unknown method(s) requested" (Code 5201) Trên Trust Wallet
 - **Nội dung yêu cầu:** Người dùng báo 2 lỗi:
   1. Header vẫn hiển thị địa chỉ ví và số dư nhưng dưới màn hình lại nhảy Toast đỏ "Đã ngắt kết nối ví." (khi tải lại trang).

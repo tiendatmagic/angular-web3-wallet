@@ -654,7 +654,7 @@ export class Web3Service {
 
         if (typeof walletProvider.request === 'function') {
           try {
-            return await walletProvider.request({ method, params }, caipChainId);
+            return await walletProvider.request({ method, params });
           } catch (wcErr: any) {
             const errLower = (wcErr?.message || '').toLowerCase();
             const isMethodOrSessionError =
@@ -665,13 +665,9 @@ export class Web3Service {
 
             if (isMethodOrSessionError) {
               try {
-                return await walletProvider.request({ method, params });
-              } catch (fallbackErr: any) {
-                const fbLower = (fallbackErr?.message || '').toLowerCase();
-                if (fallbackErr?.code === 5201 || fbLower.includes('unknown method')) {
-                  return await originalSend(method, params);
-                }
-                throw fallbackErr;
+                return await originalSend(method, params);
+              } catch (fallbackErr) {
+                throw wcErr;
               }
             }
             throw wcErr;
@@ -759,22 +755,6 @@ export class Web3Service {
       const targetChainId = options?.chainId ? Number(options.chainId) : (this.configuredChainId() ? Number(this.configuredChainId()) : null);
       if (targetChainId && this.isConnected()) {
         this.syncDefaultChainToProvider(targetChainId);
-        try {
-          const signer = await this.getSigner(targetChainId);
-          if (signer?.provider) {
-            const net = await signer.provider.getNetwork();
-            const activeChainId = Number(net.chainId);
-            if (activeChainId !== targetChainId) {
-              await this.switchNetwork(targetChainId);
-              await new Promise(resolve => setTimeout(resolve, 350));
-            }
-          }
-        } catch (switchErr: any) {
-          if (switchErr?.code === 4001 || switchErr?.message?.includes('rejected')) {
-            throw switchErr;
-          }
-          console.warn('[Web3] Global network guard auto-switch warning:', switchErr);
-        }
       }
 
       let txPromise: Promise<any>;

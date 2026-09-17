@@ -271,6 +271,7 @@ export class HomeComponent {
         (overrides) => signer.sendTransaction({
           to,
           value: parseEther(val),
+          gasLimit: BigInt(21000),
           ...overrides,
         }),
         {
