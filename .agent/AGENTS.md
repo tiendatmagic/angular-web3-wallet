@@ -1,3 +1,22 @@
+### Yêu Cầu: Rà Soát & Khắc Phục Triệt Để Lỗi Kết Nối Wallet & Đồng Bộ Chain RPC
+- **Nội dung yêu cầu:** Xem xét lại toàn bộ hệ thống Web3 về vấn đề chưa kết nối được wallet và đồng bộ chain RPC.
+- **Phân tích kỹ thuật & Triển khai thực hiện:**
+  1. **Khắc phục lỗi RPC Ethereum Mainnet**: Thay thế RPC `cloudflare-eth.com` (bị lỗi -32046) bằng `https://ethereum-rpc.publicnode.com` và backup RPCs chất lượng cao.
+  2. **Multi-RPC Failover**: Thêm hàm `getAllRpcUrls(chainId)` trong `blockchain.utils.ts` và cấu hình mảng RPC dự phòng cho AppKit `supportedChains`.
+  3. **Bảo toàn Auto-Reconnect**: Loại bỏ việc xóa nhầm IndexedDB khi khởi tạo app trong `web3.service.ts`.
+  4. **Đồng bộ hóa 2 chiều Switch Network**: Đồng bộ `configuredChainId` khi mạng ví thay đổi, bỏ lệnh cưỡng ép chuyển mạng trước khi kết nối ví.
+  5. **Đồng bộ Environment Development**: Đồng bộ `defaultRpcUrl` và `defaultExplorerUrl` về `Arbitrum One` (42161) trong `environment.development.ts`, loại bỏ xung đột với Sepolia.
+  6. **Readonly Provider**: Bổ sung `getReadonlyProvider(chainId?)` cho phép dApp đọc dữ liệu blockchain khi chưa kết nối ví.
+- **Xác thực trực quan qua Chrome DevTools MCP**:
+  - Khởi chạy Chrome thật trên Desktop kết nối cổng 9222.
+  - Mở modal "Connect Wallet" thành công 100%, danh sách ví hiển thị đầy đủ (MetaMask, Trust, Binance, WalletConnect QR, Search 550+).
+  - Chọn mạng "BNB Smart Chain" từ Network Selector: Checkmark cập nhật tức thì, UI chuyển sang `BNB` mượt mà, lưu vào localStorage thành công.
+  - Tải lại trang (F5): Trạng thái mạng được bảo toàn nguyên vẹn, mở lại modal kết nối thành công không bị gián đoạn hay lock database.
+  - Cửa sổ Chrome được giữ nguyên trên Desktop cho người dùng tương tác trực quan.
+- **Xác thực mã nguồn:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npm run build`: Build production hoàn tất thành công 100%.
+
 ### Yêu Cầu: Rà Soát & Xóa Toàn Bộ Comment Code Tiếng Việt Trong Mã Nguồn
 - **Nội dung yêu cầu:** Kiểm tra toàn bộ source code của dự án, phát hiện và xóa sạch tất cả comment code tiếng Việt ở mọi file.
 - **Phân tích kỹ thuật & Triển khai thực hiện:**
