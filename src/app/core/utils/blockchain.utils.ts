@@ -1,9 +1,9 @@
 export const POPULAR_CHAINS = [
-  { name: 'Arbitrum One Mainnet', chainId: '42161', rpcUrl: 'https://arb1.arbitrum.io/rpc', explorerUrl: 'https://arbiscan.io', color: '#00a3ff' },
-  { name: 'BNB Smart Chain', chainId: '56', rpcUrl: 'https://bsc-rpc.publicnode.com', explorerUrl: 'https://bscscan.com', color: '#F3BA2F' },
-  { name: 'Ethereum Mainnet', chainId: '1', rpcUrl: 'https://ethereum-rpc.publicnode.com', explorerUrl: 'https://etherscan.io', color: '#627EEA' },
-  { name: 'Arbitrum Sepolia', chainId: '421614', rpcUrl: 'https://sepolia-rollup.arbitrum.io/rpc', explorerUrl: 'https://sepolia.arbiscan.io', color: '#5ba4cf' },
-  { name: 'BSC Testnet', chainId: '97', rpcUrl: 'https://bsc-testnet-rpc.publicnode.com', explorerUrl: 'https://testnet.bscscan.com', color: '#e6a817' },
+  { name: 'Arbitrum One Mainnet', chainId: '42161', symbol: 'ETH', rpcUrl: 'https://arb1.arbitrum.io/rpc', explorerUrl: 'https://arbiscan.io', color: '#00a3ff' },
+  { name: 'BNB Smart Chain', chainId: '56', symbol: 'BNB', rpcUrl: 'https://bsc-rpc.publicnode.com', explorerUrl: 'https://bscscan.com', color: '#F3BA2F' },
+  { name: 'Ethereum Mainnet', chainId: '1', symbol: 'ETH', rpcUrl: 'https://ethereum-rpc.publicnode.com', explorerUrl: 'https://etherscan.io', color: '#627EEA' },
+  { name: 'Arbitrum Sepolia', chainId: '421614', symbol: 'ETH', rpcUrl: 'https://sepolia-rollup.arbitrum.io/rpc', explorerUrl: 'https://sepolia.arbiscan.io', color: '#5ba4cf' },
+  { name: 'BSC Testnet', chainId: '97', symbol: 'tBNB', rpcUrl: 'https://bsc-testnet-rpc.publicnode.com', explorerUrl: 'https://testnet.bscscan.com', color: '#e6a817' },
 ];
 
 export function getExplorerApiUrl(chainId: string | number): string | null {

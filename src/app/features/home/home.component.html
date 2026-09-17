@@ -71,7 +71,7 @@
                   {{ 'showcase.balance' | translate }}
                 </span>
                 <span class="text-lg font-black text-slate-800 dark:text-slate-100">
-                  {{ stateService.balance() || '0.00' }} ETH
+                  {{ stateService.balance() || '0.00' }} {{ stateService.chainSymbol() }}
                 </span>
               </div>
               <div>

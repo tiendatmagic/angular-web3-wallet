@@ -1,3 +1,21 @@
+### Yêu Cầu: Khắc Phục Lỗi Hiển Thị Sai Symbol Native Token Trong Bảng Điều Khiển Ví
+- **Nội dung yêu cầu:** Người dùng gửi ảnh chụp màn hình Bảng điều khiển ví Web3, khoanh đỏ khu vực "SỐ DƯ KHẢ DỤNG: 29.9697 ETH" trong khi mạng lưới là "BNB Smart Chain Testnet" và header/nút gửi đều hiển thị "tBNB".
+- **Phân tích kỹ thuật & Nguyên nhân gốc rễ (Root Causes):**
+  1. Trong `src/app/features/home/home.component.html` (dòng 74), ô số dư khả dụng thứ hai trong card chi tiết tài khoản bị gán cứng chuỗi text `ETH`: `{{ stateService.balance() || '0.00' }} ETH`. Trong khi ô số dư lớn ngay phía trên (dòng 42) đã dùng dynamic `{{ stateService.chainSymbol() }}`.
+  2. Trong `POPULAR_CHAINS` (`blockchain.utils.ts`) và logic set symbol lúc chưa kết nối ví trong `web3.service.ts`, mạng BSC Testnet (97) trước đây bị gán tạm symbol `BNB` thay vì chuẩn `tBNB`.
+- **Giải pháp kiến trúc & Triển khai thực hiện:**
+  1. **Dynamic Native Symbol trong `home.component.html`:**
+     - Thay thế `{{ stateService.balance() || '0.00' }} ETH` thành `{{ stateService.balance() || '0.00' }} {{ stateService.chainSymbol() }}`.
+  2. **Bổ sung thuộc tính `symbol` cho `POPULAR_CHAINS` (`blockchain.utils.ts`):**
+     - Khai báo rõ ràng: Arbitrum One (`ETH`), BSC Mainnet (`BNB`), Ethereum (`ETH`), Arbitrum Sepolia (`ETH`), BSC Testnet (`tBNB`).
+  3. **Đồng bộ hóa trong `Web3Service`:**
+     - Cập nhật cả 3 vị trí set symbol (constructor effect, `checkAndUpdateNetworkState`, `switchNetwork`) ưu tiên đọc từ `popular.symbol`, đảm bảo hiển thị đồng nhất `tBNB` trên mọi vị trí UI.
+- **Xác thực mã nguồn:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npx ng test --watch=false`: 21 test files / 107 unit tests passed 100%.
+  - `npm run build`: Production build hoàn tất thành công 100%.
+  - 0 comment tiếng Việt trong source code.
+
 ### Yêu Cầu: Đồng Bộ Giao Diện Light/Dark Mode Tương Ứng Cho Modal Thành Công Giao Dịch (`TxSuccessModalComponent`)
 - **Nội dung yêu cầu:** Người dùng gửi ảnh chụp màn hình modal "Giao Dịch Đã Được Gửi!" đang hiển thị ở Light Mode và yêu cầu "coi lại light, dark mode tương ứng".
 - **Phân tích kỹ thuật & Nguyên nhân gốc rễ (Root Causes):**
@@ -13,6 +31,34 @@
      - Link Explorer: `transition-colors duration-200`.
   2. **Bổ sung Unit Test Suite Hoàn Chỉnh (`tx-success-modal.component.spec.ts`):**
      - Kiểm thử khởi tạo dữ liệu, binding chuỗi hash, mạng, amount, symbol, sự kiện copy và đóng modal.
+- **Xác thực mã nguồn:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npx ng test --watch=false`: 21 test files / 107 unit tests passed 100%.
+  - `npm run build`: Production build hoàn tất thành công 100%.
+  - 0 comment tiếng Việt trong source code.
+
+### Yêu Cầu: Khắc Phục Lỗi Nhận Diện Chain ID Khi Kết Nối Ví & Loại Bỏ Ví Lạ "My Wallet"
+- **Nội dung yêu cầu:**
+  1. Làm rõ "My Wallet" hiển thị trong modal Connect Wallet là ví nào và khắc phục để không hiện ví lạ này nữa.
+  2. Khắc phục lỗi: Khi chưa kết nối ví, người dùng chủ động chọn mạng khác (ví dụ BSC Testnet 97), nhưng sau khi bấm kết nối ví thành công, dApp lại bị nhảy ngược về mạng Arbitrum One (42161).
+- **Phân tích kỹ thuật & Nguyên nhân gốc rễ (Root Causes):**
+  1. **Ví "My Wallet":**
+     - "My Wallet" (slug `my-wallet`, website `mywallet.io`, ID `26a582067b4f960e9104768704ec6fa642970450acefa04c782dbbccc575b3b8`) là một ví multichain thực tế trên WalletConnect Explorer với 9M+ người dùng.
+     - Do cấu hình `featuredWalletIds` trước đây chỉ chứa 1 ví Trust Wallet, Reown AppKit tự động điền các vị trí còn lại bằng top ví của Reown Explorer theo thuật toán khu vực/thịnh hành.
+  2. **Lỗi Nhảy Mạng Về Arbitrum One:**
+     - `createAppKit` trước đây bị gán cứng `defaultNetwork` là Arbitrum One (42161).
+     - Khi chưa kết nối ví, lệnh `this.modal.switchNetwork(...)` bị AppKit từ chối vì `activeChain` đang `undefined` (ném lỗi `ChainController:switchActiveNetwork - namespace is required`).
+     - AppKit lưu trữ mạng active qua khóa `@appkit/active_caip_network_id` trong `localStorage`. Khi chọn mạng trước khi kết nối, khóa này chưa được đồng bộ, dẫn đến việc khi kết nối WalletConnect/AppKit vẫn gửi proposal với Arbitrum One (`eip155:42161`).
+     - Khi ví kết nối thành công, `subscribeNetwork` bắn emission chain của ví (hoặc emission mặc định) và ghi đè `configuredChainId` trước khi luồng kết nối kịp hoàn tất.
+- **Giải pháp kiến trúc & Triển khai thực hiện:**
+  1. **Loại bỏ "My Wallet" và định hình danh sách ví uy tín hàng đầu (`featuredWalletIds`):**
+     - Bổ sung rõ ràng 5 ví Web3 phổ biến nhất thế giới vào `featuredWalletIds`: Trust Wallet, MetaMask, Binance Web3 Wallet, OKX Wallet, Coinbase Wallet. Modal sẽ ưu tiên các ví chuẩn này và không chèn ví lạ "My Wallet".
+  2. **Đồng bộ hóa 2 chiều Chain ID qua `ChainController` & Storage AppKit:**
+     - Khởi tạo `defaultNetwork` trong `createAppKit` theo đúng `configuredChainId` (hoặc `localStorage`).
+     - Đồng bộ trực tiếp `localStorage.setItem('@appkit/active_caip_network_id', 'eip155:' + chainId)` và `localStorage.setItem('@appkit/active_namespace', 'eip155')` ngay khi người dùng chọn mạng trước khi kết nối.
+     - Kích hoạt `ChainController.setActiveCaipNetwork(targetNetwork)` từ `@reown/appkit-controllers` để ép AppKit cập nhật ngay active CAIP network nội bộ.
+     - Triển khai cờ bảo vệ `targetChainBeforeConnect`: Ngăn chặn `subscribeNetwork` ghi đè `configuredChainId` khi đang trong quá trình thiết lập kết nối ví.
+     - Trong `subscribeAccount`, nếu mạng thực tế của ví sau kết nối lệch với mạng người dùng đã chọn trước, dApp chủ động gọi `this.switchNetwork(pendingTarget)` để yêu cầu ví chuyển mạng đồng bộ.
 - **Xác thực mã nguồn:**
   - `npx tsc --noEmit`: 0 lỗi type.
   - `npx ng test --watch=false`: 21 test files / 107 unit tests passed 100%.
