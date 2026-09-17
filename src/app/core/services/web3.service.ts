@@ -174,6 +174,9 @@ export class Web3Service {
       featuredWalletIds: [
         '4622a2b2d6af1c9844944291e5e7351a6aa24cd7b23099efac1b2fd875da31a0'
       ],
+      excludeWalletIds: [
+        '26a582067b4f960e9104768704ec6fa642970450acefa04c782dbbccc575b3b8'
+      ],
       features: {
         email: false,
         socials: false,

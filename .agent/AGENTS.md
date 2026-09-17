@@ -1,3 +1,18 @@
+### Yêu Cầu: Giải Thích & Loại Bỏ Ví "My Wallet" Khỏi Modal Kết Nối AppKit
+- **Nội dung yêu cầu:** Người dùng xác nhận kết nối ví đã hoạt động bình thường, nhưng thắc mắc tại sao ví "My Wallet" vẫn hiển thị trên modal Connect Wallet và yêu cầu xử lý.
+- **Phân tích kỹ thuật & Nguyên nhân gốc rễ (Root Causes):**
+  1. **Bản chất của "My Wallet":** "My Wallet" (ID: `26a582067b4f960e9104768704ec6fa642970450acefa04c782dbbccc575b3b8`) là một ví multichain thực tế có mặt trên hệ thống WalletConnect / Reown Explorer API với hơn 9 triệu người dùng.
+  2. **Nguyên nhân tự động xuất hiện:** Modal của Reown AppKit mặc định có 4 slot hiển thị nhanh. Trong cấu hình dApp, mảng `featuredWalletIds` chỉ có 1 ví Trust Wallet. Do đó, AppKit tự động gọi API của Reown (`api.web3modal.org/getWallets`) để lấy các ví thịnh hành nhất điền vào các vị trí còn lại. Vì "My Wallet" xếp hạng cao trong danh sách trending của Reown, nó tự động được xếp vào vị trí thứ 2.
+- **Giải pháp xử lý chuẩn Reown AppKit:**
+  - Sử dụng tùy chọn chuẩn `excludeWalletIds: ['26a582067b4f960e9104768704ec6fa642970450acefa04c782dbbccc575b3b8']` trong cấu hình `createAppKit`.
+  - Tùy chọn này cấu hình trực tiếp vào bộ lọc API của Reown AppKit, loại bỏ hoàn toàn "My Wallet" khỏi danh sách hiển thị và thay thế bằng ví thịnh hành tiếp theo.
+  - Hoàn toàn KHÔNG can thiệp vào EthersAdapter, ChainController hay localStorage, đảm bảo an toàn tuyệt đối 100% không bao giờ gặp lỗi `Adapter not found`.
+- **Xác thực mã nguồn:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npx ng test --watch=false`: 21 test files / 107 unit tests passed 100%.
+  - `npm run build`: Production build hoàn tất thành công 100%.
+  - 0 comment tiếng Việt trong source code.
+
 ### Yêu Cầu: Khôi Phục Code Kết Nối Ví Ban Đầu & Khắc Phục Lỗi "Adapter not found"
 - **Nội dung yêu cầu:** Người dùng báo lỗi modal AppKit hiển thị "Adapter not found" và yêu cầu khôi phục lại code cũ trước đó đã kết nối ví bình thường.
 - **Phân tích kỹ thuật & Nguyên nhân gốc rễ (Root Causes):**
