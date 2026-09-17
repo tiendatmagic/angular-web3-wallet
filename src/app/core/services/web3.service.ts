@@ -21,7 +21,7 @@ export interface ExecuteTxOptions {
   onSuccess?: (receipt: any) => void;
   onError?: (error: any) => void;
 }
-import { POPULAR_CHAINS } from '../utils/blockchain.utils';
+import { POPULAR_CHAINS, getAllRpcUrls } from '../utils/blockchain.utils';
 import { TranslationService } from './translation.service';
 
 @Injectable({
@@ -420,8 +420,10 @@ export class Web3Service {
     }
   }
 
-  public async addNetworkToWallet(chainId: number | string): Promise<boolean> {
-    if (typeof window === 'undefined' || !(window as any).ethereum) return false;
+  public async addNetworkToWallet(chainId: number | string, provider?: any): Promise<boolean> {
+    const walletProvider: any = provider || this.modal?.getWalletProvider() || (typeof window !== 'undefined' ? (window as any).ethereum : null);
+    if (!walletProvider?.request) return false;
+
     const idNum = Number(chainId);
     const idStr = idNum.toString();
     const hexChainId = '0x' + idNum.toString(16);
@@ -439,16 +441,19 @@ export class Web3Service {
       currencyName = 'BNB';
     }
 
+    const allUrls = getAllRpcUrls(idStr);
+    const rpcList = allUrls.length > 0 ? allUrls : [chainInfo.rpcUrl];
+
     const params = {
       chainId: hexChainId,
       chainName: chainInfo.name,
       nativeCurrency: { name: currencyName, symbol: symbol, decimals: 18 },
-      rpcUrls: [chainInfo.rpcUrl],
+      rpcUrls: rpcList,
       blockExplorerUrls: [chainInfo.explorerUrl]
     };
 
     try {
-      await (window as any).ethereum.request({
+      await walletProvider.request({
         method: 'wallet_addEthereumChain',
         params: [params]
       });
@@ -480,13 +485,24 @@ export class Web3Service {
               params: [{ chainId: hexChainId }]
             });
           } catch (switchErr: any) {
-            if (switchErr?.code === 4902 || switchErr?.data?.originalError?.code === 4902) {
-              const added = await this.addNetworkToWallet(chainId);
+            const isUnrecognized =
+              switchErr?.code === 4902 ||
+              switchErr?.info?.error?.code === 4902 ||
+              switchErr?.data?.originalError?.code === 4902 ||
+              switchErr?.cause?.code === 4902 ||
+              switchErr?.message?.toLowerCase().includes('unrecognized') ||
+              switchErr?.message?.toLowerCase().includes('try adding the chain') ||
+              switchErr?.message?.toLowerCase().includes('wallet_addethereumchain');
+
+            if (isUnrecognized) {
+              const added = await this.addNetworkToWallet(chainId, walletProvider);
               if (added) {
-                await walletProvider.request({
-                  method: 'wallet_switchEthereumChain',
-                  params: [{ chainId: hexChainId }]
-                });
+                try {
+                  await walletProvider.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{ chainId: hexChainId }]
+                  });
+                } catch (e) { }
               }
             }
           }

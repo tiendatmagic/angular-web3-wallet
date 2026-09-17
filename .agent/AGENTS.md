@@ -7,6 +7,7 @@
   4. **Đồng bộ hóa 2 chiều Switch Network**: Đồng bộ `configuredChainId` khi mạng ví thay đổi, bỏ lệnh cưỡng ép chuyển mạng trước khi kết nối ví.
   5. **Đồng bộ Environment Development**: Đồng bộ `defaultRpcUrl` và `defaultExplorerUrl` về `Arbitrum One` (42161) trong `environment.development.ts`, loại bỏ xung đột với Sepolia.
   6. **Readonly Provider**: Bổ sung `getReadonlyProvider(chainId?)` cho phép dApp đọc dữ liệu blockchain khi chưa kết nối ví.
+  7. **Cơ Chế EIP-3085 Add Network Tự Động**: Nâng cấp `addNetworkToWallet()` nhận `walletProvider` linh hoạt từ AppKit, mở rộng bộ nhận diện lỗi `4902` (EIP-3326 Unrecognized chain) trên các biến thể bọc lỗi của Ethers v6, tự động kích hoạt popup MetaMask yêu cầu thêm mạng khi người dùng chọn mạng chưa có trên ví.
 - **Xác thực trực quan qua Chrome DevTools MCP**:
   - Khởi chạy Chrome thật trên Desktop kết nối cổng 9222.
   - Mở modal "Connect Wallet" thành công 100%, danh sách ví hiển thị đầy đủ (MetaMask, Trust, Binance, WalletConnect QR, Search 550+).
