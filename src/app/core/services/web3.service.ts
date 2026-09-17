@@ -3,7 +3,7 @@ import { createAppKit, type AppKit } from '@reown/appkit';
 import { EthersAdapter } from '@reown/appkit-adapter-ethers';
 import { mainnet, arbitrum, arbitrumSepolia, bsc, bscTestnet } from '@reown/appkit/networks';
 import { ApiController, ModalController, RouterController } from '@reown/appkit-controllers';
-import { BrowserProvider, formatEther } from 'ethers';
+import { BrowserProvider, JsonRpcProvider, formatEther } from 'ethers';
 import { environment } from '@environments/environment';
 import { ThemeService } from './theme.service';
 import { ToastService } from './toast.service';
@@ -33,9 +33,13 @@ export class Web3Service {
 
   public readonly isEnabled: boolean = environment.enableWeb3;
 
-  public address = signal<string | null>(null);
+  public address = signal<string | null>(
+    (typeof window !== 'undefined' && localStorage.getItem('angular_web3_last_address')) || null
+  );
   public chainId = signal<number | null>(null);
-  public isConnected = signal<boolean>(false);
+  public isConnected = signal<boolean>(
+    typeof window !== 'undefined' && localStorage.getItem('angular_web3_was_connected') === 'true'
+  );
   public balance = signal<string>('0.0000');
   public chainSymbol = signal<string>('ETH');
   public networkName = signal<string>(this.translationService.t('showcase.unknown_network'));
@@ -52,12 +56,13 @@ export class Web3Service {
 
   public readonly supportedChains = [arbitrum, mainnet, bsc, arbitrumSepolia, bscTestnet].map(chain => {
     const popular = POPULAR_CHAINS.find(c => Number(c.chainId) === Number(chain.id));
+    const rpcList = getAllRpcUrls(chain.id);
     if (popular) {
       return {
         ...chain,
         rpcUrls: {
           ...chain.rpcUrls,
-          default: { http: [popular.rpcUrl] }
+          default: { http: rpcList.length > 0 ? rpcList : [popular.rpcUrl] }
         },
         blockExplorers: {
           ...chain.blockExplorers,
@@ -150,10 +155,6 @@ export class Web3Service {
       return;
     }
 
-    if (!this.isConnected()) {
-      await this.clearWalletConnectStorage();
-    }
-
     const isDark = this.themeService.isDarkMode();
 
     this.modal = createAppKit({
@@ -182,20 +183,28 @@ export class Web3Service {
       this.isConnected.set(accountState.isConnected);
 
       if (accountState.isConnected && accountState.address) {
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('angular_web3_last_address', accountState.address);
+          localStorage.setItem('angular_web3_was_connected', 'true');
+        }
         this.closeConnectModalIfOpen();
 
         await this.updateBalanceAndNetwork();
         const currentChainId = this.chainId();
         const targetChainId = Number(this.configuredChainId());
 
-        if (currentChainId && currentChainId !== targetChainId) {
+        if (currentChainId && targetChainId && currentChainId !== targetChainId) {
           setTimeout(async () => {
             await this.switchNetwork(targetChainId);
-          }, 500);
+          }, 400);
         } else if (currentChainId) {
           this.checkAndUpdateNetworkState(currentChainId, false);
         }
-      } else {
+      } else if (!accountState.isConnected) {
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem('angular_web3_last_address');
+          localStorage.removeItem('angular_web3_was_connected');
+        }
         this.balance.set('0.0000');
         this.chainId.set(null);
         this.networkName.set(this.translationService.t('showcase.unknown_network'));
@@ -211,6 +220,11 @@ export class Web3Service {
       if (networkState.chainId) {
         const id = Number(networkState.chainId);
         this.checkAndUpdateNetworkState(id, true);
+        const idStr = id.toString();
+        this.configuredChainId.set(idStr);
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('angular_web3_configured_chain_id', idStr);
+        }
       }
 
       if (this.isConnected()) {
@@ -303,7 +317,7 @@ export class Web3Service {
 
   public async updateBalanceAndNetwork() {
     try {
-      const walletProvider = this.modal.getWalletProvider();
+      const walletProvider = this.modal?.getWalletProvider();
       const currentAddress = this.address();
 
       if (walletProvider && currentAddress) {
@@ -315,6 +329,11 @@ export class Web3Service {
         const network = await ethersProvider.getNetwork();
         const id = Number(network.chainId);
         this.checkAndUpdateNetworkState(id, false);
+      } else if (currentAddress) {
+        const readonlyProvider = this.getReadonlyProvider();
+        const balanceVal = await readonlyProvider.getBalance(currentAddress);
+        const formattedBalance = formatEther(balanceVal);
+        this.balance.set(parseFloat(formattedBalance).toFixed(4));
       }
     } catch (error) {
       console.error('[Web3] Error updating balance or network:', error);
@@ -330,15 +349,6 @@ export class Web3Service {
     }
 
     try {
-      const defaultChain = this.supportedChains.find(c => !(c as any).testnet && !c.name.toLowerCase().includes('sepolia') && !c.name.toLowerCase().includes('testnet')) || this.supportedChains[0];
-      if (defaultChain) {
-        try {
-          await this.modal.switchNetwork(defaultChain as any);
-        } catch (e) {
-          console.warn('[Web3] Failed to force default network before opening modal:', e);
-        }
-      }
-
       await this.modal.open();
     } catch (error: any) {
       console.error('[Web3] Wallet connection error:', error);
@@ -372,6 +382,13 @@ export class Web3Service {
   public async disconnect() {
     if (!this.isEnabled) return;
     try {
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('angular_web3_last_address');
+        localStorage.removeItem('angular_web3_was_connected');
+      }
+      this.address.set(null);
+      this.isConnected.set(false);
+      this.balance.set('0.0000');
       await this.modal.disconnect();
     } catch (error) {
       console.error('[Web3] Wallet disconnect error:', error);
@@ -380,19 +397,6 @@ export class Web3Service {
 
   private async clearWalletConnectStorage() {
     if (typeof window === 'undefined') return;
-
-    try {
-      if ('indexedDB' in window) {
-        const dbs = (await indexedDB.databases?.()) || [];
-        for (const db of dbs) {
-          if (db.name && (db.name.includes('WALLET_CONNECT') || db.name.includes('walletconnect') || db.name.includes('reown') || db.name.includes('appkit'))) {
-            indexedDB.deleteDatabase(db.name);
-          }
-        }
-      }
-    } catch (e) {
-      console.warn('[Web3] Error cleaning up IndexedDB:', e);
-    }
 
     try {
       const keysToRemove: string[] = [];
@@ -547,13 +551,20 @@ export class Web3Service {
     return await ethersProvider.getSigner();
   }
 
-  public getProvider() {
+  public getReadonlyProvider(chainId?: number | string): JsonRpcProvider {
+    const targetChainId = (chainId || this.configuredChainId() || '42161').toString();
+    const rpcUrls = getAllRpcUrls(targetChainId);
+    const primaryUrl = rpcUrls[0] || environment.defaultRpcUrl;
+    return new JsonRpcProvider(primaryUrl);
+  }
+
+  public getProvider(): BrowserProvider | JsonRpcProvider {
     if (!this.isEnabled) throw new Error(this.translationService.t('showcase.web3_disabled'));
-    const walletProvider = this.modal.getWalletProvider();
-    if (!walletProvider) {
-      throw new Error(this.translationService.t('showcase.web3_wallet_not_connected'));
+    const walletProvider = this.modal?.getWalletProvider();
+    if (walletProvider) {
+      return new BrowserProvider(walletProvider as any);
     }
-    return new BrowserProvider(walletProvider as any);
+    return this.getReadonlyProvider();
   }
 
   public async getGasOverrides(signer?: any): Promise<any> {

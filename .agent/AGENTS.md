@@ -8,6 +8,10 @@
   5. **Đồng bộ Environment Development**: Đồng bộ `defaultRpcUrl` và `defaultExplorerUrl` về `Arbitrum One` (42161) trong `environment.development.ts`, loại bỏ xung đột với Sepolia.
   6. **Readonly Provider**: Bổ sung `getReadonlyProvider(chainId?)` cho phép dApp đọc dữ liệu blockchain khi chưa kết nối ví.
   7. **Cơ Chế EIP-3085 Add Network Tự Động**: Nâng cấp `addNetworkToWallet()` nhận `walletProvider` linh hoạt từ AppKit, mở rộng bộ nhận diện lỗi `4902` (EIP-3326 Unrecognized chain) trên các biến thể bọc lỗi của Ethers v6, tự động kích hoạt popup MetaMask yêu cầu thêm mạng khi người dùng chọn mạng chưa có trên ví.
+  8. **Khắc Phục Lỗi Mất Trạng Thái Kết Nối Ví Khi Reload Trên Mobile**:
+     - Loại bỏ hoàn toàn việc gọi `clearWalletConnectStorage()` và việc xóa database `IndexedDB` lúc app khởi động (nguyên nhân trực tiếp phá hủy session WalletConnect v2 và credentials khi người dùng reload trang).
+     - Lưu trữ trạng thái phiên (`angular_web3_was_connected` và `angular_web3_last_address`) vào `localStorage` và khởi tạo Signal tức thì khi render, giúp UI trên Mobile không bị giật về nút "Connect Wallet".
+     - Hỗ trợ fallback query số dư qua `getReadonlyProvider()` trong lúc WalletConnect relay đang rehydrate session ngầm.
 - **Xác thực trực quan qua Chrome DevTools MCP**:
   - Khởi chạy Chrome thật trên Desktop kết nối cổng 9222.
   - Mở modal "Connect Wallet" thành công 100%, danh sách ví hiển thị đầy đủ (MetaMask, Trust, Binance, WalletConnect QR, Search 550+).
