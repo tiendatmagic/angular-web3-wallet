@@ -1,3 +1,20 @@
+### Yêu Cầu: Khôi Phục Code Kết Nối Ví Ban Đầu & Khắc Phục Lỗi "Adapter not found"
+- **Nội dung yêu cầu:** Người dùng báo lỗi modal AppKit hiển thị "Adapter not found" và yêu cầu khôi phục lại code cũ trước đó đã kết nối ví bình thường.
+- **Phân tích kỹ thuật & Nguyên nhân gốc rễ (Root Causes):**
+  1. Việc can thiệp trực tiếp vào `ChainController.setActiveCaipNetwork` và ghi đè `@appkit/active_caip_network_id` / `@appkit/active_namespace` vào `localStorage` khi chưa khởi tạo xong adapter của AppKit đã làm hỏng cấu trúc map adapter nội bộ của Reown AppKit (`this.getAdapter(activeChain)` trả về `undefined`), dẫn đến lỗi `Adapter not found` trên modal kết nối.
+  2. Việc ép thêm nhiều ví vào `featuredWalletIds` cũng gây xung đột với bộ nạp connector của AppKit trên mobile.
+- **Giải pháp xử lý:**
+  1. **Hoàn tác toàn diện (Rollback):**
+     - Đã khôi phục hoàn toàn [web3.service.ts](file:///d:/git/angular-web3-wallet/src/app/core/services/web3.service.ts) và [blockchain.utils.ts](file:///d:/git/angular-web3-wallet/src/app/core/utils/blockchain.utils.ts) về nguyên bản tại commit `e3f03c5` (phiên bản ổn định kết nối ví bình thường).
+     - Loại bỏ toàn bộ can thiệp vào `ChainController.setActiveCaipNetwork` và các key storage của `@appkit`.
+     - Giữ nguyên cấu hình chuẩn: `defaultNetwork: this.supportedChains[0]`, `featuredWalletIds: ['4622a2b2d6af1c9844944291e5e7351a6aa24cd7b23099efac1b2fd875da31a0']` (Trust Wallet).
+     - Giữ nguyên bản sửa lỗi giao diện hiển thị symbol tại dòng 74 [home.component.html](file:///d:/git/angular-web3-wallet/src/app/features/home/home.component.html) (`{{ stateService.chainSymbol() }}`).
+- **Xác thực mã nguồn:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npx ng test --watch=false`: 21 test files / 107 unit tests passed 100%.
+  - `npm run build`: Production build hoàn tất thành công 100%.
+  - 0 comment tiếng Việt trong source code.
+
 ### Yêu Cầu: Khắc Phục Lỗi Hiển Thị Sai Symbol Native Token Trong Bảng Điều Khiển Ví
 - **Nội dung yêu cầu:** Người dùng gửi ảnh chụp màn hình Bảng điều khiển ví Web3, khoanh đỏ khu vực "SỐ DƯ KHẢ DỤNG: 29.9697 ETH" trong khi mạng lưới là "BNB Smart Chain Testnet" và header/nút gửi đều hiển thị "tBNB".
 - **Phân tích kỹ thuật & Nguyên nhân gốc rễ (Root Causes):**

@@ -2,7 +2,7 @@ import { Injectable, signal, inject, effect } from '@angular/core';
 import { createAppKit, type AppKit } from '@reown/appkit';
 import { EthersAdapter } from '@reown/appkit-adapter-ethers';
 import { mainnet, arbitrum, arbitrumSepolia, bsc, bscTestnet } from '@reown/appkit/networks';
-import { ApiController, ChainController, ModalController, RouterController } from '@reown/appkit-controllers';
+import { ApiController, ModalController, RouterController } from '@reown/appkit-controllers';
 import { BrowserProvider, JsonRpcProvider, formatEther, parseEther } from 'ethers';
 import { environment } from '@environments/environment';
 import { ThemeService } from './theme.service';
@@ -29,7 +29,6 @@ import { TranslationService } from './translation.service';
 })
 export class Web3Service {
   private modal!: AppKit;
-  private targetChainBeforeConnect: number | null = null;
   private readonly translationService = inject(TranslationService);
 
   public readonly isEnabled: boolean = environment.enableWeb3;
@@ -99,7 +98,7 @@ export class Web3Service {
       if (!isConn) {
         const popular = POPULAR_CHAINS.find(c => c.chainId === confId);
         this.networkName.set(popular ? popular.name : this.translationService.t('showcase.unknown_network'));
-        const symbol = popular ? ((popular as any).symbol || (popular.chainId === '56' ? 'BNB' : popular.chainId === '97' ? 'tBNB' : 'ETH')) : 'ETH';
+        const symbol = popular ? (popular.chainId === '56' || popular.chainId === '97' ? 'BNB' : 'ETH') : 'ETH';
         this.chainSymbol.set(symbol);
       }
     }, { allowSignalWrites: true });
@@ -157,18 +156,11 @@ export class Web3Service {
     }
 
     const isDark = this.themeService.isDarkMode();
-    const initialChainIdNum = Number(this.configuredChainId() || environment.defaultChainId || '42161');
-    const initialNetwork = this.supportedChains.find(c => Number(c.id) === initialChainIdNum) || this.supportedChains[0];
-
-    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
-      localStorage.setItem('@appkit/active_caip_network_id', `eip155:${initialChainIdNum}`);
-      localStorage.setItem('@appkit/active_namespace', 'eip155');
-    }
 
     this.modal = createAppKit({
       adapters: [new EthersAdapter()],
       networks: this.supportedChains as any,
-      defaultNetwork: initialNetwork as any,
+      defaultNetwork: this.supportedChains[0] as any,
       allowUnsupportedChain: true,
       metadata: {
         name: 'Angular Web3 DApp',
@@ -180,11 +172,7 @@ export class Web3Service {
       themeMode: isDark ? 'dark' : 'light',
       allWallets: 'SHOW',
       featuredWalletIds: [
-        '4622a2b2d6af1c9844944291e5e7351a6aa24cd7b23099efac1b2fd875da31a0',
-        'c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96',
-        '8a0ee50d18f9e949c64773d86f34077371133272d824b86133b56cd2fb55be32',
-        '971e689d0a5be527bac79629b4ee9b925e82208e5168b733496a87c97d0d8b1e',
-        'fd20dc426fb3792d60343b87b379fd61f1621297160195fc497f1b4900ac2740'
+        '4622a2b2d6af1c9844944291e5e7351a6aa24cd7b23099efac1b2fd875da31a0'
       ],
       features: {
         email: false,
@@ -211,19 +199,8 @@ export class Web3Service {
 
         this.closeConnectModalIfOpen();
 
-        const pendingTarget = this.targetChainBeforeConnect;
-        this.targetChainBeforeConnect = null;
-
-        if (pendingTarget) {
-          const currentId = this.chainId();
-          if (currentId && currentId !== pendingTarget) {
-            void this.switchNetwork(pendingTarget);
-          }
-        }
-
         void this.updateBalanceAndNetwork();
       } else if (!hasAddress) {
-        this.targetChainBeforeConnect = null;
         if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
           localStorage.removeItem('angular_web3_last_address');
           localStorage.removeItem('angular_web3_was_connected');
@@ -245,15 +222,10 @@ export class Web3Service {
       if (networkState.chainId) {
         const id = Number(networkState.chainId);
         this.checkAndUpdateNetworkState(id, true);
-
-        if (this.isConnected() && !this.targetChainBeforeConnect) {
-          const idStr = id.toString();
-          this.configuredChainId.set(idStr);
-          if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
-            localStorage.setItem('angular_web3_configured_chain_id', idStr);
-            localStorage.setItem('@appkit/active_caip_network_id', `eip155:${idStr}`);
-            localStorage.setItem('@appkit/active_namespace', 'eip155');
-          }
+        const idStr = id.toString();
+        this.configuredChainId.set(idStr);
+        if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+          localStorage.setItem('angular_web3_configured_chain_id', idStr);
         }
       }
 
@@ -323,7 +295,7 @@ export class Web3Service {
     } else {
       const popular = POPULAR_CHAINS.find(c => Number(c.chainId) === chainId);
       this.networkName.set(popular ? popular.name : this.translationService.t('showcase.unknown_network'));
-      this.chainSymbol.set((popular as any)?.symbol || 'ETH');
+      this.chainSymbol.set('ETH');
 
       if (this.isConnected()) {
         this.showWrongChainModal.set(true);
@@ -379,29 +351,8 @@ export class Web3Service {
     }
 
     try {
-      const targetChainIdNum = Number(this.configuredChainId() || '42161');
-      this.targetChainBeforeConnect = targetChainIdNum;
-
-      const targetNetwork = this.supportedChains.find(chain => Number(chain.id) === targetChainIdNum);
-      if (targetNetwork) {
-        try {
-          ChainController.setActiveCaipNetwork(targetNetwork as any);
-        } catch (e) { }
-        if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
-          localStorage.setItem('@appkit/active_caip_network_id', `eip155:${targetChainIdNum}`);
-          localStorage.setItem('@appkit/active_namespace', 'eip155');
-        }
-      }
-
-      if (this.modal && targetNetwork) {
-        try {
-          await this.modal.switchNetwork(targetNetwork as any);
-        } catch (e) { }
-      }
-
       await this.modal.open();
     } catch (error: any) {
-      this.targetChainBeforeConnect = null;
       console.error('[Web3] Wallet connection error:', error);
       if (error?.message?.includes('declined') || error?.message?.includes('active')) {
         try {
@@ -601,15 +552,6 @@ export class Web3Service {
     this.configuredChainId.set(chainIdStr);
     if (typeof window !== 'undefined') {
       localStorage.setItem('angular_web3_configured_chain_id', chainIdStr);
-      localStorage.setItem('@appkit/active_caip_network_id', `eip155:${chainIdStr}`);
-      localStorage.setItem('@appkit/active_namespace', 'eip155');
-    }
-
-    const network = this.supportedChains.find(chain => Number(chain.id) === chainId);
-    if (network) {
-      try {
-        ChainController.setActiveCaipNetwork(network as any);
-      } catch (e) { }
     }
 
     this.syncDefaultChainToProvider(chainId);
@@ -663,18 +605,7 @@ export class Web3Service {
       const popular = POPULAR_CHAINS.find(c => Number(c.chainId) === chainId);
       if (popular) {
         this.networkName.set(popular.name);
-        const symbol = (popular as any).symbol || (popular.chainId === '56' ? 'BNB' : popular.chainId === '97' ? 'tBNB' : 'ETH');
-        this.chainSymbol.set(symbol);
         this.toastService.showToast(this.translationService.t('showcase.web3_network_selected', { network: popular.name }), 'success');
-      }
-
-      if (this.modal) {
-        const network = this.supportedChains.find(chain => Number(chain.id) === Number(chainId));
-        if (network) {
-          try {
-            this.modal.switchNetwork(network as any);
-          } catch (e) { }
-        }
       }
     }
   }
