@@ -30,6 +30,7 @@ import { TranslationService } from './translation.service';
 export class Web3Service {
   private modal!: AppKit;
   private readonly translationService = inject(TranslationService);
+  private isInitialAccountSync = true;
 
   public readonly isEnabled: boolean = environment.enableWeb3;
 
@@ -185,6 +186,17 @@ export class Web3Service {
 
     this.modal.subscribeAccount(async (accountState) => {
       const prevConnected = this.isConnected();
+
+      if (this.isInitialAccountSync) {
+        this.isInitialAccountSync = false;
+        if (!accountState.isConnected) {
+          const wasConnected = typeof window !== 'undefined' && typeof localStorage !== 'undefined' && localStorage.getItem('angular_web3_was_connected') === 'true';
+          if (wasConnected) {
+            return;
+          }
+        }
+      }
+
       this.address.set(accountState.address || null);
       this.isConnected.set(accountState.isConnected);
 
@@ -525,12 +537,22 @@ export class Web3Service {
       return this.translationService.t('home.toast_insufficient_funds');
     }
 
+    if (
+      err?.code === 5201 ||
+      errStr.includes('unknown method')
+    ) {
+      return this.translationService.t('home.toast_wallet_unsupported_chain_or_method');
+    }
+
     if (errStr.includes('could not coalesce error')) {
       const msgMatch = err?.message?.match(/"message"\s*:\s*"([^"]+)"/);
       if (msgMatch && msgMatch[1]) {
         const innerMsg = msgMatch[1];
         if (innerMsg.toLowerCase().includes('invalid session properties')) {
           return this.translationService.t('home.toast_session_sync_error');
+        }
+        if (innerMsg.toLowerCase().includes('unknown method')) {
+          return this.translationService.t('home.toast_wallet_unsupported_chain_or_method');
         }
         return innerMsg;
       }
@@ -635,11 +657,21 @@ export class Web3Service {
             return await walletProvider.request({ method, params }, caipChainId);
           } catch (wcErr: any) {
             const errLower = (wcErr?.message || '').toLowerCase();
-            if (wcErr?.code === 5300 || errLower.includes('invalid session properties')) {
+            const isMethodOrSessionError =
+              wcErr?.code === 5300 ||
+              wcErr?.code === 5201 ||
+              errLower.includes('invalid session properties') ||
+              errLower.includes('unknown method');
+
+            if (isMethodOrSessionError) {
               try {
-                return await walletProvider.request({ method, params }, targetChainId.toString());
-              } catch (e2) {
-                throw wcErr;
+                return await walletProvider.request({ method, params });
+              } catch (fallbackErr: any) {
+                const fbLower = (fallbackErr?.message || '').toLowerCase();
+                if (fallbackErr?.code === 5201 || fbLower.includes('unknown method')) {
+                  return await originalSend(method, params);
+                }
+                throw fallbackErr;
               }
             }
             throw wcErr;

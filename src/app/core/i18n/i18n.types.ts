@@ -167,6 +167,7 @@ export interface TranslationDictionary {
     toast_copied_sig: string;
     toast_session_sync_error: string;
     toast_insufficient_funds: string;
+    toast_wallet_unsupported_chain_or_method: string;
   };
   cards: {
     buttons: {

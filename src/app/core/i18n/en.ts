@@ -159,7 +159,8 @@ export const EN_TRANSLATIONS: TranslationDictionary = {
     toast_signing_failed: 'Message signing failed: ',
     toast_copied_sig: 'Signature copied to clipboard!',
     toast_session_sync_error: 'Wallet session out of sync or network permissions missing. Please check your wallet, switch network, or reconnect.',
-    toast_insufficient_funds: 'Insufficient balance to cover transfer amount and gas fees.'
+    toast_insufficient_funds: 'Insufficient balance to cover transfer amount and gas fees.',
+    toast_wallet_unsupported_chain_or_method: 'Your wallet has not enabled or switched to this network in the app. Please open your wallet app and select the correct network.'
   },
   cards: {
     buttons: {

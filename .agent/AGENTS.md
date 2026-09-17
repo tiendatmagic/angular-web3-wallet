@@ -1,3 +1,26 @@
+### Yêu Cầu: Khắc Phục Lỗi Toast "Đã ngắt kết nối ví" Giả & Lỗi "Unknown method(s) requested" (Code 5201) Trên Trust Wallet
+- **Nội dung yêu cầu:** Người dùng báo 2 lỗi:
+  1. Header vẫn hiển thị địa chỉ ví và số dư nhưng dưới màn hình lại nhảy Toast đỏ "Đã ngắt kết nối ví." (khi tải lại trang).
+  2. Gửi giao dịch trên Trust Wallet Mobile bị Trust Wallet bật thông báo lỗi `Unknown method(s) requested` (mã lỗi 5201).
+- **Phân tích kỹ thuật & Nguyên nhân gốc rễ:**
+  1. **Lỗi Toast Disconnect Giả Khi Khởi Tạo/Reload Trang:**
+     - `isConnected` được khởi tạo `true` từ `localStorage`. Nhưng khi AppKit khởi chạy, `subscribeAccount` lập tức bắn emission đầu tiên với `accountState = { isConnected: false }` do chưa kết nối xong với WebSocket Relay. Code cũ thấy `prevConnected === true` lập tức kích hoạt Toast "Đã ngắt kết nối ví." và xoá nhầm localStorage, dù ngay sau đó ~300ms session được rehydrate thành công.
+  2. **Lỗi `Unknown method(s) requested` (5201) Trên Trust Wallet:**
+     - Khi dApp ép truyền `caipChainId` (`'eip155:97'`) vào `walletProvider.request(payload, caipChainId)`, Trust Wallet kiểm tra session hiện tại của nó. Vì Trust Wallet Mobile mặc định không bật BSC Testnet trong session namespaces của ví, Trust Wallet từ chối RPC method với lỗi 5201 (`Unknown method(s) requested`).
+- **Giải pháp kiến trúc & Triển khai thực hiện:**
+  1. **Bảo vệ Trạng Thái Phiên Rehydration (`isInitialAccountSync`):**
+     - Bổ sung cờ `isInitialAccountSync = true` trong `Web3Service`. Nếu emission đầu tiên của `subscribeAccount` là `false` nhưng trong localStorage có `angular_web3_was_connected === 'true'`, hệ thống tự động bỏ qua, không xoá localStorage và không kích hoạt Toast ngắt kết nối giả.
+  2. **Cơ Chế Fallback 3 Tầng Cho Giao Dịch Web3 (`getSigner`):**
+     - Tầng 1: Gửi request với `caipChainId`.
+     - Tầng 2: Nếu ví trả về lỗi 5300 (Invalid Session Properties) hoặc 5201 (Unknown method(s) requested), tự động fallback sang `walletProvider.request({ method, params })` chuẩn EIP-1193 không gượng ép chainId để ví tự sử dụng active chain của người dùng.
+     - Tầng 3: Nếu ví vẫn từ chối method ở tầng 2, fallback sang `originalSend(method, params)` của Ethers BrowserProvider.
+  3. **Thông Báo Lỗi Thân Thiện Song Ngữ (`toast_wallet_unsupported_chain_or_method`):**
+     - Bổ sung nhận diện mã lỗi 5201 / chuỗi `"unknown method"` vào `formatWeb3Error`. Thông báo rõ ràng: "Ví của bạn chưa hỗ trợ hoặc chưa chuyển sang mạng này trong ứng dụng ví. Vui lòng mở ứng dụng ví và chọn đúng mạng." thay vì chuỗi lỗi raw kỹ thuật.
+- **Xác thực mã nguồn:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npx ng test --watch=false`: 20 test files / 102 unit tests passed 100%.
+  - `npm run build`: Production build thành công 100%.
+
 ### Yêu Cầu: Khắc Phục Lỗi Giao Dịch Code 5300 "Invalid Session Properties requested" & Tối Ưu Hóa BSC Transaction
 - **Nội dung yêu cầu:** Người dùng báo lỗi mới khi gửi giao dịch / tương tác contract trên điện thoại di động: Gửi 0.01 tBNB trên mạng BSC Testnet (chainId: 97) bị văng lỗi `code: 5300, message: "Invalid Session Properties requested", eth_sendTransaction`.
 - **Phân tích kỹ thuật & Nguyên nhân gốc rễ (Root Causes):**
