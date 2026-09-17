@@ -98,16 +98,20 @@ export class StateService {
     await this.web3Service.switchNetwork(chainId);
   }
 
-  public async getSigner() {
-    return await this.web3Service.getSigner();
+  public async getSigner(targetChainId?: number | string) {
+    return await this.web3Service.getSigner(targetChainId);
   }
 
   public getProvider() {
     return this.web3Service.getProvider();
   }
 
-  public async getGasOverrides(signer?: any) {
-    return await this.web3Service.getGasOverrides(signer);
+  public async getGasOverrides(signer?: any, targetChainId?: number | string) {
+    return await this.web3Service.getGasOverrides(signer, targetChainId);
+  }
+
+  public formatWeb3Error(err: any): string {
+    return this.web3Service.formatWeb3Error(err);
   }
 
   public async executeContractTx(

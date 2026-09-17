@@ -37,23 +37,38 @@ export class TranslationService {
   }
 
   private initLanguage(): void {
-    const saved = localStorage.getItem(LANG_STORAGE_KEY) as SupportedLang;
-    if (saved && (saved === 'vi' || saved === 'en')) {
-      this.currentLang.set(saved);
-    } else {
-      const browserLang = navigator.language || '';
-      if (browserLang.toLowerCase().startsWith('vi')) {
-        this.currentLang.set('vi');
-      } else if (browserLang.toLowerCase().startsWith('en')) {
-        this.currentLang.set('en');
-      }
+    if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
+      return;
     }
+    try {
+      const saved = localStorage.getItem(LANG_STORAGE_KEY) as SupportedLang;
+      if (saved && (saved === 'vi' || saved === 'en')) {
+        this.currentLang.set(saved);
+      } else {
+        const browserLang = (typeof navigator !== 'undefined' && navigator.language) || '';
+        if (browserLang.toLowerCase().startsWith('vi')) {
+          this.currentLang.set('vi');
+        } else if (browserLang.toLowerCase().startsWith('en')) {
+          this.currentLang.set('en');
+        }
+      }
+    } catch (e) { }
   }
 
   public setLanguage(lang: SupportedLang): void {
-    if (this.currentLang() === lang) return;
     this.currentLang.set(lang);
-    localStorage.setItem(LANG_STORAGE_KEY, lang);
+    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+      try {
+        localStorage.setItem(LANG_STORAGE_KEY, lang);
+      } catch (e) { }
+    }
+    this.updateHtmlLang(lang);
+  }
+
+  private updateHtmlLang(lang: SupportedLang): void {
+    if (typeof document !== 'undefined') {
+      document.documentElement.lang = lang;
+    }
   }
 
   public getCurrentLanguageOption(): LanguageOption {

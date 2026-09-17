@@ -157,7 +157,9 @@ export const EN_TRANSLATIONS: TranslationDictionary = {
     toast_signing_msg: 'Requesting message signature...',
     toast_signed_success: 'Message signed successfully!',
     toast_signing_failed: 'Message signing failed: ',
-    toast_copied_sig: 'Copied signature to clipboard!'
+    toast_copied_sig: 'Signature copied to clipboard!',
+    toast_session_sync_error: 'Wallet session out of sync or network permissions missing. Please check your wallet, switch network, or reconnect.',
+    toast_insufficient_funds: 'Insufficient balance to cover transfer amount and gas fees.'
   },
   cards: {
     buttons: {

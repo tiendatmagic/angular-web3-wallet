@@ -34,11 +34,11 @@ export class Web3Service {
   public readonly isEnabled: boolean = environment.enableWeb3;
 
   public address = signal<string | null>(
-    (typeof window !== 'undefined' && localStorage.getItem('angular_web3_last_address')) || null
+    (typeof window !== 'undefined' && typeof localStorage !== 'undefined' && localStorage.getItem('angular_web3_last_address')) || null
   );
   public chainId = signal<number | null>(null);
   public isConnected = signal<boolean>(
-    typeof window !== 'undefined' && localStorage.getItem('angular_web3_was_connected') === 'true'
+    typeof window !== 'undefined' && typeof localStorage !== 'undefined' && localStorage.getItem('angular_web3_was_connected') === 'true'
   );
   public balance = signal<string>('0.0000');
   public chainSymbol = signal<string>('ETH');
@@ -49,7 +49,7 @@ export class Web3Service {
   public showWrongChainModal = signal<boolean>(false);
 
   public readonly configuredChainId = signal<string>(
-    (typeof window !== 'undefined' && localStorage.getItem('angular_web3_configured_chain_id')) || environment.defaultChainId || '42161'
+    (typeof window !== 'undefined' && typeof localStorage !== 'undefined' && localStorage.getItem('angular_web3_configured_chain_id')) || environment.defaultChainId || '42161'
   );
 
   public readonly POPULAR_CHAINS = POPULAR_CHAINS;
@@ -105,7 +105,7 @@ export class Web3Service {
 
     effect(() => {
       const chain = this.configuredChainId();
-      if (typeof window !== 'undefined' && chain) {
+      if (typeof window !== 'undefined' && typeof localStorage !== 'undefined' && chain) {
         localStorage.setItem('angular_web3_configured_chain_id', chain);
       }
     });
@@ -162,6 +162,9 @@ export class Web3Service {
       networks: this.supportedChains as any,
       defaultNetwork: this.supportedChains[0] as any,
       allowUnsupportedChain: true,
+      defaultAccountTypes: {
+        eip155: 'eoa'
+      },
       metadata: {
         name: 'Angular Web3 DApp',
         description: this.translationService.t('about.subtitle'),
@@ -172,7 +175,10 @@ export class Web3Service {
       themeMode: isDark ? 'dark' : 'light',
       features: {
         analytics: false,
-        reownAuthentication: false
+        reownAuthentication: false,
+        smartSessions: false,
+        email: false,
+        socials: []
       },
       enableCoinbase: false
     } as any);
@@ -183,7 +189,7 @@ export class Web3Service {
       this.isConnected.set(accountState.isConnected);
 
       if (accountState.isConnected && accountState.address) {
-        if (typeof window !== 'undefined') {
+        if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
           localStorage.setItem('angular_web3_last_address', accountState.address);
           localStorage.setItem('angular_web3_was_connected', 'true');
         }
@@ -201,7 +207,7 @@ export class Web3Service {
           this.checkAndUpdateNetworkState(currentChainId, false);
         }
       } else if (!accountState.isConnected) {
-        if (typeof window !== 'undefined') {
+        if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
           localStorage.removeItem('angular_web3_last_address');
           localStorage.removeItem('angular_web3_was_connected');
         }
@@ -222,7 +228,7 @@ export class Web3Service {
         this.checkAndUpdateNetworkState(id, true);
         const idStr = id.toString();
         this.configuredChainId.set(idStr);
-        if (typeof window !== 'undefined') {
+        if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
           localStorage.setItem('angular_web3_configured_chain_id', idStr);
         }
       }
@@ -382,7 +388,7 @@ export class Web3Service {
   public async disconnect() {
     if (!this.isEnabled) return;
     try {
-      if (typeof window !== 'undefined') {
+      if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
         localStorage.removeItem('angular_web3_last_address');
         localStorage.removeItem('angular_web3_was_connected');
       }
@@ -396,7 +402,7 @@ export class Web3Service {
   }
 
   private async clearWalletConnectStorage() {
-    if (typeof window === 'undefined') return;
+    if (typeof window === 'undefined' || typeof localStorage === 'undefined') return;
 
     try {
       const keysToRemove: string[] = [];
@@ -468,6 +474,71 @@ export class Web3Service {
     }
   }
 
+  public syncDefaultChainToProvider(chainId: number | string): void {
+    const walletProvider: any = this.modal?.getWalletProvider() || (typeof window !== 'undefined' ? (window as any).ethereum : null);
+    if (!walletProvider) return;
+
+    const idNum = Number(chainId);
+    if (!idNum) return;
+    const caipChainId = `eip155:${idNum}`;
+
+    if (typeof walletProvider.setDefaultChain === 'function') {
+      try {
+        walletProvider.setDefaultChain(caipChainId);
+        walletProvider.setDefaultChain(idNum.toString());
+      } catch (e) {
+        console.warn('[Web3] Error syncing default chain to provider:', e);
+      }
+    }
+  }
+
+  public formatWeb3Error(err: any): string {
+    if (!err) return this.translationService.t('home.toast_tx_failed');
+
+    const errStr = (typeof err === 'string' ? err : (err?.message || err?.reason || JSON.stringify(err))).toLowerCase();
+
+    if (
+      err?.code === 4001 ||
+      err?.code === 'ACTION_REJECTED' ||
+      errStr.includes('user rejected') ||
+      errStr.includes('user cancelled') ||
+      errStr.includes('transaction rejected')
+    ) {
+      return this.translationService.t('home.toast_tx_rejected');
+    }
+
+    if (
+      err?.code === 5300 ||
+      errStr.includes('5300') ||
+      errStr.includes('invalid session properties') ||
+      errStr.includes('session properties requested') ||
+      errStr.includes('unsupported namespace')
+    ) {
+      return this.translationService.t('home.toast_session_sync_error');
+    }
+
+    if (
+      err?.code === 'INSUFFICIENT_FUNDS' ||
+      errStr.includes('insufficient funds') ||
+      errStr.includes('exceeds balance')
+    ) {
+      return this.translationService.t('home.toast_insufficient_funds');
+    }
+
+    if (errStr.includes('could not coalesce error')) {
+      const msgMatch = err?.message?.match(/"message"\s*:\s*"([^"]+)"/);
+      if (msgMatch && msgMatch[1]) {
+        const innerMsg = msgMatch[1];
+        if (innerMsg.toLowerCase().includes('invalid session properties')) {
+          return this.translationService.t('home.toast_session_sync_error');
+        }
+        return innerMsg;
+      }
+    }
+
+    return err?.reason || err?.shortMessage || err?.message || this.translationService.t('home.toast_tx_failed');
+  }
+
   public async switchNetwork(chainId: number) {
     if (!this.isEnabled) return;
 
@@ -476,6 +547,8 @@ export class Web3Service {
     if (typeof window !== 'undefined') {
       localStorage.setItem('angular_web3_configured_chain_id', chainIdStr);
     }
+
+    this.syncDefaultChainToProvider(chainId);
 
     if (this.isConnected()) {
       try {
@@ -518,6 +591,7 @@ export class Web3Service {
             await this.modal.switchNetwork(network as any);
           } catch (e) { }
         }
+        this.syncDefaultChainToProvider(chainId);
       } catch (error: any) {
         console.warn('[Web3] Error switching to chain:', chainId, error);
       }
@@ -530,21 +604,49 @@ export class Web3Service {
     }
   }
 
-  public async getSigner() {
+  public async getSigner(targetChainIdParam?: number | string) {
     if (!this.isEnabled) throw new Error(this.translationService.t('showcase.web3_disabled'));
-    const walletProvider = this.modal.getWalletProvider();
+    const walletProvider: any = this.modal.getWalletProvider();
     if (!walletProvider) {
       throw new Error(this.translationService.t('showcase.web3_wallet_not_connected'));
     }
-    const ethersProvider = new BrowserProvider(walletProvider as any);
+
+    const targetChainId = Number(targetChainIdParam || this.configuredChainId() || this.chainId() || 42161);
+    const caipChainId = `eip155:${targetChainId}`;
+
+    this.syncDefaultChainToProvider(targetChainId);
+
+    const ethersProvider = new BrowserProvider(walletProvider as any, targetChainId);
     const currentAddress = this.address();
     const originalSend = ethersProvider.send.bind(ethersProvider);
+
     ethersProvider.send = async (method: string, params: any[]) => {
       if (method === 'eth_requestAccounts' || method === 'eth_accounts') {
         if (currentAddress) {
           return [currentAddress];
         }
       }
+
+      if (method === 'eth_sendTransaction') {
+        this.syncDefaultChainToProvider(targetChainId);
+
+        if (typeof walletProvider.request === 'function') {
+          try {
+            return await walletProvider.request({ method, params }, caipChainId);
+          } catch (wcErr: any) {
+            const errLower = (wcErr?.message || '').toLowerCase();
+            if (wcErr?.code === 5300 || errLower.includes('invalid session properties')) {
+              try {
+                return await walletProvider.request({ method, params }, targetChainId.toString());
+              } catch (e2) {
+                throw wcErr;
+              }
+            }
+            throw wcErr;
+          }
+        }
+      }
+
       return await originalSend(method, params);
     };
 
@@ -567,29 +669,48 @@ export class Web3Service {
     return this.getReadonlyProvider();
   }
 
-  public async getGasOverrides(signer?: any): Promise<any> {
+  public async getGasOverrides(signer?: any, targetChainIdParam?: number | string): Promise<any> {
     const overrides: any = {};
     try {
+      const targetChainId = Number(targetChainIdParam || this.configuredChainId() || this.chainId() || 42161);
+      const isBscChain = targetChainId === 56 || targetChainId === 97;
       let currentSigner = signer;
       if (!currentSigner) {
-        currentSigner = await this.getSigner();
+        currentSigner = await this.getSigner(targetChainId);
       }
-      const provider = currentSigner.provider;
+      const provider = currentSigner?.provider;
       if (!provider) return overrides;
 
       const feeData = await provider.getFeeData();
       const speed = this.txSpeed();
-      if (speed !== 'default') {
-        const multiplier = speed === 'fast' ? 1.5 : this.gasMultiplier();
-        const factor = BigInt(Math.round(multiplier * 100));
+      const multiplier = speed === 'fast' ? 1.5 : (speed === 'custom' ? this.gasMultiplier() : 1.0);
+      const factor = BigInt(Math.round(multiplier * 100));
 
-        if (feeData.maxFeePerGas) {
-          overrides.maxFeePerGas = (feeData.maxFeePerGas * factor) / 100n;
-          if (feeData.maxPriorityFeePerGas) {
-            overrides.maxPriorityFeePerGas = (feeData.maxPriorityFeePerGas * factor) / 100n;
+      if (isBscChain) {
+        overrides.type = 0;
+        let baseGasPrice = feeData.gasPrice || 3000000000n;
+        if (targetChainId === 97 && baseGasPrice < 3000000000n) {
+          baseGasPrice = 3000000000n;
+        }
+        overrides.gasPrice = (baseGasPrice * factor) / 100n;
+        if (targetChainId === 97 && overrides.gasPrice < 3000000000n) {
+          overrides.gasPrice = 3000000000n;
+        }
+        delete overrides.maxFeePerGas;
+        delete overrides.maxPriorityFeePerGas;
+      } else {
+        if (speed !== 'default') {
+          if (feeData.maxFeePerGas) {
+            overrides.maxFeePerGas = (feeData.maxFeePerGas * factor) / 100n;
+            if (feeData.maxPriorityFeePerGas) {
+              overrides.maxPriorityFeePerGas = (feeData.maxPriorityFeePerGas * factor) / 100n;
+            }
+            delete overrides.gasPrice;
+          } else if (feeData.gasPrice) {
+            overrides.gasPrice = (feeData.gasPrice * factor) / 100n;
+            delete overrides.maxFeePerGas;
+            delete overrides.maxPriorityFeePerGas;
           }
-        } else if (feeData.gasPrice) {
-          overrides.gasPrice = (feeData.gasPrice * factor) / 100n;
         }
       }
     } catch (err) {
@@ -597,6 +718,7 @@ export class Web3Service {
     }
     return overrides;
   }
+
   public async executeContractTx(
     txPromiseOrFn: Promise<any> | ((overrides: any) => Promise<any>),
     options?: ExecuteTxOptions
@@ -604,8 +726,9 @@ export class Web3Service {
     try {
       const targetChainId = options?.chainId ? Number(options.chainId) : (this.configuredChainId() ? Number(this.configuredChainId()) : null);
       if (targetChainId && this.isConnected()) {
+        this.syncDefaultChainToProvider(targetChainId);
         try {
-          const signer = await this.getSigner();
+          const signer = await this.getSigner(targetChainId);
           if (signer?.provider) {
             const net = await signer.provider.getNetwork();
             const activeChainId = Number(net.chainId);
@@ -624,7 +747,7 @@ export class Web3Service {
 
       let txPromise: Promise<any>;
       if (typeof txPromiseOrFn === 'function') {
-        const overrides = await this.getGasOverrides();
+        const overrides = await this.getGasOverrides(undefined, targetChainId || undefined);
         txPromise = txPromiseOrFn(overrides);
       } else {
         txPromise = txPromiseOrFn;
@@ -665,13 +788,7 @@ export class Web3Service {
       return tx;
     } catch (err: any) {
       console.error('[Web3] Error executing contract transaction:', err);
-      const isRejected =
-        err?.message?.includes('user rejected') ||
-        err?.message?.includes('User rejected') ||
-        err?.code === 'ACTION_REJECTED';
-      const errMsg = isRejected
-        ? this.translationService.t('home.toast_tx_rejected')
-        : (err?.reason || err?.message || this.translationService.t('home.toast_tx_failed'));
+      const errMsg = this.formatWeb3Error(err);
       this.toastService.showToast(errMsg, 'error');
       options?.onError?.(err);
       throw err;

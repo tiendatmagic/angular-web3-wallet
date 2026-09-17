@@ -157,7 +157,9 @@ export const VI_TRANSLATIONS: TranslationDictionary = {
     toast_signing_msg: 'Đang yêu cầu ký tin nhắn...',
     toast_signed_success: 'Đã ký tin nhắn thành công!',
     toast_signing_failed: 'Ký tin nhắn thất bại: ',
-    toast_copied_sig: 'Đã sao chép chữ ký vào bộ nhớ tạm!'
+    toast_copied_sig: 'Đã sao chép chữ ký vào bộ nhớ tạm!',
+    toast_session_sync_error: 'Phiên kết nối ví chưa đồng bộ mạng hoặc ví chưa cấp quyền. Vui lòng mở ví xác nhận chuyển mạng hoặc ngắt kết nối và kết nối lại ví.',
+    toast_insufficient_funds: 'Số dư không đủ để thanh toán giá trị chuyển và phí gas.'
   },
   cards: {
     buttons: {

@@ -15,7 +15,12 @@ export class ThemeService {
   private initTheme() {
     if (typeof window === 'undefined') return;
     
-    const savedTheme = localStorage.getItem('theme_mode') as 'light' | 'dark' | 'auto' | null;
+    let savedTheme: 'light' | 'dark' | 'auto' | null = null;
+    if (typeof localStorage !== 'undefined') {
+      try {
+        savedTheme = localStorage.getItem('theme_mode') as 'light' | 'dark' | 'auto' | null;
+      } catch (e) { }
+    }
     if (typeof window.matchMedia === 'function') {
       this.mediaQueryList = window.matchMedia('(prefers-color-scheme: dark)');
       this.mediaQueryList.addEventListener?.('change', this.handleSystemThemeChange);
@@ -47,8 +52,6 @@ export class ThemeService {
       }
 
       if (!isInitial) {
-        void htmlEl.offsetHeight;
-
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
             htmlEl.classList.remove('theme-transition-disabled');
@@ -60,8 +63,10 @@ export class ThemeService {
 
   public setThemeMode(mode: 'light' | 'dark' | 'auto') {
     this.themeMode.set(mode);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('theme_mode', mode);
+    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+      try {
+        localStorage.setItem('theme_mode', mode);
+      } catch (e) { }
     }
 
     if (mode === 'auto') {

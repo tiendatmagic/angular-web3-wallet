@@ -9,9 +9,9 @@ export class UiStateService {
   public readonly showNetworkDropdown = signal<boolean>(false);
   public readonly isLoading = signal<boolean>(false);
   public readonly isSidebarCollapsed = signal<boolean>(
-    typeof window !== 'undefined' && localStorage.getItem('angular_web3_sidebar_collapsed') === 'true'
+    typeof window !== 'undefined' && typeof localStorage !== 'undefined' && localStorage.getItem('angular_web3_sidebar_collapsed') === 'true'
   );
   public readonly isSidebarAnimationEnabled = signal<boolean>(
-    typeof window !== 'undefined' && localStorage.getItem('angular_web3_sidebar_animation') === 'true'
+    typeof window !== 'undefined' && typeof localStorage !== 'undefined' && localStorage.getItem('angular_web3_sidebar_animation') === 'true'
   );
 }

@@ -165,6 +165,8 @@ export interface TranslationDictionary {
     toast_signed_success: string;
     toast_signing_failed: string;
     toast_copied_sig: string;
+    toast_session_sync_error: string;
+    toast_insufficient_funds: string;
   };
   cards: {
     buttons: {

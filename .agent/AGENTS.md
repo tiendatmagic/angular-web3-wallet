@@ -1,3 +1,32 @@
+### Yêu Cầu: Khắc Phục Lỗi Giao Dịch Code 5300 "Invalid Session Properties requested" & Tối Ưu Hóa BSC Transaction
+- **Nội dung yêu cầu:** Người dùng báo lỗi mới khi gửi giao dịch / tương tác contract trên điện thoại di động: Gửi 0.01 tBNB trên mạng BSC Testnet (chainId: 97) bị văng lỗi `code: 5300, message: "Invalid Session Properties requested", eth_sendTransaction`.
+- **Phân tích kỹ thuật & Nguyên nhân gốc rễ (Root Causes):**
+  1. **Xung đột Smart Account Session Properties của AppKit:**
+     - `@reown/appkit` theo mặc định bật tính năng Smart Sessions và Smart Accounts (`defaultAccountTypes: { eip155: 'smartAccount' }`). Khi kết nối ví cá nhân (Trust Wallet / MetaMask Mobile), AppKit yêu cầu các capabilities của Smart Account (`wallet_sendCalls`, `wallet_getCapabilities`, v.v.). Khi người dùng gửi transaction thông thường qua ví EOA cá nhân, ví từ chối session request với mã lỗi chuẩn WalletConnect v2 `5300: Invalid Session Properties requested`.
+  2. **Lệch CAIP-2 Envelope ChainId trong UniversalProvider:**
+     - `UniversalProvider` của WalletConnect duy trì biến `defaultChain` nội bộ (mặc định khởi tạo theo default network ban đầu, ví dụ Arbitrum `eip155:42161`). Khi người dùng chuyển sang BSC Testnet (`97`), nếu `UniversalProvider` chưa được đồng bộ lại qua `setDefaultChain('eip155:97')`, envelope session request gửi đi vẫn mang chainId cũ trong khi payload transaction lại mang `chainId: 97` của BSC, gây xung đột session properties trên ví.
+  3. **Đặc thù giao dịch trên BNB Chain / BSC Testnet:**
+     - BSC ưu tiên Legacy transaction (`type: 0`) và yêu cầu gasPrice sàn (tối thiểu 3 Gwei trên BSC Testnet). Ethers v6 mặc định suy đoán EIP-1559 (`type: 2`) hoặc thiếu gasPrice floor có thể dẫn tới việc giao dịch bị reject hoặc định dạng sai payload.
+- **Giải pháp kiến trúc & Triển khai thực hiện:**
+  1. **Cấu hình AppKit thuần EOA (`web3.service.ts`):**
+     - Đặt rõ `defaultAccountTypes: { eip155: 'eoa' }`.
+     - Vô hiệu hóa các tính năng smart sessions gây xung đột: `smartSessions: false`, `email: false`, `socials: []`.
+  2. **Đồng bộ hóa 2 chiều Default Chain cho UniversalProvider:**
+     - Triển khai phương thức `syncDefaultChainToProvider(chainId)` đồng bộ cả 2 định dạng `eip155:${chainId}` và `${chainId}` vào `walletProvider.setDefaultChain()` trước mọi thao tác chuyển mạng, lấy Signer hoặc gửi transaction.
+     - Intercept `ethersProvider.send('eth_sendTransaction')` trong `getSigner()` để chỉ định chính xác CAIP-2 chainId `eip155:${targetChainId}` trực tiếp vào session request của WalletConnect.
+  3. **Tối ưu Transaction Type & Gas Price cho BSC / BSC Testnet:**
+     - Trong `home.component.ts`: ép `type: 0` (Legacy transaction) cho các chain BNB (56, 97).
+     - Trong `getGasOverrides()`: đặt mức sàn `gasPrice` tối thiểu 3 Gwei (`3000000000n`) cho BSC Testnet.
+  4. **Bộ Format Lỗi Web3 Thân Thiện (`formatWeb3Error`):**
+     - Thêm cơ chế bóc tách chuỗi JSON rác của Ethers v6 (`could not coalesce error`).
+     - Tự động nhận diện mã lỗi 5300, insufficient funds, user rejection để thông báo hướng dẫn người dùng bằng song ngữ VI/EN (`toast_session_sync_error`, `toast_insufficient_funds`).
+  5. **Bảo vệ môi trường test/SSR không có `localStorage`:**
+     - Thêm guard `typeof localStorage !== 'undefined'` an toàn trong các service.
+- **Xác thực mã nguồn:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npm test` (`npx ng test --watch=false`): 20 test files / 102 tests passed 100%.
+  - `npm run build`: Build production hoàn tất thành công 100%.
+
 ### Yêu Cầu: Rà Soát & Khắc Phục Triệt Để Lỗi Kết Nối Wallet & Đồng Bộ Chain RPC
 - **Nội dung yêu cầu:** Xem xét lại toàn bộ hệ thống Web3 về vấn đề chưa kết nối được wallet và đồng bộ chain RPC.
 - **Phân tích kỹ thuật & Triển khai thực hiện:**

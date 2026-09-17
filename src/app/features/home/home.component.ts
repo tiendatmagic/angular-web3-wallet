@@ -264,19 +264,20 @@ export class HomeComponent {
     this.stateService.showToast(this.translationService.t('home.toast_sending_tx'), 'warning');
 
     try {
-      const signer = await this.stateService.getSigner();
+      const targetChainId = Number(this.stateService.configuredChainId() || this.stateService.chainId() || 42161);
+      const signer = await this.stateService.getSigner(targetChainId);
 
       const tx = await this.stateService.executeContractTx(
-        (overrides) =>
-          signer.sendTransaction({
-            to,
-            value: parseEther(val),
-            ...overrides,
-          }),
+        (overrides) => signer.sendTransaction({
+          to,
+          value: parseEther(val),
+          ...overrides,
+        }),
         {
           amount: val,
           symbol: this.stateService.chainSymbol() || 'ETH',
           toAddress: to,
+          chainId: targetChainId,
         }
       );
 
@@ -284,7 +285,7 @@ export class HomeComponent {
       this.toAddress.set('');
       this.amount.set('');
     } catch (err: any) {
-      const errMsg = err.reason || err.message || 'Error occurred.';
+      const errMsg = this.stateService.formatWeb3Error(err);
       this.txError.set(errMsg);
     } finally {
       this.txLoading.set(false);
@@ -304,13 +305,14 @@ export class HomeComponent {
     this.stateService.showToast(this.translationService.t('home.toast_signing_msg'), 'warning');
 
     try {
-      const signer = await this.stateService.getSigner();
+      const targetChainId = Number(this.stateService.configuredChainId() || this.stateService.chainId() || 42161);
+      const signer = await this.stateService.getSigner(targetChainId);
       const sig = await signer.signMessage(msg);
       this.signature.set(sig);
       this.stateService.showToast(this.translationService.t('home.toast_signed_success'), 'success');
     } catch (err: any) {
       console.error('Error signing message:', err);
-      const errMsg = err.message || 'Error occurred while signing.';
+      const errMsg = this.stateService.formatWeb3Error(err);
       this.signError.set(errMsg);
       this.stateService.showToast(this.translationService.t('home.toast_signing_failed') + errMsg, 'error');
     } finally {
