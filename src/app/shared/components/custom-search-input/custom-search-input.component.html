@@ -1,4 +1,4 @@
-<div class="relative {{ containerClass }}">
+﻿<div class="relative {{ containerClass }}">
     <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
     <app-icon
       name="search"
@@ -13,7 +13,7 @@
     (input)="onInput($event)"
     [placeholder]="effectivePlaceholder"
     [disabled]="disabled"
-    [class]="inputClass"
+    class="{{ inputClass }} placeholder:text-sm placeholder:font-normal placeholder:font-sans"
     [style]="loading || (clearable && val()) ? 'padding-right: 2.5rem !important;' : null"
   />
 

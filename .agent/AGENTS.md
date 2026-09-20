@@ -1,3 +1,23 @@
+### [2026-09-20] Đồng Bộ Thống Nhất Giao Diện Placeholder & Kế Thừa Form Components Toàn Dự Án
+- **Nội dung yêu cầu:** Người dùng yêu cầu kiểm tra và đồng bộ hóa giao diện các placeholder và kế thừa các component có sẵn cho dự án `D:\git\angular-web3-wallet`.
+- **Phân tích kỹ thuật & Hiện trạng:**
+  1. Thiếu quy tắc CSS toàn cục cho `::placeholder` khiến chữ gợi ý placeholder thừa kế `font-semibold` (600) từ `@mixin form-control-base`, làm placeholder bị in đậm dày cộp và mất cân đối.
+  2. Các component dùng chung (`CustomInputComponent`, `CustomSearchInputComponent`, `CustomSelectComponent`) chưa gắn các utility class typography cho placeholder.
+  3. Còn tồn tại thẻ HTML thô (`<textarea>` dòng 242 và `<input>` dòng 529 trong `home.component.html`) chưa kế thừa `<app-custom-input>`.
+- **Các Giải Pháp Triển Khai Hoàn Chỉnh:**
+  1. **Chuẩn hóa CSS toàn cục trong `src/styles.scss`**:
+     - Bổ sung quy tắc toàn cục cưỡng chế `::placeholder`, `::-webkit-input-placeholder`, `::-moz-placeholder`, `:-ms-input-placeholder` đạt chuẩn: `font-size: 0.875rem !important` (14px), `font-weight: 400 !important` (`normal`), `font-family: var(--font-sans) !important`, màu Slate-400 (Light) và Slate-500 (Dark).
+     - Cập nhật `@mixin form-control-base` bổ sung `placeholder:text-sm placeholder:font-normal placeholder:font-sans dark:placeholder-slate-500`.
+  2. **Nâng cấp Component Form dùng chung**:
+     - `CustomInputComponent`: Bổ sung `@Input() autofocus`, `@Output() enter`, và utility classes `placeholder:text-sm placeholder:font-normal placeholder:font-sans` cho cả `<textarea>` và `<input>`.
+     - `CustomSearchInputComponent`: Bổ sung utility classes `placeholder:text-sm placeholder:font-normal placeholder:font-sans`.
+     - `CustomSelectComponent`: Chuẩn hóa ô input search dropdown với `placeholder:text-sm placeholder:font-normal placeholder:font-sans`.
+  3. **Kế thừa 100% Component tại `home.component.html`**:
+     - Chuyển đổi ô Sign Message (`<textarea>`) sang `<app-custom-input type="textarea" ...>`.
+     - Chuyển đổi ô Min Date (`<input>`) sang `<app-custom-input ...>`.
+  4. **Cập nhật Quy Chuẩn Thiết Kế**:
+     - Bổ sung Mục 3.5 trong `.agent/design.md` quy định chuẩn hóa kích thước Placeholder 14px, `font-normal` (400), cấm gán class kích thước tùy tiện, bắt buộc kế thừa component có sẵn.
+
 ### Yêu Cầu: Xóa Bỏ Toàn Bộ Transition Liên Quan Đến Color Trên Toàn Dự Án
 - **Nội dung yêu cầu:** Người dùng yêu cầu: `check lại toàn source xem còn chỗ nào đang transition color nữa không?`, `xóa toàn bộ transition liên quan đến color`.
 - **Phân tích kỹ thuật & Hiện trạng:**

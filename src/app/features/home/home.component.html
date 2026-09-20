@@ -1,4 +1,4 @@
-<main class="max-w-[1530px] mx-auto w-full px-4 sm:px-6 py-6 md:py-10 space-y-6 md:space-y-8">
+﻿<main class="max-w-[1530px] mx-auto w-full px-4 sm:px-6 py-6 md:py-10 space-y-6 md:space-y-8">
   @if (stateService.isWeb3Enabled && !stateService.isConnected()) {
     <div app-card class="text-center max-w-2xl mx-auto">
       <div
@@ -239,7 +239,7 @@
           <div class="space-y-4">
             <div class="form-field">
               <label>{{ 'home.sign_message_content' | translate }}</label>
-              <textarea rows="2" [(ngModel)]="messageToSign" class="form-textarea"></textarea>
+              <app-custom-input type="textarea" [rows]="2" [(ngModel)]="messageToSign" [placeholder]="'home.sign_message_content' | translate" />
             </div>
 
             <button
@@ -526,12 +526,11 @@
                 class="form-field pt-1 border-t border-slate-200/30 dark:border-slate-800/30 animate-in fade-in duration-200"
               >
                 <label>{{ 'cards.date_picker.label_min_date' | translate }}</label>
-                <input
+                <app-custom-input
                   type="text"
                   [ngModel]="demoDatePickerMinDate()"
                   (ngModelChange)="demoDatePickerMinDate.set($event)"
                   placeholder="2026-07-20"
-                  class="form-input"
                 />
               </div>
             }
@@ -1747,7 +1746,7 @@
                 [groupSize]="3"
                 type="numeric"
                 size="md"
-                placeholder="•"
+                placeholder="â€¢"
               ></app-input-otp>
 
               <div class="flex flex-wrap items-center justify-between gap-2 w-full pt-1">
@@ -1804,7 +1803,7 @@
                 <span class="text-xs font-mono text-slate-500">
                   {{ 'showcase.pin_label' | translate }}
                   <strong class="text-emerald-600 dark:text-emerald-400 font-bold">{{
-                    demoOtpMaskToggle() ? demoOtpPin() : '••••'
+                    demoOtpMaskToggle() ? demoOtpPin() : 'â€¢â€¢â€¢â€¢'
                   }}</strong>
                 </span>
 
@@ -1966,7 +1965,7 @@
                 <app-dropdown-menu
                   [header]="demoProfileHeader"
                   [items]="demoProfileMenuItems()"
-                  triggerText="Nguyễn Tiến Đạt"
+                  triggerText="Nguyá»…n Tiáº¿n Äáº¡t"
                   triggerVariant="outline"
                   triggerSize="md"
                   width="w-64"
@@ -2587,7 +2586,7 @@
               </h5>
               @if (lastModalResult()) {
                 <app-badge [variant]="lastModalResult()?.status === 'confirmed' ? 'success' : 'secondary'">
-                  {{ lastModalResult()?.status | uppercase }} • {{ lastModalResult()?.timestamp }}
+                  {{ lastModalResult()?.status | uppercase }} â€¢ {{ lastModalResult()?.timestamp }}
                 </app-badge>
               }
             </div>
@@ -2754,7 +2753,7 @@
               />
               <app-avatar
                 size="lg"
-                name="Nguyễn Tiến Đạt"
+                name="Nguyá»…n Tiáº¿n Äáº¡t"
                 status="online"
                 src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80"
               />

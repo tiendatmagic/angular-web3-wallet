@@ -1,4 +1,4 @@
-<div class="{{ containerClass }} select-none" [class.opacity-60]="disabled">
+﻿<div class="{{ containerClass }} select-none" [class.opacity-60]="disabled">
   <button
     type="button"
     #triggerBtn
@@ -38,7 +38,7 @@
     >
       @if (showSearch) {
         <div
-          class="h-9 px-3 mb-1.5 bg-slate-100 dark:bg-slate-950/40 rounded-[11px] border border-slate-200/50 dark:border-slate-800/60 flex items-center gap-2.5 shrink-0 focus-within:!border-primary focus-within:ring-1 focus-within:ring-primary/20 transition-[border-color,box-shadow] duration-150"
+          class="h-9 px-3 mb-1.5 bg-slate-100 dark:bg-slate-950/40 rounded-[11px] border border-slate-200/50 dark:border-slate-800/60 flex items-center gap-2.5 shrink-0 focus-within:!border-primary focus-within:ring-1 focus-within:ring-primary/20 transition-[box-shadow] duration-150"
         >
           <app-icon name="search" class="w-4 h-4 text-slate-400 dark:text-slate-500 shrink-0" strokeWidth="2.5" />
           <input
@@ -49,7 +49,7 @@
             (keydown.enter)="onSearchEnter($event)"
             (keydown.escape)="onEscape()"
             [placeholder]="'common.search' | translate"
-            class="w-full bg-transparent text-sm font-semibold border-0 p-0 outline-none text-slate-800 dark:text-slate-100 placeholder-slate-400"
+            class="w-full bg-transparent text-sm font-semibold border-0 p-0 outline-none text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 placeholder:text-sm placeholder:font-normal placeholder:font-sans"
           />
           @if (searchQuery()) {
             <button

@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, forwardRef, signal, ChangeDetectionStrategy } from '@angular/core';
+﻿import { Component, Input, Output, EventEmitter, forwardRef, signal, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -30,6 +30,9 @@ export class CustomInputComponent implements ControlValueAccessor {
   @Input() name: string = '';
   @Input() customClass: string = '';
   @Input() inputmode: string = '';
+  @Input() autofocus: boolean = false;
+
+  @Output() enter = new EventEmitter<void>();
 
   @Output() valueChange = new EventEmitter<any>();
 

@@ -116,14 +116,48 @@ Hệ thống sử dụng cơ chế màu sắc động (Dynamic Theme) cho phép 
 - **Form Controls Utilities**:
   ```scss
   @mixin form-control-base {
-    @apply w-full text-sm font-semibold rounded-xl bg-slate-100 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 text-slate-800 dark:text-white placeholder-slate-400 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20;
+    @apply w-full text-sm font-semibold rounded-xl bg-slate-100 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 placeholder:text-sm placeholder:font-normal placeholder:font-sans focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20;
   }
   @utility form-input { @include form-control-base; @apply h-[42px] px-4; }
   @utility form-input-password { @apply pr-11; }
-  @utility form-textarea { @include form-control-base; @apply py-3 px-4 transition-[background-color,color,box-shadow] duration-200 resize-none; }
-  @utility search-input { @include form-control-base; @apply h-[42px] pl-9 pr-4 transition-[background-color,color,box-shadow] duration-200; }
+  @utility form-textarea { @include form-control-base; @apply py-3 px-4 transition-[background-color,box-shadow] duration-200 resize-none; }
+  @utility search-input { @include form-control-base; @apply h-[42px] pl-9 pr-4 transition-[background-color,box-shadow] duration-200; }
   @utility tab-group { @apply h-[42px] flex items-center gap-1 bg-slate-100 dark:bg-slate-950/40 p-1 rounded-xl border border-slate-200/40 dark:border-slate-800/40 overflow-x-auto flex-nowrap shrink-0 max-w-full select-none; }
   ```
+
+### 3.5. Quy Chuẩn Đồng Bộ Giao Diện Placeholder Toàn Cục & Kế Thừa Form Components
+- **Kích Thước & Kiểu Chữ Cố Định Cho Placeholder (100% Cấm Lệch Kích Thước)**:
+  - Toàn bộ chữ gợi ý (`placeholder`) trên tất cả các trường form, ô nhập liệu (`input`), vùng văn bản (`textarea`) bắt buộc phải tuân theo quy chuẩn cố định:
+    - **Cỡ chữ**: Cố định chính xác `0.875rem !important` (14px / `text-sm`) trên 100% các ô nhập liệu.
+    - **Độ đậm**: Cố định `font-weight: 400 !important` (`font-normal` thanh thoát, đúng vai trò văn bản gợi ý, tương phản rõ rệt với ký tự thực tế người dùng nhập là `font-semibold` / 600).
+    - **Phông chữ**: `font-family: var(--font-sans) !important`.
+    - **Màu sắc**: Chuẩn Slate-400 (`rgb(148 163 184)`) ở Light Mode và Slate-500 (`rgb(100 116 139)`) ở Dark Mode.
+  - **Quy tắc CSS toàn cục bắt buộc (Global CSS Rule trong `styles.scss`)**:
+    ```scss
+    ::placeholder,
+    ::-webkit-input-placeholder,
+    ::-moz-placeholder,
+    :-ms-input-placeholder {
+      font-size: 0.875rem !important;
+      font-weight: 400 !important;
+      font-family: var(--font-sans) !important;
+      color: rgb(148 163 184) !important;
+      letter-spacing: normal !important;
+      text-transform: none !important;
+      line-height: normal !important;
+    }
+    html.dark ::placeholder,
+    html.dark ::-webkit-input-placeholder,
+    html.dark ::-moz-placeholder,
+    html.dark :-ms-input-placeholder {
+      color: rgb(100 116 139) !important;
+    }
+    ```
+- **Cấm Gán Class Kích Thước Tùy Tiện Gây Vỡ Layout Placeholder**:
+  - Nghiêm cấm gán các class tùy tiện như `customClass="!text-base"` hoặc `class="... text-xs"` lên các input/textarea thông thường, tránh làm placeholder bị to đùng hoặc co nhỏ lệch lạc.
+- **Kế Thừa Component Có Sẵn (Reuse Standard Components)**:
+  - **Bắt buộc kế thừa** `<app-custom-input>` và `<app-custom-search-input>` cho toàn bộ các ô nhập liệu văn bản, mật khẩu, số, vùng soạn thảo (`textarea`), ô tìm kiếm.
+  - Tuyệt đối không viết thẻ `<input>` hoặc `<textarea>` thô bên ngoài component dùng chung.
 
 ---
 

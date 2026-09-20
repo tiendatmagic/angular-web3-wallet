@@ -1,4 +1,4 @@
-<div class="relative w-full">
+﻿<div class="relative w-full">
   @if (type === 'textarea') {
     <textarea
       [name]="name"
@@ -6,8 +6,10 @@
       [disabled]="disabled"
       [rows]="rows"
       [value]="val()"
+      [autofocus]="autofocus"
       (input)="onInput($event)"
-      class="form-textarea {{ customClass }}"
+      (keydown.enter)="enter.emit()"
+      class="form-textarea placeholder:text-sm placeholder:font-normal placeholder:font-sans {{ customClass }}"
     ></textarea>
   } @else {
     <input
@@ -20,8 +22,10 @@
       [step]="step"
       [attr.inputmode]="inputmode || null"
       [value]="val()"
+      [autofocus]="autofocus"
       (input)="onInput($event)"
-      class="form-input {{ customClass }}"
+      (keydown.enter)="enter.emit()"
+      class="form-input placeholder:text-sm placeholder:font-normal placeholder:font-sans {{ customClass }}"
     />
   }
 </div>

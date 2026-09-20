@@ -1,4 +1,4 @@
-@import 'tailwindcss' source('.');
+﻿@import 'tailwindcss' source('.');
 
 @custom-variant dark (&:is(.dark, .dark *));
 
@@ -528,7 +528,7 @@ body.dark ::-webkit-scrollbar-thumb {
 }
 
 @mixin form-control-base {
-  @apply w-full text-sm font-semibold rounded-xl bg-slate-100 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 text-slate-800 dark:text-white placeholder-slate-400 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20;
+  @apply w-full text-sm font-semibold rounded-xl bg-slate-100 dark:bg-slate-950/40 border border-slate-200/40 dark:border-slate-800/40 text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 placeholder:text-sm placeholder:font-normal placeholder:font-sans focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20;
 }
 
 @utility form-input {
@@ -788,4 +788,28 @@ body.dark ::-webkit-scrollbar-thumb {
 }
 .alert-error-bordered {
   @apply bg-rose-100/85 text-rose-950 border border-rose-400/60 dark:bg-rose-950/50 dark:text-rose-200 dark:border-rose-600/60;
+}
+
+
+/* ==========================================================================
+   Global Placeholder Typography Standardization (Consistent 14px, Font-Normal)
+   ========================================================================== */
+::placeholder,
+::-webkit-input-placeholder,
+::-moz-placeholder,
+:-ms-input-placeholder {
+  font-size: 0.875rem !important; /* text-sm 14px */
+  font-weight: 400 !important; /* font-normal thanh thoat */
+  font-family: var(--font-sans) !important;
+  color: rgb(148 163 184) !important; /* slate-400 */
+  letter-spacing: normal !important;
+  text-transform: none !important;
+  line-height: normal !important;
+}
+
+html.dark ::placeholder,
+html.dark ::-webkit-input-placeholder,
+html.dark ::-moz-placeholder,
+html.dark :-ms-input-placeholder {
+  color: rgb(100 116 139) !important; /* slate-500 */
 }
