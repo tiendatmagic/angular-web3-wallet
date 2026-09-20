@@ -850,5 +850,6 @@ export interface TranslationDictionary {
     all: string;
     clear_date_range: string;
     apply: string;
+    menu: string;
   };
 }

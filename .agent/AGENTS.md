@@ -1,3 +1,30 @@
+### [2026-09-21] Rà Soát Toàn Diện i18n & Khắc Phục Lỗi Mã Hóa Ký Tự Tiếng Việt (UTF-8 Mojibake)
+- **Nội dung yêu cầu:** Người dùng yêu cầu kiểm tra toàn bộ mã nguồn frontend: `kiểm tra toàn source, chỗ nào đang bị hard code tiếng việt, hay đang còn chưa dịch i18n. check bổ sung nhé, bên FE`.
+- **Phân tích kỹ thuật & Hiện trạng:**
+  1. **Đồng bộ từ điển i18n:** Rà soát tự động 744 translation keys giữa `src/app/core/i18n/vi.ts` và `src/app/core/i18n/en.ts`. Cả 2 từ điển đồng bộ 100%, không bị lệch key và không bị sót văn bản tiếng Việt chưa dịch trong `en.ts`.
+  2. **Quét toàn bộ Template & Component:**
+     - 56 file template HTML và toàn bộ TypeScript component đều đã áp dụng triệt để `TranslatePipe` (`| translate`) và `TranslationService.t()`. Không có attribute tĩnh nào (`placeholder`, `title`, `label`, `aria-label`) bị gán cứng ngôn ngữ mà không qua dịch.
+     - Phát hiện component `DropdownMenuComponent` có giá trị mặc định `@Input() triggerText = 'Menu'` chưa được tự động fallback sang từ điển i18n khi người dùng không truyền hoặc truyền rỗng.
+  3. **Lỗi mã hóa ký tự UTF-8 Mojibake:**
+     - Phát hiện 5 vị trí trong `home.component.html` bị lỗi double-encoded UTF-8 (ký tự mojibake):
+       - Dòng 1749: `placeholder="â€¢"` (ký tự bullet `•`).
+       - Dòng 1806: `'â€¢â€¢â€¢â€¢'` (ký tự mask mã PIN `••••`).
+       - Dòng 1968: `triggerText="Nguyá»…n Tiáº¿n Ä áº¡t"` (tên demo profile).
+       - Dòng 2589: dấu phân cách `â€¢` giữa status và timestamp.
+       - Dòng 2756: `name="Nguyá»…n Tiáº¿n Ä áº¡t"` (tên demo avatar).
+- **Giải pháp kiến trúc & Triển khai thực hiện:**
+  1. **Khắc phục lỗi mã hóa UTF-8 trong `home.component.html`:**
+     - Chuẩn hóa toàn bộ về ký tự Unicode UTF-8 chuẩn xác: `placeholder="•"`, `'••••'`, `•`, `Nguyễn Tiến Đạt`.
+  2. **Nâng cấp i18n cho `DropdownMenuComponent`:**
+     - Bổ sung key `menu: string` vào `common` dictionary trong `i18n.types.ts`, `vi.ts` ('Menu') và `en.ts` ('Menu').
+     - Bổ sung getter `effectiveTriggerText` trong `dropdown-menu.component.ts` tự động fallback về `this.translationService.t('common.menu')` khi không có `triggerText`.
+     - Cập nhật template `dropdown-menu.component.html` dùng `effectiveTriggerText`.
+     - Bổ sung test case xác thực fallback i18n trong `dropdown-menu.component.spec.ts`.
+- **Xác thực mã nguồn:**
+  - `npm test -- --watch=false`: 24 test files / 134 unit tests passed 100%.
+  - `npm run build`: Production build hoàn tất thành công 100%.
+  - 0 comment tiếng Việt trong source code.
+
 ### [2026-09-20] Sửa Lỗi Chấm Ở Giữa Của Custom Radio Button Bị Mất Góc / Méo Cạnh (SVG ViewBox Clipping)
 - **Nội dung yêu cầu:** Người dùng phản ánh chấm ở giữa của radio button component bị mất góc/méo cạnh khi nhìn kỹ: `coi lại chỗ radio button component`, `nhìn kỹ chỗ chấm ở giữa, có phần thì bị mất góc, bạn nhìn kỹ`, `nên cần bạn sửa đổi`.
 - **Phân tích kỹ thuật & Nguyên nhân gốc rễ (Root Causes):**

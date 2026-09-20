@@ -1,4 +1,4 @@
-﻿<main class="max-w-[1530px] mx-auto w-full px-4 sm:px-6 py-6 md:py-10 space-y-6 md:space-y-8">
+<main class="max-w-[1530px] mx-auto w-full px-4 sm:px-6 py-6 md:py-10 space-y-6 md:space-y-8">
   @if (stateService.isWeb3Enabled && !stateService.isConnected()) {
     <div app-card class="text-center max-w-2xl mx-auto">
       <div
@@ -1746,7 +1746,7 @@
                 [groupSize]="3"
                 type="numeric"
                 size="md"
-                placeholder="â€¢"
+                placeholder="•"
               ></app-input-otp>
 
               <div class="flex flex-wrap items-center justify-between gap-2 w-full pt-1">
@@ -1803,7 +1803,7 @@
                 <span class="text-xs font-mono text-slate-500">
                   {{ 'showcase.pin_label' | translate }}
                   <strong class="text-emerald-600 dark:text-emerald-400 font-bold">{{
-                    demoOtpMaskToggle() ? demoOtpPin() : 'â€¢â€¢â€¢â€¢'
+                    demoOtpMaskToggle() ? demoOtpPin() : '••••'
                   }}</strong>
                 </span>
 
@@ -1965,7 +1965,7 @@
                 <app-dropdown-menu
                   [header]="demoProfileHeader"
                   [items]="demoProfileMenuItems()"
-                  triggerText="Nguyá»…n Tiáº¿n Äáº¡t"
+                  triggerText="Nguyễn Tiến Đạt"
                   triggerVariant="outline"
                   triggerSize="md"
                   width="w-64"
@@ -2586,7 +2586,7 @@
               </h5>
               @if (lastModalResult()) {
                 <app-badge [variant]="lastModalResult()?.status === 'confirmed' ? 'success' : 'secondary'">
-                  {{ lastModalResult()?.status | uppercase }} â€¢ {{ lastModalResult()?.timestamp }}
+                  {{ lastModalResult()?.status | uppercase }} • {{ lastModalResult()?.timestamp }}
                 </app-badge>
               }
             </div>
@@ -2753,7 +2753,7 @@
               />
               <app-avatar
                 size="lg"
-                name="Nguyá»…n Tiáº¿n Äáº¡t"
+                name="Nguyễn Tiến Đạt"
                 status="online"
                 src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80"
               />

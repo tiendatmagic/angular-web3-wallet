@@ -842,6 +842,7 @@ export const EN_TRANSLATIONS: TranslationDictionary = {
     confirmed: 'Action confirmed successfully!',
     all: 'All',
     clear_date_range: 'Clear date range',
-    apply: 'Apply'
+    apply: 'Apply',
+    menu: 'Menu'
   }
 };

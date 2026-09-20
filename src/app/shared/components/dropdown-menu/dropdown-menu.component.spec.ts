@@ -38,6 +38,12 @@ describe('DropdownMenuComponent', () => {
     expect(component.isOpen()).toBe(false);
   });
 
+  it('should use translation fallback when triggerText is not provided', () => {
+    expect(component.effectiveTriggerText).toBe('Menu');
+    component.triggerText = 'Custom Action';
+    expect(component.effectiveTriggerText).toBe('Custom Action');
+  });
+
   it('should toggle open and close on toggleOpen call', () => {
     fixture.detectChanges();
     expect(component.isOpen()).toBe(false);

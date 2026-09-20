@@ -17,6 +17,7 @@ import { CommonModule } from '@angular/common';
 import { IconComponent } from '../icon/icon.component';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { DropdownService } from '@core/services/dropdown.service';
+import { TranslationService } from '@core/services/translation.service';
 import { getContainingBlockOffset } from '@core/utils/dom.utils';
 
 export interface DropdownMenuItem {
@@ -61,6 +62,7 @@ export class DropdownMenuComponent implements OnDestroy {
   private readonly elementRef = inject(ElementRef);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly dropdownService = inject(DropdownService);
+  private readonly translationService = inject(TranslationService);
   private readonly ngZone = inject(NgZone);
   public readonly instanceId = 'dropdown_menu_' + Math.random().toString(36).substring(2, 9);
   private scrollListener: any;
@@ -72,7 +74,14 @@ export class DropdownMenuComponent implements OnDestroy {
 
   @Input() items: DropdownMenuItem[] = [];
   @Input() header: DropdownMenuHeader | null = null;
-  @Input() triggerText: string = 'Menu';
+  @Input() triggerText?: string;
+
+  get effectiveTriggerText(): string {
+    if (this.triggerText !== undefined && this.triggerText !== '') {
+      return this.triggerText;
+    }
+    return this.translationService.t('common.menu');
+  }
   @Input() leadingIcon: string = '';
   @Input() triggerIcon: string = 'chevron-down';
   @Input() showChevron: boolean = true;

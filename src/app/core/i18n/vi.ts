@@ -842,6 +842,7 @@ export const VI_TRANSLATIONS: TranslationDictionary = {
     confirmed: 'Đã xác nhận thành công!',
     all: 'Tất cả',
     clear_date_range: 'Xóa khoảng thời gian',
-    apply: 'Áp dụng'
+    apply: 'Áp dụng',
+    menu: 'Menu'
   }
 };
