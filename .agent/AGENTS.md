@@ -1,3 +1,21 @@
+### [2026-09-20] Sửa Lỗi Chấm Ở Giữa Của Custom Radio Button Bị Mất Góc / Méo Cạnh (SVG ViewBox Clipping)
+- **Nội dung yêu cầu:** Người dùng phản ánh chấm ở giữa của radio button component bị mất góc/méo cạnh khi nhìn kỹ: `coi lại chỗ radio button component`, `nhìn kỹ chỗ chấm ở giữa, có phần thì bị mất góc, bạn nhìn kỹ`, `nên cần bạn sửa đổi`.
+- **Phân tích kỹ thuật & Nguyên nhân gốc rễ (Root Causes):**
+  1. **SVG ViewBox Boundary Clipping:** Trước thay đổi, `CustomRadioComponent` dùng thẻ `<svg viewBox="0 0 10 10" ...><circle cx="5" cy="5" r="5" /></svg>`. Với `r="5"` và tâm `(5, 5)`, các điểm tiếp tuyến của đường tròn nằm sát rạt biên giới `0` và `10` của `viewBox`.
+  2. **Trình duyệt tự động cắt mép (`overflow: hidden` mặc định của SVG):** Khi render ở kích thước `10px` (`w-2.5 h-2.5`), đặc biệt trên màn hình Windows có tỉ lệ DPI scaling (125%, 150%) hoặc khi kết hợp GPU compositing `scale-100` (`transform: scale(1)`), các sub-pixel khử răng cưa (anti-aliasing) tràn qua ranh giới `0` và `10` bị thẻ SVG cắt cụt phẳng lì thành các đoạn thẳng, tạo cảm giác chấm tròn bị khuyết/mất góc.
+- **Giải pháp kiến trúc & Triển khai thực hiện:**
+  1. **Chuyển đổi sang thẻ HTML `<span>` kết hợp CSS `rounded-full` (`custom-radio.component.html`):**
+     - Thay thế `<svg>` bằng `<span class="block shrink-0 w-2.5 h-2.5 rounded-full bg-[var(--color-primary)] transition-[transform,opacity] duration-150 ease-out pointer-events-none" ...></span>`.
+     - `rounded-full` (`border-radius: 9999px`) được CSS rendering engine (Skia) vẽ bằng hình học vector bo tròn chuẩn xác, độc lập hoàn toàn với SVG clipping bounds, đảm bảo chấm tròn luôn tròn mịn màng 360 độ ở mọi tỉ lệ thu phóng và DPI scaling.
+  2. **Đồng bộ hóa sang `DropdownMenuComponent` (`dropdown-menu.component.html`):**
+     - Cập nhật các menu item có type `radio` sang dùng thẻ `span.rounded-full.bg-primary`, ngăn chặn triệt để lỗi mất góc trên toàn bộ hệ thống UI.
+  3. **Bổ sung Unit Test (`custom-radio.component.spec.ts`):**
+     - Thêm test case xác thực phần tử `span.rounded-full` render chính xác và chuyển đổi class `scale-100` / `opacity-100` khi `checked`.
+- **Xác thực mã nguồn:**
+  - `npm test -- --watch=false`: 24 test files / 133 unit tests passed 100%.
+  - `npm run build`: Production build hoàn tất thành công 100%.
+  - 0 comment tiếng Việt trong mã nguồn.
+
 ### [2026-09-20] Đồng Bộ Thống Nhất Giao Diện Placeholder & Kế Thừa Form Components Toàn Dự Án
 - **Nội dung yêu cầu:** Người dùng yêu cầu kiểm tra và đồng bộ hóa giao diện các placeholder và kế thừa các component có sẵn cho dự án `D:\git\angular-web3-wallet`.
 - **Phân tích kỹ thuật & Hiện trạng:**

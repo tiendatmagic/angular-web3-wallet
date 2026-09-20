@@ -71,4 +71,18 @@ describe('CustomRadioComponent', () => {
     component.setDisabledState(true);
     expect(component.disabled).toBe(true);
   });
+
+  it('should render inner dot indicator with rounded-full class and toggle scale/opacity classes', () => {
+    fixture.detectChanges();
+    const dot = fixture.nativeElement.querySelector('span.rounded-full');
+    expect(dot).toBeTruthy();
+    expect(dot.classList.contains('scale-0')).toBe(true);
+    expect(dot.classList.contains('opacity-0')).toBe(true);
+
+    component.setChecked = true;
+    fixture.detectChanges();
+
+    expect(dot.classList.contains('scale-100')).toBe(true);
+    expect(dot.classList.contains('opacity-100')).toBe(true);
+  });
 });

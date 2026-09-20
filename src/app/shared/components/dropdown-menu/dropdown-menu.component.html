@@ -215,17 +215,13 @@
                       activeRadioValue !== item.radioValue,
                   }"
                 >
-                  <svg
-                    class="w-2.5 h-2.5 text-primary transition-[transform,opacity] duration-150 ease-out pointer-events-none"
+                  <span
+                    class="block shrink-0 w-2.5 h-2.5 rounded-full bg-primary transition-[transform,opacity] duration-150 ease-out pointer-events-none"
                     [class.scale-100]="activeRadioValue === item.radioValue"
                     [class.scale-0]="activeRadioValue !== item.radioValue"
                     [class.opacity-100]="activeRadioValue === item.radioValue"
                     [class.opacity-0]="activeRadioValue !== item.radioValue"
-                    viewBox="0 0 10 10"
-                    fill="currentColor"
-                  >
-                    <circle cx="5" cy="5" r="5" />
-                  </svg>
+                  ></span>
                 </div>
                 <span class="truncate">{{ item.label }}</span>
               </div>
