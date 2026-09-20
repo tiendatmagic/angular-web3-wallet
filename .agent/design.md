@@ -398,5 +398,11 @@ Nhằm đảm bảo 100% các thành phần cố định (Fixed/Sticky), menu tr
   - Badge:
     - Active: `bg-[var(--color-primary)]/10 text-[var(--color-primary)] dark:bg-[var(--color-secondary)]/15 dark:text-[var(--color-secondary)]`.
     - Inactive: `bg-slate-200/50 dark:bg-slate-800 text-slate-400 dark:text-slate-500`.
+- **Hệ Thống Kích Cỡ Đa Dạng (`size: 'sm' | 'md' | 'lg'`, mặc định `md`)**:
+  - Hỗ trợ tham số `@Input() size: 'sm' | 'md' | 'lg' = 'md'`:
+    - **`sm` (Small)**: Container cao `h-[34px] p-0.5 rounded-lg gap-1`, pill `top-0.5 bottom-0.5 rounded-md`, tab item `h-7 px-2.5 rounded-md text-xs gap-1`, icon `w-3.5 h-3.5`, badge `text-[9px] px-1 py-0 rounded`.
+    - **`md` (Medium - Mặc định)**: Container cao `h-[42px] p-1 rounded-xl gap-1`, pill `top-1 bottom-1 rounded-lg`, tab item `h-8 px-3.5 rounded-lg text-xs gap-1.5`, icon `w-4 h-4`, badge `text-[10px] px-1.5 py-0.2 rounded-lg`.
+    - **`lg` (Large)**: Container cao `h-[50px] p-1.5 rounded-[14px] gap-1.5`, pill `top-1.5 bottom-1.5 rounded-[10px]`, tab item `h-[38px] px-4.5 rounded-[10px] text-sm font-bold gap-2`, icon `w-4.5 h-4.5`, badge `text-xs px-2 py-0.5 rounded-lg`.
+
 
 

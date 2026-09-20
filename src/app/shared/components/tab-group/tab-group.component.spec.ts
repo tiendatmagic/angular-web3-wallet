@@ -71,8 +71,58 @@ describe('TabGroupComponent', () => {
     const icon = firstTab.querySelector('app-icon');
     expect(icon).toBeTruthy();
 
-    const badge = firstTab.querySelector('span.text-\\[10px\\]');
+    const spans = firstTab.querySelectorAll('span');
+    const badge = spans[spans.length - 1];
     expect(badge).toBeTruthy();
     expect(badge.textContent.trim()).toBe('New');
+  });
+
+  it('defaults to size md with correct classes', () => {
+    expect(component.size).toBe('md');
+    const container = fixture.nativeElement.querySelector('.tab-group');
+    expect(container.classList.contains('tab-group-md')).toBe(true);
+
+    const button = fixture.nativeElement.querySelector('.tab-item');
+    expect(button.classList.contains('tab-item-md')).toBe(true);
+
+    const pill = fixture.nativeElement.querySelector('.tab-group-pill');
+    expect(pill.classList.contains('top-1')).toBe(true);
+    expect(pill.classList.contains('bottom-1')).toBe(true);
+  });
+
+  it('applies lg size classes when size is lg', () => {
+    component.size = 'lg';
+    fixture.detectChanges();
+
+    const container = fixture.nativeElement.querySelector('.tab-group');
+    expect(container.classList.contains('tab-group-lg')).toBe(true);
+
+    const button = fixture.nativeElement.querySelector('.tab-item');
+    expect(button.classList.contains('tab-item-lg')).toBe(true);
+
+    const pill = fixture.nativeElement.querySelector('.tab-group-pill');
+    expect(pill.classList.contains('top-1.5')).toBe(true);
+    expect(pill.classList.contains('bottom-1.5')).toBe(true);
+
+    const icon = button.querySelector('app-icon');
+    expect(icon.classList.contains('h-4.5')).toBe(true);
+  });
+
+  it('applies sm size classes when size is sm', () => {
+    component.size = 'sm';
+    fixture.detectChanges();
+
+    const container = fixture.nativeElement.querySelector('.tab-group');
+    expect(container.classList.contains('tab-group-sm')).toBe(true);
+
+    const button = fixture.nativeElement.querySelector('.tab-item');
+    expect(button.classList.contains('tab-item-sm')).toBe(true);
+
+    const pill = fixture.nativeElement.querySelector('.tab-group-pill');
+    expect(pill.classList.contains('top-0.5')).toBe(true);
+    expect(pill.classList.contains('bottom-0.5')).toBe(true);
+
+    const icon = button.querySelector('app-icon');
+    expect(icon.classList.contains('h-3.5')).toBe(true);
   });
 });

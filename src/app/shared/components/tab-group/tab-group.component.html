@@ -1,13 +1,18 @@
 <div
   #containerEl
   [class]="
-    'relative tab-group flex items-center p-1 w-full overflow-x-auto no-scrollbar flex-nowrap shrink-0 select-none ' +
+    'relative tab-group tab-group-' +
+    size +
+    ' flex items-center w-full overflow-x-auto no-scrollbar flex-nowrap shrink-0 select-none ' +
     containerClass
   "
 >
   @if (options.length > 0 && activeIndex !== -1) {
     <div
-      class="tab-group-pill absolute top-1 bottom-1 bg-white dark:bg-slate-800 rounded-lg shadow-sm dark:shadow-slate-950/40 border border-slate-200/40 dark:border-slate-700/50 z-0"
+      [class]="
+        'tab-group-pill absolute bg-white dark:bg-slate-800 shadow-sm dark:shadow-slate-950/40 border border-slate-200/40 dark:border-slate-700/50 z-0 ' +
+        pillSizeClass
+      "
       [class.transition-[left,width]]="sliderStyle().animated"
       [class.duration-300]="sliderStyle().animated"
       [class.ease-out]="sliderStyle().animated"
@@ -30,7 +35,9 @@
       [class.dark:text-slate-400]="activeValue !== opt.value"
       [class.flex-1]="flex"
       [class]="
-        'tab-item relative z-10 transition-[color,background-color,box-shadow,transform,scale] duration-200 cursor-pointer flex items-center justify-center gap-1.5 select-none ' +
+        'tab-item tab-item-' +
+        size +
+        ' relative z-10 transition-[color,background-color,box-shadow,transform,scale] duration-200 cursor-pointer flex items-center justify-center select-none ' +
         buttonClass
       "
     >
@@ -41,7 +48,7 @@
       @if (opt.icon) {
         <app-icon
           [name]="opt.icon"
-          class="h-4 w-4 shrink-0 transition-colors duration-300"
+          [class]="'shrink-0 transition-colors duration-300 ' + iconSizeClass"
           [class.text-[var(--color-primary)]]="activeValue === opt.value"
           [class.dark:text-[var(--color-secondary)]]="activeValue === opt.value"
           [class.text-slate-400]="activeValue !== opt.value"
@@ -54,9 +61,10 @@
       @if (opt.badge !== undefined && opt.badge !== null && opt.badge !== '') {
         <span
           [class]="
-            activeValue === opt.value
-              ? 'text-[10px] font-black px-1.5 py-0.2 rounded-lg bg-[var(--color-primary)]/10 text-[var(--color-primary)] dark:bg-[var(--color-secondary)]/15 dark:text-[var(--color-secondary)]'
-              : 'text-[10px] font-black px-1.5 py-0.2 rounded-lg bg-slate-200/50 dark:bg-slate-800 text-slate-400 dark:text-slate-500'
+            (activeValue === opt.value
+              ? 'font-black bg-[var(--color-primary)]/10 text-[var(--color-primary)] dark:bg-[var(--color-secondary)]/15 dark:text-[var(--color-secondary)] '
+              : 'font-black bg-slate-200/50 dark:bg-slate-800 text-slate-400 dark:text-slate-500 ') +
+            badgeSizeClass
           "
           class="transition-colors duration-300 select-none"
         >

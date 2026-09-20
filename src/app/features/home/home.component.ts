@@ -18,7 +18,7 @@ import { AccordionItemComponent } from '@shared/components/accordion/accordion-i
 import { TooltipDirective } from '@shared/components/tooltip/tooltip.directive';
 import { RippleDirective } from '@shared/components/ripple/ripple.directive';
 import { CustomSliderComponent } from '@shared/components/custom-slider/custom-slider.component';
-import { TabGroupComponent, TabOption } from '@shared/components/tab-group/tab-group.component';
+import { TabGroupComponent, TabGroupSize, TabOption } from '@shared/components/tab-group/tab-group.component';
 import { StateService } from '@core/services/state.service';
 import { ModalService } from '@core/services/modal.service';
 import { DemoModalComponent } from './components/demo-modal/demo-modal.component';
@@ -151,6 +151,13 @@ export class HomeComponent {
   public demoFileUploadSingle = signal<UploadFileItem[]>([]);
   public demoFileUploadMulti = signal<UploadFileItem[]>([]);
   public demoFileUploadAvatar = signal<UploadFileItem[]>([]);
+
+  public demoTabSize = signal<TabGroupSize>('md');
+  public readonly demoTabSizeOptions: TabOption[] = [
+    { value: 'sm', label: 'SM' },
+    { value: 'md', label: 'MD' },
+    { value: 'lg', label: 'LG' }
+  ];
 
   public demoTabValue = signal('wallet');
   public readonly demoTabOptions = computed<TabOption[]>(() => {

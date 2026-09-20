@@ -574,12 +574,36 @@ body.dark ::-webkit-scrollbar-thumb {
   }
 }
 
+@utility tab-group-sm {
+  @apply h-[34px] p-0.5 rounded-lg gap-1;
+}
+
+@utility tab-group-md {
+  @apply h-[42px] p-1 rounded-xl gap-1;
+}
+
+@utility tab-group-lg {
+  @apply h-[50px] p-1.5 rounded-[14px] gap-1.5;
+}
+
 @utility tab-item {
   @apply h-8 px-4 rounded-lg text-xs font-semibold transition-[color,background-color,box-shadow,transform,scale] duration-200 cursor-pointer inline-flex items-center justify-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 whitespace-nowrap shrink-0 select-none;
 
   &.active {
     @apply bg-white dark:bg-slate-800 text-[var(--color-primary)] dark:text-[var(--color-secondary)] shadow-sm dark:shadow-slate-950/40 border border-slate-200/40 dark:border-slate-700/50 font-bold;
   }
+}
+
+@utility tab-item-sm {
+  @apply h-7 px-2.5 rounded-md text-xs font-semibold gap-1;
+}
+
+@utility tab-item-md {
+  @apply h-8 px-3.5 rounded-lg text-xs font-semibold gap-1.5;
+}
+
+@utility tab-item-lg {
+  @apply h-[38px] px-4.5 rounded-[10px] text-sm font-bold gap-2;
 }
 
 @utility app-card {

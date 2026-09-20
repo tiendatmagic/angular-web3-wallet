@@ -1,3 +1,41 @@
+### Yêu Cầu: Bổ Sung Hỗ Trợ Đa Kích Cỡ (`size: 'sm' | 'md' | 'lg'`, Mặc Định `md`) Cho `TabGroupComponent`
+- **Nội dung yêu cầu:** Người dùng hỏi: `tab group hiện tại có mấy size, như md (hiện tại), lg nữa; mặc định là md, cho phép truyền tham số md hay lg tùy ý cho tab group component`.
+- **Phân tích kỹ thuật & Hiện trạng:**
+  1. Trước thay đổi, `TabGroupComponent` chỉ hỗ trợ **1 kích thước duy nhất** (tương đương `md`, chiều cao cố định `h-[42px]`, pill `top-1 bottom-1`, item `h-8` tức 32px, text `text-xs font-semibold`, icon 16px). Component chưa có thuộc tính `@Input() size`.
+  2. Để đáp ứng nhu cầu layout linh hoạt (các vị trí nhỏ hẹp như card header hay các vị trí ưu tiên nổi bật như trang chính cần size lớn), hệ thống cần hỗ trợ tham số `size: 'sm' | 'md' | 'lg'` với giá trị mặc định là `'md'` để đảm bảo tương thích ngược 100% không ảnh hưởng đến bất kỳ nơi nào đang dùng component.
+- **Giải pháp kiến trúc & Triển khai thực hiện:**
+  1. **Định nghĩa Type & Input Property (`tab-group.component.ts`):**
+     - Khai báo `export type TabGroupSize = 'sm' | 'md' | 'lg';`.
+     - Thêm setter và getter `@Input() size: TabGroupSize = 'md'` kết hợp `ChangeDetectorRef.markForCheck()` và `updateSliderPosition(true)` đảm bảo tương thích hoàn hảo với OnPush change detection strategy.
+     - Cập nhật `ngOnChanges` phát hiện thay đổi `changes['size']` để tự động đo đạc lại vị trí sliding indicator khi kích thước thay đổi dynamically.
+     - Bổ sung các getter helper: `pillSizeClass`, `iconSizeClass`, `badgeSizeClass` theo từng size.
+  2. **Chuẩn hóa Utility Classes (`src/styles.scss`):**
+     - `@utility tab-group-sm`: `h-[34px] p-0.5 rounded-lg gap-1`.
+     - `@utility tab-group-md`: `h-[42px] p-1 rounded-xl gap-1`.
+     - `@utility tab-group-lg`: `h-[50px] p-1.5 rounded-[14px] gap-1.5` (tuân thủ quy chuẩn border-radius <= 15px).
+     - `@utility tab-item-sm`: `h-7 px-2.5 rounded-md text-xs font-semibold gap-1`.
+     - `@utility tab-item-md`: `h-8 px-3.5 rounded-lg text-xs font-semibold gap-1.5`.
+     - `@utility tab-item-lg`: `h-[38px] px-4.5 rounded-[10px] text-sm font-bold gap-2`.
+  3. **Cập nhật Template (`tab-group.component.html`):**
+     - Container gán class động `'tab-group tab-group-' + size`.
+     - Pill gán class vị trí và bo góc động thông qua `pillSizeClass` (`top-0.5` / `top-1` / `top-1.5`).
+     - Tab items gán `'tab-item tab-item-' + size`.
+     - Icon gán `iconSizeClass` (`h-3.5 w-3.5` / `h-4 w-4` / `h-4.5 w-4.5`).
+     - Badge gán `badgeSizeClass` (`text-[9px]` / `text-[10px]` / `text-xs`).
+  4. **Nâng cấp Showcase Tương Tác Trực Quan (`home.component.html` & `home.component.ts`):**
+     - Tích hợp bộ chọn chuyển đổi size trực tiếp `sm` / `md` / `lg` ngay trên card showcase "Custom Tab Group" để người dùng kiểm thử tương tác thực tế và hiệu ứng co giãn mượt mà.
+  5. **Bổ sung Unit Test Suite (`tab-group.component.spec.ts`):**
+     - Test kích thước mặc định `md`.
+     - Test kích thước `lg` (kiểm tra `tab-group-lg`, `tab-item-lg`, `top-1.5 bottom-1.5`, icon 18px).
+     - Test kích thước `sm` (kiểm tra `tab-group-sm`, `tab-item-sm`, `top-0.5 bottom-0.5`, icon 14px).
+  6. **Đồng bộ hóa tài liệu thiết kế:**
+     - Cập nhật mục 6.13 trong `.agent/design.md`.
+- **Xác thực mã nguồn:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npm test -- --watch=false`: 23 test files / 127 unit tests passed 100%.
+  - `npm run build`: Production build hoàn tất thành công 100%.
+  - 0 comment tiếng Việt trong source code.
+
 ### Yêu Cầu: Đồng Bộ Màu Border Form & Dropdown Về Duy Nhất Một Màu Primary (Loại Bỏ Lệch Màu Focus)
 - **Nội dung yêu cầu:** Người dùng gửi 2 ảnh chụp khoanh đỏ nút trigger của Custom Select đang mở kèm ô tìm kiếm bên trong và yêu cầu: `coi lại chỗ màu border có vẻ nó khác biệt, sao thử 2 trường focus lại khác nhau? Để 1 màu thôi chứ? màu primary thôi`.
 - **Phân tích kỹ thuật & Nguyên nhân gốc rễ (Root Causes):**

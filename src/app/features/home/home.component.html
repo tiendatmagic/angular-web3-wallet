@@ -680,24 +680,36 @@
       </div>
 
       <div app-card>
-        <h4
-          class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2"
-        >
-          <app-icon name="tabs" class="w-3.5 h-3.5 text-primary" strokeWidth="2.5" />
-          {{ 'showcase.custom_tab_group' | translate }}
-        </h4>
+        <div class="flex items-center justify-between mb-4">
+          <h4
+            class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest flex items-center gap-2"
+          >
+            <app-icon name="tabs" class="w-3.5 h-3.5 text-primary" strokeWidth="2.5" />
+            {{ 'showcase.custom_tab_group' | translate }}
+          </h4>
+          <div class="w-36">
+            <app-tab-group
+              size="sm"
+              [options]="demoTabSizeOptions"
+              [activeValue]="demoTabSize()"
+              (valueChange)="demoTabSize.set($event)"
+            ></app-tab-group>
+          </div>
+        </div>
 
         <div class="space-y-4">
           <app-tab-group
+            [size]="demoTabSize()"
             [options]="demoTabOptions()"
             [activeValue]="demoTabValue()"
             (valueChange)="demoTabValue.set($event)"
           ></app-tab-group>
 
           <div
-            class="text-xs font-mono text-slate-400 bg-slate-100 dark:bg-slate-950/40 rounded-lg px-3 py-2.5"
+            class="text-xs font-mono text-slate-400 bg-slate-100 dark:bg-slate-950/40 rounded-lg px-3 py-2.5 flex items-center justify-between"
           >
-            activeTab = "{{ demoTabValue() }}"
+            <span>activeTab = "{{ demoTabValue() }}"</span>
+            <span class="text-primary font-bold">size = "{{ demoTabSize() }}"</span>
           </div>
         </div>
       </div>
