@@ -1,4 +1,4 @@
-﻿@import 'tailwindcss' source('.');
+@import 'tailwindcss' source('.');
 
 @custom-variant dark (&:is(.dark, .dark *));
 
@@ -615,7 +615,7 @@ body.dark ::-webkit-scrollbar-thumb {
 }
 
 @utility glass-popover {
-  @apply bg-white/90 dark:bg-slate-900/80 backdrop-blur-xl shadow-lg shadow-slate-900/10 dark:shadow-slate-950/50;
+  @apply bg-white/90 dark:bg-slate-900/85 backdrop-blur-xl shadow-lg shadow-slate-900/10 dark:shadow-slate-950/50;
   -webkit-backdrop-filter: blur(24px);
   backdrop-filter: blur(24px);
 }
