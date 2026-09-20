@@ -91,6 +91,7 @@ export class CustomSelectComponent implements ControlValueAccessor, OnDestroy {
   @Input() triggerClass: string = 'w-full form-input';
 
   @ViewChild('triggerBtn', { static: false }) triggerBtn!: ElementRef<HTMLButtonElement>;
+  @ViewChild('searchInput', { static: false }) searchInput?: ElementRef<HTMLInputElement>;
 
   public readonly isOpen = signal<boolean>(false);
   public readonly searchQuery = signal<string>('');
@@ -160,11 +161,15 @@ export class CustomSelectComponent implements ControlValueAccessor, OnDestroy {
       this.isOpen.set(false);
       this.dropdownService.close(this.instanceId);
       this.detachListeners();
+      this.triggerBtn?.nativeElement?.focus();
       this.cdr.markForCheck();
     }
   }
 
-  public toggleOpen(): void {
+  public toggleOpen(event?: MouseEvent): void {
+    if (event) {
+      event.stopPropagation();
+    }
     if (this.disabled) return;
     const nextState = !this.isOpen();
     this.isOpen.set(nextState);
@@ -173,11 +178,34 @@ export class CustomSelectComponent implements ControlValueAccessor, OnDestroy {
       this.dropdownService.open(this.instanceId);
       this.attachListeners();
       this.updateDropdownPosition();
+      if (this.showSearch) {
+        setTimeout(() => {
+          this.searchInput?.nativeElement?.focus();
+        }, 50);
+      }
     } else {
       this.dropdownService.close(this.instanceId);
       this.detachListeners();
     }
     this.cdr.markForCheck();
+  }
+
+  public onSearchEnter(event?: Event): void {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    const filtered = this.filteredOptions();
+    if (filtered.length > 0) {
+      this.selectOption(filtered[0]);
+    }
+  }
+
+  public clearSearch(event?: MouseEvent): void {
+    if (event) {
+      event.stopPropagation();
+    }
+    this.searchQuery.set('');
   }
 
   private updateDropdownPosition(): void {
@@ -186,7 +214,7 @@ export class CustomSelectComponent implements ControlValueAccessor, OnDestroy {
 
     const rect = triggerEl.getBoundingClientRect();
     const offset = getContainingBlockOffset(triggerEl);
-    const dropdownMaxHeight = 280;
+    const dropdownMaxHeight = 320;
     const gap = 6;
 
     const spaceBelow = window.innerHeight - rect.bottom - gap;
@@ -198,9 +226,9 @@ export class CustomSelectComponent implements ControlValueAccessor, OnDestroy {
     } else if (this.placement === 'bottom') {
       placeFinal = 'bottom';
     } else {
-      if (spaceBelow >= dropdownMaxHeight) {
+      if (spaceBelow >= 200) {
         placeFinal = 'bottom';
-      } else if (spaceAbove >= dropdownMaxHeight) {
+      } else if (spaceAbove >= 200) {
         placeFinal = 'top';
       } else {
         placeFinal = spaceBelow >= spaceAbove ? 'bottom' : 'top';
@@ -209,12 +237,16 @@ export class CustomSelectComponent implements ControlValueAccessor, OnDestroy {
 
     this.resolvedPlacement = placeFinal;
 
+    const minWidth = 220;
+    const selectWidth = Math.max(rect.width, minWidth);
     let left = rect.left;
-    let selectWidth = rect.width;
     if (left + selectWidth > window.innerWidth - 8) {
       left = Math.max(8, window.innerWidth - 8 - selectWidth);
     }
     if (left < 8) left = 8;
+
+    const availableSpace = placeFinal === 'bottom' ? spaceBelow : spaceAbove;
+    const maxHeight = Math.min(dropdownMaxHeight, Math.max(120, availableSpace));
 
     if (placeFinal === 'bottom') {
       this.dropdownStyle = {
@@ -222,7 +254,8 @@ export class CustomSelectComponent implements ControlValueAccessor, OnDestroy {
         top: `${rect.bottom + gap - offset.top}px`,
         left: `${left - offset.left}px`,
         width: `${selectWidth}px`,
-        maxHeight: `${Math.min(dropdownMaxHeight, Math.max(80, spaceBelow))}px`,
+        maxWidth: 'calc(100vw - 16px)',
+        maxHeight: `${maxHeight}px`,
         zIndex: '9999',
       };
     } else {
@@ -231,7 +264,8 @@ export class CustomSelectComponent implements ControlValueAccessor, OnDestroy {
         top: `${rect.top - gap - offset.top}px`,
         left: `${left - offset.left}px`,
         width: `${selectWidth}px`,
-        maxHeight: `${Math.min(dropdownMaxHeight, Math.max(80, spaceAbove))}px`,
+        maxWidth: 'calc(100vw - 16px)',
+        maxHeight: `${maxHeight}px`,
         transform: 'translateY(-100%)',
         zIndex: '9999',
       };

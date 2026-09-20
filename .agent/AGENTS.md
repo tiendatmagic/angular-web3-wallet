@@ -1,3 +1,71 @@
+### Yêu Cầu: Đồng Bộ Màu Border Form & Dropdown Về Duy Nhất Một Màu Primary (Loại Bỏ Lệch Màu Focus)
+- **Nội dung yêu cầu:** Người dùng gửi 2 ảnh chụp khoanh đỏ nút trigger của Custom Select đang mở kèm ô tìm kiếm bên trong và yêu cầu: `coi lại chỗ màu border có vẻ nó khác biệt, sao thử 2 trường focus lại khác nhau? Để 1 màu thôi chứ? màu primary thôi`.
+- **Phân tích kỹ thuật & Nguyên nhân gốc rễ (Root Causes):**
+  1. **Lệch Opacity giữa Ô Tìm Kiếm và Nút Trigger:**
+     - Nút trigger của `CustomSelectComponent` khi mở áp dụng `border-primary` (100% màu tím/hồng primary).
+     - Trong khi đó, khung ô tìm kiếm bên trong popover lại bị gán `focus-within:border-primary/50` (bị giảm độ mờ xuống 50%).
+     - Khi mở dropdown, con trỏ tự động focus vào ô tìm kiếm, làm cả 2 trường hiển thị cùng lúc trên màn hình nhưng mang 2 sắc độ màu khác biệt (một bên tím đậm 100%, một bên hồng mờ 50%).
+  2. **Ghi đè viền trong Dark Mode:**
+     - `form-input` và các container có class `dark:border-slate-800/40` mang pseudo-variant `dark:` có độ ưu tiên cao hơn class thông thường `border-primary`. Ở Dark Mode, nút trigger bị class xám tối đè lên class `border-primary`, trong khi ô tìm kiếm bên dưới lại nhận class primary từ `focus-within:`, dẫn đến lệch màu viền giữa 2 thành phần.
+  3. **Đồng bộ hóa các Selector khác:**
+     - Các trường `CustomDatePicker` và `CustomDateTimeRange` trước đó sử dụng class dạng inline `border-[var(--color-primary)]` chưa chuẩn hóa đồng nhất với Tailwind token utility.
+- **Giải pháp kiến trúc & Triển khai thực hiện:**
+  1. **Chuẩn hóa màu viền Ô Tìm Kiếm (`custom-select.component.html`):**
+     - Thay thế `focus-within:border-primary/50` thành `focus-within:!border-primary` kết hợp `focus-within:ring-1 focus-within:ring-primary/20`.
+     - Đảm bảo khi focus ô tìm kiếm, màu viền đạt 100% màu primary (`rgb(255, 0, 221)` / `#ff00dd`), hoàn toàn trùng khớp với nút trigger.
+  2. **Bảo vệ màu viền Nút Trigger trước Dark Mode (`custom-select.component.html`):**
+     - Áp dụng `!border-primary ring-1 ring-primary/20` khi `isOpen()` và thêm `focus:outline-none focus:!border-primary focus:ring-1 focus:ring-primary/20` vào class nút trigger, ngăn chặn triệt để tình trạng bị `dark:border-slate-800/40` ghi đè ở chế độ Dark Mode.
+  3. **Đồng bộ hóa `CustomDatePicker` & `CustomDateTimeRange`:**
+     - Cập nhật cả 2 component sang `[class.!border-primary]="isOpen()"` và `[class.ring-primary/20]="isOpen()"`.
+  4. **Kiểm thử đo đạc thực tế qua Chrome DevTools MCP:**
+     - Đo computed styles trực tiếp trên Chrome: Cả nút trigger và ô tìm kiếm đều trả về `borderColor: "rgb(255, 0, 221)"` (`isEqual: true`) trên cả 2 chế độ Light Mode và Dark Mode.
+  5. **Nâng cấp đồng bộ UI Ô Tìm Kiếm (Search Box) trong Select Popover:**
+     - Nâng cấp cỡ chữ từ `text-xs font-medium` (12px) lên chuẩn hệ thống `text-sm font-semibold` (14px), đồng bộ 100% với các option items và nút trigger.
+     - Thiết lập chiều cao cố định chuẩn `h-9` (36px), căn giữa hoàn hảo icon và văn bản.
+     - Nâng cấp icon kính lúp và icon xóa từ `w-3.5 h-3.5` lên chuẩn `w-4 h-4 text-slate-400 dark:text-slate-500`.
+     - Đồng bộ nền `bg-slate-100 dark:bg-slate-950/40` và viền `border-slate-200/50 dark:border-slate-800/60` chuẩn `form-control-base`.
+  6. **Bổ sung Unit Test Suite:**
+     - Thêm bài test xác thực class `!border-primary` và `focus-within:!border-primary` trong `custom-select.component.spec.ts`.
+- **Xác thực mã nguồn:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npm test -- --watch=false`: 23 test files / 124 unit tests passed 100%.
+  - `npm run build`: Production build hoàn tất thành công 100%.
+  - 0 comment tiếng Việt trong source code.
+
+### Yêu Cầu: Đồng Bộ Giao Diện Select UI Component Với Dropdown Menu Component
+- **Nội dung yêu cầu:** Người dùng yêu cầu: `xem lại select ui component đang bị lệch UI so với dropdown component`.
+- **Phân tích kỹ thuật & Nguyên nhân gốc rễ (Root Causes):**
+  1. **Khung chứa Popover:** `DropdownMenuComponent`, `LanguageSelector`, `NetworkSelector`, `AccountDropdown` đều có padding `p-2` với bo góc `rounded-[15px]`. Trong khi `CustomSelectComponent` trước đó không có `p-2`, gán `overflow-hidden` làm các item tràn mép ngoài (edge-to-edge), gây thô ráp và lệch ngôn ngữ thiết kế.
+  2. **Kích thước chữ & Bo góc Item:** Dropdown item sử dụng `text-sm font-semibold`, bo góc `rounded-[11px]`, padding `px-3 py-2.5` và giãn dòng `space-y-0.5`. Ngược lại, Select item bị thu nhỏ xuống `text-xs`, không có bo góc (`rounded-none`) và padding `px-4`.
+  3. **Hộp Tìm Kiếm (Search Box):** Select cũ dùng dải phẳng hình chữ nhật với đường kẻ `border-b` cắt ngang thay vì ô nhập liệu bo góc lọt lòng có focus ring.
+  4. **Checkbox & Trigger Focus:** Multi-select checkbox trong Select (`h-4 w-4 rounded-[4px]`) chưa đồng bộ với chuẩn của Dropdown (`w-4.5 h-4.5 rounded-[5px]`). Nút trigger chưa có hiệu ứng focus ring tím khi mở dropdown.
+- **Giải pháp kiến trúc & Triển khai thực hiện:**
+  1. **Đồng bộ khung Popover (`custom-select.component.html`):**
+     - Bổ sung `p-2` vào khung kính mờ `glass-popover`, loại bỏ `overflow-hidden`.
+     - Danh sách tùy chọn áp dụng `space-y-0.5 select-none custom-scrollbar`.
+  2. **Chuẩn hóa Option Button:**
+     - Nâng cấp cỡ chữ lên `text-sm font-semibold`, bo góc `rounded-[11px]`, padding `px-3 py-2.5`.
+     - Màu sắc: Hover `hover:bg-slate-100 dark:hover:bg-slate-800/80 hover:text-slate-900 dark:hover:text-white`.
+     - Trạng thái kích hoạt (Active): `bg-primary/10 dark:bg-primary/20 text-primary font-bold`.
+     - Checkmark: `<app-icon name="check" class="w-4 h-4 text-primary shrink-0 stroke-[3] ml-2" />`.
+     - Checkbox nhiều lựa chọn: `w-4.5 h-4.5 rounded-[5px] border` với check trắng trên nền tím `bg-primary`.
+  3. **Tái thiết kế Search Box lọt lòng & Trải Nghiệm Tương Tác:**
+     - Thiết kế ô tìm kiếm bo góc `rounded-[11px]`, nền `bg-slate-100/80 dark:bg-slate-950/50`, viền `border-slate-200/50 dark:border-slate-800/60`, focus ring `focus-within:border-primary/50 focus-within:ring-1 focus-within:ring-primary/20` và tích hợp nút xóa text nhanh `clearSearch()`.
+     - Tự động focus con trỏ vào ô tìm kiếm ngay khi mở popover (`#searchInput`), mang lại trải nghiệm mượt mà không cần click thêm lần 2.
+  4. **Nâng cấp Trigger Button, Định Vị & Chuẩn ARIA Accessibility:**
+     - Bổ sung `[class.border-primary]="isOpen()"`, `[class.ring-1]="isOpen()"`, `[class.ring-primary/20]="isOpen()"` cho trigger button.
+     - Đảm bảo độ rộng tối thiểu `minWidth = Math.max(rect.width, 220)` và chống tràn màn hình.
+     - Tích hợp chuẩn trợ năng quốc tế ARIA: `role="combobox"`, `aria-haspopup="listbox"`, `[attr.aria-expanded]="isOpen()"`, `role="listbox"`, `role="option"`, `[attr.aria-selected]="isSelected(opt)"`.
+  5. **Bổ sung Unit Test Suite Hoàn Chỉnh (`custom-select.component.spec.ts`):**
+     - 8 bài test bao phủ: mở/đóng, kiểm tra class `p-2` và `rounded-[11px]`, single select, multi select, search/clear filter, và ControlValueAccessor.
+  6. **Kiểm thử trực quan thực tế trên Chrome DevTools:**
+     - Đối chiếu và xác nhận trực quan cả Light Mode, Dark Mode trên trang chính và bên trong Modal Form trên `http://localhost:4201/`.
+- **Xác thực mã nguồn:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npm test -- --watch=false`: 23 test files / 121 unit tests passed 100%.
+  - `npm run build`: Production build hoàn tất thành công 100%.
+  - 0 comment tiếng Việt trong source code.
+
 ### Yêu Cầu: Phục Hồi Nền Nổi `slate-900` Cho Khu Vực Tốc Độ Giao Dịch (`tx-speed-selector`) Trong Sidebar
 - **Nội dung yêu cầu:** Người dùng gửi ảnh chụp màn hình khu vực "TỐC ĐỘ GIAO DỊCH" (TX SPEED) và "HỆ SỐ NHÂN" (MULTIPLIER) ở Sidebar với nhận xét: `2 chỗ này có vẻ tối. kiểu khó nhận diện í`, sau đó gửi ảnh mẫu trước đó và yêu cầu: `có thể làm giống như cũ, chỉ riêng vùng tôi chụp thôi`.
 - **Phân tích kỹ thuật & Nguyên nhân gốc rễ (Root Causes):**

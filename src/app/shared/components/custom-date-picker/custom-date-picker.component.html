@@ -5,9 +5,9 @@
     class="form-input flex items-center justify-between !py-0 cursor-pointer select-none"
     [class.opacity-50]="disabled"
     [class.pointer-events-none]="disabled"
-    [class.border-[var(--color-primary)]]="isOpen()"
+    [class.!border-primary]="isOpen()"
     [class.ring-1]="isOpen()"
-    [class.ring-[var(--color-primary)]/20]="isOpen()"
+    [class.ring-primary/20]="isOpen()"
   >
     <span [class.text-slate-400]="!value()" class="truncate select-none">
       {{ value() ? displayValue() : placeholder || lang.translate('date.select') }}
