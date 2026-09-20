@@ -122,6 +122,7 @@ Hệ thống sử dụng cơ chế màu sắc động (Dynamic Theme) cho phép 
   @utility form-input-password { @apply pr-11; }
   @utility form-textarea { @include form-control-base; @apply py-3 px-4 transition-[background-color,color,box-shadow] duration-200 resize-none; }
   @utility search-input { @include form-control-base; @apply h-[42px] pl-9 pr-4 transition-[background-color,color,box-shadow] duration-200; }
+  @utility tab-group { @apply h-[42px] flex items-center gap-1 bg-slate-100 dark:bg-slate-950/40 p-1 rounded-xl border border-slate-200/40 dark:border-slate-800/40 overflow-x-auto flex-nowrap shrink-0 max-w-full select-none; }
   ```
 
 ---
@@ -214,7 +215,7 @@ Các bề mặt nổi sử dụng các utility toàn cục trong `src/styles.scs
 }
 
 @utility glass-dialog {
-  @apply bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl shadow-xl shadow-slate-900/15 dark:shadow-slate-950/60;
+  @apply bg-white/98 dark:bg-slate-900/95 backdrop-blur-xl shadow-xl shadow-slate-900/15 dark:shadow-slate-950/60;
   -webkit-backdrop-filter: blur(24px);
   backdrop-filter: blur(24px);
 }
@@ -227,7 +228,7 @@ Các bề mặt nổi sử dụng các utility toàn cục trong `src/styles.scs
 ```
 
 - `glass-popover`: Custom Select, Date Picker, DateTime Range, menu chọn giờ/phút, Dropdown Menu, nested submenu, Language Selector, Network Selector và Account Dropdown.
-- `glass-dialog`: Modal, Modal Wrapper, Confirm Modal, Drawer, mobile sidebar và modal xem trước File Upload. Trực tiếp áp dụng `bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl` (độ trong suốt chuẩn: Light mode 95%, Dark mode 95%) tạo hiệu ứng kính mờ (Frosted Glass) đồng bộ, không dùng layer con `-z-10` tránh lỗi Stacking Context âm trên Chromium.
+- `glass-dialog`: Modal, Modal Wrapper, Confirm Modal, Drawer, mobile sidebar và modal xem trước File Upload. Trực tiếp áp dụng `bg-white/98 dark:bg-slate-900/95 backdrop-blur-xl` (độ trong suốt chuẩn: Light mode 98%, Dark mode 95%) tạo hiệu ứng kính mờ (Frosted Glass) đồng bộ, không dùng layer con `-z-10` tránh lỗi Stacking Context âm trên Chromium.
 - `glass-header`: sticky header; không dùng shadow cho header.
 
 #### 6.1.2. Quy tắc Backdrop Root và Popover lồng nhau
@@ -373,4 +374,29 @@ Nhằm đảm bảo 100% các thành phần cố định (Fixed/Sticky), menu tr
      - Right: `animate-drawer-right` (trượt vào từ phải qua) / `animate-drawer-right-out`.
      - Left: `animate-drawer-left` (trượt vào từ trái qua) / `animate-drawer-left-out`.
      - Bottom: `animate-drawer-bottom` (trượt lên từ đáy) / `animate-drawer-bottom-out` (bo góc đỉnh `rounded-t-[15px] max-h-[85vh]`).
+
+---
+
+### 6.13. Tab Group & Quy Chuẩn Màu Nền Phân Tầng (TabGroupComponent Specification)
+
+Áp dụng cho `TabGroupComponent` (`app-tab-group`):
+
+- **Mục đích & Ứng dụng**: Dùng cho toàn bộ các thanh điều hướng tab, bộ chọn tốc độ giao dịch (`tx-speed-selector`), showcase components và các nhóm lựa chọn trạng thái (segmented controls).
+- **Thanh trượt động (Animated Pill Slider)**:
+  - Tích hợp sliding indicator chuyển động ngang GPU-accelerated với dynamic offset (`offsetLeft`, `offsetWidth`).
+  - Easing: `transition-[left,width] duration-300 ease-out`.
+- **Quy Chuẩn Màu Nền & Đồng Bộ Form Controls (Background & Elevation Hierarchy Standard - BẮT BUỘC)**:
+  - Khung bao ngoài kế thừa đồng bộ 100% với hệ thống form controls (`@mixin form-control-base`):
+    - **Chế độ Sáng (Light Mode)**: Nền rãnh `bg-slate-100`, viền `border border-slate-200/40`.
+    - **Chế độ Tối (Dark Mode)**: Nền rãnh mờ `dark:bg-slate-950/40`, viền `dark:border-slate-800/40` (hoàn toàn đồng bộ màu sắc và độ trong suốt với các ô nhập liệu kề bên như Custom Date Picker, Custom Input, Custom Select).
+  - Con trượt Pill (`tab-group-pill`):
+    - **Light Mode**: Nền trắng tinh `bg-white`, viền `border border-slate-200/40`, đổ bóng nhẹ `shadow-sm`.
+    - **Dark Mode**: Nền `dark:bg-slate-800`, viền sáng nhẹ `dark:border-slate-700/50`, đổ bóng tối `dark:shadow-slate-950/40`. Nổi gồ lên như phím bấm vật lý 3D cao cấp.
+- **Trạng thái Tab Items**:
+  - Tab đang kích hoạt (Active): Chữ đậm `font-black`, màu thương hiệu nổi bật (`text-[var(--color-primary)] dark:text-[var(--color-secondary)]`).
+  - Tab chưa kích hoạt: Chữ màu trung tính `text-slate-500 hover:text-slate-800 dark:hover:text-slate-200`.
+  - Badge:
+    - Active: `bg-[var(--color-primary)]/10 text-[var(--color-primary)] dark:bg-[var(--color-secondary)]/15 dark:text-[var(--color-secondary)]`.
+    - Inactive: `bg-slate-200/50 dark:bg-slate-800 text-slate-400 dark:text-slate-500`.
+
 

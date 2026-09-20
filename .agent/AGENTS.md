@@ -1,3 +1,65 @@
+### Yêu Cầu: Phục Hồi Nền Nổi `slate-900` Cho Khu Vực Tốc Độ Giao Dịch (`tx-speed-selector`) Trong Sidebar
+- **Nội dung yêu cầu:** Người dùng gửi ảnh chụp màn hình khu vực "TỐC ĐỘ GIAO DỊCH" (TX SPEED) và "HỆ SỐ NHÂN" (MULTIPLIER) ở Sidebar với nhận xét: `2 chỗ này có vẻ tối. kiểu khó nhận diện í`, sau đó gửi ảnh mẫu trước đó và yêu cầu: `có thể làm giống như cũ, chỉ riêng vùng tôi chụp thôi`.
+- **Phân tích kỹ thuật & Nguyên nhân gốc rễ (Root Causes):**
+  1. Nền Sidebar là `dark:bg-slate-950` (gần như đen tuyệt đối). Khi Tab Group và ô Hệ số nhân kế thừa `dark:bg-slate-950/40` từ chuẩn form control của các card nội dung, trên nền đen `slate-950` của Sidebar chúng bị tối đen hoàn toàn, triệt tiêu độ tương phản của rãnh trượt và viền hộp.
+  2. Các nhãn tab không kích hoạt (`Default`, `Fast`) trước đó mang `text-slate-500` bị chìm, khó quan sát trên nền tối.
+- **Giải pháp kiến trúc & Triển khai thực hiện:**
+  1. **Phục hồi bề mặt nổi `slate-900` chuẩn cho `tx-speed-selector` (`tx-speed-selector.component.html`):**
+     - Tab Group: Truyền `containerClass="bg-slate-100/80 dark:!bg-slate-900 border-slate-200/50 dark:!border-slate-800/60"` tạo khối nền `slate-900` sắc nét, tách biệt hoàn toàn khỏi nền `slate-950` của Sidebar và đồng bộ với `theme-switcher` ngay bên dưới.
+     - Khung Hệ số nhân: `bg-slate-100/80 dark:bg-slate-900 border border-slate-200/40 dark:border-slate-800/40 rounded-xl px-4 py-2.5`.
+  2. **Tăng độ tương phản nhãn Tab không kích hoạt:**
+     - Bổ sung `[class.dark:text-slate-400]="activeValue !== opt.value"` trong `tab-group.component.html`.
+     - Cập nhật `@utility tab-item` trong `src/styles.scss` với `dark:text-slate-400` giúp chữ hiển thị rõ ràng, dễ nhận diện.
+  3. **Kiểm thử trực quan qua Chrome CDP:**
+     - Chụp ảnh màn hình ở Dark Mode: Khối Tab Group và ô Multiplier hiển thị nền `slate-900` nổi khối, các tab chữ sáng rõ, khớp 100% ảnh tham chiếu người dùng cung cấp.
+- **Xác thực mã nguồn:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npx ng test --watch=false`: 22 test files / 113 unit tests passed 100%.
+  - `npm run build`: Production build hoàn tất thành công 100%.
+  - 0 comment tiếng Việt trong source code.
+
+### Yêu Cầu: Đồng Bộ Độ Đục Nền `glass-dialog` (Tăng Background Opacity Lên 98% Cho Light Mode)
+- **Nội dung yêu cầu:** Người dùng yêu cầu `đồng bộ glass-dialog`, `opacity hiện là background 95, tăng lên 98 đi, chỉ với lightmode`.
+- **Phân tích kỹ thuật & Triển khai thực hiện:**
+  1. Trong hệ thống Design System, utility `.glass-dialog` đại diện cho toàn bộ các bề mặt nổi cấp cao (Modal, Modal Wrapper, Confirm Modal, Delete Confirm Modal, File Upload Preview Modal, Drawer và Mobile Sidebar Menu).
+  2. Trước đó, `.glass-dialog` được cấu hình `@apply bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl ...`. Với chế độ Light Mode, độ mờ đục 95% có thể hơi trong suốt trong một số trường hợp nội dung trang có nhiều mảng tương phản cao.
+  3. Cập nhật utility `@utility glass-dialog` trong `src/styles.scss`:
+     - Light Mode: Nâng từ `bg-white/95` lên `bg-white/98` giúp bề mặt modal/dialog hiển thị sắc nét, đục và tinh tế hơn.
+     - Dark Mode: Giữ nguyên chuẩn `dark:bg-slate-900/95`.
+  4. Đồng bộ hóa đặc tả kỹ thuật trong `.agent/design.md` (Mục 6.1):
+     - Utility code snippet: `bg-white/98 dark:bg-slate-900/95`.
+     - Đặc tả tỷ lệ: "Light mode 98%, Dark mode 95%".
+- **Xác thực mã nguồn:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npm test -- --watch=false`: 22 test files / 113 unit tests passed 100%.
+  - `npm run build`: Production build hoàn tất thành công 100%.
+  - 0 comment tiếng Việt trong source code.
+
+### Yêu Cầu: Đồng Bộ Màu Nền Tab Group Trong Cả Chế Độ Sáng & Tối (Light & Dark Mode Form Controls Background Synchronization)
+- **Nội dung yêu cầu:** Người dùng gửi ảnh chụp màn hình card "Demo Các Component Form" (khoanh đỏ tab-group Giới tính "Nam / Nữ" nằm cạnh ô Ngày sinh DatePicker và trên ô Địa chỉ ví Web3 Input) với yêu cầu: `cả light, darkmode, đồng bộ background color cho tab group luôn`.
+- **Phân tích kỹ thuật & Nguyên nhân gốc rễ (Root Causes):**
+  1. **Lệch màu nền & viền so với Form Controls:** Trong hệ thống, toàn bộ các thành phần nhập liệu (`form-input`, `app-custom-date-picker`, `app-custom-input`, `app-custom-select`, `form-textarea`) đều kế thừa từ `@mixin form-control-base` với nền và viền chuẩn:
+     - Light Mode: `bg-slate-100 border border-slate-200/40 rounded-xl h-[42px]`
+     - Dark Mode: `dark:bg-slate-950/40 border dark:border-slate-800/40 rounded-xl h-[42px]`
+  2. Trước đó, `.tab-group` mang `dark:bg-slate-950` (đen đặc 100%) và `dark:border-slate-800/80`, khiến khi đặt cạnh DatePicker và Input kề bên (vốn có nền mờ xanh đen `dark:bg-slate-950/40` hòa với bề mặt card `slate-900`), tab group bị đen sì lệch tông và tương phản không đồng bộ.
+- **Giải pháp kiến trúc & Triển khai thực hiện:**
+  1. **Đồng bộ hóa 100% Utility `.tab-group` với `form-control-base` (`src/styles.scss`):**
+     - Thiết lập nền và viền chuẩn xác: `@apply h-[42px] flex items-center gap-1 bg-slate-100 dark:bg-slate-950/40 p-1 rounded-xl border border-slate-200/40 dark:border-slate-800/40 ...`.
+     - Giúp Tab Group có cùng chiều cao 42px, độ bo góc `rounded-xl`, màu nền và màu viền đồng nhất 100% với DatePicker, Input, Select trên CẢ Light Mode và Dark Mode.
+  2. **Tối ưu Con Trượt `.tab-group-pill` (`tab-group.component.html`):**
+     - Nền: `bg-white dark:bg-slate-800 rounded-lg shadow-sm dark:shadow-slate-950/40 border border-slate-200/40 dark:border-slate-700/50`.
+     - Nổi gồ lên tinh tế như phím bấm vật lý 3D trên bề mặt rãnh mờ `slate-950/40`.
+  3. **Kiểm thử trực quan thực tế trên Google Chrome bằng Chrome DevTools MCP:**
+     - Điều hướng và đối chiếu trên màn hình thật (`http://localhost:4201/`): Tab Group "Giới tính", "Tốc độ giao dịch", "Nhóm tab tùy biến" đều có màu nền tiệp màu mượt mà, đồng bộ tuyệt đối với các ô nhập liệu bên cạnh ở cả Light và Dark Mode.
+  4. **Cập nhật tài liệu thiết kế & Unit Tests:**
+     - Cập nhật mục `6.13` trong `.agent/design.md`.
+     - Bộ 6 unit tests trong `tab-group.component.spec.ts` vượt qua 100%.
+- **Xác thực mã nguồn:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npx ng test --watch=false`: 22 test files / 113 unit tests passed 100%.
+  - `npm run build`: Production build hoàn tất thành công 100%.
+  - 0 comment tiếng Việt trong source code.
+
 ### Yêu Cầu: Giải Thích & Loại Bỏ Ví "My Wallet" Khỏi Modal Kết Nối AppKit
 - **Nội dung yêu cầu:** Người dùng xác nhận kết nối ví đã hoạt động bình thường, nhưng thắc mắc tại sao ví "My Wallet" vẫn hiển thị trên modal Connect Wallet và yêu cầu xử lý.
 - **Phân tích kỹ thuật & Nguyên nhân gốc rễ (Root Causes):**

@@ -13,11 +13,11 @@
     <div
       class="relative group cursor-pointer transition-[transform,scale,background-color,box-shadow] duration-200 select-none rounded-[15px] p-4 border border-dashed"
       [ngClass]="{
-        'border-slate-300 dark:border-slate-800 bg-slate-100/70 dark:bg-slate-900/60 hover:border-[var(--color-primary)] hover:bg-slate-100/60 dark:hover:bg-slate-900/90 shadow-sm':
+        'border-slate-200/60 dark:border-slate-800/60 bg-slate-100 dark:bg-slate-950/40 hover:border-[var(--color-primary)] hover:bg-slate-100/90 dark:hover:bg-slate-950/60 shadow-sm':
           !isDragging() && !disabled,
         'border-[var(--color-primary)] bg-[var(--color-primary)]/10 dark:bg-[var(--color-primary)]/20 scale-[1.01] shadow-md shadow-[var(--color-primary)]/10':
           isDragging() && !disabled,
-        'opacity-60 cursor-not-allowed border-slate-200 dark:border-slate-800 bg-slate-100/30 dark:bg-slate-900/20':
+        'opacity-60 cursor-not-allowed border-slate-200/40 dark:border-slate-800/40 bg-slate-100/30 dark:bg-slate-950/20':
           disabled,
       }"
       (dragover)="onDragOver($event)"
@@ -84,11 +84,11 @@
     <div
       class="relative group cursor-pointer transition-[transform,scale,background-color,box-shadow] duration-200 select-none rounded-[15px] p-6 text-center border border-dashed"
       [ngClass]="{
-        'border-slate-300 dark:border-slate-800 bg-slate-100/70 dark:bg-slate-900/60 hover:border-[var(--color-primary)] hover:bg-slate-100/60 dark:hover:bg-slate-900/90':
+        'border-slate-200/60 dark:border-slate-800/60 bg-slate-100 dark:bg-slate-950/40 hover:border-[var(--color-primary)] hover:bg-slate-100/90 dark:hover:bg-slate-950/60':
           !isDragging() && !disabled,
         'border-[var(--color-primary)] bg-[var(--color-primary)]/10 dark:bg-[var(--color-primary)]/20 scale-[1.01] shadow-md':
           isDragging() && !disabled,
-        'opacity-60 cursor-not-allowed border-slate-200 dark:border-slate-800': disabled,
+        'opacity-60 cursor-not-allowed border-slate-200/40 dark:border-slate-800/40 bg-slate-100/30 dark:bg-slate-950/20': disabled,
       }"
       (dragover)="onDragOver($event)"
       (dragleave)="onDragLeave($event)"
@@ -100,6 +100,7 @@
       >
         <app-icon [name]="icon" class="w-6 h-6"></app-icon>
       </div>
+
       <h4 class="text-sm font-bold text-slate-800 dark:text-slate-200">
         {{ displayTitle() }}
       </h4>
@@ -111,7 +112,7 @@
 
   @if (effectiveVariant() === 'avatar') {
     <div
-      class="relative group cursor-pointer transition-[background-color,box-shadow] duration-200 select-none rounded-[15px] p-4 flex flex-col items-center justify-center text-center border border-dashed border-slate-300 dark:border-slate-800 bg-slate-100/50 dark:bg-slate-900/50 hover:border-[var(--color-primary)]"
+      class="relative group cursor-pointer transition-[background-color,box-shadow] duration-200 select-none rounded-[15px] p-4 flex flex-col items-center justify-center text-center border border-dashed border-slate-200/60 dark:border-slate-800/60 bg-slate-100 dark:bg-slate-950/40 hover:border-[var(--color-primary)]"
       (click)="triggerFileInput()"
     >
       @if (files().length > 0 && files()[0].previewUrl) {
