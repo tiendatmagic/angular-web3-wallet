@@ -72,7 +72,7 @@ describe('AvatarComponent', () => {
 
     const counterMotion = counterBadge.querySelector('.transform-gpu');
     expect(counterMotion).toBeTruthy();
-    expect(counterMotion.classList.contains('transition-[transform,scale,background-color,color,box-shadow]')).toBe(true);
+    expect(counterMotion.classList.contains('transition-[transform,scale,background-color,box-shadow]')).toBe(true);
     expect(counterMotion.classList.contains('group-hover/stack-counter:-translate-y-2')).toBe(true);
     expect(counterMotion.classList.contains('group-hover/stack-counter:scale-110')).toBe(true);
   });

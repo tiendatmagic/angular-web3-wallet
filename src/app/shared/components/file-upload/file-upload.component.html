@@ -41,7 +41,7 @@
 
           <div class="min-w-0 flex-1">
             <h4
-              class="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-100 truncate group-hover:text-[var(--color-primary)] transition-colors"
+              class="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-100 truncate group-hover:text-[var(--color-primary)]"
             >
               {{ displayTitle() }}
             </h4>
@@ -133,7 +133,7 @@
         </div>
       } @else {
         <div
-          class="w-16 h-16 rounded-full bg-slate-200/80 dark:bg-slate-800/80 flex items-center justify-center text-slate-400 dark:text-slate-500 mb-2 group-hover:scale-105 group-hover:text-[var(--color-primary)] transition-[transform,scale,color,background-color] duration-200"
+          class="w-16 h-16 rounded-full bg-slate-200/80 dark:bg-slate-800/80 flex items-center justify-center text-slate-400 dark:text-slate-500 mb-2 group-hover:scale-105 group-hover:text-[var(--color-primary)] transition-[transform,scale,background-color] duration-200"
         >
           <app-icon name="camera" class="w-7 h-7"></app-icon>
         </div>
@@ -166,7 +166,7 @@
         @if (files().length > 1) {
           <button
             type="button"
-            class="text-xs text-red-500 hover:text-red-600 dark:hover:text-red-400 font-medium transition-colors flex items-center gap-1 cursor-pointer"
+            class="text-xs text-red-500 hover:text-red-600 dark:hover:text-red-400 font-medium flex items-center gap-1 cursor-pointer"
             (click)="clearAll($event)"
             [disabled]="disabled"
           >
@@ -179,7 +179,7 @@
       <div class="space-y-2">
         @for (file of files(); track file.id) {
           <div
-            class="relative flex items-center gap-3 p-2.5 rounded-[12px] border border-slate-200/80 dark:border-slate-800/80 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm shadow-sm hover:shadow transition-[background-color,color,box-shadow] duration-200 group/item"
+            class="relative flex items-center gap-3 p-2.5 rounded-[12px] border border-slate-200/80 dark:border-slate-800/80 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm shadow-sm hover:shadow transition-[background-color,box-shadow] duration-200 group/item"
             [ngClass]="{
               'border-red-500/40 bg-red-50/20 dark:bg-red-950/10': file.status === 'error',
               'border-emerald-500/30 bg-emerald-50/20 dark:bg-emerald-950/10':
@@ -199,7 +199,7 @@
               } @else {
                 <app-icon
                   [name]="getFileIcon(file.type, file.name)"
-                  class="w-5 h-5 text-slate-500 dark:text-slate-400 group-hover/item:text-[var(--color-primary)] transition-colors"
+                  class="w-5 h-5 text-slate-500 dark:text-slate-400 group-hover/item:text-[var(--color-primary)]"
                 ></app-icon>
               }
             </div>
@@ -266,7 +266,7 @@
               @if (file.previewUrl) {
                 <button
                   type="button"
-                  class="w-8 h-8 flex items-center justify-center rounded-[8px] text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors shrink-0 cursor-pointer"
+                  class="w-8 h-8 flex items-center justify-center rounded-[8px] text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-[background-color] duration-150 shrink-0 cursor-pointer"
                   [appTooltip]="'file_upload_ui.preview' | translate"
                   (click)="openPreview(file, $event)"
                 >
@@ -277,7 +277,7 @@
               @if (file.status === 'error') {
                 <button
                   type="button"
-                  class="w-8 h-8 flex items-center justify-center rounded-[8px] text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-950/40 transition-colors shrink-0 cursor-pointer"
+                  class="w-8 h-8 flex items-center justify-center rounded-[8px] text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-950/40 transition-[background-color] duration-150 shrink-0 cursor-pointer"
                   [appTooltip]="'file_upload_ui.retry' | translate"
                   (click)="retryUpload(file)"
                   [disabled]="disabled"

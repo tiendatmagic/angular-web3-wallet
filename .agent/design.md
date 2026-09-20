@@ -153,17 +153,18 @@ Hệ thống sử dụng cơ chế màu sắc động (Dynamic Theme) cho phép 
 
 Để đảm bảo hiệu năng cực đại, không gây lag CPU, giật khung hình hay layout shifts:
 
-1. **CẤM HOÀN TOÀN `transition-all`**:
+1. **CẤM HOÀN TOÀN `transition-all` VÀ `transition-colors`**:
    - `transition-all` buộc trình duyệt phải theo dõi tất cả các thuộc tính CSS trên từng frame render.
+   - `transition-colors` âm thầm kích hoạt chuyển động cho cả `color`, `border-color`, gây reflow và trễ thị giác.
    - **Bắt buộc** khai báo danh sách thuộc tính cụ thể, ví dụ:
-     - Component lớn: `transition-[transform,scale,background-color,color,box-shadow,opacity] duration-300 ease-out`
-     - Nút bấm / Input: `transition-[transform,scale,background-color,background-image,color,box-shadow,opacity] duration-200`
-     - Tooltip: `transition-[opacity,transform] duration-150`
-2. **CẤM TUYỆT ĐỐI TRANSITION CHO `border` VÀ `padding`**:
-   - Chuyển màu/độ dày viền (`border`, `border-color`, `border-width`) hoặc đệm lề (`padding`, `padding-*`) tạo ra chi phí reflow & rasterization đắt đỏ.
-   - Loại bỏ transition cho border và padding giúp phản hồi visual của nút/thẻ tức thì và sắc nét.
+      - Nút bấm: `transition-[transform,scale,background-color,background-image,box-shadow,opacity] duration-200` (đã loại bỏ thuộc tính `color` để màu chữ phản hồi tức thì, loại bỏ trễ chuyển màu)
+      - Ô nhập liệu / Input: `transition-[transform,scale,background-color,background-image,box-shadow,opacity] duration-200`
+      - Tooltip: `transition-[opacity,transform] duration-150`
+2. **CẤM TUYỆT ĐỐI TRANSITION CHO `color`, `border` VÀ `padding`**:
+   - Chuyển màu chữ (`color`), màu/độ dày viền (`border`, `border-color`, `border-width`) hoặc đệm lề (`padding`, `padding-*`) tạo ra chi phí reflow & rasterization đắt đỏ và trễ thị giác.
+   - Loại bỏ transition cho `color`, `border` và `padding` giúp phản hồi visual của text, nút bấm và thẻ tức thì và sắc nét.
 3. **Whitelist các thuộc tính được phép transition**:
-   - `transform`, `scale`, `background-color`, `background-image`, `color`, `box-shadow`, `opacity`, `width`, `height`, `stroke-dashoffset`, `grid-template-rows`, `left`, `top`, `border-radius`, `filter`.
+   - `transform`, `scale`, `background-color`, `background-image`, `box-shadow`, `opacity`, `width`, `height`, `stroke-dashoffset`, `grid-template-rows`, `left`, `top`, `border-radius`, `filter`. (Tuyệt đối không đưa `color` vào whitelist).
 
 ### 5.2. Hoạt Ảnh Avatar & Avatar Group Motion Standard (Kiến Trúc Chống Giật & Siêu Mượt 60-120fps)
 

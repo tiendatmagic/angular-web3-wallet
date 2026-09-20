@@ -21,7 +21,7 @@
         <button
           type="button"
           (click)="clear($event)"
-          class="w-5 h-5 flex items-center justify-center shrink-0 hover:bg-slate-200/90 dark:hover:bg-slate-800/90 rounded text-slate-400 hover:text-slate-800 dark:hover:text-white active:scale-95 transition-[transform,scale,background-color,color] duration-150 cursor-pointer select-none"
+          class="w-5 h-5 flex items-center justify-center shrink-0 hover:bg-slate-200/90 dark:hover:bg-slate-800/90 rounded text-slate-400 hover:text-slate-800 dark:hover:text-white active:scale-95 transition-[transform,scale,background-color] duration-150 cursor-pointer select-none"
           [title]="'common.clear_date_range' | translate"
         >
           <app-icon name="close" class="w-3.5 h-3.5 shrink-0" />
@@ -46,7 +46,7 @@
             <button
               type="button"
               (click)="selectPreset(p.id, $event)"
-              class="text-xs font-semibold px-2 py-1.5 rounded-[12px] transition-[transform,scale,background-color,color,box-shadow] duration-150 cursor-pointer border text-center flex items-center justify-center whitespace-nowrap select-none"
+              class="text-xs font-semibold px-2 py-1.5 rounded-[12px] transition-[transform,scale,background-color,box-shadow] duration-150 cursor-pointer border text-center flex items-center justify-center whitespace-nowrap select-none"
               [class.bg-[var(--color-primary)]]="activePresetId() === p.id"
               [class.border-transparent]="activePresetId() === p.id"
               [class.text-white]="activePresetId() === p.id"
@@ -74,7 +74,7 @@
           <button
             type="button"
             (click)="prevMonth($event)"
-            class="w-7 h-7 flex items-center justify-center shrink-0 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-500 hover:text-[var(--color-primary)] active:scale-90 transition-[transform,scale,background-color,color] duration-150 cursor-pointer select-none"
+            class="w-7 h-7 flex items-center justify-center shrink-0 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-500 hover:text-[var(--color-primary)] active:scale-90 transition-[transform,scale,background-color] duration-150 cursor-pointer select-none"
           >
             <app-icon name="chevron-left" class="w-4 h-4 shrink-0" />
           </button>
@@ -84,7 +84,7 @@
           <button
             type="button"
             (click)="nextMonth($event)"
-            class="w-7 h-7 flex items-center justify-center shrink-0 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-500 hover:text-[var(--color-primary)] active:scale-90 transition-[transform,scale,background-color,color] duration-150 cursor-pointer select-none"
+            class="w-7 h-7 flex items-center justify-center shrink-0 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-500 hover:text-[var(--color-primary)] active:scale-90 transition-[transform,scale,background-color] duration-150 cursor-pointer select-none"
           >
             <app-icon name="chevron-right" class="w-4 h-4 shrink-0" />
           </button>
@@ -113,7 +113,7 @@
                 (click)="selectDate(day, $event)"
                 (mouseenter)="onDateHover(day)"
                 [disabled]="isDateDisabled(day)"
-                class="relative z-10 w-full h-full flex items-center justify-center text-sm font-bold rounded-full transition-[transform,scale,background-color,color,box-shadow] duration-150 select-none"
+                class="relative z-10 w-full h-full flex items-center justify-center text-sm font-bold rounded-full transition-[transform,scale,background-color,box-shadow] duration-150 select-none"
                 [class.text-slate-300]="
                   !isCurrentMonth(day) && !isStart(day) && !isEnd(day) && !isDateDisabled(day)
                 "

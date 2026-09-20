@@ -71,7 +71,7 @@
       <button
         type="button"
         (click)="copyTxHash()"
-        class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold transition-[background-color,color,transform] duration-200 active:scale-95 text-primary hover:text-primary/80 bg-primary/10 hover:bg-primary/20 select-none cursor-pointer"
+        class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold transition-[background-color,transform] duration-200 active:scale-95 text-primary hover:text-primary/80 bg-primary/10 hover:bg-primary/20 select-none cursor-pointer"
       >
         <app-icon [name]="isCopied() ? 'check' : 'copy'" class="w-3.5 h-3.5" strokeWidth="2.5" />
         <span>{{ isCopied() ? ('common.copied' | translate) : ('common.copy' | translate) }}</span>
@@ -90,7 +90,7 @@
           [href]="explorerUrl()"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center gap-1.5 text-xs font-extrabold text-primary hover:text-primary/80 hover:underline select-none transition-colors duration-200"
+          class="inline-flex items-center gap-1.5 text-xs font-extrabold text-primary hover:text-primary/80 hover:underline select-none"
         >
           <span>{{ 'showcase.tx_modal_view_explorer' | translate: { explorer: explorerName() } }}</span>
           <app-icon name="external-link" class="w-3.5 h-3.5" />

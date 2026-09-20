@@ -7,7 +7,7 @@
     
         @if (marks && markPositions().length > 0) {
       @for (pos of markPositions(); track pos) {
-        <span class="absolute w-1 h-1 rounded-full top-1/2 -translate-y-1/2 -translate-x-1/2 transition-colors duration-150"
+        <span class="absolute w-1 h-1 rounded-full top-1/2 -translate-y-1/2 -translate-x-1/2 transition-[background-color] duration-150"
               [style.left.%]="pos"
               [class]="pos <= percentage() ? activeMarkClass : inactiveMarkClass">
         </span>

@@ -54,6 +54,9 @@ export class Web3Service {
 
   public readonly POPULAR_CHAINS = POPULAR_CHAINS;
 
+  private hasConfirmedConnectionInCurrentSession = false;
+  private sessionRestoreTimeout: any = null;
+
   public readonly supportedChains = [arbitrum, mainnet, bsc, arbitrumSepolia, bscTestnet].map(chain => {
     const popular = POPULAR_CHAINS.find(c => Number(c.chainId) === Number(chain.id));
     const rpcList = getAllRpcUrls(chain.id);
@@ -116,6 +119,32 @@ export class Web3Service {
         this.networkName.set(this.translationService.t('showcase.unknown_network'));
       }
     });
+
+    if (typeof window !== 'undefined' && this.isConnected()) {
+      this.sessionRestoreTimeout = setTimeout(() => {
+        if (!this.hasConfirmedConnectionInCurrentSession) {
+          this.clearConnectionState(false);
+        }
+      }, 2500);
+    }
+  }
+
+  private clearConnectionState(showToast = false): void {
+    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+      localStorage.removeItem('angular_web3_last_address');
+      localStorage.removeItem('angular_web3_was_connected');
+    }
+    this.address.set(null);
+    this.isConnected.set(false);
+    this.balance.set('0.0000');
+    this.chainId.set(null);
+    this.networkName.set(this.translationService.t('showcase.unknown_network'));
+    this.isWrongChain.set(false);
+    this.showWrongChainModal.set(false);
+
+    if (showToast) {
+      this.toastService.showToast(this.translationService.t('showcase.web3_disconnected'), 'error');
+    }
   }
 
   private setupThemeSync() {
@@ -187,10 +216,15 @@ export class Web3Service {
     } as any);
 
     this.modal.subscribeAccount(async (accountState) => {
-      const prevConnected = this.isConnected();
       const hasAddress = !!accountState.address;
 
       if (hasAddress && accountState.isConnected) {
+        if (this.sessionRestoreTimeout) {
+          clearTimeout(this.sessionRestoreTimeout);
+          this.sessionRestoreTimeout = null;
+        }
+        this.hasConfirmedConnectionInCurrentSession = true;
+
         const nextAddress = accountState.address || null;
         this.address.set(nextAddress);
         this.isConnected.set(true);
@@ -204,19 +238,11 @@ export class Web3Service {
 
         void this.updateBalanceAndNetwork();
       } else if (!hasAddress) {
-        if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
-          localStorage.removeItem('angular_web3_last_address');
-          localStorage.removeItem('angular_web3_was_connected');
-        }
-        this.address.set(null);
-        this.isConnected.set(false);
-        this.balance.set('0.0000');
-        this.chainId.set(null);
-        this.networkName.set(this.translationService.t('showcase.unknown_network'));
-        this.isWrongChain.set(false);
-        this.showWrongChainModal.set(false);
-        if (prevConnected) {
-          this.toastService.showToast(this.translationService.t('showcase.web3_disconnected'), 'error');
+        if (this.hasConfirmedConnectionInCurrentSession) {
+          this.hasConfirmedConnectionInCurrentSession = false;
+          this.clearConnectionState(true);
+        } else if (!this.isConnected()) {
+          this.clearConnectionState(false);
         }
       }
     });
@@ -387,14 +413,14 @@ export class Web3Service {
   public async disconnect() {
     if (!this.isEnabled) return;
     try {
-      if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
-        localStorage.removeItem('angular_web3_last_address');
-        localStorage.removeItem('angular_web3_was_connected');
+      if (this.sessionRestoreTimeout) {
+        clearTimeout(this.sessionRestoreTimeout);
+        this.sessionRestoreTimeout = null;
       }
-      this.address.set(null);
-      this.isConnected.set(false);
-      this.balance.set('0.0000');
-      await this.modal.disconnect();
+      const wasConnected = this.hasConfirmedConnectionInCurrentSession || this.isConnected();
+      this.hasConfirmedConnectionInCurrentSession = false;
+      this.clearConnectionState(wasConnected);
+      await this.modal?.disconnect();
     } catch (error) {
       console.error('[Web3] Wallet disconnect error:', error);
     }

@@ -1,3 +1,77 @@
+### Yêu Cầu: Xóa Bỏ Toàn Bộ Transition Liên Quan Đến Color Trên Toàn Dự Án
+- **Nội dung yêu cầu:** Người dùng yêu cầu: `check lại toàn source xem còn chỗ nào đang transition color nữa không?`, `xóa toàn bộ transition liên quan đến color`.
+- **Phân tích kỹ thuật & Hiện trạng:**
+  1. Sau khi đã loại bỏ thuộc tính `color` khỏi `ButtonComponent` và các class nút bấm, trên toàn bộ codebase vẫn còn 73 vị trí tại 25 files component, form controls, navigation, modal và utilities có chứa transition liên quan đến `color` (gồm `transition-colors`, `transition-[...,color,...]`, và `transition: ... color`).
+  2. Việc transition màu chữ và việc lạm dụng `transition-colors` (vốn âm thầm kích hoạt transition cho cả `color`, `border-color`, `text-decoration-color`) tạo ra chi phí reflow & repaint không cần thiết, làm màu chữ bị trễ khi hover/active, làm giảm cảm giác tương tác nhanh và dứt khoát của giao diện dApp.
+- **Giải pháp kiến trúc & Triển khai thực hiện:**
+  1. **Loại bỏ `color` khỏi toàn bộ danh sách `transition-[...]`:**
+     - Chuẩn hóa các danh sách: `transition-[transform,scale,background-color,box-shadow]`, `transition-[transform,scale,background-color,opacity]`, `transition-[background-color,box-shadow]`, `transition-[transform]`, `transition-[opacity]`, `transition-[background-color]`.
+     - Áp dụng trên toàn bộ các components: `pagination`, `copy-to-clipboard`, `custom-date-picker`, `custom-date-time-range`, `custom-select`, `custom-search-input`, `dropdown-menu`, `voice-chat`, `file-upload`, `input-otp`, `language-selector`, `logo`, `network-selector`, `tab-group`, `table`, `tx-success-modal`, `header`, `sidebar`, `avatar`, `badge`, `home.component`.
+  2. **Xử lý triệt để `transition-colors`:**
+     - Với các phần tử chỉ đổi màu chữ khi hover (links, text, icons, breadcrumbs, table headers): Loại bỏ hoàn toàn `transition-colors` để màu chữ phản hồi tức thì 100%.
+     - Với các phần tử có nền đổi màu khi hover hoặc chuyển trạng thái (checkboxes, radio, custom switch track, dropdown menu items, sidebar links, pagination buttons): Thay thế bằng `transition-[background-color] duration-150/200`.
+  3. **Cập nhật Global SCSS Utilities (`src/styles.scss`):**
+     - Loại bỏ `color` khỏi `.transition-all-300`, `form-textarea`, `search-input`, `tab-item`, `showcase-card`.
+  4. **Đồng bộ hóa tài liệu quy chuẩn thiết kế (`.agent/design.md`):**
+     - Cập nhật Mục 5.1: Cấm hoàn toàn `transition-all` và `transition-colors`. Cấm tuyệt đối transition cho `color`, `border` và `padding`. Xóa `color` khỏi whitelist thuộc tính được phép transition.
+- **Xác thực mã nguồn:**
+  - Script quét toàn bộ codebase: 0 matches còn chứa transition liên quan đến `color`.
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npm test -- --watch=false`: 24 test files / 132 unit tests passed 100%.
+  - `npm run build`: Production build hoàn tất thành công.
+  - 0 comment tiếng Việt trong source code.
+
+### Yêu Cầu: Xóa Bỏ Transition Color Của Tất Cả Các Button (Button Component & Styles)
+- **Nội dung yêu cầu:** Người dùng yêu cầu: `tôi muốn bạn xóa bỏ transition color của tất cả các button đi`, `button component của webapp ấy`, `tiếp tục làm cho xong`.
+- **Phân tích kỹ thuật & Hiện trạng:**
+  1. Trong hệ thống Button (`ButtonComponent` và các class `.btn`, `.btn-*`), danh sách thuộc tính transition trước đó có bao gồm `color`: `transition-[transform,scale,background-color,background-image,color,box-shadow,opacity]`.
+  2. Hiệu ứng chuyển màu chữ (`color`) khi hover/active có thể gây ra độ trễ thị giác (visual latency) làm giảm cảm giác phản hồi tức thì (instant feedback) của các nút bấm và tiêu tốn tài nguyên paint không cần thiết.
+  3. Loại bỏ `color` khỏi danh sách transition giúp màu chữ chuyển đổi ngay lập tức theo trạng thái tương tác, đồng thời giữ nguyên các transition mượt mà cho `transform`, `scale`, `background-color`, `background-image`, `box-shadow`, `opacity`.
+- **Giải pháp kiến trúc & Triển khai thực hiện:**
+  1. **Cập nhật `src/styles.scss`:**
+     - Loại bỏ `color` khỏi thuộc tính transition của toàn bộ các class nút bấm: `.btn`, `.btn-primary`, `.btn-secondary`, `.btn-danger`, `.btn-danger-light`, `.btn-cancel`, `.btn-ghost`, `.btn-success`, `.btn-info`, `.btn-reload`, `.btn-outline`.
+     - Danh sách transition mới chuẩn hóa: `transition-[transform,scale,background-color,background-image,box-shadow,opacity] duration-200`.
+     - Các nút đóng `.btn-close`, `.btn-close-sm` giữ `transition-[transform,scale,background-color] duration-150` (hoàn toàn không có `color`).
+  2. **Đồng bộ hóa tài liệu quy chuẩn thiết kế (`.agent/design.md`):**
+     - Cập nhật Mục 5.1 (Quy tắc vàng về CSS Transition): Nút bấm sử dụng `transition-[transform,scale,background-color,background-image,box-shadow,opacity] duration-200` (đã loại bỏ `color` để màu chữ phản hồi tức thì).
+  3. **Bổ sung Unit Test Suite Hoàn Chỉnh (`src/app/shared/components/button/button.component.spec.ts`):**
+     - Xây dựng 5 unit tests toàn diện cho `ButtonComponent`:
+       - Kiểm tra render mặc định (`btn`, `btn-primary`, `btn-md`).
+       - Kiểm tra cập nhật variant động (`secondary`, `danger`, `cancel`, `ghost`, `success`, `info`, `reload`, `outline`).
+       - Kiểm tra cập nhật size động (`sm`, `lg`).
+       - Kiểm tra trạng thái disabled (`hasAttribute('disabled')`, `pointer-events-none`).
+       - Kiểm tra trạng thái loading (hiển thị spinner `<app-icon>`).
+- **Xác thực mã nguồn:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npm test -- --watch=false`: 24 test files / 132 unit tests passed 100%.
+  - `npm run build`: Production build hoàn tất thành công.
+  - 0 comment tiếng Việt trong source code.
+
+### Yêu Cầu: Sửa Lỗi Tự Động Báo Toast "Đã ngắt kết nối ví." Khi Reload Lại Trang
+- **Nội dung yêu cầu:** Người dùng phản ánh: `kết nối ví thành công rồi, mọi chức năng ok hết (đừng sửa vấn đề liên quan đến kết nối). Nhưng tại sao khi đã kết nối ví thành công trước đó, rồi reload lại trang sao lại báo ngắt kết nối dạng toast thế kia? bạn thấy vô lý không`.
+- **Phân tích kỹ thuật & Nguyên nhân gốc rễ (Root Causes):**
+  1. **Khởi tạo Signal từ LocalStorage:** Thuộc tính `isConnected` trong `Web3Service` được khởi tạo ban đầu với giá trị `true` nếu trước đó người dùng đã từng kết nối ví thành công (`localStorage.getItem('angular_web3_was_connected') === 'true'`).
+  2. **Trạng thái khởi tạo tạm thời của AppKit:** Khi reload trang (F5), Angular service khởi tạo lại ngay lập tức và gọi `createAppKit(...)`. Tại thời điểm `this.modal.subscribeAccount(...)` được đăng ký, AppKit vừa mới khởi chạy và chưa kịp hoàn thành handshake/restore session bất đồng bộ với extension ví (MetaMask / EthersAdapter). Do đó, ở tick kích hoạt đầu tiên của `subscribeAccount`, `accountState.address` trả về `undefined` (`hasAddress = false`).
+  3. **Kích hoạt Toast ngắt kết nối sai:** Callback trước đó kiểm tra `const prevConnected = this.isConnected()`. Vì `prevConnected` lấy giá trị ban đầu là `true` từ `localStorage`, khi `!hasAddress` xảy ra ở mili-giây đầu tiên, code lập tức nhảy vào `if (prevConnected)` và bắn Toast đỏ `web3_disconnected` ("Đã ngắt kết nối ví."), đồng thời xóa luôn `localStorage`.
+  4. **Nghịch lý giao diện:** Khoảng 100-300ms sau, MetaMask extension handshake xong, AppKit phát sự kiện `hasAddress = true, isConnected = true`. Giao diện dApp phục hồi kết nối thành công, hiển thị đầy đủ địa chỉ ví và số dư, nhưng Toast đỏ "Đã ngắt kết nối ví." đã bắn ra từ trước đó vẫn hiển thị trơ trọi trên màn hình gây hoang mang và vô lý cho người dùng.
+- **Giải pháp kiến trúc & Triển khai thực hiện:**
+  1. **Theo dõi phiên kết nối thực tế trong Runtime (`web3.service.ts`):**
+     - Bổ sung biến cờ private `hasConfirmedConnectionInCurrentSession = false;` để phân biệt giữa trạng thái khởi tạo trang ban đầu (cold start / session restoring) với sự kiện người dùng chủ động hoặc extension ví thực sự ngắt kết nối trong lúc đang sử dụng dApp.
+     - Thêm `sessionRestoreTimeout` (2.5 giây) cho phép AppKit có thời gian phục hồi session từ ví mà không bị xóa vội `localStorage` hay làm giật trạng thái UI.
+  2. **Chuẩn hóa hàm trợ giúp `clearConnectionState(showToast = false)`:**
+     - Tách riêng việc xóa state ví khỏi logic hiển thị toast.
+     - Khi reload trang mà ví không thể phục hồi sau 2.5s timeout, dApp âm thầm dọn dẹp state (`showToast = false`) chuyển về trạng thái Chưa kết nối bình thường, tuyệt đối không bắn Toast lỗi làm phiền người dùng.
+  3. **Cập nhật `this.modal.subscribeAccount`:**
+     - Khi `hasAddress && accountState.isConnected`: Xóa timeout chờ, đánh dấu `this.hasConfirmedConnectionInCurrentSession = true;`, cập nhật địa chỉ và số dư.
+     - Khi `!hasAddress`: Chỉ bắn Toast `web3_disconnected` KHI VÀ CHỈ KHI `this.hasConfirmedConnectionInCurrentSession === true` (tức là ví thực sự bị ngắt kết nối sau khi đã kết nối thành công trong phiên chạy hiện tại).
+  4. **Đồng bộ hóa phương thức `disconnect()`:**
+     - Hủy `sessionRestoreTimeout` nếu đang chờ, đặt `hasConfirmedConnectionInCurrentSession = false`, gọi `clearConnectionState(wasConnected)` và gọi `await this.modal?.disconnect()`, triệt tiêu hoàn toàn tình trạng double toast khi người dùng bấm ngắt kết nối từ giao diện.
+- **Xác thực mã nguồn:**
+  - `npx tsc --noEmit`: 0 lỗi type.
+  - `npm test -- --watch=false`: 23 test files / 127 unit tests passed 100%.
+  - `npm run build`: Production build hoàn tất thành công 100%.
+  - 0 comment tiếng Việt trong source code.
+
 ### Yêu Cầu: Bổ Sung Hỗ Trợ Đa Kích Cỡ (`size: 'sm' | 'md' | 'lg'`, Mặc Định `md`) Cho `TabGroupComponent`
 - **Nội dung yêu cầu:** Người dùng hỏi: `tab group hiện tại có mấy size, như md (hiện tại), lg nữa; mặc định là md, cho phép truyền tham số md hay lg tùy ý cho tab group component`.
 - **Phân tích kỹ thuật & Hiện trạng:**

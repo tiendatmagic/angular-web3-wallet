@@ -9,7 +9,7 @@
       type="button"
       [disabled]="disabled"
       (click)="toggleOpen($event)"
-      class="inline-flex items-center justify-center transition-[transform,scale,background-color,color,box-shadow] duration-200 focus:outline-none select-none font-semibold cursor-pointer active:scale-[0.98] bg-transparent"
+      class="inline-flex items-center justify-center transition-[transform,scale,background-color,box-shadow] duration-200 focus:outline-none select-none font-semibold cursor-pointer active:scale-[0.98] bg-transparent"
       [ngClass]="{
         'px-3 py-1.5 text-xs rounded-[10px] justify-between gap-2':
           triggerVariant !== 'icon' && triggerVariant !== 'avatar' && triggerSize === 'sm',
@@ -132,7 +132,7 @@
                 [disabled]="item.disabled"
                 (click)="toggleSubmenu(item, $event)"
                 (mouseenter)="openSubmenu(item, $event)"
-                class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-[background-color,color] duration-150 text-left cursor-pointer select-none"
+                class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-[background-color] duration-150 text-left cursor-pointer select-none"
                 [ngClass]="{
                   'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80':
                     !item.disabled && activeSubmenuId() !== (item.id || item.label),
@@ -164,7 +164,7 @@
               [disabled]="item.disabled"
               (click)="onItemClick(item, $event)"
               (mouseenter)="onItemHover(item)"
-              class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-[background-color,color] duration-150 text-left cursor-pointer select-none"
+              class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-[background-color] duration-150 text-left cursor-pointer select-none"
               [ngClass]="{
                 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80':
                   !item.disabled,
@@ -173,7 +173,7 @@
             >
               <div class="flex items-center gap-3 truncate min-w-0">
                 <div
-                  class="w-4.5 h-4.5 rounded-[5px] border flex items-center justify-center transition-colors shrink-0"
+                  class="w-4.5 h-4.5 rounded-[5px] border flex items-center justify-center transition-[background-color] duration-150 shrink-0"
                   [ngClass]="{
                     'bg-primary border-primary text-white': item.checked,
                     'border-slate-300 dark:border-slate-700 bg-transparent': !item.checked,
@@ -199,7 +199,7 @@
               [disabled]="item.disabled"
               (click)="onItemClick(item, $event)"
               (mouseenter)="onItemHover(item)"
-              class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-[background-color,color] duration-150 text-left cursor-pointer select-none"
+              class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-[background-color] duration-150 text-left cursor-pointer select-none"
               [ngClass]="{
                 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80':
                   !item.disabled,
@@ -208,7 +208,7 @@
             >
               <div class="flex items-center gap-3 truncate min-w-0">
                 <div
-                  class="w-4.5 h-4.5 rounded-full border grid place-items-center transition-colors shrink-0"
+                  class="w-4.5 h-4.5 rounded-full border grid place-items-center transition-[background-color] duration-150 shrink-0"
                   [ngClass]="{
                     'border-primary text-primary': activeRadioValue === item.radioValue,
                     'border-slate-300 dark:border-slate-700 bg-transparent':
@@ -236,7 +236,7 @@
               [disabled]="item.disabled"
               (click)="onItemClick(item, $event)"
               (mouseenter)="onItemHover(item)"
-              class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-[background-color,color] duration-150 text-left cursor-pointer select-none"
+              class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-[background-color] duration-150 text-left cursor-pointer select-none"
               [ngClass]="{
                 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80':
                   !item.disabled && item.variant !== 'danger' && item.variant !== 'success',
@@ -308,7 +308,7 @@
             type="button"
             [disabled]="subItem.disabled"
             (click)="onItemClick(subItem, $event)"
-            class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-[background-color,color] duration-150 text-left cursor-pointer select-none"
+            class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-[background-color] duration-150 text-left cursor-pointer select-none"
             [ngClass]="{
               'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80':
                 !subItem.disabled && subItem.variant !== 'danger',

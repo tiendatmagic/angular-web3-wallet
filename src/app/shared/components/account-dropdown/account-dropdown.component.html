@@ -79,12 +79,12 @@
           <button
             type="button"
             (click)="copyAddress($event)"
-            class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80 hover:text-slate-900 dark:hover:text-white transition-colors text-left cursor-pointer group select-none"
+            class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80 hover:text-slate-900 dark:hover:text-white transition-[background-color] duration-150 text-left cursor-pointer group select-none"
           >
             <div class="flex items-center gap-3 truncate min-w-0">
               <app-icon
                 name="copy"
-                class="w-4.5 h-4.5 shrink-0 text-slate-400 dark:text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-colors"
+                class="w-4.5 h-4.5 shrink-0 text-slate-400 dark:text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300"
               />
               <span class="truncate">
                 {{ 'header.copy_address' | translate }}
@@ -95,12 +95,12 @@
           <button
             type="button"
             (click)="openAccountModal($event)"
-            class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80 hover:text-slate-900 dark:hover:text-white transition-colors text-left cursor-pointer group select-none"
+            class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80 hover:text-slate-900 dark:hover:text-white transition-[background-color] duration-150 text-left cursor-pointer group select-none"
           >
             <div class="flex items-center gap-3 truncate min-w-0">
               <app-icon
                 name="wallet"
-                class="w-4.5 h-4.5 shrink-0 text-slate-400 dark:text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-colors"
+                class="w-4.5 h-4.5 shrink-0 text-slate-400 dark:text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300"
               />
               <span class="truncate">
                 {{ 'header.manage_account' | translate }}
@@ -111,12 +111,12 @@
           <button
             type="button"
             (click)="viewOnExplorer($event)"
-            class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80 hover:text-slate-900 dark:hover:text-white transition-colors text-left cursor-pointer group select-none"
+            class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80 hover:text-slate-900 dark:hover:text-white transition-[background-color] duration-150 text-left cursor-pointer group select-none"
           >
             <div class="flex items-center gap-3 truncate min-w-0">
               <app-icon
                 name="external-link"
-                class="w-4.5 h-4.5 shrink-0 text-slate-400 dark:text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-colors"
+                class="w-4.5 h-4.5 shrink-0 text-slate-400 dark:text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300"
               />
               <span class="truncate">
                 {{ 'header.view_explorer' | translate }}
@@ -129,12 +129,12 @@
           <button
             type="button"
             (click)="disconnectWallet($event)"
-            class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors text-left cursor-pointer group select-none"
+            class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-[background-color] duration-150 text-left cursor-pointer group select-none"
           >
             <div class="flex items-center gap-3 truncate min-w-0">
               <app-icon
                 name="logout"
-                class="w-4.5 h-4.5 shrink-0 text-rose-500 group-hover:text-rose-600 dark:group-hover:text-rose-400 transition-colors"
+                class="w-4.5 h-4.5 shrink-0 text-rose-500 group-hover:text-rose-600 dark:group-hover:text-rose-400"
               />
               <span class="truncate">
                 {{ 'header.disconnect' | translate }}

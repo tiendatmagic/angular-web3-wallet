@@ -1,7 +1,7 @@
 @if (orientation === 'horizontal') {
   <div class="relative flex items-center my-4 w-full">
     <div
-      class="flex-1 transition-colors duration-200"
+      class="flex-1"
       [ngClass]="{
         'border-t border-slate-200/80 dark:border-slate-800/80': variant === 'solid',
         'border-t border-dashed border-slate-300 dark:border-slate-800': variant === 'dashed',
@@ -17,7 +17,7 @@
     }
 
     <div
-      class="flex-1 transition-colors duration-200"
+      class="flex-1"
       [ngClass]="{
         'border-t border-slate-200/80 dark:border-slate-800/80': variant === 'solid',
         'border-t border-dashed border-slate-300 dark:border-slate-800': variant === 'dashed',
@@ -30,7 +30,7 @@
 
 @if (orientation === 'vertical') {
   <div
-    class="inline-block self-stretch mx-3 transition-colors duration-200"
+    class="inline-block self-stretch mx-3"
     [ngClass]="{
       'border-r border-slate-200/80 dark:border-slate-800/80': variant === 'solid',
       'border-r border-dashed border-slate-300 dark:border-slate-800': variant === 'dashed',

@@ -10,7 +10,7 @@
       #triggerBtn
       type="button"
       (click)="toggleDropdown($event)"
-      class="h-9 min-[360px]:h-10 px-2 min-[360px]:px-3 rounded-xl bg-slate-100/80 dark:bg-slate-900/80 hover:bg-slate-200/80 dark:hover:bg-slate-800/80 border border-slate-200/50 dark:border-slate-800/50 text-slate-700 dark:text-slate-200 text-xs font-bold transition-[transform,scale,background-color,color,box-shadow] duration-200 flex items-center gap-1 min-[360px]:gap-2 cursor-pointer shadow-xs active:scale-95 shrink-0 select-none"
+      class="h-9 min-[360px]:h-10 px-2 min-[360px]:px-3 rounded-xl bg-slate-100/80 dark:bg-slate-900/80 hover:bg-slate-200/80 dark:hover:bg-slate-800/80 border border-slate-200/50 dark:border-slate-800/50 text-slate-700 dark:text-slate-200 text-xs font-bold transition-[transform,scale,background-color,box-shadow] duration-200 flex items-center gap-1 min-[360px]:gap-2 cursor-pointer shadow-xs active:scale-95 shrink-0 select-none"
       [attr.aria-expanded]="isOpen()"
       [title]="'language.select_language' | translate"
     >
@@ -36,7 +36,7 @@
       #triggerBtn
       type="button"
       (click)="toggleDropdown($event)"
-      class="w-full px-4 py-2.5 rounded-xl bg-slate-100/80 dark:bg-slate-900/80 hover:bg-slate-200/80 dark:hover:bg-slate-800/80 border border-slate-200/60 dark:border-slate-800/60 text-slate-800 dark:text-slate-200 text-sm font-semibold transition-[transform,scale,background-color,color,box-shadow] duration-200 flex items-center justify-between cursor-pointer active:scale-[0.99] select-none shadow-xs"
+      class="w-full px-4 py-2.5 rounded-xl bg-slate-100/80 dark:bg-slate-900/80 hover:bg-slate-200/80 dark:hover:bg-slate-800/80 border border-slate-200/60 dark:border-slate-800/60 text-slate-800 dark:text-slate-200 text-sm font-semibold transition-[transform,scale,background-color,box-shadow] duration-200 flex items-center justify-between cursor-pointer active:scale-[0.99] select-none shadow-xs"
       [attr.aria-expanded]="isOpen()"
     >
       <div class="flex items-center gap-3 truncate min-w-0">
@@ -74,7 +74,7 @@
           <button
             type="button"
             (click)="selectLanguage(opt.code, $event)"
-            class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-[background-color,color] duration-150 text-left cursor-pointer select-none"
+            class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-[background-color] duration-150 text-left cursor-pointer select-none"
             [ngClass]="{
               'bg-primary/10 dark:bg-primary/20 text-primary font-bold':
                 translationService.currentLang() === opt.code,

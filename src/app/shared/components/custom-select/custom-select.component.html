@@ -9,7 +9,7 @@
     [attr.aria-expanded]="isOpen()"
     class="{{
       triggerClass
-    }} flex items-center justify-between px-4 text-left select-none transition-[transform,scale,background-color,color,box-shadow] duration-200 relative cursor-pointer focus:outline-none focus:!border-primary focus:ring-1 focus:ring-primary/20"
+    }} flex items-center justify-between px-4 text-left select-none transition-[transform,scale,background-color,box-shadow] duration-200 relative cursor-pointer focus:outline-none focus:!border-primary focus:ring-1 focus:ring-primary/20"
     [ngClass]="{
       '!border-primary ring-1 ring-primary/20': isOpen(),
       'opacity-60 cursor-not-allowed pointer-events-none': disabled
@@ -23,7 +23,7 @@
     </span>
     <app-icon
       name="chevron-down"
-      class="w-4 h-4 text-slate-400 transition-[transform,color] duration-200 shrink-0 ml-2"
+      class="w-4 h-4 text-slate-400 transition-[transform] duration-200 shrink-0 ml-2"
       [class.rotate-180]="isOpen()"
       [class.text-primary]="isOpen()"
       strokeWidth="2.5"
@@ -55,7 +55,7 @@
             <button
               type="button"
               (click)="clearSearch($event)"
-              class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors p-0.5 cursor-pointer shrink-0"
+              class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-0.5 cursor-pointer shrink-0"
             >
               <app-icon name="x" class="w-4 h-4" strokeWidth="2.5" />
             </button>
@@ -75,7 +75,7 @@
             role="option"
             [attr.aria-selected]="isSelected(opt)"
             (click)="selectOption(opt)"
-            class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-[background-color,color] duration-150 text-left cursor-pointer select-none"
+            class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-[11px] transition-[background-color] duration-150 text-left cursor-pointer select-none"
             [ngClass]="{
               'bg-primary/10 dark:bg-primary/20 text-primary font-bold hover:bg-primary/15 dark:hover:bg-primary/25': !multiple && isSelected(opt),
               'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80 hover:text-slate-900 dark:hover:text-white': !(!multiple && isSelected(opt))
@@ -84,7 +84,7 @@
             <div class="flex items-center gap-3 truncate min-w-0 flex-1">
               @if (multiple) {
                 <div
-                  class="w-4.5 h-4.5 rounded-[5px] border flex items-center justify-center transition-colors shrink-0"
+                  class="w-4.5 h-4.5 rounded-[5px] border flex items-center justify-center transition-[background-color] duration-150 shrink-0"
                   [ngClass]="{
                     'bg-primary border-primary text-white': isSelected(opt),
                     'border-slate-300 dark:border-slate-700 bg-transparent': !isSelected(opt)

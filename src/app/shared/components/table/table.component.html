@@ -24,7 +24,7 @@
               [class.cursor-pointer]="col.sortable"
               [class.hover:bg-slate-100/40]="col.sortable"
               [class.dark:hover:bg-slate-950/30]="col.sortable"
-              class="px-6 py-4 text-[11px] font-extrabold text-slate-400 dark:text-slate-500 uppercase tracking-wider transition-colors duration-200"
+              class="px-6 py-4 text-[11px] font-extrabold text-slate-400 dark:text-slate-500 uppercase tracking-wider transition-[background-color] duration-200"
               [ngClass]="col.headerClass || ''"
             >
               <div
@@ -38,7 +38,7 @@
                 <span>{{ col.label }}</span>
                 @if (col.sortable) {
                   <span
-                    class="inline-flex items-center text-slate-400 dark:text-slate-500 w-3.5 h-3.5 transition-[transform,color] duration-200"
+                    class="inline-flex items-center text-slate-400 dark:text-slate-500 w-3.5 h-3.5 transition-[transform] duration-200"
                   >
                     @if (sortKeySignal() === col.key) {
                       @if (sortDirectionSignal() === 'asc') {
@@ -71,7 +71,7 @@
           <tr
             [class.hover:bg-slate-100/50]="hoverable"
             [class.dark:hover:bg-slate-900/40]="hoverable"
-            class="transition-colors duration-150"
+            class="transition-[background-color] duration-150"
           >
             @for (col of columns; track col.key) {
               <td

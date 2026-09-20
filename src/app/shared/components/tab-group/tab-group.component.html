@@ -37,7 +37,7 @@
       [class]="
         'tab-item tab-item-' +
         size +
-        ' relative z-10 transition-[color,background-color,box-shadow,transform,scale] duration-200 cursor-pointer flex items-center justify-center select-none ' +
+        ' relative z-10 transition-[background-color,box-shadow,transform,scale] duration-200 cursor-pointer flex items-center justify-center select-none ' +
         buttonClass
       "
     >
@@ -48,7 +48,7 @@
       @if (opt.icon) {
         <app-icon
           [name]="opt.icon"
-          [class]="'shrink-0 transition-colors duration-300 ' + iconSizeClass"
+          [class]="'shrink-0 ' + iconSizeClass"
           [class.text-[var(--color-primary)]]="activeValue === opt.value"
           [class.dark:text-[var(--color-secondary)]]="activeValue === opt.value"
           [class.text-slate-400]="activeValue !== opt.value"
@@ -66,7 +66,7 @@
               : 'font-black bg-slate-200/50 dark:bg-slate-800 text-slate-400 dark:text-slate-500 ') +
             badgeSizeClass
           "
-          class="transition-colors duration-300 select-none"
+          class="select-none"
         >
           {{ opt.badge }}
         </span>
