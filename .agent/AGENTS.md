@@ -1,3 +1,16 @@
+### [2026-09-23] Giải Thích Cơ Chế `ng update` & Cập Nhật Minor/Patch Cho Angular Core/CLI
+- **Nội dung yêu cầu:** Người dùng thắc mắc vì sao chạy `ng update` thì hiển thị `"We analyzed your package.json and everything seems to be in order. Good work!"` mà không hiện danh sách cập nhật như các source khác.
+- **Phân tích kỹ thuật & Cơ chế hoạt động:**
+  1. **Phạm vi của `ng update`:** Lệnh này chỉ quét các package có chứa **Angular Update Schematics** (định nghĩa trong `package.json` mục `"ng-update"`, ví dụ `@angular/core`, `@angular/cli`, `@angular/material`). Các thư viện ngoài (`ethers`, `@reown/appkit`, `tailwindcss`, `vitest`, v.v.) không có schematics nên `ng update` không quản lý.
+  2. **Lý do không in danh sách:** Dự án hiện đã ở phiên bản **Angular Major mới nhất (v22)** trên registry, chưa có v23 và không có migration schematic bắt buộc giữa các bản minor. Do đó khi chạy không tham số, Angular CLI kết luận `everything seems to be in order`.
+  3. **Khác biệt với source khác:** Các source khác đang ở phiên bản Major cũ hơn (v17, v18, v19...) nên có schematics migration sẵn sàng, hoặc có cài `@angular/material`, `@angular/cdk`.
+  4. **Nâng cấp thực tế:**
+     - Muốn nâng các bản minor/patch trong Angular: Chạy đích danh `npx ng update @angular/cli @angular/core` (đã nâng từ `22.0.x` lên `22.1.7`/`22.1.8`).
+     - Muốn kiểm tra toàn bộ dependencies của dự án: Sử dụng `npm outdated` hoặc `npx npm-check-updates`.
+- **Xác thực mã nguồn:**
+  - `npm test -- --watch=false`: 24 test files / 134 unit tests passed 100%.
+  - `npm run build`: Production build hoàn tất thành công 100%.
+
 ### [2026-09-21] Rà Soát Toàn Diện i18n & Khắc Phục Lỗi Mã Hóa Ký Tự Tiếng Việt (UTF-8 Mojibake)
 - **Nội dung yêu cầu:** Người dùng yêu cầu kiểm tra toàn bộ mã nguồn frontend: `kiểm tra toàn source, chỗ nào đang bị hard code tiếng việt, hay đang còn chưa dịch i18n. check bổ sung nhé, bên FE`.
 - **Phân tích kỹ thuật & Hiện trạng:**
