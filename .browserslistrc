@@ -6,3 +6,5 @@ not IE 9-11
 ios >= 15
 safari >= 15
 chrome >= 64
+not op_mini all
+not kaios > 0
