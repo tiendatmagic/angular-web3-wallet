@@ -1,10 +1,6 @@
-> 0.5%
-last 2 versions
-Firefox ESR
-not dead
-not IE 9-11
 ios >= 15
 safari >= 15
 chrome >= 64
+firefox >= 100
 not op_mini all
 not kaios > 0
