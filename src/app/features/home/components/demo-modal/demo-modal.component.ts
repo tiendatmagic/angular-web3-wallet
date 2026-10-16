@@ -98,12 +98,15 @@ export class DemoModalComponent {
     ];
   });
 
-  public readonly modalDropdownHeader: DropdownMenuHeader = {
-    title: 'Nguyễn Tiến Đạt',
-    subtitle: '0x71C...39A2 • tiendat.eth',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80',
-    statusBadge: 'PRO'
-  };
+  public readonly modalDropdownHeader = computed<DropdownMenuHeader>(() => {
+    this.translationService.currentLang();
+    return {
+      title: this.translationService.t('cards.dropdown.demo_user_name'),
+      subtitle: '0x71C...39A2 • tiendat.eth',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80',
+      statusBadge: 'PRO'
+    };
+  });
 
   public readonly modalDropdownProfileItems = computed<DropdownMenuItem[]>(() => {
     this.translationService.currentLang();

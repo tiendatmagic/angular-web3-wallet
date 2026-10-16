@@ -688,12 +688,15 @@ export function getNetworkRpc(chainId: number): string {
     this.demoDropdownLastAction.set(this.translationService.t('cards.dropdown.no_action_yet'));
   });
 
-  public readonly demoProfileHeader: DropdownMenuHeader = {
-    title: 'Nguyễn Tiến Đạt',
-    subtitle: '0x71C...39A2 • tiendat.eth',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80',
-    statusBadge: 'PRO'
-  };
+  public readonly demoProfileHeader = computed<DropdownMenuHeader>(() => {
+    this.translationService.currentLang();
+    return {
+      title: this.translationService.t('cards.dropdown.demo_user_name'),
+      subtitle: '0x71C...39A2 • tiendat.eth',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80',
+      statusBadge: 'PRO'
+    };
+  });
 
   public readonly demoProfileMenuItems = computed<DropdownMenuItem[]>(() => {
     this.translationService.currentLang();
@@ -771,7 +774,7 @@ export function getNetworkRpc(chainId: number): string {
   public readonly demoVoiceParticipants = computed(() => {
     this.translationService.currentLang();
     return [
-      { id: '1', name: 'Nguyễn Tiến Đạt', role: this.translationService.t('showcase.role_host'), avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80', isSpeaking: true, isMuted: false },
+      { id: '1', name: this.translationService.t('cards.dropdown.demo_user_name'), role: this.translationService.t('showcase.role_host'), avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80', isSpeaking: true, isMuted: false },
       { id: '2', name: 'Elena Rostova', role: this.translationService.t('showcase.role_cohost'), avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&auto=format&fit=crop&q=80', isSpeaking: false, isMuted: false },
       { id: '3', name: 'Marcus Vance', role: this.translationService.t('showcase.role_speaker'), avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80', isSpeaking: false, isMuted: true },
       { id: '4', name: 'Sophia Chen', role: this.translationService.t('showcase.role_listener'), avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80', isSpeaking: false, isMuted: true },
@@ -825,14 +828,17 @@ export function getNetworkRpc(chainId: number): string {
   public readonly demoDrawerPosition = signal<'right' | 'left' | 'bottom'>('right');
   public readonly demoStepperActive = signal<number>(1);
 
-  public readonly demoAvatarList: AvatarItem[] = [
-    { name: 'Nguyễn Tiến Đạt', status: 'online', src: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80' },
-    { name: 'Elena Rostova', status: 'online', src: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&auto=format&fit=crop&q=80' },
-    { name: 'Marcus Vance', status: 'busy', src: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80' },
-    { name: 'Satoshi Nakamoto', status: 'offline' },
-    { name: 'Vitalik Buterin', status: 'online' },
-    { name: 'Alice Smith', status: 'away' }
-  ];
+  public readonly demoAvatarList = computed<AvatarItem[]>(() => {
+    this.translationService.currentLang();
+    return [
+      { name: this.translationService.t('cards.dropdown.demo_user_name'), status: 'online', src: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80' },
+      { name: 'Elena Rostova', status: 'online', src: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&auto=format&fit=crop&q=80' },
+      { name: 'Marcus Vance', status: 'busy', src: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80' },
+      { name: 'Satoshi Nakamoto', status: 'offline' },
+      { name: 'Vitalik Buterin', status: 'online' },
+      { name: 'Alice Smith', status: 'away' }
+    ];
+  });
 
   public readonly demoBreadcrumbItems = computed<BreadcrumbItem[]>(() => {
     this.translationService.currentLang();

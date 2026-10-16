@@ -1963,9 +1963,9 @@
 
               <div class="flex flex-wrap items-center gap-3 pt-2">
                 <app-dropdown-menu
-                  [header]="demoProfileHeader"
+                  [header]="demoProfileHeader()"
                   [items]="demoProfileMenuItems()"
-                  triggerText="Nguyễn Tiến Đạt"
+                  [triggerText]="demoProfileHeader().title"
                   triggerVariant="outline"
                   triggerSize="md"
                   width="w-64"
@@ -1974,7 +1974,7 @@
                 ></app-dropdown-menu>
 
                 <app-dropdown-menu
-                  [header]="demoProfileHeader"
+                  [header]="demoProfileHeader()"
                   [items]="demoProfileMenuItems()"
                   triggerVariant="avatar"
                   avatarUrl="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80"
@@ -2753,7 +2753,7 @@
               />
               <app-avatar
                 size="lg"
-                name="Nguyễn Tiến Đạt"
+                [name]="'cards.dropdown.demo_user_name' | translate"
                 status="online"
                 src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80"
               />
@@ -2772,8 +2772,8 @@
               'cards.avatar.group_label' | translate
             }}</label>
             <div class="flex flex-col gap-3 pt-1">
-              <app-avatar [avatars]="demoAvatarList" [max]="4" size="md" />
-              <app-avatar [avatars]="demoAvatarList" [max]="3" size="lg" shape="square" />
+              <app-avatar [avatars]="demoAvatarList()" [max]="4" size="md" />
+              <app-avatar [avatars]="demoAvatarList()" [max]="3" size="lg" shape="square" />
             </div>
           </div>
         </div>

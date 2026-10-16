@@ -1,3 +1,29 @@
+### [2026-10-16] Khắc Phục Khoảng Cách Hở Submenu & Chuẩn Hóa i18n Cho Chuỗi Tên Demo Tiếng Việt
+- **Nội dung yêu cầu:**
+  1. Người dùng phản ánh: `coi lại source, sao có nhiều chỗ bị lỗi tiếng việt? sửa đi` kèm ảnh chụp màn hình tên `Nguyễn Tiến Đạt` bị lỗi font / mojibake do hardcode trực tiếp chuỗi tiếng Việt trong template.
+  2. Người dùng phản ánh: `xem lại, vì sao dropdown, submenu nó lại không sát nhau, có vẻ khoảng cách còn dư ra xíu ??? sát lại với cha con nha` kèm ảnh chụp màn hình submenu cách menu cha 1 khoảng hở.
+- **Phân tích kỹ thuật & Hiện trạng:**
+  1. **Khoảng hở giữa Dropdown Menu cha và Submenu con:**
+     - Trong phương thức `updateSubmenuPosition()` của `DropdownMenuComponent`, tính toán tọa độ ngang trước đó có cộng thêm khoảng cách cố định `+ 4px` (`subLeft = parentRight + 4`) và lề trái `- 4px` (`subLeft = parentLeft - subWidth - 4`).
+     - Do cả menu cha và submenu đều có bo góc `rounded-[15px]`, khoảng cách 4px này cộng dồn với phần bo góc tạo cảm giác submenu bị tách rời, hở ra một khe trống không tự nhiên và dễ gây giật khi di chuột.
+  2. **Chuỗi tiếng Việt hardcoded:**
+     - Tên `'Nguyễn Tiến Đạt'` và header demo profile trước đó bị gán tĩnh dạng chuỗi thô trong `home.component.html`, `demo-modal.component.html`, `home.component.ts` và `demo-modal.component.ts`, không thông qua từ điển dịch `i18n`. Điều này gây nguy cơ lỗi mã hóa (mojibake) trên các môi trường khác nhau và không chuyển đổi khi người dùng đổi ngôn ngữ sang tiếng Anh (`EN`).
+- **Giải pháp kiến trúc & Triển khai thực hiện:**
+  1. **Khắc phục khoảng hở Submenu sát liền kề Menu cha (`dropdown-menu.component.ts`):**
+     - Loại bỏ hoàn toàn khoảng hở `+ 4px`.
+     - Đặt `subLeft = parentRight - 2` khi mở sang phải và `subLeft = parentLeft - subWidth + 2` khi mở sang trái. Mức overlap 2px giúp 2 viền border (1px mỗi bên) của menu cha và menu con áp sát tự nhiên, hoàn toàn không có khe hở sub-pixel trên màn hình độ phân giải cao / DPI scaling.
+     - Căn chỉnh `subTop = triggerRect.top - 6` để phần tử con đầu tiên trong submenu căn lề ngang chuẩn xác với nút kích hoạt ở menu cha.
+     - Đồng bộ hóa logic này sang cả component `DropdownMenuComponent` tại `sync-market-fe`.
+  2. **Chuẩn hóa triệt để i18n cho chuỗi tên Demo (`i18n.types.ts`, `vi.ts`, `en.ts`):**
+     - Khai báo key `demo_user_name: string;` trong `cards.dropdown`.
+     - Định nghĩa `demo_user_name: 'Nguyễn Tiến Đạt'` trong `vi.ts` và `demo_user_name: 'Nguyen Tien Dat'` trong `en.ts`.
+     - Chuyển đổi `demoProfileHeader`, `modalDropdownHeader`, `demoVoiceParticipants` và `demoAvatarList` sang Signal `computed` phản ứng tự động theo `currentLang()`.
+     - Cập nhật toàn bộ các vị trí trong `home.component.html` và `demo-modal.component.html` sử dụng binding i18n (`[triggerText]="demoProfileHeader().title"` và `| translate`), chấm dứt triệt để việc hardcode chuỗi tiếng Việt.
+- **Xác thực mã nguồn:**
+  - `npm test -- --watch=false`: 24 test files / 134 unit tests passed 100%.
+  - `npm run build`: Production build hoàn tất thành công 100%.
+  - 0 comment tiếng Việt trong mã nguồn.
+
 ### [2026-09-23] Giải Thích Cơ Chế `ng update` & Cập Nhật Minor/Patch Cho Angular Core/CLI
 - **Nội dung yêu cầu:** Người dùng thắc mắc vì sao chạy `ng update` thì hiển thị `"We analyzed your package.json and everything seems to be in order. Good work!"` mà không hiện danh sách cập nhật như các source khác.
 - **Phân tích kỹ thuật & Cơ chế hoạt động:**

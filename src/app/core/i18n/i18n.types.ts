@@ -378,6 +378,7 @@ export interface TranslationDictionary {
       subtitle: string;
       card_title: string;
       card_desc: string;
+      demo_user_name: string;
       demo1_title: string;
       demo1_desc: string;
       demo2_title: string;

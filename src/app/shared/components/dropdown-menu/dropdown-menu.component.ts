@@ -457,13 +457,13 @@ export class DropdownMenuComponent implements OnDestroy {
     const parentLeft = popoverRect ? popoverRect.left : triggerRect.left;
 
     let subLeft: number;
-    const canPlaceRight = parentRight + subWidth + 4 <= window.innerWidth - 8;
-    const canPlaceLeft = parentLeft - subWidth - 4 >= 8;
+    const canPlaceRight = parentRight + subWidth - 2 <= window.innerWidth - 8;
+    const canPlaceLeft = parentLeft - subWidth + 2 >= 8;
 
     if (canPlaceRight) {
-      subLeft = parentRight + 4;
+      subLeft = parentRight - 2;
     } else if (canPlaceLeft) {
-      subLeft = parentLeft - subWidth - 4;
+      subLeft = parentLeft - subWidth + 2;
     } else {
       const spaceOnLeft = parentRight - 8;
       if (spaceOnLeft >= subWidth) {
@@ -482,12 +482,12 @@ export class DropdownMenuComponent implements OnDestroy {
     const spaceAbove = triggerRect.bottom - 12;
     const placeBottom = spaceBelow >= subEstimatedHeight || spaceBelow >= spaceAbove;
 
-    let subTop = triggerRect.top - 4;
+    let subTop = triggerRect.top - 6;
     let transform = 'none';
     let maxHeight = Math.max(120, spaceBelow);
 
     if (!placeBottom) {
-      subTop = triggerRect.bottom + 4;
+      subTop = triggerRect.bottom + 6;
       transform = 'translateY(-100%)';
       maxHeight = Math.max(120, spaceAbove);
     }

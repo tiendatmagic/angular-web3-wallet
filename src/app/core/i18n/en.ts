@@ -371,6 +371,7 @@ export const EN_TRANSLATIONS: TranslationDictionary = {
       subtitle: 'FLIP Morphing Card 268px -> 360px transition with animated audio waveform bars.',
       card_title: 'Card 19: Premium Dropdown Menu Component (app-dropdown-menu)',
       card_desc: 'Versatile dropdown navigation: User Profile, 2-Level Submenu, Checkbox/Radio options, Flexible triggers & Glassmorphism.',
+      demo_user_name: 'Nguyen Tien Dat',
       demo1_title: '1. Account & Profile Menu (Header + User Info)',
       demo1_desc: 'Integrated Avatar, Email, Status Badge, and Logout',
       demo2_title: '2. Checkbox & Radio Items (UI Configuration)',

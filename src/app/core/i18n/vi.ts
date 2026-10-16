@@ -371,6 +371,7 @@ export const VI_TRANSLATIONS: TranslationDictionary = {
       subtitle: 'Biến hình FLIP Morphing Card 268px -> 360px mượt mà với hiệu ứng vạch sóng âm thanh.',
       card_title: 'Card 19: Component Dropdown Menu Cao Cấp (app-dropdown-menu)',
       card_desc: 'Menu điều hướng thả xuống đa dạng: User Profile, Submenu cấp 2, Checkbox/Radio options, Trigger linh hoạt & hiệu ứng Glassmorphism.',
+      demo_user_name: 'Nguyễn Tiến Đạt',
       demo1_title: '1. Menu Tài Khoản & Profile (Header + User Info)',
       demo1_desc: 'Tích hợp Avatar, Email, Status Badge và Đăng xuất',
       demo2_title: '2. Checkbox & Radio Items (Cấu Hình Giao Diện)',
