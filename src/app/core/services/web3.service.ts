@@ -1,4 +1,4 @@
-import { Injectable, signal, inject, effect } from '@angular/core';
+﻿import { Injectable, signal, inject, effect } from '@angular/core';
 import { createAppKit, type AppKit } from '@reown/appkit';
 import { EthersAdapter } from '@reown/appkit-adapter-ethers';
 import { mainnet, arbitrum, arbitrumSepolia, bsc, bscTestnet } from '@reown/appkit/networks';
@@ -14,7 +14,7 @@ export interface ExecuteTxOptions {
   subtitle?: string;
   amount?: string;
   symbol?: string;
-  toAddress?: string;
+  toAddress?: string | null;
   confirmText?: string;
   chainId?: number | string;
   networkName?: string;
@@ -983,7 +983,7 @@ export class Web3Service {
           subtitle: options?.subtitle || this.translationService.t('showcase.tx_modal_subtitle'),
           amount: options?.amount,
           symbol: options?.symbol || this.chainSymbol() || 'ETH',
-          toAddress: options?.toAddress,
+          toAddress: options?.toAddress || undefined,
           confirmText: options?.confirmText,
           chainId: this.chainId(),
           networkName: this.networkName(),

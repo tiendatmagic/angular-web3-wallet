@@ -5560,3 +5560,9 @@
   3. Đã cập nhật `interface ExecuteTxOptions` hỗ trợ `chainId` và `networkName`.
   4. Sửa dứt điểm lỗi xung đột gas giữa `maxFeePerGas` và `gasPrice` trên Arbitrum Sepolia.
   5. Kiểm tra `npm run build` thành công 100% (Zero Errors).
+
+### [2026-10-24] Đồng Bộ Toàn Diện web3.service.ts & TxSuccessModal Sang Dự Án Vorylink Network
+- **Nội dung yêu cầu:** Người dùng yêu cầu đồng bộ toàn diện file web3.service.ts giữa 2 dự án (ngular-web3-wallet và orylink-fe), đảm bảo orylink giống hệt ngular-web3-wallet.
+- **Kết quả thực hiện:**
+  - Đã rà soát và chuyển giao toàn bộ tính năng cao cấp từ ngular-web3-wallet sang orylink-fe: executeContractTx, sendNativeTransaction, ensureProviderChain, getReadonlyProvider, getGasOverrides (bảo vệ sàn gas BSC 3 gwei), ormatWeb3Error, clearConnectionState, syncDefaultChainToProvider, và modal giao dịch thành công TxSuccessModalComponent.
+  - Cả 2 dự án đều đã chạy test (140/140 tests ở angular-web3-wallet, 111/111 tests ở vorylink) và build production thành công 100%.

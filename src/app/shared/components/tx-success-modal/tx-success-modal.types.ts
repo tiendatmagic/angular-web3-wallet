@@ -2,7 +2,7 @@
   txHash: string;
   amount?: string;
   symbol?: string;
-  toAddress?: string;
+  toAddress?: string | null;
   chainId?: string | number | null;
   networkName?: string;
   title?: string;
