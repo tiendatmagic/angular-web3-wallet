@@ -1,3 +1,46 @@
+### [2026-10-24] Khắc Phục Lỗi Kết Nối Ví Khi Chọn Mạng Chưa Thêm Vào MetaMask (BSC Testnet & 4902 Auto-Add)
+- **Nội dung yêu cầu:** Người dùng phản ánh lỗi khi chọn mạng BSC Testnet (mạng chưa được thêm vào MetaMask), khi bấm "Kết nối ví" thì gặp lỗi:
+  - Console: `MetaMask - RPC inpage.js:22 Error: Unrecognized chain ID "0x...". Try adding the chain using wallet_addEthereumChain first. {code: 4902}`
+  - Console: `MetaMask - RPC inpage.js:22 Error: Request of type 'wallet_requestPermissions' already pending for origin http://localhost:4200. Please wait. {code: -32002}`
+  - Console: `MetaMask - RPC inpage.js:22 Error: User rejected the request. {code: 4001}`
+  - Giao diện AppKit: Chuyển sang thông báo `Connection declined. Connection can be declined if a previous request is still active. Try again`.
+- **Phân tích kỹ thuật & Nguyên nhân gốc rễ (Root Causes):**
+  1. **Thiếu đồng bộ mạng mong muốn sang AppKit khi chưa kết nối:** Khi người dùng chọn BSC Testnet từ selector khi chưa kết nối, `switchNetwork` chỉ set state UI (`configuredChainId`) mà không gọi `modal.switchNetwork` hay cập nhật mạng mong muốn cho AppKit. Khi AppKit mở kết nối, nó cố gắng kết nối theo mạng mặc định hoặc mạng trước đó thay vì mạng người dùng vừa chọn.
+  2. **Hạn chế của `@reown/appkit-adapter-ethers`:** Trong hàm `EthersAdapter.connect()`, sau khi gọi `eth_requestAccounts`, adapter kiểm tra `if (requestChainId !== chainId)` và gọi `wallet_switchEthereumChain`. Nếu mạng chưa từng được thêm vào MetaMask (như BSC Testnet - chainId 97 / `0x61`), MetaMask lập tức trả về mã lỗi `4902` (`Unrecognized chain ID`). `EthersAdapter.connect` không có cơ chế bắt mã `4902` để gọi `wallet_addEthereumChain` (dù trong hàm `switchNetwork` của nó lại có). Do đó adapter ném ra ngoại lệ `Error: EthersAdapter:connect - Switch network failed`.
+  3. **Lỗi dây chuyền do ngắt kết nối cưỡng bức (`modal.disconnect()`):** Khi AppKit nhận lỗi `CONNECT_ERROR`, listener `subscribeEvents` trong `web3.service.ts` trước đây vội vàng gọi `this.modal.disconnect()`. Hành động này cưỡng bức hủy session ngay khi cửa sổ popup của MetaMask đang mở, khiến MetaMask bị kẹt request ở trạng thái `-32002` (Request already pending), sau đó bị hủy với lỗi `4001` (User rejected), và AppKit hiển thị trạng thái "Connection declined".
+- **Giải pháp kiến trúc & Triển khai thực hiện (`web3.service.ts`):**
+  1. **Xây dựng `CustomEthersAdapter` kế thừa `EthersAdapter`:**
+     - Override hàm `connect(params)`: Tự động bọc (wrap) `provider.request` của connector và injected wallet trước khi kết nối.
+     - Trong trường hợp kết nối gặp lỗi chuyển mạng (`switch network failed` hoặc `4902`), tự động gọi `addNetworkToWallet(targetId, prov)` và retry kết nối.
+  2. **Triển khai cơ chế bọc tự động `wrapProviderAutoAdd(provider)`:**
+     - Can thiệp trực tiếp vào hàm `provider.request` đối với method `wallet_switchEthereumChain`.
+     - Khi MetaMask trả về lỗi `4902` (Unrecognized chain ID), tự động bóc tách `chainId` và gọi `wallet_addEthereumChain` với đầy đủ thông số cấu hình mạng (RPC, Explorer, Native Currency BNB 18 decimals từ `POPULAR_CHAINS`).
+     - Khi người dùng bấm phê duyệt thêm mạng trên MetaMask, tự động thực thi lại lệnh `wallet_switchEthereumChain` và tiếp tục luồng kết nối một cách mượt mà 100%.
+     - Tự động áp dụng cho cả `window.ethereum` lẫn các nhà cung cấp ví thông qua chuẩn EIP-6963 (`eip6963:announceProvider`).
+  3. **Đồng bộ hóa mạng đã chọn sang AppKit (`switchNetwork` & `initAppKit`):**
+     - Trong `switchNetwork`: Khi chưa kết nối, vẫn gọi `this.modal.switchNetwork(network)` để AppKit cập nhật `activeCaipNetwork`.
+     - Trong `initAppKit`: Khởi tạo `defaultNetwork` động dựa trên `configuredChainId` đã lưu trữ trong `localStorage`.
+  4. **Tối ưu hóa `subscribeEvents`:**
+     - Không gọi `modal.disconnect()` khi đang trong phiên kết nối injected wallet, tránh gây gián đoạn và xung đột `-32002` với MetaMask.
+  5. **Bổ sung Unit Test Suite Hoàn Chỉnh (`web3.service.spec.ts`):**
+     - Xây dựng 6 unit tests kiểm tra toàn diện `wrapProviderAutoAdd`, bao gồm: bypass khi provider null, passthrough phương thức thông thường, bắt lỗi 4902 gọi `addNetworkToWallet` và retry thành công, xử lý lỗi khi người dùng từ chối thêm mạng, và hỗ trợ đệ quy đa provider (`providers[]`).
+- **Xác thực mã nguồn:**
+  - `npm test -- --watch=false`: 25 test files / 140 unit tests passed 100%.
+  - `npm run build`: Production bundle biên dịch thành công 100%.
+  - 0 comment tiếng Việt trong mã nguồn.
+
+### [2026-10-24] Phân Tích Hiện Tượng Web Treo Màn Hình Loading (Vite Dependency Pre-bundling)
+- **Nội dung yêu cầu:** Người dùng gửi ảnh phản ánh web mở localhost:4200 chỉ hiện spinner xoay tròn và hỏi: "sao web không load được gì nhỉ?".
+- **Phân tích kỹ thuật & Hiện trạng:**
+  1. Trong ảnh terminal, dev server Angular (`@angular/build:dev-server` với Vite) vừa khởi động và đang chạy: `[vite] (client) [optimizer] bundling dependencies...`.
+  2. Dự án sử dụng hệ sinh thái Web3 khá nặng (`@reown/appkit`, `@reown/appkit-adapter-ethers`, `ethers`, `@walletconnect`, `viem`, v.v.). Khi khởi chạy dev server lần đầu sau khi cập nhật dependencies, Vite bắt buộc phải scan và tối ưu hóa các module CommonJS/ESM.
+  3. Trong suốt thời gian bundling dependencies (khoảng 20-40 giây trên Windows), Vite DEV SERVER chủ động HOLD / PENDING toàn bộ các request tải JavaScript (`main.js`, chunks).
+  4. Trình duyệt đã nhận được `index.html` tĩnh (nơi chứa sẵn Splash Screen loading quay tròn trong thẻ `<app-root>`), nhưng do chưa tải được `main.js` nên Angular chưa bootstrap.
+  5. Cảnh báo vàng trong console (`MaxListenersExceededWarning`, `orphaned data for stream`) phát sinh từ Web3 browser extension (MetaMask/Coinbase) do tab đang chờ script từ dev server.
+- **Kết quả & Khắc phục:**
+  - Kiểm tra hệ thống: Tiến trình bundling đã hoàn thành 100%, server trả về HTTP 200 OK cho toàn bộ bundles (`main.js`, `HomeComponent` chunk 2.3MB, `@angular_core.js?v=7171ecc2`).
+  - Giải pháp: Chỉ cần F5 (Reload lại trang) trên trình duyệt là giao diện sẽ tải ngay lập tức vì toàn bộ cache đã được Vite lưu vào `.angular/cache/`.
+
 ### [2026-10-24] Vá Toàn Diện 12 Lỗ Hổng Bảo Mật (npm audit & package overrides)
 - **Nội dung yêu cầu:** Người dùng yêu cầu khắc phục 12 lỗ hổng bảo mật báo cáo bởi `npm audit` (gồm 2 critical, 6 high, 4 moderate) liên quan đến `@angular/router`, `@modelcontextprotocol/sdk`, `@vitest/mocker`, `piscina`, `vite`, `follow-redirects`, `hono`, `ip-address`, `source-map-js`.
 - **Phân tích kỹ thuật & Hiện trạng:**

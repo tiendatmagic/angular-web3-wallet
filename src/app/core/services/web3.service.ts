@@ -24,6 +24,50 @@ export interface ExecuteTxOptions {
 import { POPULAR_CHAINS, getAllRpcUrls } from '../utils/blockchain.utils';
 import { TranslationService } from './translation.service';
 
+class CustomEthersAdapter extends EthersAdapter {
+  constructor(private readonly service: Web3Service) {
+    super();
+  }
+
+  override async connect(params: any): Promise<any> {
+    if (params?.provider) {
+      this.service.wrapProviderAutoAdd(params.provider);
+    }
+    const connectors = (this as any).connectors as any[] | undefined;
+    const connector = connectors?.find((c: any) => c.id === params?.id);
+    if (connector?.provider) {
+      this.service.wrapProviderAutoAdd(connector.provider);
+    }
+    if (typeof window !== 'undefined' && (window as any).ethereum) {
+      this.service.wrapProviderAutoAdd((window as any).ethereum);
+    }
+
+    try {
+      return await super.connect(params);
+    } catch (err: any) {
+      const errStr = (err?.message || err?.reason || '').toLowerCase();
+      if (
+        errStr.includes('switch network failed') ||
+        errStr.includes('4902') ||
+        errStr.includes('unrecognized')
+      ) {
+        const targetId = params?.chainId;
+        const prov =
+          params?.provider ||
+          connector?.provider ||
+          (typeof window !== 'undefined' ? (window as any).ethereum : null);
+        if (targetId && prov) {
+          const added = await this.service.addNetworkToWallet(targetId, prov);
+          if (added) {
+            return await super.connect(params);
+          }
+        }
+      }
+      throw err;
+    }
+  }
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -129,6 +173,49 @@ export class Web3Service {
     }
   }
 
+  public wrapProviderAutoAdd(provider: any): void {
+    if (!provider || typeof provider.request !== 'function' || provider.__chainAutoAddWrapped) {
+      return;
+    }
+
+    const originalRequest = provider.request.bind(provider);
+    provider.__chainAutoAddWrapped = true;
+
+    provider.request = async (args: { method: string; params?: any[] }) => {
+      if (args?.method === 'wallet_switchEthereumChain') {
+        try {
+          return await originalRequest(args);
+        } catch (switchErr: any) {
+          const isUnrecognized =
+            switchErr?.code === 4902 ||
+            switchErr?.info?.error?.code === 4902 ||
+            switchErr?.data?.originalError?.code === 4902 ||
+            switchErr?.cause?.code === 4902 ||
+            switchErr?.message?.toLowerCase().includes('unrecognized') ||
+            switchErr?.message?.toLowerCase().includes('try adding the chain') ||
+            switchErr?.message?.toLowerCase().includes('wallet_addethereumchain');
+
+          if (isUnrecognized) {
+            const hexChainId = args.params?.[0]?.chainId;
+            const targetId = hexChainId ? parseInt(hexChainId, 16) : null;
+            if (targetId) {
+              const added = await this.addNetworkToWallet(targetId, provider);
+              if (added) {
+                return await originalRequest(args);
+              }
+            }
+          }
+          throw switchErr;
+        }
+      }
+      return await originalRequest(args);
+    };
+
+    if (Array.isArray(provider.providers)) {
+      provider.providers.forEach((p: any) => this.wrapProviderAutoAdd(p));
+    }
+  }
+
   private clearConnectionState(showToast = false): void {
     if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
       localStorage.removeItem('angular_web3_last_address');
@@ -178,6 +265,15 @@ export class Web3Service {
   private async initAppKit() {
     if (typeof window === 'undefined') return;
 
+    if ((window as any).ethereum) {
+      this.wrapProviderAutoAdd((window as any).ethereum);
+    }
+    window.addEventListener('eip6963:announceProvider', (event: any) => {
+      if (event?.detail?.provider) {
+        this.wrapProviderAutoAdd(event.detail.provider);
+      }
+    });
+
     const projectId = environment.walletConnectProjectId;
     if (!projectId) {
       console.warn('[Web3] walletConnectProjectId is missing in environment configuration.');
@@ -185,11 +281,13 @@ export class Web3Service {
     }
 
     const isDark = this.themeService.isDarkMode();
+    const currentConfiguredId = Number(this.configuredChainId()) || 42161;
+    const defaultChain = this.supportedChains.find(c => Number(c.id) === currentConfiguredId) || this.supportedChains[0];
 
     this.modal = createAppKit({
-      adapters: [new EthersAdapter()],
+      adapters: [new CustomEthersAdapter(this)],
       networks: this.supportedChains as any,
-      defaultNetwork: this.supportedChains[0] as any,
+      defaultNetwork: defaultChain as any,
       allowUnsupportedChain: true,
       metadata: {
         name: 'Angular Web3 DApp',
@@ -280,10 +378,12 @@ export class Web3Service {
       const isConnectionError = eventName === 'CONNECT_ERROR' || errorMsg.toString().toLowerCase().includes('declined') || errorMsg.toString().toLowerCase().includes('active');
 
       if (isConnectionError) {
-        console.warn('[Web3] Connection or session stall detected in AppKit, releasing...');
+        console.warn('[Web3] Connection error or session stall detected in AppKit:', errorMsg || eventName);
         try {
-          await this.modal.disconnect();
           await this.clearWalletConnectStorage();
+          if (errorMsg.toString().toLowerCase().includes('session') || errorMsg.toString().toLowerCase().includes('proposal')) {
+            await this.modal.disconnect();
+          }
         } catch (e) { }
       }
     });
@@ -631,6 +731,12 @@ export class Web3Service {
         console.warn('[Web3] Error switching to chain:', chainId, error);
       }
     } else {
+      const network = this.supportedChains.find(chain => Number(chain.id) === chainId);
+      if (network && this.modal) {
+        try {
+          await this.modal.switchNetwork(network as any);
+        } catch (e) { }
+      }
       const popular = POPULAR_CHAINS.find(c => Number(c.chainId) === chainId);
       if (popular) {
         this.networkName.set(popular.name);
