@@ -1,8 +1,10 @@
 export const POPULAR_CHAINS = [
   { name: 'Arbitrum One Mainnet', chainId: '42161', rpcUrl: 'https://arb1.arbitrum.io/rpc', explorerUrl: 'https://arbiscan.io', color: '#00a3ff' },
+  { name: 'Avalanche C-Chain', chainId: '43114', rpcUrl: 'https://api.avax.network/ext/bc/C/rpc', explorerUrl: 'https://snowtrace.io', color: '#E84142' },
   { name: 'BNB Smart Chain', chainId: '56', rpcUrl: 'https://bsc-rpc.publicnode.com', explorerUrl: 'https://bscscan.com', color: '#F3BA2F' },
   { name: 'Ethereum Mainnet', chainId: '1', rpcUrl: 'https://ethereum-rpc.publicnode.com', explorerUrl: 'https://etherscan.io', color: '#627EEA' },
   { name: 'Arbitrum Sepolia', chainId: '421614', rpcUrl: 'https://sepolia-rollup.arbitrum.io/rpc', explorerUrl: 'https://sepolia.arbiscan.io', color: '#5ba4cf' },
+  { name: 'Avalanche Fuji', chainId: '43113', rpcUrl: 'https://api.avax-test.network/ext/bc/C/rpc', explorerUrl: 'https://testnet.snowtrace.io', color: '#f06c6d' },
   { name: 'BSC Testnet', chainId: '97', rpcUrl: 'https://bsc-testnet-rpc.publicnode.com', explorerUrl: 'https://testnet.bscscan.com', color: '#e6a817' },
 ];
 
@@ -14,6 +16,8 @@ export function getExplorerApiUrl(chainId: string | number): string | null {
     case '97': return 'https://api-testnet.bscscan.com/api';
     case '42161': return 'https://api.arbiscan.io/api';
     case '421614': return 'https://api-sepolia.arbiscan.io/api';
+    case '43114': return 'https://api.snowtrace.io/api';
+    case '43113': return 'https://api-testnet.snowtrace.io/api';
     default: return null;
   }
 }
@@ -21,6 +25,15 @@ export function getExplorerApiUrl(chainId: string | number): string | null {
 export function getBackupRpcUrls(chainId: string | number): string[] {
   const id = chainId.toString().trim();
   switch (id) {
+    case '43114': return [
+      'https://avalanche-c-chain-rpc.publicnode.com',
+      'https://1rpc.io/avax/c',
+      'https://rpc.ankr.com/avalanche'
+    ];
+    case '43113': return [
+      'https://avalanche-fuji-c-chain-rpc.publicnode.com',
+      'https://rpc.ankr.com/avalanche_fuji'
+    ];
     case '97': return [
       'https://bsc-testnet.drpc.org',
       'https://bsc-testnet.rpc.sentio.xyz',
@@ -71,6 +84,8 @@ export function getExplorerName(chainId: string | number | null | undefined): st
     case '97': return 'BscScan Testnet';
     case '42161': return 'Arbiscan';
     case '421614': return 'Arbiscan Sepolia';
+    case '43114': return 'Snowtrace';
+    case '43113': return 'Snowtrace Fuji';
     default: return 'Block Explorer';
   }
 }

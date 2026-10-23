@@ -1,7 +1,7 @@
 ﻿import { Injectable, signal, inject, effect } from '@angular/core';
 import { createAppKit, type AppKit } from '@reown/appkit';
 import { EthersAdapter } from '@reown/appkit-adapter-ethers';
-import { mainnet, arbitrum, arbitrumSepolia, bsc, bscTestnet } from '@reown/appkit/networks';
+import { mainnet, arbitrum, arbitrumSepolia, bsc, bscTestnet, avalanche, avalancheFuji } from '@reown/appkit/networks';
 import { ApiController, ModalController, RouterController } from '@reown/appkit-controllers';
 import { BrowserProvider, JsonRpcProvider, formatEther, parseEther } from 'ethers';
 import { environment } from '@environments/environment';
@@ -101,7 +101,7 @@ export class Web3Service {
   private hasConfirmedConnectionInCurrentSession = false;
   private sessionRestoreTimeout: any = null;
 
-  public readonly supportedChains = [arbitrum, mainnet, bsc, arbitrumSepolia, bscTestnet].map(chain => {
+  public readonly supportedChains = [arbitrum, avalanche, mainnet, bsc, arbitrumSepolia, avalancheFuji, bscTestnet].map(chain => {
     const popular = POPULAR_CHAINS.find(c => Number(c.chainId) === Number(chain.id));
     const rpcList = getAllRpcUrls(chain.id);
     if (popular) {
@@ -145,7 +145,12 @@ export class Web3Service {
       if (!isConn) {
         const popular = POPULAR_CHAINS.find(c => c.chainId === confId);
         this.networkName.set(popular ? popular.name : this.translationService.t('showcase.unknown_network'));
-        const symbol = popular ? (popular.chainId === '56' || popular.chainId === '97' ? 'BNB' : 'ETH') : 'ETH';
+                let symbol = 'ETH';
+        if (popular) {
+          if (popular.chainId === '56' || popular.chainId === '97') symbol = 'BNB';
+          else if (popular.chainId === '43114' || popular.chainId === '43113') symbol = 'AVAX';
+          else symbol = 'ETH';
+        }
         this.chainSymbol.set(symbol);
       }
     }, { allowSignalWrites: true });
@@ -437,7 +442,7 @@ export class Web3Service {
 
       const isTestnet = popular
         ? popular.name.toLowerCase().includes('sepolia') || popular.name.toLowerCase().includes('testnet')
-        : (chainId === 421614 || chainId === 97 || chainId === 11155111);
+        : (chainId === 421614 || chainId === 97 || chainId === 43113 || chainId === 11155111);
       if (isTestnet) {
         this.txSpeed.set('fast');
       } else {

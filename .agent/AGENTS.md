@@ -5566,3 +5566,16 @@
 - **Kết quả thực hiện:**
   - Đã rà soát và chuyển giao toàn bộ tính năng cao cấp từ ngular-web3-wallet sang orylink-fe: executeContractTx, sendNativeTransaction, ensureProviderChain, getReadonlyProvider, getGasOverrides (bảo vệ sàn gas BSC 3 gwei), ormatWeb3Error, clearConnectionState, syncDefaultChainToProvider, và modal giao dịch thành công TxSuccessModalComponent.
   - Cả 2 dự án đều đã chạy test (140/140 tests ở angular-web3-wallet, 111/111 tests ở vorylink) và build production thành công 100%.
+---
+
+### [2026-10-24] Tích Hợp Thêm 2 Mạng Avalanche (C-Chain Mainnet & Fuji Testnet)
+- **Nội dung yêu cầu:** Tích hợp Avalanche C-Chain Mainnet (43114) và Avalanche Fuji Testnet (43113) vào hệ thống dApp.
+- **Triển khai:**
+  - lockchain.utils.ts: Bổ sung Avalanche C-Chain và Fuji vào POPULAR_CHAINS, danh sách backup RPC và cấu hình Explorer Snowtrace.
+  - web3.service.ts: Đăng ký valanche và valancheFuji từ @reown/appkit/networks, cấu hình prefetch logo icon qua ApiController.fetchNetworkImage, hỗ trợ auto-add network AVAX.
+  - icon.component.html: Thêm vector SVG logo chính thức của Avalanche (valanche và vax).
+- **Xác thực:**
+  - 
+pm test -- --watch=false: 25/25 test files (140/140 unit tests passed 100%).
+  - 
+pm run build: Production build thành công 100%.
