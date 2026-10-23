@@ -1,3 +1,27 @@
+### [2026-10-24] Vá Toàn Diện 12 Lỗ Hổng Bảo Mật (npm audit & package overrides)
+- **Nội dung yêu cầu:** Người dùng yêu cầu khắc phục 12 lỗ hổng bảo mật báo cáo bởi `npm audit` (gồm 2 critical, 6 high, 4 moderate) liên quan đến `@angular/router`, `@modelcontextprotocol/sdk`, `@vitest/mocker`, `piscina`, `vite`, `follow-redirects`, `hono`, `ip-address`, `source-map-js`.
+- **Phân tích kỹ thuật & Hiện trạng:**
+  1. Các phiên bản Angular (`@angular/core`, `@angular/router`...) đang ở `22.1.7`, `@angular/build` và `@angular/cli` đang ở `22.1.8`, `vitest` ở `4.0.8`.
+  2. Các gói này kéo theo các bản phụ thuộc cũ có lỗ hổng CVE:
+     - `@angular/router 22.0.0 - 22.2.0`: Lỗi DoS qua Numeric URL Matrix Parameters và Unmatched Empty-Path Outlet Route trong SSR.
+     - `@modelcontextprotocol/sdk <=1.31.0`: Lỗ hổng OAuth, Memory exhaustion, token validation.
+     - `@vitest/mocker <=4.1.11`: Code injection via manual mock registration & path traversal trên Windows.
+     - `piscina 5.0.0 - 5.3.1`: Prototype-pollution gadget trong ThreadPool.options dẫn đến RCE.
+     - `vite 8.0.0 - 8.1.5` & `8.3.0 - 8.3.2`: launch-editor command execution trên Windows và bypass `server.fs.allow`. Lưu ý `@angular/build@22.2.4` ghim cứng `vite: 8.3.0` (dính CVE).
+- **Giải pháp kiến trúc & Triển khai thực hiện:**
+  1. **Nâng cấp dependencies trong `package.json`:**
+     - Nâng các gói `@angular/*` lên `^22.2.3` (với `@angular/build` và `@angular/cli` lên `^22.2.4`), tự động giải quyết các lỗ hổng của router, cli, sdk và piscina.
+     - Nâng `vitest` lên `^4.1.12` (giải quyết triệt để `@vitest/mocker` CVE).
+  2. **Áp dụng cơ chế Overrides (`package.json`):**
+     - Thêm cấu hình `"overrides": { "vite": "^8.3.5" }` nhằm ép bản vá bảo mật mới nhất của `vite` (8.3.5), vượt qua ràng buộc phiên bản tĩnh của `@angular/build`.
+  3. **Thực thi cài đặt & đồng bộ Lockfile:**
+     - Chạy `npm install` cập nhật toàn diện cấu trúc dependency tree.
+- **Xác thực mã nguồn & Bảo mật:**
+  - `npm audit`: **`found 0 vulnerabilities`** (sạch 100% tất cả các lỗ hổng).
+  - `npm test -- --watch=false`: 24 test files / 134 unit tests passed 100%.
+  - `npm run build`: Production bundle biên dịch thành công 100%.
+  - 0 comment tiếng Việt trong mã nguồn.
+
 ### [2026-10-16] Khắc Phục Khoảng Cách Hở Submenu & Chuẩn Hóa i18n Cho Chuỗi Tên Demo Tiếng Việt
 - **Nội dung yêu cầu:**
   1. Người dùng phản ánh: `coi lại source, sao có nhiều chỗ bị lỗi tiếng việt? sửa đi` kèm ảnh chụp màn hình tên `Nguyễn Tiến Đạt` bị lỗi font / mojibake do hardcode trực tiếp chuỗi tiếng Việt trong template.
